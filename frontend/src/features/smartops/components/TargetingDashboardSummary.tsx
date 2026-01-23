@@ -22,82 +22,27 @@ import { useNavigate } from '@tanstack/react-router';
 import { MetricCard } from './MetricCard';
 import { CollapsibleSection } from './CollapsibleSection';
 import { RecentlyViewed } from './RecentlyViewed';
+import { BdaApi } from '@/lib/smartops/api/bda';
 import { targetingApi } from '@/lib/smartops/api/targeting.api';
-import { useTargetingPreferences } from '@/features/smartops/hooks/useTargetingPreferences';
-import { useDashboardLayout } from '@/features/smartops/hooks/useDashboardLayout';
 import { useCachedQuery } from '@/lib/smartops/hooks/useCachedQuery';
-import { useRealtimeUpdates } from '@/features/smartops/hooks/useRealtimeUpdates';
-import { MetricCardSkeleton } from './LoadingSkeleton';
-
-interface DashboardMetrics {
-  activeTargets: number;
-  pendingApprovals: number;
-  tstAlerts: number;
-  f3eadCounts: {
-    FIND: number;
-    FIX: number;
-    FINISH: number;
-    EXPLOIT: number;
-    ANALYZE: number;
-    DISSEMINATE: number;
-  };
-  topPriorityTargets: Array<{
-    id: string;
-    name: string;
-    priority: string;
-    status: string;
-  }>;
-  missionPhase: string;
-  isrPlatformsActive: number;
-  strikePlatformsReady: number;
-  highRiskTargets: number;
-  recentBdaCount: number;
-  pendingDecisions: number;
-}
 
 export function TargetingDashboardSummary() {
   const navigate = useNavigate();
-  const { preferences, isLoaded, setCollapsedSection } = useTargetingPreferences();
-  const { getVisibleWidgets, isLoaded: layoutLoaded } = useDashboardLayout();
 
-  // Subscribe to real-time updates
-  useRealtimeUpdates({
-    types: ['target_status_changed', 'new_target_nominated', 'bda_assessment_created'],
-    onUpdate: (update) => {
-      // Invalidate cache on relevant updates to trigger refetch
-      console.log('[Dashboard] Real-time update received:', update);
-    },
-  });
-
-  // Use cached query for dashboard metrics
-  const { data: metrics, isLoading: loading, refetch } = useCachedQuery<DashboardMetrics>({
-    queryKey: 'targeting-dashboard-metrics',
-    staleTime: 30000, // 30 seconds
-    cacheTime: 300000, // 5 minutes
+  const { data: dashboardData, isLoading } = useCachedQuery({
+    queryKey: ['targeting-summary-data'],
     queryFn: async () => {
-      // Fetch all data in parallel
       const [
         targets,
-        dtlEntries,
-        tsts,
         summary,
-        intent,
-        isrPlatforms,
-        strikePlatforms,
-        highRiskTargets,
-        bdaAssessments,
-        decisions,
+        highPriorityTargets,
+        bdaReports,
+        decisions
       ] = await Promise.all([
-        targetingApi.getTargets({ limit: 1000 }).catch(() => []),
-        targetingApi.getDtlEntries({ limit: 10 }).catch(() => []),
-        targetingApi.getActiveTsts().catch(() => []),
-        targetingApi.getTargetingSummary().catch(() => null),
-        targetingApi.getMissionIntent().catch(() => null),
-        targetingApi.listIsrPlatforms().catch(() => []),
-        targetingApi.getStrikePlatforms().catch(() => []),
+        targetingApi.getTargets({ limit: 100 }).catch(() => []),
+        targetingApi.getSummary().catch(() => ({ total_targets: 0, active_targets: 0, pending_nominations: 0, approved_targets: 0 })),
         targetingApi.getHighRiskTargets().catch(() => []),
-        // BDA assessments - using reattack recommendations as proxy
-        targetingApi.getReattackRecommendations().catch(() => []),
+        BdaApi.getReports({ limit: 20 }).catch(() => []),
         targetingApi.listDecisions().catch(() => []),
       ]);
 
@@ -328,8 +273,8 @@ export function TargetingDashboardSummary() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className={`text-xs px-2 py-0.5 rounded border font-bold uppercase ${target.priority === 'CRITICAL' ? 'bg-red-950/50 text-red-400 border-red-900' :
-                        target.priority === 'HIGH' ? 'bg-orange-950/50 text-orange-400 border-orange-900' :
-                          'bg-amber-950/50 text-amber-400 border-amber-900'
+                      target.priority === 'HIGH' ? 'bg-orange-950/50 text-orange-400 border-orange-900' :
+                        'bg-amber-950/50 text-amber-400 border-amber-900'
                       }`}>
                       {target.priority}
                     </span>

@@ -8,29 +8,29 @@ import { PipelineChart } from './charts/PipelineChart';
 import { StatusTimeline } from './charts/StatusTimeline';
 import { AssessmentDistribution } from './charts/AssessmentDistribution';
 import { EffectivenessTrends } from './charts/EffectivenessTrends';
+import { BdaApi } from '@/lib/smartops/api/bda';
+// ...
+
 import { targetingApi } from '@/lib/smartops/api/targeting.api';
 import { useCachedQuery } from '@/lib/smartops/hooks/useCachedQuery';
-import { LoadingSkeleton } from './LoadingSkeleton';
+import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton';
 
 interface HistoricalViewProps {
   className?: string;
 }
 
-export function HistoricalView({ className = '' }: HistoricalViewProps) {
+export function HistoricalView({ className }: HistoricalViewProps) {
   const [dateRange, setDateRange] = useState<DateRange>({
     from: subDays(new Date(), 30),
     to: new Date(),
   });
 
-  // Fetch historical data
   const { data: historicalData, isLoading } = useCachedQuery({
-    queryKey: `historical-data-${dateRange.from.toISOString()}-${dateRange.to.toISOString()}`,
+    queryKey: ['historical-data', dateRange.from?.toISOString(), dateRange.to?.toISOString()],
     queryFn: async () => {
-      // In a real implementation, these would be API calls with date range filters
-      // For now, we'll use existing APIs and filter client-side
       const [targets, bdaReports] = await Promise.all([
         targetingApi.getTargets({ limit: 1000 }).catch(() => []),
-        targetingApi.getReattackRecommendations().catch(() => []),
+        BdaApi.getReports().catch(() => []),
       ]);
 
       // Filter by date range (simplified - would be done server-side in production)

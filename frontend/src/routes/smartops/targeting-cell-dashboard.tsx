@@ -26,6 +26,7 @@ import { AssetCapabilityManagement } from '@/features/smartops/components/AssetC
 import { StrikeOptimizer } from '@/features/smartops/components/StrikeOptimizer';
 import { TimeFilter } from '@/features/smartops/components/TimeFilter';
 import type { TimeWindow } from '@/features/smartops/components/TimeFilter';
+import { CyberOperationsCockpit } from '@/features/smartops/components/CyberOperationsCockpit';
 
 export const Route = createFileRoute('/smartops/targeting-cell-dashboard')({
     component: TargetingCellDashboard,
@@ -150,7 +151,7 @@ function TargetingCellDashboard() {
     // Handle Mode Change
     const handleModeChange = (mode: DashboardMode) => {
         setViewMode(mode);
-        if (mode === DashboardMode.OVERVIEW || mode === DashboardMode.PLANNING) {
+        if (mode === DashboardMode.OVERVIEW || mode === DashboardMode.PLANNING || mode === DashboardMode.CYBER) {
             setIsSidebarOpen(false);
         } else if (mode === DashboardMode.OPERATION) {
             setIsSidebarOpen(true);
@@ -351,6 +352,10 @@ function TargetingCellDashboard() {
                                             </div>
                                         )}
                                     </div>
+                                </div>
+                            ) : viewMode === (DashboardMode as any).CYBER ? (
+                                <div className="h-full p-6 overflow-hidden">
+                                    <CyberOperationsCockpit />
                                 </div>
                             ) : (
                                 /* Operation Mode (Default master-detail) */

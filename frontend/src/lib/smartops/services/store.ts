@@ -632,7 +632,11 @@ class MockDataStore {
                 tasks: ['Minesweeping 04', 'Convoy Escort Delta']
             }
         ],
-        lastUpdated: new Date().toISOString()
+        recommendedRoeIds: ['roe-421', 'roe-501'], // Suggested by Strategy
+        politicalImplications: [
+            'Avoid escalation in Sector Bravo',
+            'Maintain coalition cohesion via strict PID'
+        ]
     };
 
     pmesii: PMESIIData[] = [

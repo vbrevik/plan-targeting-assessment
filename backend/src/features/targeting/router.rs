@@ -65,14 +65,9 @@ where
         .route("/dtl", post(handlers::create_dtl_entry))
         .route("/dtl/:id/priority", put(handlers::update_dtl_priority))
         .route("/dtl/tst", get(handlers::get_active_tsts))
-        
-        // ====================================================================
-        // BATTLE DAMAGE ASSESSMENT (BDA) ROUTES
-        // ====================================================================
-        .route("/bda", get(handlers::list_bda))
-        .route("/bda", post(handlers::create_bda))
-        .route("/bda/:id", get(handlers::get_bda))
-        .route("/bda/re-attack", get(handlers::get_reattack_recommendations))
+
+        // BDA Routes have been moved to features::bda::router (/api/bda)
+        // Legacy redundant routes removed.
         
         // ====================================================================
         // ISR PLATFORM ROUTES

@@ -1,18 +1,37 @@
-// NATO COPD Component 3: Intelligence Integration Panel
-// Multi-INT fusion, Pattern of Life analytics, ISR collection status, predictive targeting cues
-// Now with drill-down navigation to detail views
+import { ReliabilityBadge } from './ReliabilityBadge';
 
-import { useState, useEffect } from 'react';
-import { useNavigate } from '@tanstack/react-router';
-import { Brain, Satellite, Radio, Eye, MapPin, Activity, TrendingUp, AlertCircle, Signal, Globe, Users, Clock, Zap } from 'lucide-react';
-import { SecurityBadge } from '@/components/SecurityBadge';
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
+// ... inside the INT Grid ...
+<div className="grid grid-cols-4 gap-2">
+  {fusion.intTypes.map((int) => (
+    <div key={int.type} className="p-2 bg-slate-900/50 border border-slate-700 rounded">
+      <div className="flex items-center gap-1 mb-1">
+        {int.type === 'SIGINT' && <Radio size={12} className="text-blue-400" />}
+        {int.type === 'IMINT' && <Eye size={12} className="text-green-400" />}
+        {int.type === 'HUMINT' && <Users size={12} className="text-rose-400" />}
+        {int.type === 'GEOINT' && <MapPin size={12} className="text-cyan-400" />}
+        {int.type === 'COGNITIVE' && <Brain size={12} className="text-indigo-400" />}
+        {int.type === 'EMS' && <Zap size={12} className="text-yellow-400" />}
+        {int.type === 'OSINT' && <Globe size={12} className="text-blue-300" />}
+        <span className="text-[10px] font-bold text-white uppercase">{int.type}</span>
+      </div>
+      <div className="text-xs font-black text-white mb-0.5">
+        {int.confidence}%
+      </div>
+      <ReliabilityBadge
+        reliability={int.sourceReliability as any}
+        credibility="1" // Mock credibility for now since API doesn't return it yet, assume 1 (Confirmed) for fused tracks
+        size="sm"
+      />
+      <div className="text-[9px] text-slate-600 mt-1">{int.lastUpdate}</div>
+    </div>
+  ))}
+</div>
 
 interface MultiINTFusion {
   targetId: string;
   targetName: string;
   intTypes: Array<{
-    type: 'SIGINT' | 'IMINT' | 'HUMINT' | 'GEOINT' | 'MASINT';
+    type: 'SIGINT' | 'IMINT' | 'HUMINT' | 'GEOINT' | 'MASINT' | 'COGNITIVE' | 'EMS' | 'OSINT';
     confidence: number;
     lastUpdate: string;
     sourceReliability: 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
@@ -171,7 +190,7 @@ export function IntelligenceIntegrationPanel() {
             <div className="flex items-center gap-2 mb-3">
               <Globe className="text-purple-400" size={16} />
               <h3 className="text-sm font-bold text-white uppercase">Multi-INT Fusion</h3>
-              <span className="text-xs text-slate-500">(SIGINT • IMINT • HUMINT • GEOINT)</span>
+              <span className="text-xs text-slate-500">(SIGINT • IMINT • HUMINT • GEOINT • COG • EMS)</span>
             </div>
 
             {multiINT.map((fusion) => (
@@ -206,8 +225,11 @@ export function IntelligenceIntegrationPanel() {
                       <div className="flex items-center gap-1 mb-1">
                         {int.type === 'SIGINT' && <Radio size={12} className="text-blue-400" />}
                         {int.type === 'IMINT' && <Eye size={12} className="text-green-400" />}
-                        {int.type === 'HUMINT' && <Users size={12} className="text-amber-400" />}
+                        {int.type === 'HUMINT' && <Users size={12} className="text-rose-400" />}
                         {int.type === 'GEOINT' && <MapPin size={12} className="text-cyan-400" />}
+                        {int.type === 'COGNITIVE' && <Brain size={12} className="text-indigo-400" />}
+                        {int.type === 'EMS' && <Zap size={12} className="text-yellow-400" />}
+                        {int.type === 'OSINT' && <Globe size={12} className="text-blue-300" />}
                         <span className="text-[10px] font-bold text-white uppercase">{int.type}</span>
                       </div>
                       <div className="text-xs font-black text-white mb-0.5">

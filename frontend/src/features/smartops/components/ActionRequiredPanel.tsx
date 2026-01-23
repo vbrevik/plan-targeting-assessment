@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AlertTriangle, Clock, CheckCircle2, Target, FileEdit, Send, Eye } from 'lucide-react';
 import { SecurityBadge, type ClassificationLevel, type Caveat } from '@/components/SecurityBadge';
 import { Link } from '@tanstack/react-router';
+import { targetingApi } from '@/lib/smartops/api/targeting.api';
 
 /**
  * Action Item Types
@@ -72,9 +73,8 @@ export function ActionRequiredPanel() {
 
     const fetchActionItems = async () => {
         try {
-            const { targetingApi } = await import('@/lib/smartops/api/targeting.api');
             const response = await targetingApi.getActionRequired().catch(() => null);
-            
+
             if (response && response.items) {
                 // Transform API response to component format
                 const transformed: ActionItem[] = response.items.map((item: any) => ({
@@ -114,12 +114,12 @@ export function ActionRequiredPanel() {
                     })(),
                     targetId: item.target_id,
                 }));
-                
+
                 setItems(transformed);
                 setLoading(false);
                 return;
             }
-            
+
             // Fallback to mock data if API fails
             const mockItems: ActionItem[] = [
                 {
@@ -173,7 +173,7 @@ export function ActionRequiredPanel() {
                     ],
                 },
             ];
-            
+
             setItems(mockItems);
             setLoading(false);
         } catch (error) {
@@ -274,55 +274,53 @@ function ActionItemCard({ item }: { item: ActionItem }) {
     const config = priorityConfig[item.priority];
 
     return (
-        <div className={`bg-slate-800/50 border border-slate-700 rounded-lg p-4 hover:border-slate-600 transition-colors ${
-            item.assignedToCurrentUser ? 'ring-1 ring-blue-900/50' : ''
-        }`}>
+        <div className={`bg-slate-800/50 border border-slate-700 rounded-lg p-4 hover:border-slate-600 transition-colors ${item.assignedToCurrentUser ? 'ring-1 ring-blue-900/50' : ''
+            }`}>
             {/* Header Row */}
             <div className="flex items-start justify-between gap-3 mb-3">
                 <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
                         {/* Priority Dot */}
                         <div className={`w-2 h-2 rounded-full ${config.dot}`}></div>
-                        
+
                         {/* Title */}
                         <span className="text-sm font-black text-white">
                             {item.title}
                         </span>
-                        
+
                         {/* Assignment Badge */}
                         {item.assignedToCurrentUser && (
                             <span className="px-2 py-0.5 bg-blue-950/50 text-blue-400 border border-blue-900 rounded text-xs font-bold uppercase">
                                 YOUR {item.type.toUpperCase()}
                             </span>
                         )}
-                        
+
                         {/* Classification Badge */}
-                        <SecurityBadge 
+                        <SecurityBadge
                             level={item.classification}
                             caveats={item.caveats}
                             size="sm"
                         />
                     </div>
-                    
+
                     {/* Subtitle */}
                     {item.subtitle && (
                         <div className="text-xs text-slate-400 mb-2">
                             {item.subtitle}
                         </div>
                     )}
-                    
+
                     {/* Due Time with Icon */}
                     {item.dueTimeDisplay && (
                         <div className="flex items-center gap-1.5 text-xs">
                             <Clock className="w-3 h-3 text-slate-500" />
-                            <span className={`font-bold ${
-                                item.priority === 'CRITICAL' ? 'text-red-400' : 'text-slate-400'
-                            }`}>
+                            <span className={`font-bold ${item.priority === 'CRITICAL' ? 'text-red-400' : 'text-slate-400'
+                                }`}>
                                 Due: {item.dueTimeDisplay}
                             </span>
                         </div>
                     )}
-                    
+
                     {/* Blockers */}
                     {item.blockers && item.blockers.length > 0 && (
                         <div className="mt-2 flex items-start gap-1.5">
@@ -333,13 +331,13 @@ function ActionItemCard({ item }: { item: ActionItem }) {
                         </div>
                     )}
                 </div>
-                
+
                 {/* Priority Badge */}
                 <span className={`text-xs px-2 py-1 rounded border font-bold uppercase shrink-0 ${config.bg} ${config.text} ${config.border}`}>
                     {item.priority}
                 </span>
             </div>
-            
+
             {/* Quick Actions */}
             {item.quickActions.length > 0 && (
                 <div className="flex items-center gap-2 pt-3 border-t border-slate-700">

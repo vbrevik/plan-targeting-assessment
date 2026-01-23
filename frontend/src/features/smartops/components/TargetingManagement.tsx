@@ -11,7 +11,8 @@ import {
     Plus,
     Scale,
     Undo2,
-    Gavel
+    Gavel,
+    Download
 } from 'lucide-react';
 import { Link, useSearch } from '@tanstack/react-router';
 import { SmartOpsService } from '@/lib/smartops/mock-service';
@@ -19,6 +20,7 @@ import { cn } from '@/lib/utils';
 import type { Target, TargetStatus, ROE } from '@/lib/smartops/types';
 import { StrikeRequestModal } from './StrikeRequestModal';
 import { useOperationalContext } from '@/lib/smartops/hooks/useOperationalContext';
+import { ExportService } from '@/lib/smartops/services/ExportService';
 
 export function TargetingManagement() {
     const { filterByContext } = useOperationalContext();
@@ -27,6 +29,11 @@ export function TargetingManagement() {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedTargetForStrike, setSelectedTargetForStrike] = useState<Target | null>(null);
+
+    // Filter States
+    const [domainFilter, setDomainFilter] = useState<string>('All');
+    const [statusFilter, setStatusFilter] = useState<string>('All');
+    const [priorityFilter, setPriorityFilter] = useState<string>('All');
 
     const loadData = async () => {
         const [targetData, roeData] = await Promise.all([
@@ -63,7 +70,11 @@ export function TargetingManagement() {
     };
 
     const filteredTargets = targets.filter(t =>
-        filterByContext(t) && (
+        filterByContext(t) &&
+        (domainFilter === 'All' || t.domain === domainFilter) &&
+        (statusFilter === 'All' || t.targetStatus === statusFilter) &&
+        (priorityFilter === 'All' || t.priority === priorityFilter) &&
+        (
             t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             t.targetId.toLowerCase().includes(searchTerm.toLowerCase())
         )
@@ -136,12 +147,56 @@ export function TargetingManagement() {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <button className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 text-slate-300 text-[10px] font-bold uppercase rounded border border-slate-700 hover:text-white transition-colors">
-                        <Filter size={14} /> Type
-                    </button>
-                    <button className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 text-slate-300 text-[10px] font-bold uppercase rounded border border-slate-700 hover:text-white transition-colors">
-                        <ShieldAlert size={14} /> ROE Check
-                    </button>
+
+                    {/* Domain Filter */}
+                    <div className="flex items-center gap-2 px-2 py-1 bg-slate-800 rounded border border-slate-700">
+                        <Filter size={12} className="text-slate-400" />
+                        <select
+                            value={domainFilter}
+                            onChange={(e) => setDomainFilter(e.target.value)}
+                            className="bg-transparent text-[10px] font-bold text-slate-300 focus:outline-none cursor-pointer uppercase min-w-[60px]"
+                        >
+                            <option value="All">All Domains</option>
+                            <option value="LAND">Land</option>
+                            <option value="AIR">Air</option>
+                            <option value="MARITIME">Maritime</option>
+                            <option value="CYBER">Cyber</option>
+                            <option value="SPACE">Space</option>
+                        </select>
+                    </div>
+
+                    {/* Status Filter */}
+                    <div className="flex items-center gap-2 px-2 py-1 bg-slate-800 rounded border border-slate-700">
+                        <ShieldAlert size={12} className="text-slate-400" />
+                        <select
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                            className="bg-transparent text-[10px] font-bold text-slate-300 focus:outline-none cursor-pointer uppercase min-w-[60px]"
+                        >
+                            <option value="All">All Status</option>
+                            <option value="Identified">Identified</option>
+                            <option value="Nominated">Nominated</option>
+                            <option value="Validated">Validated</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Engaged">Engaged</option>
+                        </select>
+                    </div>
+
+                    {/* Priority Filter */}
+                    <div className="flex items-center gap-2 px-2 py-1 bg-slate-800 rounded border border-slate-700">
+                        <Flame size={12} className="text-slate-400" />
+                        <select
+                            value={priorityFilter}
+                            onChange={(e) => setPriorityFilter(e.target.value)}
+                            className="bg-transparent text-[10px] font-bold text-slate-300 focus:outline-none cursor-pointer uppercase min-w-[60px]"
+                        >
+                            <option value="All">All Priorities</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+
                 </div>
                 <div className="flex items-center gap-2">
                     <span className="text-[10px] font-bold text-slate-500 uppercase">Sort by:</span>

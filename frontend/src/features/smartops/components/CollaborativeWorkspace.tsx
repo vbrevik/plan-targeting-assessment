@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { MessageSquare, FileText, Clock, Globe, Plane, Ship, Wifi, Satellite, Info, Users } from 'lucide-react';
+import { MessageSquare, FileText, Clock, Globe, Plane, Ship, Wifi, Satellite, Info, Users, Brain, Zap, Heart } from 'lucide-react';
 import { SecurityBadge } from '@/components/SecurityBadge';
 import { targetingApi } from '@/lib/smartops/api/targeting.api';
 
@@ -29,7 +29,7 @@ interface Annotation {
 }
 
 interface MultiDomainStatus {
-  domain: 'LAND' | 'AIR' | 'MARITIME' | 'CYBER' | 'SPACE' | 'INFO';
+  domain: 'LAND' | 'AIR' | 'MARITIME' | 'CYBER' | 'SPACE' | 'INFO' | 'COGNITIVE' | 'HUMAN' | 'EMS';
   status: 'ACTIVE' | 'STANDBY' | 'DEGRADED';
   operations: number;
   icon: React.ReactNode;
@@ -56,14 +56,13 @@ export function CollaborativeWorkspace() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Fetch recent decisions and handovers
-        const [decisions, handovers] = await Promise.all([
+        const [recentDecisions] = await Promise.all([
           targetingApi.listDecisions({ limit: 10 }).catch(() => []),
           targetingApi.listHandovers({ limit: 5 }).catch(() => []),
         ]);
 
         // Transform decisions to component format
-        const transformedDecisions: DecisionLogEntry[] = decisions.map((d) => ({
+        const transformedDecisions: DecisionLogEntry[] = recentDecisions.map((d) => ({
           id: d.id,
           timestamp: d.decision_time ? d.decision_time.substring(11, 16) + 'Z' : new Date().toISOString().substring(11, 16) + 'Z',
           decisionType: d.decision_type,
@@ -140,6 +139,9 @@ export function CollaborativeWorkspace() {
     { domain: 'CYBER', status: 'ACTIVE', operations: 5, icon: <Wifi size={14} className="text-purple-400" /> },
     { domain: 'SPACE', status: 'ACTIVE', operations: 3, icon: <Satellite size={14} className="text-amber-400" /> },
     { domain: 'INFO', status: 'ACTIVE', operations: 7, icon: <Info size={14} className="text-pink-400" /> },
+    { domain: 'COGNITIVE', status: 'ACTIVE', operations: 4, icon: <Brain size={14} className="text-indigo-400" /> },
+    { domain: 'HUMAN', status: 'ACTIVE', operations: 9, icon: <Heart size={14} className="text-rose-400" /> },
+    { domain: 'EMS', status: 'ACTIVE', operations: 6, icon: <Zap size={14} className="text-yellow-400" /> },
   ];
 
   const shiftHandover: ShiftHandoverSummary = {
@@ -186,14 +188,14 @@ export function CollaborativeWorkspace() {
           <div className="text-xs font-bold text-slate-400 uppercase mb-3">
             Multi-Domain Operations Status
           </div>
-          <div className="grid grid-cols-6 gap-2">
+          <div className="grid grid-cols-3 md:grid-cols-9 gap-2">
             {multiDomainStatus.map((domain) => (
               <div key={domain.domain} className="p-3 bg-slate-900/50 border border-slate-700 rounded text-center">
                 <div className="flex items-center justify-center gap-1 mb-2">
                   {domain.icon}
                   <span className={`w-2 h-2 rounded-full ${domain.status === 'ACTIVE' ? 'bg-green-500' :
-                      domain.status === 'STANDBY' ? 'bg-amber-500' :
-                        'bg-red-500'
+                    domain.status === 'STANDBY' ? 'bg-amber-500' :
+                      'bg-red-500'
                     }`} />
                 </div>
                 <div className="text-[10px] font-bold text-white uppercase mb-1">{domain.domain}</div>
@@ -251,14 +253,14 @@ export function CollaborativeWorkspace() {
           <div className="space-y-2">
             {(annotations.length > 0 ? annotations : fallbackAnnotations).map((annotation) => (
               <div key={annotation.id} className={`p-3 rounded ${annotation.isCritical
-                  ? 'bg-red-950/20 border-2 border-red-800'
-                  : 'bg-slate-900/50 border border-slate-700'
+                ? 'bg-red-950/20 border-2 border-red-800'
+                : 'bg-slate-900/50 border border-slate-700'
                 }`}>
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
                     <span className={`px-2 py-0.5 rounded text-xs font-bold ${annotation.type === 'WARNING' ? 'bg-red-900/50 text-red-400' :
-                        annotation.type === 'QUESTION' ? 'bg-amber-900/50 text-amber-400' :
-                          'bg-slate-800 text-slate-400'
+                      annotation.type === 'QUESTION' ? 'bg-amber-900/50 text-amber-400' :
+                        'bg-slate-800 text-slate-400'
                       }`}>
                       {annotation.type}
                     </span>

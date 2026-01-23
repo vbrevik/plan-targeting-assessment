@@ -242,4 +242,111 @@ impl OntologyService {
     pub async fn get_entity(&self, id: &str) -> Result<Entity> {
         self.get_entity_only(id).await
     }
+
+    pub async fn get_schema(&self) -> Result<OntologySchema> {
+        // Standard NATO MDO Ontology
+        // In the future, this could be fetched from a database table 'ontology_definitions'
+        
+        let domains = vec![
+            "LAND".to_string(), "AIR".to_string(), "MARITIME".to_string(),
+            "CYBER".to_string(), "SPACE".to_string(),
+            "INFO".to_string(), "COGNITIVE".to_string(), "HUMAN".to_string(), "EMS".to_string()
+        ];
+        
+        let levels_of_war = vec![
+            "Strategic".to_string(), "Operational".to_string(), "Tactical".to_string(), "Sub-Tactical".to_string()
+        ];
+        
+        let affiliations = vec![
+            "Blue".to_string(), "Red".to_string(), "Green".to_string(), "Grey".to_string(), "White".to_string()
+        ];
+        
+        // Entity Types
+        let entity_types = vec![
+            EntityTypeDefinition { 
+                name: "Unit".to_string(), 
+                description: "Military organization or force element".to_string(),
+                properties_schema: None 
+            },
+            EntityTypeDefinition { 
+                name: "Target".to_string(), 
+                description: "Object of military action".to_string(),
+                properties_schema: None 
+            },
+            EntityTypeDefinition { 
+                name: "Facility".to_string(), 
+                description: "Infrastructure or installation".to_string(),
+                properties_schema: None 
+            },
+            EntityTypeDefinition { 
+                name: "Event".to_string(), 
+                description: "Occurrence or incident".to_string(),
+                properties_schema: None 
+            },
+            EntityTypeDefinition { 
+                name: "Track".to_string(), 
+                description: "Sensor contact or moving object".to_string(),
+                properties_schema: None 
+            },
+            EntityTypeDefinition { 
+                name: "Sensor".to_string(), 
+                description: "Collection asset or observer".to_string(),
+                properties_schema: None 
+            },
+        ];
+        
+        // Relationship Types
+        let relationship_types = vec![
+            RelationshipTypeDefinition {
+                name: "commanded_by".to_string(),
+                description: "Command and Control relationship".to_string(),
+                valid_sources: vec!["Unit".to_string()],
+                valid_targets: vec!["Unit".to_string()],
+            },
+            RelationshipTypeDefinition {
+                name: "located_at".to_string(),
+                description: "Geographic position or facility association".to_string(),
+                valid_sources: vec!["Unit".to_string(), "Target".to_string(), "Sensor".to_string()],
+                valid_targets: vec!["Facility".to_string()],
+            },
+            RelationshipTypeDefinition {
+                name: "monitoring".to_string(),
+                description: "Surveillance or tracking assessment".to_string(),
+                valid_sources: vec!["Sensor".to_string(), "Unit".to_string()],
+                valid_targets: vec!["Target".to_string(), "Event".to_string(), "Track".to_string()],
+            },
+            RelationshipTypeDefinition {
+                name: "targeting".to_string(),
+                description: "Hostile intent or engagement".to_string(),
+                valid_sources: vec!["Unit".to_string()],
+                valid_targets: vec!["Target".to_string()],
+            },
+        ];
+
+        Ok(OntologySchema {
+            version: "1.0.0".to_string(),
+            last_updated: Utc::now(),
+            domains,
+            entity_types,
+            relationship_types,
+            levels_of_war,
+            affiliations,
+            target_statuses: vec![
+                "Nominated".to_string(), "Validated".to_string(), "Approved".to_string(), 
+                "Active".to_string(), "Engaged".to_string(), "Destroyed".to_string()
+            ],
+            platform_types: vec![
+                "FIGHTER".to_string(), "BOMBER".to_string(), "ARTILLERY".to_string(), 
+                "MISSILE".to_string(), "CYBER".to_string(), "EW".to_string(), 
+                "PSYOP".to_string(), "UAV".to_string(), "SATELLITE".to_string()
+            ],
+            confidence_levels: vec![
+                "HIGH".to_string(), "MEDIUM".to_string(), "LOW".to_string()
+            ],
+            bda_statuses: vec![
+                "DESTROYED".to_string(), "NEUTRALIZED".to_string(), 
+                "DAMAGED".to_string(), "INTACT".to_string(), "PENDING".to_string()
+            ],
+        })
+    }
 }

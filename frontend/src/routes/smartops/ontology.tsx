@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { OntologyManager } from '@/features/smartops/components/OntologyManager';
+import { OntologyProofView } from '@/features/smartops/components/OntologyProofView';
 
 export const Route = createFileRoute('/smartops/ontology')({
-    component: OntologyManager,
+    component: OntologyProofView,
 });

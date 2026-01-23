@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { Plane, Zap, Cloud, Radio, Package, TrendingUp } from 'lucide-react';
+import { Plane, Zap, Cloud, Radio, Package, TrendingUp, Wifi, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SecurityBadge } from '@/components/SecurityBadge';
 import { targetingApi } from '@/lib/smartops/api/targeting.api';
@@ -12,7 +12,7 @@ import { targetingApi } from '@/lib/smartops/api/targeting.api';
 interface StrikePlatform {
   id: string;
   name: string;
-  type: 'FIGHTER' | 'BOMBER' | 'ARTILLERY' | 'MISSILE';
+  type: string; // Dynamic from Ontology
   status: 'READY' | 'TASKED' | 'MAINTENANCE';
   sortiesAvailable: number;
   munitions: Array<{
@@ -46,8 +46,9 @@ export function AssetCapabilityManagement() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [strikePlatforms] = await Promise.all([
+        const [strikePlatforms, _schema] = await Promise.all([
           targetingApi.getStrikePlatforms().catch(() => []),
+          targetingApi.getOntologySchema().catch(() => null),
         ]);
 
         // Transform to component format
@@ -100,7 +101,25 @@ export function AssetCapabilityManagement() {
     return () => clearInterval(interval);
   }, []);
 
-  // Fallback mock data
+  // Use real platforms if available, otherwise fallback to mock including non-kinetic
+  const activePlatforms: StrikePlatform[] = platforms.length > 0 ? platforms : [
+    {
+      id: 'PLAT-101', name: 'F-35A Lightning II', type: 'FIGHTER', status: 'READY', sortiesAvailable: 4,
+      munitions: [{ type: 'GBU-31 JDAM', count: 2, range: 28 }, { type: 'AIM-120D', count: 4, range: 160 }]
+    },
+    {
+      id: 'PLAT-102', name: 'Offensive Cyber Team 7', type: 'CYBER', status: 'READY', sortiesAvailable: 1,
+      munitions: [{ type: 'Network Exploit', count: 5, range: 0 }, { type: 'Data Exfil Kit', count: 2, range: 0 }]
+    },
+    {
+      id: 'PLAT-103', name: 'EA-18G Growler', type: 'EW', status: 'READY', sortiesAvailable: 2,
+      munitions: [{ type: 'ALQ-99 Jammer', count: 3, range: 100 }]
+    },
+    {
+      id: 'PLAT-104', name: 'PSYOP Unit 4', type: 'PSYOP', status: 'READY', sortiesAvailable: 1,
+      munitions: [{ type: 'Narrative Payload', count: 10, range: 0 }]
+    }
+  ];
 
   const weather: WeatherConditions = {
     status: 'GREEN',
@@ -231,7 +250,7 @@ export function AssetCapabilityManagement() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {platforms.map((platform) => (
+          {activePlatforms.map((platform) => (
             <button
               key={platform.id}
               onClick={() => navigate({ to: '/smartops/targeting/assets' })}
@@ -239,10 +258,15 @@ export function AssetCapabilityManagement() {
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="p-3 bg-slate-900 rounded-xl group-hover:bg-blue-600/10 transition-colors">
-                  <Plane className={cn(
-                    "w-6 h-6",
-                    platform.status === 'READY' ? "text-emerald-400" : "text-amber-400"
-                  )} />
+                  {platform.type === 'CYBER' ? <Wifi className="w-6 h-6 text-purple-400" /> :
+                    platform.type === 'EW' ? <Zap className="w-6 h-6 text-yellow-400" /> :
+                      platform.type === 'PSYOP' ? <Users className="w-6 h-6 text-rose-400" /> :
+                        platform.type === 'SATELLITE' ? <Radio className="w-6 h-6 text-blue-400" /> :
+                          platform.type === 'UAV' ? <Plane className="w-6 h-6 text-emerald-400" /> :
+                            <Plane className={cn(
+                              "w-6 h-6",
+                              platform.status === 'READY' ? "text-emerald-400" : "text-amber-400"
+                            )} />}
                 </div>
                 <div className={cn(
                   "text-[9px] font-black px-2 py-0.5 rounded border uppercase tracking-tighter",
@@ -253,15 +277,19 @@ export function AssetCapabilityManagement() {
                 </div>
               </div>
               <div className="text-sm font-black text-white mb-1">{platform.name}</div>
-              <div className="text-[10px] text-slate-500 uppercase font-bold mb-4">{platform.type} • {platform.sortiesAvailable} SORTIES</div>
+              <div className="text-[10px] text-slate-500 uppercase font-bold mb-4">
+                {platform.type} • {platform.type === 'CYBER' || platform.type === 'PSYOP' || platform.type === 'EW' ? 'FULL CAPABILITY' : `${platform.sortiesAvailable} SORTIES`}
+              </div>
 
               <div className="space-y-2">
-                {platform.munitions.slice(0, 2).map((m, idx) => (
+                {platform.munitions.length > 0 ? platform.munitions.slice(0, 2).map((m, idx) => (
                   <div key={idx} className="flex items-center justify-between text-[10px]">
                     <span className="text-slate-400">{m.type}</span>
-                    <span className="font-mono text-white font-bold">{m.count} UNITS</span>
+                    <span className="font-mono text-white font-bold">{m.count} {platform.type === 'CYBER' ? 'EXPLOITS' : 'UNITS'}</span>
                   </div>
-                ))}
+                )) : (
+                  <div className="text-[10px] text-slate-600 italic">No specific munitions listed</div>
+                )}
               </div>
             </button>
           ))}

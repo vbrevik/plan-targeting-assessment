@@ -83,3 +83,16 @@ async fn test_delete_entity_cascades(pool: SqlitePool) {
     assert_eq!(neighbors.len(), 0);
 }
 
+#[sqlx::test]
+async fn test_get_schema(pool: SqlitePool) {
+    let service = OntologyService::new(pool);
+    
+    let schema = service.get_schema().await.unwrap();
+    
+    assert!(!schema.domains.is_empty());
+    assert!(schema.domains.contains(&"CYBER".to_string()));
+    assert!(schema.entity_types.iter().any(|t| t.name == "Target"));
+    assert!(schema.entity_types.iter().any(|t| t.name == "Unit"));
+    assert!(!schema.relationship_types.is_empty());
+}
+

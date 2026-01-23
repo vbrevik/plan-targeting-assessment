@@ -439,10 +439,14 @@ export interface WargamingMetrics {
 
 // Module 6: Targeting
 // Module 6: Targeting
+// Domain Ontology
+export type Domain = 'LAND' | 'AIR' | 'MARITIME' | 'CYBER' | 'SPACE' | 'INFO' | 'COGNITIVE' | 'HUMAN' | 'EMS';
+
 export type TargetStatus = 'Identified' | 'Nominated' | 'Validated' | 'Approved' | 'Engaged' | 'Neutralized';
 
 export interface Target extends BaseEntity {
     type: 'Target';
+    domain?: Domain; // Added optional for backward compatibility, but should be populated
     designator: string; // e.g. "T-1001"
     targetId: string; // Deprecated, use designator
     beNumber?: string; // Basic Encyclopedia Number
@@ -452,7 +456,6 @@ export interface Target extends BaseEntity {
     // location inherited from BaseEntity (GeoPoint)
     desiredEffect: string; // e.g. "Neutralize", "Disrupt", "Delay"
     collateralDamageEstimate: 'Low' | 'Medium' | 'High';
-    // Expanded Ontology
     // Expanded Ontology
     functionalType?: string;
     patternOfLife?: any[];
@@ -997,6 +1000,7 @@ export interface StrategicGuidance {
         tasks: string[];
     }[];
     lastUpdated: string;
+    recommendedRoeIds?: UUID[];
     operationId?: string;
     campaignId?: string;
 }
@@ -1447,4 +1451,7 @@ export interface DecisionNetwork {
     clusters: DecisionCluster[];
     insights: NetworkInsight[];
 }
+
+// Module 15: Trusted Data Layer (Assumptions)
+export * from './domain/assumption';
 

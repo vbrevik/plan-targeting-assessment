@@ -19,10 +19,14 @@ import {
     FileText,
     ArrowRight
 } from 'lucide-react';
+import { useNavigate } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/components/ui/use-toast';
 import { systemModules, type SystemModule } from '../services/systemGraph';
 
 export function DigitalTwinView() {
+    const navigate = useNavigate();
+    const { toast } = useToast();
     const [currentTime, setCurrentTime] = useState(50);
     const [isPlaying, setIsPlaying] = useState(false);
     const [layers, setLayers] = useState({
@@ -149,10 +153,20 @@ export function DigitalTwinView() {
                             >
                                 <div
                                     onClick={() => {
-                                        if (mod.name.includes('Targeting')) window.location.href = '/smartops/targeting';
-                                        else if (mod.name.includes('Workflow')) window.location.href = '/smartops/proposals';
-                                        else if (mod.name.includes('Intelligence')) window.location.href = '/smartops/rxp';
-                                        else if (mod.name.includes('Logistics')) window.location.href = '/smartops/logistics';
+                                        // Specific Routing Logic
+                                        if (mod.id === 'targeting') navigate({ to: '/smartops/targeting' });
+                                        else if (mod.id === 'proposals' || mod.name.includes('Workflow')) navigate({ to: '/smartops/proposals' });
+                                        else if (mod.id === 'digital_twin') toast({ title: 'Digital Twin', description: 'You are already viewing the Digital Twin simulation.' });
+                                        else if (mod.id === 'mdo') navigate({ to: '/smartops/mdo' });
+                                        else if (mod.id === 'fusion') navigate({ to: '/smartops/rxp' }); // Intel Fusion -> RXP
+                                        else if (mod.id === 'dashboard') navigate({ to: '/smartops/dashboard' });
+                                        else {
+                                            // Fallback for others
+                                            toast({
+                                                title: `Module: ${mod.name}`,
+                                                description: `${mod.description} (Status: ${mod.status})`,
+                                            });
+                                        }
                                     }}
                                     className={cn(
                                         "p-3 backdrop-blur-md border rounded flex flex-col gap-1 shadow-[0_0_30px_rgba(0,0,0,0.5)] w-48 group hover:scale-110 transition-transform cursor-pointer",
@@ -203,7 +217,10 @@ export function DigitalTwinView() {
                         {/* Operational Layers (Assets, etc.) */}
                         {layers.assets && (
                             <div className="relative z-10 [transform:translateY(-50px)] space-y-4 flex flex-col items-center">
-                                <div className="p-3 bg-slate-900/80 backdrop-blur-md border border-blue-500/50 rounded flex items-center gap-4 shadow-[0_0_30px_rgba(37,99,235,0.2)]">
+                                <div
+                                    onClick={() => toast({ title: 'SIGINT-01 Telemetry', description: 'Orbit: LEO // Fuel: 82% // Next Pass: 14m' })}
+                                    className="p-3 bg-slate-900/80 backdrop-blur-md border border-blue-500/50 rounded flex items-center gap-4 shadow-[0_0_30px_rgba(37,99,235,0.2)] cursor-pointer hover:bg-slate-800 transition-colors"
+                                >
                                     <div className="w-12 h-12 rounded bg-blue-600 flex items-center justify-center text-white">
                                         <Satellite size={24} />
                                     </div>
@@ -219,9 +236,35 @@ export function DigitalTwinView() {
                             </div>
                         )}
 
+                        {/* Comms / Network Layer */}
+                        {layers.comms && (
+                            <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+                                {/* Network Mesh Visualization */}
+                                <div className="absolute w-[600px] h-[600px] border border-emerald-500/20 rounded-full animate-[spin_60s_linear_infinite]" />
+                                <div className="absolute w-[400px] h-[400px] border border-emerald-500/30 rounded-full animate-[spin_40s_linear_infinite_reverse]" />
+                                {/* Nodes */}
+                                {[
+                                    { x: -100, y: -50, label: 'SATCOM-A' },
+                                    { x: 100, y: 150, label: 'LINK-16 HUB' },
+                                    { x: 200, y: -100, label: 'FIBER NODE' },
+                                    { x: -150, y: 100, label: 'TAC-NET' }
+                                ].map((node, i) => (
+                                    <div key={i} className="absolute" style={{ transform: `translate(${node.x}px, ${node.y}px)` }}>
+                                        <div className="w-2 h-2 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]" />
+                                        <div className="text-[8px] font-mono text-emerald-500 mt-1">{node.label}</div>
+                                        {/* Links */}
+                                        <div className="absolute top-1 left-1 w-[200px] h-px bg-emerald-500/20 origin-top-left rotate-[45deg]" />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
                         {layers.adversarial && (
                             <div className="absolute top-20 right-40 z-10 [transform:translateY(30px)]">
-                                <div className="p-3 bg-slate-900/80 backdrop-blur-md border border-red-500/50 rounded flex items-center gap-4 shadow-[0_0_30px_rgba(239,68,68,0.2)]">
+                                <div
+                                    onClick={() => toast({ title: 'Threat Intelligence', description: 'Emitter correlated with SA-20 Battery. Tasking ISR.' })}
+                                    className="p-3 bg-slate-900/80 backdrop-blur-md border border-red-500/50 rounded flex items-center gap-4 shadow-[0_0_30px_rgba(239,68,68,0.2)] cursor-pointer hover:bg-slate-800 transition-colors"
+                                >
                                     <div className="w-10 h-10 rounded bg-red-600 flex items-center justify-center text-white">
                                         <Shield size={20} />
                                     </div>
@@ -231,7 +274,6 @@ export function DigitalTwinView() {
                                     </div>
                                 </div>
                             </div>
-
                         )}
 
                         {layers.variance && (

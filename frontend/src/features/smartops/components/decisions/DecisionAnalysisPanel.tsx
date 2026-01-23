@@ -23,6 +23,8 @@ import type { Decision, DecisionAnalysis, ROEStatus } from '@/lib/smartops/types
 import { OptionCard } from './OptionCard';
 import { RiskFactorsSection } from './RiskFactorsSection';
 import { DecisionSupport } from './DecisionSupport';
+import { AssumptionService } from '@/lib/smartops/services/AssumptionService';
+import { AlertCircle } from 'lucide-react';
 
 interface DecisionAnalysisPanelProps {
     decision: Decision;
@@ -117,7 +119,7 @@ export function DecisionAnalysisPanel({
         <div className="fixed inset-0 z-50 bg-slate-950/98 overflow-y-auto backdrop-blur-sm">
             <div className="min-h-screen p-8">
                 <div className="max-w-7xl mx-auto">
-                    
+
                     {/* Header */}
                     <div className={cn(
                         "p-8 rounded-t-2xl border-2",
@@ -288,6 +290,37 @@ export function DecisionAnalysisPanel({
                             <RiskFactorsSection factors={analysis.riskFactors} />
                         </div>
                     )}
+
+                    {/* Trusted Data Layer: Assumption Linking */}
+                    <div className="border-x-2 border-slate-800 bg-slate-900/20 p-6 border-b-2 border-b-slate-800">
+                        <div className="flex items-center gap-2 mb-4">
+                            <AlertCircle size={16} className="text-amber-400" />
+                            <h3 className="text-sm font-bold text-white uppercase tracking-wide">
+                                Key Operational Assumptions
+                            </h3>
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                            <select
+                                className="bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-amber-500 w-full max-w-md"
+                                onChange={(e) => {
+                                    if (e.target.value) {
+                                        // In a real app, this would call the API to link
+                                        console.log(`Linking assumption ${e.target.value} to decision ${decision.id}`);
+                                        AssumptionService.linkDecision(e.target.value, decision.id);
+                                    }
+                                }}
+                                defaultValue=""
+                            >
+                                <option value="" disabled>Select an assumption to link...</option>
+                                <option value="asm-001">Air Superiority maintained in Sector 4 (VALID)</option>
+                                <option value="asm-002">MSR Alpha remains passable (CHALLENGED)</option>
+                            </select>
+                            <span className="text-xs text-slate-500">
+                                Linking an assumption ensures this decision is flagged if the assumption changes status.
+                            </span>
+                        </div>
+                    </div>
 
                     {/* Options Analysis */}
                     <div className="border-x-2 border-slate-800 bg-slate-950/80 p-8">

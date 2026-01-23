@@ -3,6 +3,7 @@ import {
     LayoutDashboard,
     Files,
     Map,
+    Layers,
     Crosshair,
     Package,
     Settings,
@@ -55,7 +56,7 @@ function SmartOpsContent() {
     const [collapsed, setCollapsed] = useState(false);
     const [theme, setTheme] = useState<'light' | 'dark'>('dark');
     const location = useLocation();
-    const { logout, hasPermission } = useAuth();
+    const { logout } = useAuth();
     const navigate = useNavigate();
     const feedbackStats = getFeedbackStats();
     const { currentRole } = useRoleContext();
@@ -187,6 +188,7 @@ function SmartOpsContent() {
                         label: 'J5 Dashboard',
                         items: [
                             { icon: ScrollText, label: 'J5 Plans Center', to: '/smartops/j5-dashboard', permission: 'oplan.view' },
+                            { icon: Layers, label: 'Ontology Matrix', to: '/smartops/ontology', permission: 'ontology.view' },
                         ]
                     },
                     {

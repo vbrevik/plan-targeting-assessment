@@ -18,7 +18,17 @@ where
         .route("/entities", get(list_entities).post(create_entity))
         .route("/entities/:id", get(get_entity).patch(update_entity).delete(delete_entity))
         .route("/relationships", get(list_relationships).post(create_relationship))
+        .route("/schema", get(get_schema))
         .with_state(Arc::new(service))
+}
+
+async fn get_schema(
+    State(service): State<Arc<OntologyService>>,
+) -> impl IntoResponse {
+    match service.get_schema().await {
+        Ok(schema) => (StatusCode::OK, Json(schema)).into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, Json(json!({ "error": e.to_string() }))).into_response(),
+    }
 }
 
 async fn list_entities(

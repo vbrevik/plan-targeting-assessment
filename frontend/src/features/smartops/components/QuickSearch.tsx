@@ -2,14 +2,14 @@
 // Provides global search functionality for targeting dashboard
 
 import { useState, useEffect, useRef } from 'react';
-import { Search, X, Clock, Target, Brain, Zap, BarChart3, AlertTriangle, Users, Shield } from 'lucide-react';
+import { Search, X, Clock, Target, Brain, Zap, BarChart3, AlertTriangle, Users, Shield, History } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';
 import { targetingApi } from '@/lib/smartops/api/targeting.api';
 
 interface SearchResult {
   id: string;
-  type: 'target' | 'page' | 'metric';
+  type: 'target' | 'page' | 'metric' | 'isr_platform';
   label: string;
   description?: string;
   path: string;
@@ -58,7 +58,7 @@ export function QuickSearch() {
           // Map result type to icon and path
           let icon: React.ReactNode;
           let path: string;
-          
+
           switch (result.type) {
             case 'target':
               icon = <Target className="w-4 h-4" />;
@@ -188,87 +188,149 @@ export function QuickSearch() {
     );
   }
 
+  const [activeTab, setActiveTab] = useState<'all' | 'targets' | 'intelligence' | 'pages'>('all');
+
+  // Filter logic
+  const filteredResults = results.filter(r => {
+    if (activeTab === 'all') return true;
+    if (activeTab === 'pages') return r.type === 'page';
+    if (activeTab === 'targets') return r.type === 'target';
+    if (activeTab === 'intelligence') return r.type === 'isr_platform' || r.type === 'metric';
+    return true;
+  });
+
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] sm:pt-[20vh] px-4" onClick={() => setIsOpen(false)}>
-      <div className="w-full max-w-2xl" onClick={(e) => e.stopPropagation()}>
-        <div className="bg-slate-900 border border-slate-700 rounded-lg shadow-2xl overflow-hidden">
+      <div className="w-full max-w-2xl transform transition-all animate-in fade-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
+        <div className="bg-slate-900 border border-slate-700 rounded-xl shadow-2xl overflow-hidden ring-1 ring-slate-800">
           {/* Search Input */}
-          <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-3 border-b border-slate-800">
-            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 flex-shrink-0" />
+          <div className="flex items-center gap-3 px-4 py-4 border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm">
+            <Search className="w-5 h-5 text-slate-400 flex-shrink-0" />
             <input
               ref={inputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search targets, pages, metrics..."
-              className="flex-1 bg-transparent text-white placeholder-slate-500 outline-none text-sm"
+              className="flex-1 bg-transparent text-white placeholder-slate-500 outline-none text-lg font-medium"
             />
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 hover:bg-slate-800 rounded transition-colors"
+              className="p-1.5 hover:bg-slate-800 rounded-md transition-colors"
             >
-              <X className="w-4 h-4 text-slate-400" />
+              <kbd className="text-[10px] bg-slate-800 border border-slate-700 px-1.5 py-0.5 rounded text-slate-400 font-mono">ESC</kbd>
             </button>
           </div>
 
-          {/* Results */}
+          {/* Filter Tabs */}
           {query && (
-            <div className="max-h-[60vh] sm:max-h-96 overflow-y-auto">
-              {results.length > 0 ? (
-                <div className="py-1 sm:py-2">
-                  {results.map((result, index) => (
+            <div className="flex items-center gap-2 px-4 py-2 border-b border-slate-800 bg-slate-900/30">
+              {(['all', 'targets', 'intelligence', 'pages'] as const).map(tab => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={cn(
+                    "px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors capitalize",
+                    activeTab === tab
+                      ? "bg-blue-600/20 text-blue-400 border border-blue-600/30"
+                      : "text-slate-500 hover:text-slate-300 hover:bg-slate-800"
+                  )}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Results */}
+          <div className="max-h-[60vh] sm:max-h-96 overflow-y-auto custom-scrollbar">
+            {query ? (
+              filteredResults.length > 0 ? (
+                <div className="py-2">
+                  {/* Grouping Header logic could go here if we wanted sections, but flat list with tabs is cleaner for now */}
+                  {filteredResults.map((result, index) => (
                     <button
                       key={result.id}
                       onClick={() => handleSelect(result)}
                       className={cn(
-                        "w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-3 hover:bg-slate-800 active:bg-slate-700 transition-colors text-left touch-manipulation",
-                        index === selectedIndex && "bg-slate-800"
+                        "w-full flex items-center gap-4 px-4 py-3 hover:bg-slate-800/80 active:bg-slate-700 transition-all text-left group border-l-2 border-transparent",
+                        index === selectedIndex && "bg-slate-800/80 border-blue-500",
+                        // Type specific styling
+                        result.type === 'target' && "hover:border-red-500/50",
+                        result.type === 'page' && "hover:border-slate-500/50"
                       )}
                     >
-                      <div className="text-slate-400 flex-shrink-0">{result.icon}</div>
+                      <div className={cn(
+                        "flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-colors",
+                        result.type === 'target' ? "bg-red-950/30 text-red-500 group-hover:bg-red-900/50" :
+                          result.type === 'page' ? "bg-slate-800 text-slate-400 group-hover:bg-slate-700" :
+                            result.type === 'isr_platform' ? "bg-purple-950/30 text-purple-500 group-hover:bg-purple-900/50" :
+                              "bg-blue-950/30 text-blue-500 group-hover:bg-blue-900/50"
+                      )}>
+                        {result.icon}
+                      </div>
+
                       <div className="flex-1 min-w-0">
-                        <div className="text-xs sm:text-sm font-medium text-white truncate">{result.label}</div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors">{result.label}</span>
+                          {result.type === 'target' && <span className="px-1.5 py-0.5 rounded bg-red-950/50 border border-red-900 text-[9px] font-bold text-red-500 uppercase">Target</span>}
+                        </div>
                         {result.description && (
-                          <div className="text-[10px] sm:text-xs text-slate-400 mt-0.5 line-clamp-1">{result.description}</div>
+                          <div className="text-xs text-slate-400 mt-0.5 line-clamp-1 font-mono">{result.description}</div>
                         )}
                       </div>
-                      <div className="text-[10px] sm:text-xs text-slate-500 uppercase flex-shrink-0 hidden sm:block">{result.type}</div>
+
+                      {index === selectedIndex && (
+                        <span className="text-xs text-slate-500 flex items-center gap-1 animate-in fade-in slide-in-from-left-2">
+                          Jump to <span className="font-mono">↵</span>
+                        </span>
+                      )}
                     </button>
                   ))}
                 </div>
               ) : (
-                <div className="px-4 py-6 sm:py-8 text-center text-slate-400 text-xs sm:text-sm">
-                  No results found for "{query}"
+                <div className="px-4 py-12 text-center">
+                  <div className="w-12 h-12 rounded-full bg-slate-800/50 flex items-center justify-center mx-auto mb-3">
+                    <Search className="w-6 h-6 text-slate-600" />
+                  </div>
+                  <div className="text-slate-400 text-sm font-medium">No matches found</div>
+                  <div className="text-slate-500 text-xs mt-1">Try adjusting your valid filters</div>
                 </div>
-              )}
-            </div>
-          )}
-
-          {/* Empty State */}
-          {!query && (
-            <div className="px-4 py-8 text-center">
-              <div className="text-slate-400 text-sm mb-2">Start typing to search...</div>
-              <div className="flex items-center justify-center gap-4 mt-4 text-xs text-slate-500">
-                <div className="flex items-center gap-1">
-                  <kbd className="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded">↑</kbd>
-                  <kbd className="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded">↓</kbd>
-                  <span className="ml-1">Navigate</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <kbd className="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded">Enter</kbd>
-                  <span className="ml-1">Select</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <kbd className="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded">Esc</kbd>
-                  <span className="ml-1">Close</span>
+              )
+            ) : (
+              <div className="p-4">
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 px-2">Recent & Suggested</div>
+                <div className="space-y-1">
+                  {searchableItems.slice(0, 4).map((item, i) => (
+                    <button
+                      key={item.id}
+                      onClick={() => handleSelect(item)}
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 text-left group"
+                    >
+                      <History className="w-4 h-4 text-slate-500 group-hover:text-blue-400 transition-colors" />
+                      <span className="text-sm text-slate-300 group-hover:text-white transition-colors">{item.label}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
+            )}
+          </div>
+
+          {/* Footer Hints */}
+          <div className="px-4 py-2 bg-slate-900/80 border-t border-slate-800 text-[10px] text-slate-500 flex items-center justify-between">
+            <div className="flex gap-4">
+              <span className="flex items-center gap-1"><kbd className="bg-slate-800 border border-slate-700 px-1 rounded">↑↓</kbd> Navigate</span>
+              <span className="flex items-center gap-1"><kbd className="bg-slate-800 border border-slate-700 px-1 rounded">↵</kbd> Select</span>
+              <span className="flex items-center gap-1"><kbd className="bg-slate-800 border border-slate-700 px-1 rounded">esc</kbd> Close</span>
             </div>
-          )}
+            <div>
+              Searching <span className="text-blue-500 font-bold">Secure Enclave</span>
+            </div>
+          </div>
         </div>
       </div>
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/50 -z-10" />
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm -z-10 animate-in fade-in duration-200" />
     </div>
   );
 }

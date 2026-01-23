@@ -86,3 +86,33 @@ pub struct EntityFilter {
     pub operation_id: Option<String>,
     pub campaign_id: Option<String>,
 }
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct OntologySchema {
+    pub version: String,
+    pub last_updated: DateTime<Utc>,
+    pub domains: Vec<String>,
+    pub entity_types: Vec<EntityTypeDefinition>,
+    pub relationship_types: Vec<RelationshipTypeDefinition>,
+    pub levels_of_war: Vec<String>,
+    pub affiliations: Vec<String>,
+    pub target_statuses: Vec<String>,
+    pub platform_types: Vec<String>,
+    pub confidence_levels: Vec<String>,
+    pub bda_statuses: Vec<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct EntityTypeDefinition {
+    pub name: String,
+    pub description: String,
+    pub properties_schema: Option<Value>, // JSON Schema for validation
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct RelationshipTypeDefinition {
+    pub name: String,
+    pub description: String,
+    pub valid_sources: Vec<String>,
+    pub valid_targets: Vec<String>,
+}

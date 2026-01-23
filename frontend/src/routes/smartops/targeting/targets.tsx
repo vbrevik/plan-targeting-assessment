@@ -2,8 +2,9 @@
 // Full view of F3EAD Pipeline, DTL, and TST
 
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TargetNominationBoard } from '@/features/smartops/components/TargetNominationBoard';
+import { targetingApi } from '@/lib/smartops/api/targeting.api';
 import { SecurityBadge, SecurityBanner } from '@/components/SecurityBadge';
 import { TargetingBreadcrumbs } from '@/components/layout/TargetingBreadcrumbs';
 import { FilterPanel, type FilterConfig, type FilterState } from '@/features/smartops/components/FilterPanel';
@@ -16,22 +17,29 @@ export const Route = createFileRoute('/smartops/targeting/targets')({
   component: TargetsDetailPage,
 });
 
+// Dynamic Schema State
 function TargetsDetailPage() {
   const [filters, setFilters] = useState<FilterState>({});
   const { presets, savePreset } = useFilterPresets('targets');
+  const [targetStatuses, setTargetStatuses] = useState<string[]>(['NOMINATED', 'VALIDATED', 'APPROVED', 'ENGAGED', 'ASSESSED']);
+
+  useEffect(() => {
+    targetingApi.getOntologySchema().then(schema => {
+      // Map backend values to filter format (keeping uppercase value convention if needed)
+      setTargetStatuses(schema.target_statuses.map(s => s.toUpperCase()));
+    }).catch(err => console.error("Failed to fetch ontology filters", err));
+  }, []);
 
   const filterConfigs: FilterConfig[] = [
     {
       id: 'status',
       label: 'Status',
       type: 'select',
-      options: [
-        { id: 'nominated', label: 'Nominated', value: 'NOMINATED' },
-        { id: 'validated', label: 'Validated', value: 'VALIDATED' },
-        { id: 'approved', label: 'Approved', value: 'APPROVED' },
-        { id: 'engaged', label: 'Engaged', value: 'ENGAGED' },
-        { id: 'assessed', label: 'Assessed', value: 'ASSESSED' },
-      ],
+      options: targetStatuses.map(status => ({
+        id: status.toLowerCase(),
+        label: status.charAt(0) + status.slice(1).toLowerCase(), // Title Case
+        value: status
+      })),
     },
     {
       id: 'priority',
@@ -62,9 +70,9 @@ function TargetsDetailPage() {
   return (
     <div className="h-full overflow-y-auto bg-slate-950">
       <SecurityBanner level="SECRET" caveats={['NOFORN']} position="top" />
-      
+
       <TargetingBreadcrumbs />
-      
+
       <div className="max-w-[1800px] mx-auto p-3 sm:p-4 md:p-6 space-y-4 md:space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -116,7 +124,7 @@ function TargetsDetailPage() {
         {/* Full Component View */}
         <TargetNominationBoard filters={filters} />
       </div>
-      
+
       <SecurityBanner level="SECRET" caveats={['NOFORN']} position="bottom" />
     </div>
   );

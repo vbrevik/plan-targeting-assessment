@@ -4,71 +4,47 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { Brain, Users, AlertCircle, HelpCircle, GitBranch, CheckCircle2 } from 'lucide-react';
+import { Brain, Users, AlertCircle, HelpCircle, GitBranch, CheckCircle2, Plus } from 'lucide-react';
 import { SecurityBadge } from '@/components/SecurityBadge';
 import { targetingApi } from '@/lib/smartops/api/targeting.api';
+import { AssumptionService } from '@/lib/smartops/services/AssumptionService';
+import { Assumption, AssumptionStatus } from '@/lib/smartops/types';
+import { cn } from '@/lib/utils';
+import { ImpactVisualizer } from './ImpactVisualizer';
 
-interface AssumptionChallenge {
-  id: string;
-  assumption: string;
-  confidenceLevel: number;
-  alternativeHypothesis: string;
-  evidenceSupporting: string[];
-  evidenceContradicting: string[];
-  status: 'VALID' | 'MONITORING' | 'CHALLENGED' | 'INVALIDATED';
-}
-
-interface RedTeamPerspective {
-  analysisId: string;
-  scenario: string;
-  adversaryCOA: string;
-  probability: number;
-  ourVulnerability: string;
-}
-
-interface CognitiveBiasAlert {
-  id: string;
-  biasType: 'CONFIRMATION' | 'ANCHORING' | 'GROUPTHINK' | 'AVAILABILITY';
-  description: string;
-  evidence: string;
-  recommendation: string;
-}
-
-interface DevilsAdvocateQuestion {
-  id: string;
-  question: string;
-  context: string;
-  priority: 'HIGH' | 'MEDIUM' | 'LOW';
-}
+// ... other interfaces kept for legacy or unused parts
 
 export function AlternativeAnalysisPanel() {
   const navigate = useNavigate();
-  const [assumptions, setAssumptions] = useState<AssumptionChallenge[]>([]);
+  // Legacy or other states
+  const [biasAlerts, setBiasAlerts] = useState<CognitiveBiasAlert[]>([]);
+
+  // New Interactive State
+  const [interactiveAssumptions, setInteractiveAssumptions] = useState<Assumption[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [challenges] = await Promise.all([
-          targetingApi.getAssumptions().catch(() => []),
+        const [assumptionsData, alerts] = await Promise.all([
+          AssumptionService.getAssumptions(),
           targetingApi.getBiasAlerts().catch(() => []),
         ]);
 
-        // Transform to component format
-        const transformed: AssumptionChallenge[] = challenges.map((a) => ({
-          id: a.id,
-          assumption: a.assumption_text,
-          confidenceLevel: a.confidence_level,
-          alternativeHypothesis: a.alternative_hypothesis || '',
-          evidenceSupporting: [],
-          evidenceContradicting: [],
-          status: a.validation_status as 'VALID' | 'CHALLENGED' | 'INVALIDATED' | 'MONITORING',
-        }));
-        setAssumptions(transformed);
+        setInteractiveAssumptions(assumptionsData);
 
-        // Note: biasAlerts can be used for cognitive bias alerts section
+        // Transform Bias Alerts
+        if (alerts && alerts.length > 0) {
+          const transformedAlerts: CognitiveBiasAlert[] = alerts.map((b: any) => ({
+            id: b.id,
+            biasType: b.bias_type,
+            description: b.description,
+            evidence: b.evidence,
+            recommendation: b.recommendation
+          }));
+          setBiasAlerts(transformedAlerts);
+        }
       } catch (err) {
-        console.error('Failed to fetch assumption challenges:', err);
-        setAssumptions([]);
+        console.error('Failed to fetch analysis data:', err);
       }
     };
 
@@ -76,6 +52,17 @@ export function AlternativeAnalysisPanel() {
     const interval = setInterval(fetchData, 60 * 1000);
     return () => clearInterval(interval);
   }, []);
+
+  const handleToggleStatus = async (id: string, currentStatus: AssumptionStatus) => {
+    const newStatus = currentStatus === 'VALID' ? 'CHALLENGED' :
+      currentStatus === 'CHALLENGED' ? 'INVALID' : 'VALID';
+
+    // Optimistic update
+    setInteractiveAssumptions(prev => prev.map(a => a.id === id ? { ...a, status: newStatus } : a));
+
+    await AssumptionService.updateStatus(id, newStatus);
+  };
+
 
 
   const redTeam: RedTeamPerspective[] = [
@@ -88,15 +75,6 @@ export function AlternativeAnalysisPanel() {
     },
   ];
 
-  const biasAlerts: CognitiveBiasAlert[] = [
-    {
-      id: 'BIAS-01',
-      biasType: 'CONFIRMATION',
-      description: 'Focusing only on SIGINT that supports target location while ignoring HUMINT warnings',
-      evidence: '3 recent SIGINT reports favored over 1 contradictory HUMINT report',
-      recommendation: 'Perform Double-Blind review of target location evidence'
-    }
-  ];
 
   const devilsAdvocate: DevilsAdvocateQuestion[] = [
     {
@@ -134,69 +112,78 @@ export function AlternativeAnalysisPanel() {
       </div>
 
       <div className="space-y-4">
-        {/* Assumption Challenge Board */}
+        {/* Interactive Assumption Table */}
         <div className="p-4 bg-amber-950/10 border border-amber-900 rounded-lg">
-          <div className="flex items-center gap-2 mb-3">
-            <AlertCircle className="text-amber-400" size={16} />
-            <h3 className="text-sm font-bold text-amber-400 uppercase">Assumption Challenges</h3>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="text-amber-400" size={16} />
+              <h3 className="text-sm font-bold text-amber-400 uppercase">Operational Assumptions</h3>
+            </div>
+            <button className="px-3 py-1 bg-amber-900/20 text-amber-400 border border-amber-900/50 rounded text-xs font-bold uppercase hover:bg-amber-900/40 transition-colors">
+              <Plus size={12} className="inline mr-1" /> New Assumption
+            </button>
           </div>
 
-          {assumptions.map((assumption) => (
-            <div
-              key={assumption.id}
-              onClick={() => navigate({ to: '/smartops/targeting' })}
-              className="p-3 bg-slate-900/50 border border-amber-800 rounded hover:bg-slate-800/50 transition-colors cursor-pointer group"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <span className={`px-2 py-0.5 rounded text-xs font-bold ${assumption.status === 'VALID' ? 'bg-green-900/50 text-green-400' :
-                  assumption.status === 'MONITORING' ? 'bg-amber-900/50 text-amber-400' :
-                    'bg-red-900/50 text-red-400'
-                  }`}>
-                  {assumption.status}
-                </span>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-500">Confidence:</span>
-                  <span className="text-sm font-bold text-white">{assumption.confidenceLevel}%</span>
-                </div>
-              </div>
-
-              <div className="mb-2">
-                <div className="text-xs font-bold text-white mb-1 group-hover:text-amber-400 transition-colors">Current Assumption:</div>
-                <div className="text-xs text-slate-300">{assumption.assumption}</div>
-              </div>
-
-              <div className="mb-2">
-                <div className="text-xs font-bold text-amber-400 mb-1">Alternative Hypothesis:</div>
-                <div className="text-xs text-slate-300">{assumption.alternativeHypothesis}</div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <div className="text-xs text-slate-500 mb-1 flex items-center gap-1">
-                    <CheckCircle2 size={10} className="text-green-400" />
-                    <span>Supporting Evidence</span>
-                  </div>
-                  <ul className="space-y-1">
-                    {assumption.evidenceSupporting.map((evidence, idx) => (
-                      <li key={idx} className="text-xs text-slate-400 pl-3">• {evidence}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <div className="text-xs text-slate-500 mb-1 flex items-center gap-1">
-                    <AlertCircle size={10} className="text-red-400" />
-                    <span>Contradicting Evidence</span>
-                  </div>
-                  <ul className="space-y-1">
-                    {assumption.evidenceContradicting.map((evidence, idx) => (
-                      <li key={idx} className="text-xs text-slate-400 pl-3">• {evidence}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          ))}
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr className="border-b border-amber-900/30 text-slate-500 uppercase tracking-wider">
+                  <th className="pb-2 font-bold pl-2">Assumption</th>
+                  <th className="pb-2 font-bold px-4">Category</th>
+                  <th className="pb-2 font-bold text-center">Confidence</th>
+                  <th className="pb-2 font-bold text-center">Status</th>
+                  <th className="pb-2 font-bold text-right pr-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-amber-900/10">
+                {interactiveAssumptions.map((asm) => (
+                  <tr key={asm.id} className="hover:bg-amber-900/5 transition-colors group">
+                    <td className="py-3 pl-2 max-w-xs">
+                      <div className="font-medium text-slate-200">{asm.text}</div>
+                      <div className="text-[10px] text-slate-500 mt-0.5">Impact if false: <span className="text-red-400 font-bold">{asm.impactIfFalse}</span></div>
+                    </td>
+                    <td className="py-3 px-4 text-slate-400">{asm.category}</td>
+                    <td className="py-3 text-center">
+                      <span className={cn(
+                        "px-2 py-0.5 rounded text-[10px] font-bold border",
+                        asm.confidence === 'HIGH' ? "bg-green-950/30 text-green-500 border-green-900/30" :
+                          asm.confidence === 'MEDIUM' ? "bg-yellow-950/30 text-yellow-500 border-yellow-900/30" :
+                            "bg-red-950/30 text-red-500 border-red-900/30"
+                      )}>
+                        {asm.confidence}
+                      </span>
+                    </td>
+                    <td className="py-3 text-center">
+                      <button
+                        onClick={() => handleToggleStatus(asm.id, asm.status)}
+                        className={cn(
+                          "px-2 py-0.5 rounded text-[10px] font-bold border transition-colors hover:scale-105",
+                          asm.status === 'VALID' ? "bg-green-600/20 text-green-400 border-green-600/30" :
+                            asm.status === 'CHALLENGED' ? "bg-orange-600/20 text-orange-400 border-orange-600/30" :
+                              "bg-red-600/20 text-red-400 border-red-600/30"
+                        )}
+                        title="Click to toggle status"
+                      >
+                        {asm.status}
+                      </button>
+                    </td>
+                    <td className="py-3 pr-2 text-right">
+                      <button className="p-1.5 hover:bg-slate-800 rounded text-slate-500 hover:text-white transition-colors">
+                        <GitBranch size={14} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {interactiveAssumptions.length === 0 && (
+              <div className="py-6 text-center text-slate-500 italic">No active assumptions tracked.</div>
+            )}
+          </div>
         </div>
+
+        {/* Impact Cascade Analysis */}
+        <ImpactVisualizer assumptions={interactiveAssumptions} />
 
         {/* Red Team Perspectives */}
         <div className="p-4 bg-red-950/10 border border-red-900 rounded-lg">

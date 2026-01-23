@@ -2,7 +2,8 @@ import {
     LayoutDashboard,
     Shield,
     Crosshair,
-    Map as MapIcon
+    Map as MapIcon,
+    Terminal
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DashboardMode } from '../types/dashboard';
@@ -21,6 +22,7 @@ const MODES = [
     { id: DashboardMode.OPERATION, label: 'Operation', icon: Shield, color: 'text-emerald-400' },
     { id: DashboardMode.ENGAGEMENT, label: 'Engagement', icon: Crosshair, color: 'text-red-400' },
     { id: DashboardMode.PLANNING, label: 'Planning', icon: MapIcon, color: 'text-amber-400' },
+    { id: DashboardMode.CYBER, label: 'Cyber', icon: Terminal, color: 'text-purple-400' },
 ];
 
 export function DashboardModeSwitcher({

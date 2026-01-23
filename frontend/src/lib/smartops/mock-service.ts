@@ -218,6 +218,19 @@ export const SmartOpsService = {
         }, LATENCY));
     },
 
+    getTarget: async (id: string): Promise<any | undefined> => {
+        return new Promise(resolve => setTimeout(() => {
+            // Fuzzy match for flexibility (ID, Designator, or lowercase ID)
+            const target = store.targets.find(t =>
+                t.id === id ||
+                t.id.toLowerCase() === id.toLowerCase() ||
+                t.designator === id ||
+                t.designator.toLowerCase() === id.toLowerCase()
+            );
+            resolve(target);
+        }, LATENCY));
+    },
+
     updateTargetStatus: async (id: string, status: string): Promise<void> => {
         return new Promise(resolve => setTimeout(() => {
             const target = store.targets.find(t => t.id === id);

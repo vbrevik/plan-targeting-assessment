@@ -90,6 +90,44 @@ export function EffectsAssessmentDashboard() {
     return () => clearInterval(interval);
   }, []);
 
+  // Use real assessments if available, otherwise fallback to mock including non-kinetic
+  const activeBDA: BDAAssessment[] = recentBDA.length > 0 ? recentBDA : [
+    {
+      strikeId: 'STR-901',
+      targetId: 'T-2401',
+      targetName: 'Enemy C2 Node Alpha',
+      strikeTime: '13:00Z',
+      assessmentTime: '13:45Z',
+      bdaStatus: 'DESTROYED',
+      effectivenessPercentage: 95,
+      desiredEffects: ['Physical Destruction', 'C2 Disruption'],
+      achievedEffects: [
+        { effect: 'Structure Leveled', achieved: true, percentage: 100 },
+        { effect: 'C2 Silence', achieved: true, percentage: 90 },
+      ],
+      collateralDamage: { estimated: { civilians: 0, infrastructure: 'None' }, actual: { civilians: 0, infrastructure: 'None' } },
+      reAttackRecommended: false
+    },
+    {
+      strikeId: 'CYB-004',
+      targetId: 'T-Cyber-08',
+      targetName: 'Power Grid Control Network',
+      strikeTime: '10:30Z',
+      assessmentTime: '12:00Z',
+      bdaStatus: 'DAMAGED',
+      effectivenessPercentage: 78,
+      desiredEffects: ['Service Disruption', 'Network Access'],
+      achievedEffects: [
+        { effect: 'Persistent Access Gained', achieved: true, percentage: 85 },
+        { effect: 'Command Injection Successful', achieved: true, percentage: 70 },
+        { effect: 'Load Balancer Shutdown', achieved: false, percentage: 20 },
+      ],
+      collateralDamage: { estimated: { civilians: 0, infrastructure: 'Grid Instability' }, actual: { civilians: 0, infrastructure: 'Local Brownout' } },
+      reAttackRecommended: true,
+      reAttackReason: 'Load balancer remains functional; primary disruption objective not fully met.'
+    }
+  ];
+
 
   return (
     <div className="bg-slate-900 border border-slate-700 rounded-lg p-6">
@@ -136,7 +174,7 @@ export function EffectsAssessmentDashboard() {
 
       {/* BDA Assessments */}
       <div className="space-y-4">
-        {recentBDA.map((bda) => (
+        {activeBDA.map((bda) => (
           <div
             key={bda.strikeId}
             onClick={() => navigate({ to: '/smartops/targeting' })}
@@ -157,7 +195,7 @@ export function EffectsAssessmentDashboard() {
                     bda.bdaStatus === 'INTACT' ? 'bg-red-900/50 text-red-400' :
                       'bg-slate-800 text-slate-400'
                   }`}>
-                  {bda.bdaStatus}
+                  {bda.strikeId.startsWith('CYB') ? (bda.bdaStatus === 'DESTROYED' ? 'NEUTRALIZED' : bda.bdaStatus) : bda.bdaStatus}
                 </span>
               </div>
               <div className="text-right">

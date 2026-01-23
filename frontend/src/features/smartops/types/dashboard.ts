@@ -2,5 +2,6 @@ export enum DashboardMode {
     OVERVIEW = 'OVERVIEW',
     OPERATION = 'OPERATION',
     ENGAGEMENT = 'ENGAGEMENT',
-    PLANNING = 'PLANNING'
+    PLANNING = 'PLANNING',
+    CYBER = 'CYBER'
 }

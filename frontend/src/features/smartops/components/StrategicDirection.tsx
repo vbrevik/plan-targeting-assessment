@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useNavigate } from '@tanstack/react-router';
+import { useToast } from '@/components/ui/use-toast';
 import { SmartOpsService } from '@/lib/smartops/mock-service';
 import type { StrategicGuidance } from '@/lib/smartops/types';
 import { useOperationalContext } from '@/lib/smartops/hooks/useOperationalContext';
@@ -19,20 +20,27 @@ import { Button } from '@/components/ui/button';
 
 export function StrategicDirection() {
     const { filterByContext } = useOperationalContext();
+    const { toast } = useToast();
     const [guidance, setGuidance] = useState<StrategicGuidance | null>(null);
+    const [roes, setRoes] = useState<any[]>([]); // We'll fetch full ROE objects
     const [loading, setLoading] = useState(true);
     const [selectedObjectiveId, setSelectedObjectiveId] = useState<string | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         async function loadGuidance() {
-            const data = await SmartOpsService.getStrategicGuidance();
-            if (data && filterByContext(data)) {
-                setGuidance(data);
-                setSelectedObjectiveId(data.objectives[0]?.id || null);
+            const [guidanceData, roeData] = await Promise.all([
+                SmartOpsService.getStrategicGuidance(),
+                SmartOpsService.getROEs()
+            ]);
+
+            if (guidanceData && filterByContext(guidanceData)) {
+                setGuidance(guidanceData);
+                setSelectedObjectiveId(guidanceData.objectives[0]?.id || null);
             } else {
                 setGuidance(null);
             }
+            setRoes(roeData);
             setLoading(false);
         }
         loadGuidance();
@@ -117,41 +125,81 @@ export function StrategicDirection() {
                                         <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.3em] mt-1">Verification of intent flow through execution</p>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    {selectedObjective.tasks.map((task, idx) => (
-                                        <div key={idx} className="bg-slate-950 border-2 border-slate-900 rounded-3xl p-8 relative group hover:border-blue-500/30 transition-all">
-                                            <div className="flex justify-between items-start mb-6">
-                                                <div className="p-3 bg-slate-900 rounded-xl text-blue-500">
-                                                    <Activity size={20} />
+                            {/* Linkage: Strategy -> ROE */}
+                            {guidance.recommendedRoeIds && guidance.recommendedRoeIds.length > 0 && (
+                                <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-6">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <ShieldCheck className="text-amber-500" size={20} />
+                                        <h3 className="text-sm font-black text-white uppercase tracking-widest">
+                                            ROE Recommendations
+                                        </h3>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {guidance.recommendedRoeIds.map(roeId => {
+                                            const roe = roes.find(r => r.id === roeId);
+                                            if (!roe) return null;
+                                            return (
+                                                <div key={roeId} className="bg-slate-950 border border-slate-800 p-4 rounded-xl flex flex-col gap-2">
+                                                    <div className="flex justify-between items-start">
+                                                        <span className="text-xs font-black text-amber-500 uppercase">{roe.code}</span>
+                                                        <span className="px-1.5 py-0.5 bg-slate-800 rounded text-[9px] text-slate-400 uppercase font-bold">{roe.status}</span>
+                                                    </div>
+                                                    <p className="text-sm font-bold text-slate-200">{roe.name}</p>
+                                                    <p className="text-[10px] text-slate-500 leading-snug">{roe.description}</p>
                                                 </div>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Linked Task</span>
-                                                    <ShieldCheck size={14} className="text-emerald-500" />
-                                                </div>
-                                            </div>
-                                            <h4 className="text-xl font-black text-white uppercase tracking-tight mb-2">{task}</h4>
-                                            <p className="text-xs text-slate-500 font-medium leading-relaxed mb-6">Currently active in MD Synchronization matrix. Achieving 84% effectiveness metrics.</p>
-                                            <Button
-                                                variant="ghost"
-                                                onClick={() => navigate({ to: '/smartops/mdo' })}
-                                                className="w-full justify-between border-t border-slate-800 pt-6 rounded-none text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white group"
-                                            >
-                                                View Operational Data <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                                            </Button>
-                                        </div>
-                                    ))}
-                                    <div
-                                        onClick={() => alert('Proposal Sync: SACEUR alignment logic initialized.')}
-                                        className="bg-slate-900/10 border-2 border-dashed border-slate-800 rounded-3xl p-8 flex flex-col items-center justify-center text-center group cursor-pointer hover:border-slate-700 transition-all"
-                                    >
-                                        <div className="w-12 h-12 rounded-full border-2 border-slate-800 flex items-center justify-center text-slate-600 mb-4 group-hover:text-white group-hover:border-white transition-all">
-                                            <Target size={20} />
-                                        </div>
-                                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest group-hover:text-white transition-all">Propose New Alignment</span>
+                                            );
+                                        })}
                                     </div>
                                 </div>
+                            )}
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                {selectedObjective.tasks.map((task, idx) => (
+                                    <div key={idx} className="bg-slate-950 border-2 border-slate-900 rounded-3xl p-8 relative group hover:border-blue-500/30 transition-all">
+                                        <div className="flex justify-between items-start mb-6">
+                                            <div className="p-3 bg-slate-900 rounded-xl text-blue-500">
+                                                <Activity size={20} />
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Linked Task</span>
+                                                <ShieldCheck size={14} className="text-emerald-500" />
+                                            </div>
+                                        </div>
+                                        <h4 className="text-xl font-black text-white uppercase tracking-tight mb-2">{task}</h4>
+                                        <p className="text-xs text-slate-500 font-medium leading-relaxed mb-6">Currently active in MD Synchronization matrix. Achieving 84% effectiveness metrics.</p>
+                                        <Button
+                                            variant="ghost"
+                                            onClick={() => navigate({ to: '/smartops/mdo' })}
+                                            className="w-full justify-between border-t border-slate-800 pt-6 rounded-none text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white group"
+                                        >
+                                            View Operational Data <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                                        </Button>
+                                    </div>
+                                ))}
+                                <div
+                                    onClick={() => {
+                                        toast({
+                                            title: 'Parsing SACEUR Guidance...',
+                                            description: 'Initiating deep-scan of strategic directives.'
+                                        });
+                                        setTimeout(() => {
+                                            toast({
+                                                title: 'Alignment Proposal Generated',
+                                                description: 'New strategic synchronization options ready for review.'
+                                            });
+                                        }, 1500);
+                                    }}
+                                    className="bg-slate-900/10 border-2 border-dashed border-slate-800 rounded-3xl p-8 flex flex-col items-center justify-center text-center group cursor-pointer hover:border-slate-700 transition-all"
+                                >
+                                    <div className="w-12 h-12 rounded-full border-2 border-slate-800 flex items-center justify-center text-slate-600 mb-4 group-hover:text-white group-hover:border-white transition-all">
+                                        <Target size={20} />
+                                    </div>
+                                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest group-hover:text-white transition-all">Propose New Alignment</span>
+                                </div>
                             </div>
+
 
                             {/* Audit Trail */}
                             <div className="bg-slate-950/40 border border-slate-800 rounded-[2.5rem] p-10">
@@ -204,7 +252,11 @@ export function StrategicDirection() {
                 <div className="flex gap-4">
                     <Button
                         variant="ghost"
-                        onClick={() => alert('Manual Sync Override: Tactical state reconciled with Strategic Guidance.')}
+                        onClick={() => {
+                            toast({
+                                description: 'Tactical state reconciled with Strategic Guidance.'
+                            });
+                        }}
                         className="text-[10px] font-black uppercase tracking-widest text-blue-500"
                     >
                         Manual Sync Override
