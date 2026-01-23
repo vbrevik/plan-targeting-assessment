@@ -1,0 +1,152 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT * FROM assumption_challenges WHERE validation_status = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "assumption_text",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "assumption_category",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "confidence_level",
+        "ordinal": 3,
+        "type_info": "Int64"
+      },
+      {
+        "name": "validation_status",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "alternative_hypothesis",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "evidence_supporting",
+        "ordinal": 6,
+        "type_info": "Text"
+      },
+      {
+        "name": "evidence_contradicting",
+        "ordinal": 7,
+        "type_info": "Text"
+      },
+      {
+        "name": "red_team_perspective",
+        "ordinal": 8,
+        "type_info": "Text"
+      },
+      {
+        "name": "red_team_analyst",
+        "ordinal": 9,
+        "type_info": "Text"
+      },
+      {
+        "name": "red_team_date",
+        "ordinal": 10,
+        "type_info": "Text"
+      },
+      {
+        "name": "bias_type",
+        "ordinal": 11,
+        "type_info": "Text"
+      },
+      {
+        "name": "bias_indicators",
+        "ordinal": 12,
+        "type_info": "Text"
+      },
+      {
+        "name": "challenged_by",
+        "ordinal": 13,
+        "type_info": "Text"
+      },
+      {
+        "name": "challenge_date",
+        "ordinal": 14,
+        "type_info": "Text"
+      },
+      {
+        "name": "challenge_rationale",
+        "ordinal": 15,
+        "type_info": "Text"
+      },
+      {
+        "name": "related_targets",
+        "ordinal": 16,
+        "type_info": "Text"
+      },
+      {
+        "name": "impact_if_wrong",
+        "ordinal": 17,
+        "type_info": "Text"
+      },
+      {
+        "name": "resolution_notes",
+        "ordinal": 18,
+        "type_info": "Text"
+      },
+      {
+        "name": "resolved_by",
+        "ordinal": 19,
+        "type_info": "Text"
+      },
+      {
+        "name": "resolved_at",
+        "ordinal": 20,
+        "type_info": "Text"
+      },
+      {
+        "name": "created_at",
+        "ordinal": 21,
+        "type_info": "Text"
+      },
+      {
+        "name": "updated_at",
+        "ordinal": 22,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true,
+      false,
+      true,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "f8c7f86ca46a3fd95ec1fa518be94d6582247c58f6f367882e56bf0583a82fc7"
+}

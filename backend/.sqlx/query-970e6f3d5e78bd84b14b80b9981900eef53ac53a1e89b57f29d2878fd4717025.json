@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO intelligence_reports (id, target_id, int_type, report_title, report_content,\n               confidence_level, source_reliability, collection_time, pattern_of_life_indicator,\n               classification, collected_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 11
+    },
+    "nullable": []
+  },
+  "hash": "970e6f3d5e78bd84b14b80b9981900eef53ac53a1e89b57f29d2878fd4717025"
+}

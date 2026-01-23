@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO assumption_challenges (id, assumption_text, confidence_level, validation_status)\n               VALUES (?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "8abd8e35ff84cd8bc0dd0b24bc4f5cb521ef9fdbd8581c517d7e61f01f4bc205"
+}

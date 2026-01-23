@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO strike_platforms (id, platform_type, platform_name, sorties_available,\n               platform_status, classification) VALUES (?, ?, ?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 6
+    },
+    "nullable": []
+  },
+  "hash": "dbe68829778300e78cf5ac27b71c8098bebd89e30364df190e194e184354de80"
+}

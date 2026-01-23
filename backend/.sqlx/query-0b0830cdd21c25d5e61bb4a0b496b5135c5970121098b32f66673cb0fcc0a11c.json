@@ -1,0 +1,224 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT * FROM targets WHERE id = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "operation_id",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "campaign_id",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "designator",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "name",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "be_number",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "category",
+        "ordinal": 6,
+        "type_info": "Text"
+      },
+      {
+        "name": "cat_code",
+        "ordinal": 7,
+        "type_info": "Text"
+      },
+      {
+        "name": "target_type",
+        "ordinal": 8,
+        "type_info": "Text"
+      },
+      {
+        "name": "latitude",
+        "ordinal": 9,
+        "type_info": "Float"
+      },
+      {
+        "name": "longitude",
+        "ordinal": 10,
+        "type_info": "Float"
+      },
+      {
+        "name": "altitude",
+        "ordinal": 11,
+        "type_info": "Float"
+      },
+      {
+        "name": "mgrs",
+        "ordinal": 12,
+        "type_info": "Text"
+      },
+      {
+        "name": "target_status",
+        "ordinal": 13,
+        "type_info": "Text"
+      },
+      {
+        "name": "operational_status",
+        "ordinal": 14,
+        "type_info": "Text"
+      },
+      {
+        "name": "affiliation",
+        "ordinal": 15,
+        "type_info": "Text"
+      },
+      {
+        "name": "priority",
+        "ordinal": 16,
+        "type_info": "Text"
+      },
+      {
+        "name": "desired_effect",
+        "ordinal": 17,
+        "type_info": "Text"
+      },
+      {
+        "name": "collateral_damage_estimate",
+        "ordinal": 18,
+        "type_info": "Text"
+      },
+      {
+        "name": "kill_chain_phase",
+        "ordinal": 19,
+        "type_info": "Text"
+      },
+      {
+        "name": "nominated_by_id",
+        "ordinal": 20,
+        "type_info": "Text"
+      },
+      {
+        "name": "validated_by_id",
+        "ordinal": 21,
+        "type_info": "Text"
+      },
+      {
+        "name": "approved_by_id",
+        "ordinal": 22,
+        "type_info": "Text"
+      },
+      {
+        "name": "required_roe_id",
+        "ordinal": 23,
+        "type_info": "Text"
+      },
+      {
+        "name": "roe_constraints",
+        "ordinal": 24,
+        "type_info": "Text"
+      },
+      {
+        "name": "bda_status",
+        "ordinal": 25,
+        "type_info": "Text"
+      },
+      {
+        "name": "assessment_status",
+        "ordinal": 26,
+        "type_info": "Text"
+      },
+      {
+        "name": "description",
+        "ordinal": 27,
+        "type_info": "Text"
+      },
+      {
+        "name": "target_folder_url",
+        "ordinal": 28,
+        "type_info": "Text"
+      },
+      {
+        "name": "uncertainty",
+        "ordinal": 29,
+        "type_info": "Float"
+      },
+      {
+        "name": "last_verified",
+        "ordinal": 30,
+        "type_info": "Text"
+      },
+      {
+        "name": "valid_from",
+        "ordinal": 31,
+        "type_info": "Text"
+      },
+      {
+        "name": "valid_until",
+        "ordinal": 32,
+        "type_info": "Text"
+      },
+      {
+        "name": "created_at",
+        "ordinal": 33,
+        "type_info": "Text"
+      },
+      {
+        "name": "updated_at",
+        "ordinal": 34,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true,
+      true,
+      true,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "0b0830cdd21c25d5e61bb4a0b496b5135c5970121098b32f66673cb0fcc0a11c"
+}

@@ -1,0 +1,218 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT * FROM shift_handovers ORDER BY shift_date DESC LIMIT ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "shift_date",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "shift_type",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "shift_start",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "shift_end",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "outgoing_watch_officer",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "incoming_watch_officer",
+        "ordinal": 6,
+        "type_info": "Text"
+      },
+      {
+        "name": "outgoing_team",
+        "ordinal": 7,
+        "type_info": "Text"
+      },
+      {
+        "name": "incoming_team",
+        "ordinal": 8,
+        "type_info": "Text"
+      },
+      {
+        "name": "active_targets_summary",
+        "ordinal": 9,
+        "type_info": "Text"
+      },
+      {
+        "name": "targets_approved_count",
+        "ordinal": 10,
+        "type_info": "Int64"
+      },
+      {
+        "name": "targets_engaged_count",
+        "ordinal": 11,
+        "type_info": "Int64"
+      },
+      {
+        "name": "bda_completed_count",
+        "ordinal": 12,
+        "type_info": "Int64"
+      },
+      {
+        "name": "pending_decisions",
+        "ordinal": 13,
+        "type_info": "Text"
+      },
+      {
+        "name": "pending_decisions_count",
+        "ordinal": 14,
+        "type_info": "Int64"
+      },
+      {
+        "name": "critical_issues",
+        "ordinal": 15,
+        "type_info": "Text"
+      },
+      {
+        "name": "urgent_actions",
+        "ordinal": 16,
+        "type_info": "Text"
+      },
+      {
+        "name": "intel_updates_summary",
+        "ordinal": 17,
+        "type_info": "Text"
+      },
+      {
+        "name": "pattern_of_life_changes",
+        "ordinal": 18,
+        "type_info": "Text"
+      },
+      {
+        "name": "new_threats",
+        "ordinal": 19,
+        "type_info": "Text"
+      },
+      {
+        "name": "isr_platforms_active",
+        "ordinal": 20,
+        "type_info": "Int64"
+      },
+      {
+        "name": "strike_platforms_ready",
+        "ordinal": 21,
+        "type_info": "Int64"
+      },
+      {
+        "name": "munitions_status_summary",
+        "ordinal": 22,
+        "type_info": "Text"
+      },
+      {
+        "name": "recommendations",
+        "ordinal": 23,
+        "type_info": "Text"
+      },
+      {
+        "name": "watch_items",
+        "ordinal": 24,
+        "type_info": "Text"
+      },
+      {
+        "name": "weather_summary",
+        "ordinal": 25,
+        "type_info": "Text"
+      },
+      {
+        "name": "weather_impact",
+        "ordinal": 26,
+        "type_info": "Text"
+      },
+      {
+        "name": "handover_time",
+        "ordinal": 27,
+        "type_info": "Text"
+      },
+      {
+        "name": "handover_complete",
+        "ordinal": 28,
+        "type_info": "Int64"
+      },
+      {
+        "name": "incoming_acknowledged_by",
+        "ordinal": 29,
+        "type_info": "Text"
+      },
+      {
+        "name": "incoming_acknowledged_at",
+        "ordinal": 30,
+        "type_info": "Text"
+      },
+      {
+        "name": "classification",
+        "ordinal": 31,
+        "type_info": "Text"
+      },
+      {
+        "name": "created_at",
+        "ordinal": 32,
+        "type_info": "Text"
+      },
+      {
+        "name": "updated_at",
+        "ordinal": 33,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "f832e8435ecc7b470e3b02aac0f3dca76ae88753c4e9bed00af38b1b50794aa8"
+}

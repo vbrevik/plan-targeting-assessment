@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO isr_platforms (id, platform_type, platform_name, sensor_type, status, classification)\n               VALUES (?, ?, ?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 6
+    },
+    "nullable": []
+  },
+  "hash": "482865fd61b088f1c34adb0fc943e18e5869fbd742f5bdf0d3762a96cecd77db"
+}

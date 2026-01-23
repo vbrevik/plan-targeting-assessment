@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend/data:/app/data
+    environment:
+      - RUST_LOG=info
+      - DATABASE_URL=sqlite:////app/data/app.db
+    networks:
+      - appnet
+
+  frontend:
+    image: node:20-bullseye
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://backend:3000
+    depends_on:
+      - backend
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
+
+

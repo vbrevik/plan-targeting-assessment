@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO shift_handovers (id, shift_date, shift_type, shift_start, shift_end,\n               outgoing_watch_officer, incoming_watch_officer, active_targets_summary,\n               pending_decisions, handover_time, classification)\n               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 11
+    },
+    "nullable": []
+  },
+  "hash": "5a7c32beb5a34297766deb378c377c1fac744d2647a3d45817673ecc8714b08f"
+}

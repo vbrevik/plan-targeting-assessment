@@ -1,0 +1,134 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT * FROM decision_log ORDER BY decision_time DESC LIMIT ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "decision_type",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "decision_text",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "decision_rationale",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "decision_maker",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "decision_maker_role",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "decision_maker_rank",
+        "ordinal": 6,
+        "type_info": "Text"
+      },
+      {
+        "name": "authority_level",
+        "ordinal": 7,
+        "type_info": "Text"
+      },
+      {
+        "name": "requires_higher_approval",
+        "ordinal": 8,
+        "type_info": "Int64"
+      },
+      {
+        "name": "related_targets",
+        "ordinal": 9,
+        "type_info": "Text"
+      },
+      {
+        "name": "related_operations",
+        "ordinal": 10,
+        "type_info": "Text"
+      },
+      {
+        "name": "related_risks",
+        "ordinal": 11,
+        "type_info": "Text"
+      },
+      {
+        "name": "approval_chain",
+        "ordinal": 12,
+        "type_info": "Text"
+      },
+      {
+        "name": "approval_complete",
+        "ordinal": 13,
+        "type_info": "Int64"
+      },
+      {
+        "name": "decision_time",
+        "ordinal": 14,
+        "type_info": "Text"
+      },
+      {
+        "name": "effective_time",
+        "ordinal": 15,
+        "type_info": "Text"
+      },
+      {
+        "name": "expiration_time",
+        "ordinal": 16,
+        "type_info": "Text"
+      },
+      {
+        "name": "alternatives_considered",
+        "ordinal": 17,
+        "type_info": "Text"
+      },
+      {
+        "name": "classification",
+        "ordinal": 18,
+        "type_info": "Text"
+      },
+      {
+        "name": "created_at",
+        "ordinal": 19,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "d8cdeaab4e5936522d7f1b0ee12f212e43f1ba9c3d26b5f82ea3ff90cf959da9"
+}

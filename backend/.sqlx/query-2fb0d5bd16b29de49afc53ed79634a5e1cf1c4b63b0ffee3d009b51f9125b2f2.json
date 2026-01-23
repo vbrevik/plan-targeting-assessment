@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO dtl_entries (id, target_id, priority_score, feasibility_score, aging_hours,\n               is_tst, tst_deadline, approval_chain) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 8
+    },
+    "nullable": []
+  },
+  "hash": "2fb0d5bd16b29de49afc53ed79634a5e1cf1c4b63b0ffee3d009b51f9125b2f2"
+}

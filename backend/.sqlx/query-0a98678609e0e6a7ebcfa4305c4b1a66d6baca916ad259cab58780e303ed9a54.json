@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE dtl_entries SET priority_score = ?, feasibility_score = ? WHERE id = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "0a98678609e0e6a7ebcfa4305c4b1a66d6baca916ad259cab58780e303ed9a54"
+}

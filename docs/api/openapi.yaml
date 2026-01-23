@@ -1,0 +1,856 @@
+openapi: 3.0.3
+info:
+  title: Targeting Workbench API
+  description: |
+    NATO COPD-compliant Targeting Workbench REST API
+    
+    Provides endpoints for:
+    - Target management with F3EAD workflow
+    - Dynamic Target List (DTL) with prioritization
+    - Joint Targeting Board (JTB) session management
+    - Battle Damage Assessment (BDA) tracking
+    - Rules of Engagement (ROE) enforcement
+    - Collateral Damage Estimation (CDE)
+    - Decision Gates (GO/NO-GO indicators)
+    - Mission Command (intent, guidance, authority, tempo)
+    - Intelligence integration
+    - Asset capability management
+    - Risk assessment
+    - Alternative analysis
+    - Collaborative workspace
+    
+  version: 0.1.1
+  contact:
+    name: Targeting Workbench Team
+  license:
+    name: Proprietary
+    url: https://example.com/license
+
+servers:
+  - url: http://localhost:3000/api/targeting
+    description: Local development server
+  - url: https://api.example.com/api/targeting
+    description: Production server
+
+tags:
+  - name: Decision Gates
+    description: Operational status indicators (ROE, CDE, Weather, Deconfliction)
+  - name: Targets
+    description: Target management with F3EAD workflow
+  - name: DTL
+    description: Dynamic Target List with prioritization
+  - name: JTB
+    description: Joint Targeting Board session management
+  - name: BDA
+    description: Battle Damage Assessment tracking
+  - name: ROE
+    description: Rules of Engagement enforcement
+  - name: CDE
+    description: Collateral Damage Estimation
+  - name: Mission Command
+    description: Commander's intent, targeting guidance, authority matrix, operational tempo
+  - name: Intelligence
+    description: Intelligence reports and pattern of life
+  - name: ISR
+    description: Intelligence, Surveillance, Reconnaissance platforms
+  - name: Assets
+    description: Strike platform and munitions management
+  - name: Risk
+    description: Risk assessment and high-risk target identification
+  - name: Analysis
+    description: Alternative analysis, assumptions, bias alerts
+  - name: Collaboration
+    description: Decision logs, shift handovers, annotations
+
+security:
+  - BearerAuth: []
+  - CSRF: []
+
+paths:
+  /decision-gates:
+    get:
+      tags:
+        - Decision Gates
+      summary: Get decision gates status
+      description: Returns status of all 4 decision gates (ROE, CDE, Weather, Deconfliction)
+      operationId: getDecisionGates
+      responses:
+        '200':
+          description: Decision gates status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecisionGatesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /targets:
+    get:
+      tags:
+        - Targets
+      summary: List targets
+      description: Get list of targets with optional filtering
+      operationId: listTargets
+      parameters:
+        - name: status
+          in: query
+          description: Filter by target status
+          schema:
+            type: string
+            enum: [Nominated, Validated, Approved, Engaged, Assessed]
+        - name: priority
+          in: query
+          description: Filter by priority level
+          schema:
+            type: string
+            enum: [LOW, MEDIUM, HIGH, CRITICAL]
+        - name: limit
+          in: query
+          description: Maximum number of results
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: List of targets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Target'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    
+    post:
+      tags:
+        - Targets
+      summary: Create target
+      description: Create a new target nomination
+      operationId: createTarget
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTargetRequest'
+      responses:
+        '201':
+          description: Target created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Target'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /targets/{id}:
+    get:
+      tags:
+        - Targets
+      summary: Get target by ID
+      description: Retrieve a specific target by ID
+      operationId: getTarget
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Target ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Target details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Target'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    
+    put:
+      tags:
+        - Targets
+      summary: Update target
+      description: Update target information
+      operationId: updateTarget
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTargetRequest'
+      responses:
+        '200':
+          description: Target updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Target'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    
+    delete:
+      tags:
+        - Targets
+      summary: Delete target
+      description: Delete a target
+      operationId: deleteTarget
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Target deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /targets/{id}/advance-stage:
+    put:
+      tags:
+        - Targets
+      summary: Advance F3EAD stage
+      description: Advance target to next F3EAD stage (FIND → FIX → FINISH → EXPLOIT → ANALYZE → DISSEMINATE)
+      operationId: advanceF3eadStage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - new_stage
+              properties:
+                new_stage:
+                  type: string
+                  enum: [FIND, FIX, FINISH, EXPLOIT, ANALYZE, DISSEMINATE]
+      responses:
+        '200':
+          description: Stage advanced successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  target_id:
+                    type: string
+                  new_stage:
+                    type: string
+        '400':
+          description: Invalid stage transition
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /summary:
+    get:
+      tags:
+        - Targets
+      summary: Get targeting summary
+      description: Get summary statistics for targets
+      operationId: getTargetingSummary
+      responses:
+        '200':
+          description: Targeting summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TargetingSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /dtl:
+    get:
+      tags:
+        - DTL
+      summary: List DTL entries
+      description: Get Dynamic Target List entries, ordered by combined score
+      operationId: listDtl
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of results
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: List of DTL entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DtlEntry'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    
+    post:
+      tags:
+        - DTL
+      summary: Create DTL entry
+      description: Add target to Dynamic Target List
+      operationId: createDtlEntry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - target_id
+                - priority_score
+                - feasibility_score
+              properties:
+                target_id:
+                  type: string
+                priority_score:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                feasibility_score:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+      responses:
+        '201':
+          description: DTL entry created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /dtl/{id}/priority:
+    put:
+      tags:
+        - DTL
+      summary: Update DTL priority scores
+      description: Update priority and feasibility scores for DTL entry
+      operationId: updateDtlPriority
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - priority_score
+                - feasibility_score
+              properties:
+                priority_score:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                feasibility_score:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+      responses:
+        '200':
+          description: Scores updated
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /dtl/tst:
+    get:
+      tags:
+        - DTL
+      summary: Get active TSTs
+      description: Get all active Time-Sensitive Targets
+      operationId: getActiveTsts
+      responses:
+        '200':
+          description: List of active TSTs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DtlEntry'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /mission/intent:
+    get:
+      tags:
+        - Mission Command
+      summary: Get mission intent
+      description: Get commander's intent, phase, priority effects, endstate, and metrics
+      operationId: getMissionIntent
+      responses:
+        '200':
+          description: Mission intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MissionIntent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    
+    put:
+      tags:
+        - Mission Command
+      summary: Update mission intent
+      description: Update commander's intent
+      operationId: updateMissionIntent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MissionIntent'
+      responses:
+        '200':
+          description: Intent updated
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /mission/guidance:
+    get:
+      tags:
+        - Mission Command
+      summary: Get targeting guidance
+      description: Get ROE level, collateral threshold, approved target sets, and restrictions
+      operationId: getTargetingGuidance
+      responses:
+        '200':
+          description: Targeting guidance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TargetingGuidance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /mission/authority:
+    get:
+      tags:
+        - Mission Command
+      summary: Get decision authority matrix
+      description: Get decision authority level, who can approve, and what must be escalated
+      operationId: getAuthorityMatrix
+      responses:
+        '200':
+          description: Authority matrix
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecisionAuthority'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /mission/tempo:
+    get:
+      tags:
+        - Mission Command
+      summary: Get operational tempo
+      description: Get current phase, hours into phase, and critical decision points
+      operationId: getOperationalTempo
+      responses:
+        '200':
+          description: Operational tempo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationalTempo'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    CSRF:
+      type: apiKey
+      in: header
+      name: X-CSRF-Token
+
+  schemas:
+    Target:
+      type: object
+      required:
+        - id
+        - name
+        - target_type
+        - priority
+        - target_status
+        - coordinates
+      properties:
+        id:
+          type: string
+          description: Unique target identifier
+        name:
+          type: string
+          description: Target name
+        description:
+          type: string
+          nullable: true
+        target_type:
+          type: string
+          enum: [HPT, TST, HVT, TGT]
+          description: High Priority Target, Time-Sensitive Target, High Value Target, or Target
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH, CRITICAL]
+        target_status:
+          type: string
+          enum: [Nominated, Validated, Approved, Engaged, Assessed]
+        coordinates:
+          type: string
+          description: Geographic coordinates (format varies)
+        f3ead_stage:
+          type: string
+          enum: [FIND, FIX, FINISH, EXPLOIT, ANALYZE, DISSEMINATE]
+          nullable: true
+          description: Current F3EAD cycle stage
+
+    CreateTargetRequest:
+      type: object
+      required:
+        - name
+        - target_type
+        - priority
+        - target_status
+        - coordinates
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        target_type:
+          type: string
+          enum: [HPT, TST, HVT, TGT]
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH, CRITICAL]
+        target_status:
+          type: string
+          enum: [Nominated, Validated, Approved, Engaged, Assessed]
+        coordinates:
+          type: string
+
+    UpdateTargetRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH, CRITICAL]
+        target_status:
+          type: string
+          enum: [Nominated, Validated, Approved, Engaged, Assessed]
+
+    DtlEntry:
+      type: object
+      required:
+        - id
+        - target_id
+        - priority_score
+        - feasibility_score
+        - aging_hours
+        - is_tst
+      properties:
+        id:
+          type: string
+        target_id:
+          type: string
+        priority_score:
+          type: number
+          minimum: 0
+          maximum: 1
+        feasibility_score:
+          type: number
+          minimum: 0
+          maximum: 1
+        combined_score:
+          type: number
+          nullable: true
+          description: Calculated combined score (priority * 0.6 + feasibility * 0.4)
+        aging_hours:
+          type: integer
+          description: Hours since target was added to DTL
+        is_tst:
+          type: boolean
+          description: Is this a Time-Sensitive Target
+        tst_deadline:
+          type: string
+          format: date-time
+          nullable: true
+        approval_chain:
+          type: string
+          nullable: true
+        current_approver:
+          type: string
+          nullable: true
+        approval_level:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    TargetingSummary:
+      type: object
+      required:
+        - total_targets
+        - active_targets
+        - pending_nominations
+        - approved_targets
+      properties:
+        total_targets:
+          type: integer
+        active_targets:
+          type: integer
+        pending_nominations:
+          type: integer
+        approved_targets:
+          type: integer
+
+    DecisionGatesResponse:
+      type: object
+      required:
+        - roe
+        - cde
+        - weather
+        - deconfliction
+      properties:
+        roe:
+          $ref: '#/components/schemas/DecisionGate'
+        cde:
+          $ref: '#/components/schemas/DecisionGate'
+        weather:
+          $ref: '#/components/schemas/DecisionGate'
+        deconfliction:
+          $ref: '#/components/schemas/DecisionGate'
+
+    DecisionGate:
+      type: object
+      required:
+        - name
+        - status
+        - value
+        - classification
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          enum: [GREEN, YELLOW, RED]
+        value:
+          type: string
+          description: Human-readable status value
+        classification:
+          type: string
+          enum: [UNCLASS, CUI, SECRET, TOP_SECRET, TS_SCI]
+
+    MissionIntent:
+      type: object
+      required:
+        - phase
+        - priorityEffects
+        - endstate
+        - endstateMetrics
+      properties:
+        phase:
+          type: string
+          description: Current operational phase
+        priorityEffects:
+          type: array
+          items:
+            type: string
+          description: Priority effects to achieve
+        endstate:
+          type: string
+          description: Desired end state
+        endstateMetrics:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              current:
+                type: number
+              target:
+                type: number
+              status:
+                type: string
+                enum: [on-track, at-risk, behind]
+
+    TargetingGuidance:
+      type: object
+      required:
+        - roeLevel
+        - collateralThreshold
+        - approvedTargetSets
+        - restrictions
+      properties:
+        roeLevel:
+          type: string
+          description: Current ROE level (e.g., WEAPON_FREE, WEAPON_TIGHT)
+        collateralThreshold:
+          type: string
+          description: Collateral damage threshold
+        approvedTargetSets:
+          type: array
+          items:
+            type: string
+          description: Approved target categories
+        restrictions:
+          type: array
+          items:
+            type: string
+          description: Target restrictions
+
+    DecisionAuthority:
+      type: object
+      required:
+        - level
+        - authority
+        - canApprove
+        - mustEscalate
+      properties:
+        level:
+          type: string
+          enum: [TACTICAL, OPERATIONAL, STRATEGIC]
+        authority:
+          type: string
+          description: Authority position/person
+        canApprove:
+          type: array
+          items:
+            type: string
+          description: What this authority can approve
+        mustEscalate:
+          type: array
+          items:
+            type: string
+          description: What must be escalated
+
+    OperationalTempo:
+      type: object
+      required:
+        - currentPhase
+        - hoursIntoPhase
+        - criticalDecisionPoints
+      properties:
+        currentPhase:
+          type: string
+          description: Current phase description
+        hoursIntoPhase:
+          type: integer
+          description: Hours elapsed in current phase
+        criticalDecisionPoints:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              time:
+                type: string
+              status:
+                type: string
+                enum: [upcoming, in-progress, completed]
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    
+    Unauthorized:
+      description: Unauthorized - authentication required
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Unauthorized"
+    
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Not found"
+    
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Internal server error"

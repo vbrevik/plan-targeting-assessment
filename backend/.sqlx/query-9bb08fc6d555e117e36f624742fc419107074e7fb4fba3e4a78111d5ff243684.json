@@ -1,0 +1,158 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT * FROM risk_assessments WHERE fratricide_risk IN ('HIGH', 'CRITICAL') \n               OR political_sensitivity IN ('HIGH', 'CRITICAL')",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "target_id",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "fratricide_risk",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "friendly_forces_distance_km",
+        "ordinal": 3,
+        "type_info": "Float"
+      },
+      {
+        "name": "friendly_units_nearby",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "fratricide_mitigation",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "political_sensitivity",
+        "ordinal": 6,
+        "type_info": "Text"
+      },
+      {
+        "name": "sensitive_sites_nearby",
+        "ordinal": 7,
+        "type_info": "Text"
+      },
+      {
+        "name": "protected_sites_nearby",
+        "ordinal": 8,
+        "type_info": "Text"
+      },
+      {
+        "name": "civilian_density",
+        "ordinal": 9,
+        "type_info": "Text"
+      },
+      {
+        "name": "legal_review_status",
+        "ordinal": 10,
+        "type_info": "Text"
+      },
+      {
+        "name": "legal_reviewer",
+        "ordinal": 11,
+        "type_info": "Text"
+      },
+      {
+        "name": "legal_review_date",
+        "ordinal": 12,
+        "type_info": "Text"
+      },
+      {
+        "name": "legal_review_notes",
+        "ordinal": 13,
+        "type_info": "Text"
+      },
+      {
+        "name": "proportionality_assessment",
+        "ordinal": 14,
+        "type_info": "Text"
+      },
+      {
+        "name": "military_advantage_expected",
+        "ordinal": 15,
+        "type_info": "Text"
+      },
+      {
+        "name": "collateral_concern_level",
+        "ordinal": 16,
+        "type_info": "Text"
+      },
+      {
+        "name": "second_order_effects",
+        "ordinal": 17,
+        "type_info": "Text"
+      },
+      {
+        "name": "third_order_effects",
+        "ordinal": 18,
+        "type_info": "Text"
+      },
+      {
+        "name": "overall_risk_score",
+        "ordinal": 19,
+        "type_info": "Float"
+      },
+      {
+        "name": "classification",
+        "ordinal": 20,
+        "type_info": "Text"
+      },
+      {
+        "name": "assessed_by",
+        "ordinal": 21,
+        "type_info": "Text"
+      },
+      {
+        "name": "created_at",
+        "ordinal": 22,
+        "type_info": "Text"
+      },
+      {
+        "name": "updated_at",
+        "ordinal": 23,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      true,
+      false,
+      false,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "9bb08fc6d555e117e36f624742fc419107074e7fb4fba3e4a78111d5ff243684"
+}

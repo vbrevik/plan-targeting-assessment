@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO decision_log (id, decision_type, decision_text, decision_rationale,\n               decision_maker, decision_maker_role, authority_level, classification)\n               VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 8
+    },
+    "nullable": []
+  },
+  "hash": "e61575321ec634c1073fa573b653c5f2cef429c5b21585a3312629df0611ff8a"
+}

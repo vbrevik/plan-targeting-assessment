@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO targeting_annotations (id, target_id, user_id, annotation_text,\n               annotation_type, is_critical, classification) VALUES (?, ?, ?, ?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 7
+    },
+    "nullable": []
+  },
+  "hash": "e3ccc9897a30290c4c1d8178989cce296cd2eebb8480f31005b8fd92d19b3d77"
+}

@@ -1,0 +1,92 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT * FROM dtl_entries WHERE is_tst = TRUE AND tst_deadline > datetime('now') ORDER BY tst_deadline ASC",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "target_id",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "priority_score",
+        "ordinal": 2,
+        "type_info": "Float"
+      },
+      {
+        "name": "feasibility_score",
+        "ordinal": 3,
+        "type_info": "Float"
+      },
+      {
+        "name": "combined_score",
+        "ordinal": 4,
+        "type_info": "Float"
+      },
+      {
+        "name": "aging_hours",
+        "ordinal": 5,
+        "type_info": "Int64"
+      },
+      {
+        "name": "is_tst",
+        "ordinal": 6,
+        "type_info": "Int64"
+      },
+      {
+        "name": "tst_deadline",
+        "ordinal": 7,
+        "type_info": "Text"
+      },
+      {
+        "name": "approval_chain",
+        "ordinal": 8,
+        "type_info": "Text"
+      },
+      {
+        "name": "current_approver",
+        "ordinal": 9,
+        "type_info": "Text"
+      },
+      {
+        "name": "approval_level",
+        "ordinal": 10,
+        "type_info": "Int64"
+      },
+      {
+        "name": "created_at",
+        "ordinal": 11,
+        "type_info": "Text"
+      },
+      {
+        "name": "updated_at",
+        "ordinal": 12,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "6c75959905044888d74feec1d06b4cf412483c6c4a851b2099592b7452309ddb"
+}

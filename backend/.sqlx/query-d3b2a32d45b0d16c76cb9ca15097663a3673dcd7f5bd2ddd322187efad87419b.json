@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO risk_assessments (id, target_id, fratricide_risk, political_sensitivity,\n               legal_review_status, classification, assessed_by) VALUES (?, ?, ?, ?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 7
+    },
+    "nullable": []
+  },
+  "hash": "d3b2a32d45b0d16c76cb9ca15097663a3673dcd7f5bd2ddd322187efad87419b"
+}
