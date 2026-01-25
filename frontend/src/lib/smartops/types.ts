@@ -1041,6 +1041,8 @@ export interface PoliticalStatement extends ExternalContextFactor {
     role: string; // e.g., 'President', 'Foreign Minister'
     sentiment: 'Hostile' | 'Neutral' | 'Supportive';
     requiresAction: boolean;
+    content: string;
+    location?: { name: string; coordinates?: GeoPoint };
 }
 
 // Environmental / Physical

@@ -21,85 +21,88 @@ import { Route as DebugRouteImport } from './routes/debug'
 import { Route as ApiManagementRouteImport } from './routes/api-management'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SmartopsIndexRouteImport } from './routes/smartops/index'
+import { Route as SmartopsIndexRouteImport } from './routes/smartops.index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as StatsUsersRouteImport } from './routes/stats/users'
 import { Route as StatsSystemRouteImport } from './routes/stats/system'
 import { Route as StatsSessionsRouteImport } from './routes/stats/sessions'
-import { Route as SmartopsWeatherRouteImport } from './routes/smartops/weather'
-import { Route as SmartopsUncertaintyRouteImport } from './routes/smartops/uncertainty'
-import { Route as SmartopsTriageRouteImport } from './routes/smartops/triage'
-import { Route as SmartopsTargetingCellDashboardRouteImport } from './routes/smartops/targeting-cell-dashboard'
-import { Route as SmartopsSupplyChainRouteImport } from './routes/smartops/supply-chain'
-import { Route as SmartopsStrikeOptimizerRouteImport } from './routes/smartops/strike-optimizer'
-import { Route as SmartopsStrategicDirectionRouteImport } from './routes/smartops/strategic-direction'
-import { Route as SmartopsStaffRouteImport } from './routes/smartops/staff'
-import { Route as SmartopsSocialDomainRouteImport } from './routes/smartops/social-domain'
-import { Route as SmartopsSecurityRouteImport } from './routes/smartops/security'
-import { Route as SmartopsScenariosRouteImport } from './routes/smartops/scenarios'
-import { Route as SmartopsRxpRouteImport } from './routes/smartops/rxp'
-import { Route as SmartopsRoeRouteImport } from './routes/smartops/roe'
-import { Route as SmartopsRfisRouteImport } from './routes/smartops/rfis'
-import { Route as SmartopsProductsRouteImport } from './routes/smartops/products'
-import { Route as SmartopsPersonnelRouteImport } from './routes/smartops/personnel'
-import { Route as SmartopsOrbatRouteImport } from './routes/smartops/orbat'
-import { Route as SmartopsOntologyRouteImport } from './routes/smartops/ontology'
-import { Route as SmartopsMdoRouteImport } from './routes/smartops/mdo'
-import { Route as SmartopsLogisticsRouteImport } from './routes/smartops/logistics'
-import { Route as SmartopsLegadDashboardRouteImport } from './routes/smartops/legad-dashboard'
-import { Route as SmartopsJ5DashboardRouteImport } from './routes/smartops/j5-dashboard'
-import { Route as SmartopsJ4DashboardRouteImport } from './routes/smartops/j4-dashboard'
-import { Route as SmartopsJ3DashboardRouteImport } from './routes/smartops/j3-dashboard'
-import { Route as SmartopsJ2DashboardRouteImport } from './routes/smartops/j2-dashboard'
-import { Route as SmartopsInfrastructureRouteImport } from './routes/smartops/infrastructure'
-import { Route as SmartopsInformationManagementRouteImport } from './routes/smartops/information-management'
-import { Route as SmartopsGapAnalysisRouteImport } from './routes/smartops/gap-analysis'
-import { Route as SmartopsFeedbackRouteImport } from './routes/smartops/feedback'
-import { Route as SmartopsExternalContextRouteImport } from './routes/smartops/external-context'
-import { Route as SmartopsDigitalTwinRouteImport } from './routes/smartops/digital-twin'
-import { Route as SmartopsDecisionBoardRouteImport } from './routes/smartops/decision-board'
-import { Route as SmartopsCopSummaryRouteImport } from './routes/smartops/cop-summary'
-import { Route as SmartopsConopsRouteImport } from './routes/smartops/conops'
-import { Route as SmartopsCogRouteImport } from './routes/smartops/cog'
-import { Route as SmartopsCoaWargamerRouteImport } from './routes/smartops/coa-wargamer'
-import { Route as SmartopsCnrRouteImport } from './routes/smartops/cnr'
-import { Route as SmartopsCdeRouteImport } from './routes/smartops/cde'
-import { Route as SmartopsCcirRouteImport } from './routes/smartops/ccir'
-import { Route as SmartopsCampaignRouteImport } from './routes/smartops/campaign'
-import { Route as SmartopsBriefingRouteImport } from './routes/smartops/briefing'
-import { Route as SmartopsBrainstormingRouteImport } from './routes/smartops/brainstorming'
-import { Route as SmartopsBdaRouteImport } from './routes/smartops/bda'
-import { Route as SmartopsBattleRhythmRouteImport } from './routes/smartops/battle-rhythm'
-import { Route as SmartopsAssumptionsRouteImport } from './routes/smartops/assumptions'
-import { Route as SmartopsAssessmentRouteImport } from './routes/smartops/assessment'
-import { Route as SmartopsAnalystDashboardRouteImport } from './routes/smartops/analyst-dashboard'
-import { Route as SmartopsAdvisoryRouteImport } from './routes/smartops/advisory'
-import { Route as SmartopsA2adRouteImport } from './routes/smartops/a2ad'
+import { Route as SmartopsWeatherRouteImport } from './routes/smartops.weather'
+import { Route as SmartopsUncertaintyRouteImport } from './routes/smartops.uncertainty'
+import { Route as SmartopsTriageRouteImport } from './routes/smartops.triage'
+import { Route as SmartopsTorManagerRouteImport } from './routes/smartops.tor-manager'
+import { Route as SmartopsTargetingCellDashboardRouteImport } from './routes/smartops.targeting-cell-dashboard'
+import { Route as SmartopsSupplyChainRouteImport } from './routes/smartops.supply-chain'
+import { Route as SmartopsStrikeOptimizerRouteImport } from './routes/smartops.strike-optimizer'
+import { Route as SmartopsStrategicDirectionRouteImport } from './routes/smartops.strategic-direction'
+import { Route as SmartopsStaffRouteImport } from './routes/smartops.staff'
+import { Route as SmartopsSocialDomainRouteImport } from './routes/smartops.social-domain'
+import { Route as SmartopsSecurityRouteImport } from './routes/smartops.security'
+import { Route as SmartopsScenariosRouteImport } from './routes/smartops.scenarios'
+import { Route as SmartopsRxpRouteImport } from './routes/smartops.rxp'
+import { Route as SmartopsRoeRouteImport } from './routes/smartops.roe'
+import { Route as SmartopsRfisRouteImport } from './routes/smartops.rfis'
+import { Route as SmartopsProductsRouteImport } from './routes/smartops.products'
+import { Route as SmartopsPersonnelRouteImport } from './routes/smartops.personnel'
+import { Route as SmartopsOrbatRouteImport } from './routes/smartops.orbat'
+import { Route as SmartopsOntologyRouteImport } from './routes/smartops.ontology'
+import { Route as SmartopsMenuBuilderRouteImport } from './routes/smartops.menu-builder'
+import { Route as SmartopsMdoRouteImport } from './routes/smartops.mdo'
+import { Route as SmartopsLogisticsRouteImport } from './routes/smartops.logistics'
+import { Route as SmartopsLegadDashboardRouteImport } from './routes/smartops.legad-dashboard'
+import { Route as SmartopsJ5DashboardRouteImport } from './routes/smartops.j5-dashboard'
+import { Route as SmartopsJ4DashboardRouteImport } from './routes/smartops.j4-dashboard'
+import { Route as SmartopsJ3DashboardRouteImport } from './routes/smartops.j3-dashboard'
+import { Route as SmartopsJ2DashboardRouteImport } from './routes/smartops.j2-dashboard'
+import { Route as SmartopsInfrastructureRouteImport } from './routes/smartops.infrastructure'
+import { Route as SmartopsInformationManagementRouteImport } from './routes/smartops.information-management'
+import { Route as SmartopsImDashboardRouteImport } from './routes/smartops/im-dashboard'
+import { Route as SmartopsGapAnalysisRouteImport } from './routes/smartops.gap-analysis'
+import { Route as SmartopsFeedbackRouteImport } from './routes/smartops.feedback'
+import { Route as SmartopsExternalContextRouteImport } from './routes/smartops.external-context'
+import { Route as SmartopsDigitalTwinRouteImport } from './routes/smartops.digital-twin'
+import { Route as SmartopsDecisionBoardRouteImport } from './routes/smartops.decision-board'
+import { Route as SmartopsCopSummaryRouteImport } from './routes/smartops.cop-summary'
+import { Route as SmartopsConopsRouteImport } from './routes/smartops.conops'
+import { Route as SmartopsCogRouteImport } from './routes/smartops.cog'
+import { Route as SmartopsCoaWargamerRouteImport } from './routes/smartops.coa-wargamer'
+import { Route as SmartopsCnrRouteImport } from './routes/smartops.cnr'
+import { Route as SmartopsCdeRouteImport } from './routes/smartops.cde'
+import { Route as SmartopsCcirRouteImport } from './routes/smartops.ccir'
+import { Route as SmartopsCampaignRouteImport } from './routes/smartops.campaign'
+import { Route as SmartopsBriefingRouteImport } from './routes/smartops.briefing'
+import { Route as SmartopsBrainstormingRouteImport } from './routes/smartops.brainstorming'
+import { Route as SmartopsBdaRouteImport } from './routes/smartops.bda'
+import { Route as SmartopsBattleRhythmRouteImport } from './routes/smartops.battle-rhythm'
+import { Route as SmartopsAssumptionsRouteImport } from './routes/smartops.assumptions'
+import { Route as SmartopsAssessmentRouteImport } from './routes/smartops.assessment'
+import { Route as SmartopsAnalystDashboardRouteImport } from './routes/smartops.analyst-dashboard'
+import { Route as SmartopsAdvisoryRouteImport } from './routes/smartops.advisory'
+import { Route as SmartopsA2adRouteImport } from './routes/smartops.a2ad'
 import { Route as AdminUsersRouteImport } from './routes/admin/users'
 import { Route as AdminRateLimitsRouteImport } from './routes/admin/rate-limits'
 import { Route as AdminNewRouteImport } from './routes/admin/new'
 import { Route as AdminDiscoveryRouteImport } from './routes/admin/discovery'
 import { Route as AdminAbacRouteImport } from './routes/admin/abac'
-import { Route as SmartopsTargetingIndexRouteImport } from './routes/smartops/targeting/index'
-import { Route as SmartopsProposalsIndexRouteImport } from './routes/smartops/proposals/index'
+import { Route as SmartopsTargetingIndexRouteImport } from './routes/smartops.targeting.index'
+import { Route as SmartopsProposalsIndexRouteImport } from './routes/smartops.proposals.index'
 import { Route as AdminDiscoveryIndexRouteImport } from './routes/admin/discovery/index'
-import { Route as SmartopsTargetingTargetsRouteImport } from './routes/smartops/targeting/targets'
-import { Route as SmartopsTargetingRiskRouteImport } from './routes/smartops/targeting/risk'
-import { Route as SmartopsTargetingNominateRouteImport } from './routes/smartops/targeting/nominate'
-import { Route as SmartopsTargetingMissionCommandRouteImport } from './routes/smartops/targeting/mission-command'
-import { Route as SmartopsTargetingJtbRouteImport } from './routes/smartops/targeting/jtb'
-import { Route as SmartopsTargetingIntelligenceRouteImport } from './routes/smartops/targeting/intelligence'
-import { Route as SmartopsTargetingEmergencyRouteImport } from './routes/smartops/targeting/emergency'
-import { Route as SmartopsTargetingEffectsRouteImport } from './routes/smartops/targeting/effects'
-import { Route as SmartopsTargetingCollaborationRouteImport } from './routes/smartops/targeting/collaboration'
-import { Route as SmartopsTargetingAssetsRouteImport } from './routes/smartops/targeting/assets'
-import { Route as SmartopsTargetingAnalyticsRouteImport } from './routes/smartops/targeting/analytics'
-import { Route as SmartopsTargetingAnalysisRouteImport } from './routes/smartops/targeting/analysis'
-import { Route as SmartopsTargetingTargetIdRouteImport } from './routes/smartops/targeting/$targetId'
-import { Route as SmartopsProposalsProposalIdRouteImport } from './routes/smartops/proposals/$proposalId'
-import { Route as SmartopsConductSessionIdRouteImport } from './routes/smartops/conduct.$sessionId'
-import { Route as SmartopsBdaCreateRouteImport } from './routes/smartops/bda/create'
-import { Route as SmartopsBdaReportIdRouteImport } from './routes/smartops/bda/$reportId'
+import { Route as SmartopsTargetingTargetsRouteImport } from './routes/smartops.targeting.targets'
+import { Route as SmartopsTargetingRiskRouteImport } from './routes/smartops.targeting.risk'
+import { Route as SmartopsTargetingNominateRouteImport } from './routes/smartops.targeting.nominate'
+import { Route as SmartopsTargetingMissionCommandRouteImport } from './routes/smartops.targeting.mission-command'
+import { Route as SmartopsTargetingJtbRouteImport } from './routes/smartops.targeting.jtb'
+import { Route as SmartopsTargetingIntelligenceRouteImport } from './routes/smartops.targeting.intelligence'
+import { Route as SmartopsTargetingEmergencyRouteImport } from './routes/smartops.targeting.emergency'
+import { Route as SmartopsTargetingEffectsRouteImport } from './routes/smartops.targeting.effects'
+import { Route as SmartopsTargetingCollaborationRouteImport } from './routes/smartops.targeting.collaboration'
+import { Route as SmartopsTargetingAssetsRouteImport } from './routes/smartops.targeting.assets'
+import { Route as SmartopsTargetingAnalyticsRouteImport } from './routes/smartops.targeting.analytics'
+import { Route as SmartopsTargetingAnalysisRouteImport } from './routes/smartops.targeting.analysis'
+import { Route as SmartopsTargetingTargetIdRouteImport } from './routes/smartops.targeting.$targetId'
+import { Route as SmartopsProposalsProposalIdRouteImport } from './routes/smartops.proposals.$proposalId'
+import { Route as SmartopsConductSessionIdRouteImport } from './routes/smartops.conduct.$sessionId'
+import { Route as SmartopsBdaCreateRouteImport } from './routes/smartops.bda.create'
+import { Route as SmartopsBdaReportIdRouteImport } from './routes/smartops.bda.$reportId'
 import { Route as AdminDiscoveryServiceIdRouteImport } from './routes/admin/discovery/$serviceId'
 
 const SmartopsOplanLazyRouteImport = createFileRoute('/smartops/oplan')()
@@ -169,7 +172,7 @@ const SmartopsOplanLazyRoute = SmartopsOplanLazyRouteImport.update({
   path: '/oplan',
   getParentRoute: () => SmartopsRoute,
 } as any).lazy(() =>
-  import('./routes/smartops/oplan.lazy').then((d) => d.Route),
+  import('./routes/smartops.oplan.lazy').then((d) => d.Route),
 )
 const StatsUsersRoute = StatsUsersRouteImport.update({
   id: '/stats/users',
@@ -201,8 +204,13 @@ const SmartopsTriageRoute = SmartopsTriageRouteImport.update({
   path: '/triage',
   getParentRoute: () => SmartopsRoute,
 } as any).lazy(() =>
-  import('./routes/smartops/triage.lazy').then((d) => d.Route),
+  import('./routes/smartops.triage.lazy').then((d) => d.Route),
 )
+const SmartopsTorManagerRoute = SmartopsTorManagerRouteImport.update({
+  id: '/tor-manager',
+  path: '/tor-manager',
+  getParentRoute: () => SmartopsRoute,
+} as any)
 const SmartopsTargetingCellDashboardRoute =
   SmartopsTargetingCellDashboardRouteImport.update({
     id: '/targeting-cell-dashboard',
@@ -280,6 +288,11 @@ const SmartopsOntologyRoute = SmartopsOntologyRouteImport.update({
   path: '/ontology',
   getParentRoute: () => SmartopsRoute,
 } as any)
+const SmartopsMenuBuilderRoute = SmartopsMenuBuilderRouteImport.update({
+  id: '/menu-builder',
+  path: '/menu-builder',
+  getParentRoute: () => SmartopsRoute,
+} as any)
 const SmartopsMdoRoute = SmartopsMdoRouteImport.update({
   id: '/mdo',
   path: '/mdo',
@@ -326,12 +339,17 @@ const SmartopsInformationManagementRoute =
     path: '/information-management',
     getParentRoute: () => SmartopsRoute,
   } as any)
+const SmartopsImDashboardRoute = SmartopsImDashboardRouteImport.update({
+  id: '/im-dashboard',
+  path: '/im-dashboard',
+  getParentRoute: () => SmartopsRoute,
+} as any)
 const SmartopsGapAnalysisRoute = SmartopsGapAnalysisRouteImport.update({
   id: '/gap-analysis',
   path: '/gap-analysis',
   getParentRoute: () => SmartopsRoute,
 } as any).lazy(() =>
-  import('./routes/smartops/gap-analysis.lazy').then((d) => d.Route),
+  import('./routes/smartops.gap-analysis.lazy').then((d) => d.Route),
 )
 const SmartopsFeedbackRoute = SmartopsFeedbackRouteImport.update({
   id: '/feedback',
@@ -348,7 +366,7 @@ const SmartopsDigitalTwinRoute = SmartopsDigitalTwinRouteImport.update({
   path: '/digital-twin',
   getParentRoute: () => SmartopsRoute,
 } as any).lazy(() =>
-  import('./routes/smartops/digital-twin.lazy').then((d) => d.Route),
+  import('./routes/smartops.digital-twin.lazy').then((d) => d.Route),
 )
 const SmartopsDecisionBoardRoute = SmartopsDecisionBoardRouteImport.update({
   id: '/decision-board',
@@ -415,7 +433,7 @@ const SmartopsBattleRhythmRoute = SmartopsBattleRhythmRouteImport.update({
   path: '/battle-rhythm',
   getParentRoute: () => SmartopsRoute,
 } as any).lazy(() =>
-  import('./routes/smartops/battle-rhythm.lazy').then((d) => d.Route),
+  import('./routes/smartops.battle-rhythm.lazy').then((d) => d.Route),
 )
 const SmartopsAssumptionsRoute = SmartopsAssumptionsRouteImport.update({
   id: '/assumptions',
@@ -438,13 +456,13 @@ const SmartopsAdvisoryRoute = SmartopsAdvisoryRouteImport.update({
   path: '/advisory',
   getParentRoute: () => SmartopsRoute,
 } as any).lazy(() =>
-  import('./routes/smartops/advisory.lazy').then((d) => d.Route),
+  import('./routes/smartops.advisory.lazy').then((d) => d.Route),
 )
 const SmartopsA2adRoute = SmartopsA2adRouteImport.update({
   id: '/a2ad',
   path: '/a2ad',
   getParentRoute: () => SmartopsRoute,
-} as any).lazy(() => import('./routes/smartops/a2ad.lazy').then((d) => d.Route))
+} as any).lazy(() => import('./routes/smartops.a2ad.lazy').then((d) => d.Route))
 const AdminUsersRoute = AdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -572,7 +590,7 @@ const SmartopsConductSessionIdRoute =
     path: '/conduct/$sessionId',
     getParentRoute: () => SmartopsRoute,
   } as any).lazy(() =>
-    import('./routes/smartops/conduct.$sessionId.lazy').then((d) => d.Route),
+    import('./routes/smartops.conduct.$sessionId.lazy').then((d) => d.Route),
   )
 const SmartopsBdaCreateRoute = SmartopsBdaCreateRouteImport.update({
   id: '/create',
@@ -628,6 +646,7 @@ export interface FileRoutesByFullPath {
   '/smartops/external-context': typeof SmartopsExternalContextRoute
   '/smartops/feedback': typeof SmartopsFeedbackRoute
   '/smartops/gap-analysis': typeof SmartopsGapAnalysisRoute
+  '/smartops/im-dashboard': typeof SmartopsImDashboardRoute
   '/smartops/information-management': typeof SmartopsInformationManagementRoute
   '/smartops/infrastructure': typeof SmartopsInfrastructureRoute
   '/smartops/j2-dashboard': typeof SmartopsJ2DashboardRoute
@@ -637,6 +656,7 @@ export interface FileRoutesByFullPath {
   '/smartops/legad-dashboard': typeof SmartopsLegadDashboardRoute
   '/smartops/logistics': typeof SmartopsLogisticsRoute
   '/smartops/mdo': typeof SmartopsMdoRoute
+  '/smartops/menu-builder': typeof SmartopsMenuBuilderRoute
   '/smartops/ontology': typeof SmartopsOntologyRoute
   '/smartops/orbat': typeof SmartopsOrbatRoute
   '/smartops/personnel': typeof SmartopsPersonnelRoute
@@ -652,6 +672,7 @@ export interface FileRoutesByFullPath {
   '/smartops/strike-optimizer': typeof SmartopsStrikeOptimizerRoute
   '/smartops/supply-chain': typeof SmartopsSupplyChainRoute
   '/smartops/targeting-cell-dashboard': typeof SmartopsTargetingCellDashboardRoute
+  '/smartops/tor-manager': typeof SmartopsTorManagerRoute
   '/smartops/triage': typeof SmartopsTriageRoute
   '/smartops/uncertainty': typeof SmartopsUncertaintyRoute
   '/smartops/weather': typeof SmartopsWeatherRoute
@@ -718,6 +739,7 @@ export interface FileRoutesByTo {
   '/smartops/external-context': typeof SmartopsExternalContextRoute
   '/smartops/feedback': typeof SmartopsFeedbackRoute
   '/smartops/gap-analysis': typeof SmartopsGapAnalysisRoute
+  '/smartops/im-dashboard': typeof SmartopsImDashboardRoute
   '/smartops/information-management': typeof SmartopsInformationManagementRoute
   '/smartops/infrastructure': typeof SmartopsInfrastructureRoute
   '/smartops/j2-dashboard': typeof SmartopsJ2DashboardRoute
@@ -727,6 +749,7 @@ export interface FileRoutesByTo {
   '/smartops/legad-dashboard': typeof SmartopsLegadDashboardRoute
   '/smartops/logistics': typeof SmartopsLogisticsRoute
   '/smartops/mdo': typeof SmartopsMdoRoute
+  '/smartops/menu-builder': typeof SmartopsMenuBuilderRoute
   '/smartops/ontology': typeof SmartopsOntologyRoute
   '/smartops/orbat': typeof SmartopsOrbatRoute
   '/smartops/personnel': typeof SmartopsPersonnelRoute
@@ -742,6 +765,7 @@ export interface FileRoutesByTo {
   '/smartops/strike-optimizer': typeof SmartopsStrikeOptimizerRoute
   '/smartops/supply-chain': typeof SmartopsSupplyChainRoute
   '/smartops/targeting-cell-dashboard': typeof SmartopsTargetingCellDashboardRoute
+  '/smartops/tor-manager': typeof SmartopsTorManagerRoute
   '/smartops/triage': typeof SmartopsTriageRoute
   '/smartops/uncertainty': typeof SmartopsUncertaintyRoute
   '/smartops/weather': typeof SmartopsWeatherRoute
@@ -812,6 +836,7 @@ export interface FileRoutesById {
   '/smartops/external-context': typeof SmartopsExternalContextRoute
   '/smartops/feedback': typeof SmartopsFeedbackRoute
   '/smartops/gap-analysis': typeof SmartopsGapAnalysisRoute
+  '/smartops/im-dashboard': typeof SmartopsImDashboardRoute
   '/smartops/information-management': typeof SmartopsInformationManagementRoute
   '/smartops/infrastructure': typeof SmartopsInfrastructureRoute
   '/smartops/j2-dashboard': typeof SmartopsJ2DashboardRoute
@@ -821,6 +846,7 @@ export interface FileRoutesById {
   '/smartops/legad-dashboard': typeof SmartopsLegadDashboardRoute
   '/smartops/logistics': typeof SmartopsLogisticsRoute
   '/smartops/mdo': typeof SmartopsMdoRoute
+  '/smartops/menu-builder': typeof SmartopsMenuBuilderRoute
   '/smartops/ontology': typeof SmartopsOntologyRoute
   '/smartops/orbat': typeof SmartopsOrbatRoute
   '/smartops/personnel': typeof SmartopsPersonnelRoute
@@ -836,6 +862,7 @@ export interface FileRoutesById {
   '/smartops/strike-optimizer': typeof SmartopsStrikeOptimizerRoute
   '/smartops/supply-chain': typeof SmartopsSupplyChainRoute
   '/smartops/targeting-cell-dashboard': typeof SmartopsTargetingCellDashboardRoute
+  '/smartops/tor-manager': typeof SmartopsTorManagerRoute
   '/smartops/triage': typeof SmartopsTriageRoute
   '/smartops/uncertainty': typeof SmartopsUncertaintyRoute
   '/smartops/weather': typeof SmartopsWeatherRoute
@@ -907,6 +934,7 @@ export interface FileRouteTypes {
     | '/smartops/external-context'
     | '/smartops/feedback'
     | '/smartops/gap-analysis'
+    | '/smartops/im-dashboard'
     | '/smartops/information-management'
     | '/smartops/infrastructure'
     | '/smartops/j2-dashboard'
@@ -916,6 +944,7 @@ export interface FileRouteTypes {
     | '/smartops/legad-dashboard'
     | '/smartops/logistics'
     | '/smartops/mdo'
+    | '/smartops/menu-builder'
     | '/smartops/ontology'
     | '/smartops/orbat'
     | '/smartops/personnel'
@@ -931,6 +960,7 @@ export interface FileRouteTypes {
     | '/smartops/strike-optimizer'
     | '/smartops/supply-chain'
     | '/smartops/targeting-cell-dashboard'
+    | '/smartops/tor-manager'
     | '/smartops/triage'
     | '/smartops/uncertainty'
     | '/smartops/weather'
@@ -997,6 +1027,7 @@ export interface FileRouteTypes {
     | '/smartops/external-context'
     | '/smartops/feedback'
     | '/smartops/gap-analysis'
+    | '/smartops/im-dashboard'
     | '/smartops/information-management'
     | '/smartops/infrastructure'
     | '/smartops/j2-dashboard'
@@ -1006,6 +1037,7 @@ export interface FileRouteTypes {
     | '/smartops/legad-dashboard'
     | '/smartops/logistics'
     | '/smartops/mdo'
+    | '/smartops/menu-builder'
     | '/smartops/ontology'
     | '/smartops/orbat'
     | '/smartops/personnel'
@@ -1021,6 +1053,7 @@ export interface FileRouteTypes {
     | '/smartops/strike-optimizer'
     | '/smartops/supply-chain'
     | '/smartops/targeting-cell-dashboard'
+    | '/smartops/tor-manager'
     | '/smartops/triage'
     | '/smartops/uncertainty'
     | '/smartops/weather'
@@ -1090,6 +1123,7 @@ export interface FileRouteTypes {
     | '/smartops/external-context'
     | '/smartops/feedback'
     | '/smartops/gap-analysis'
+    | '/smartops/im-dashboard'
     | '/smartops/information-management'
     | '/smartops/infrastructure'
     | '/smartops/j2-dashboard'
@@ -1099,6 +1133,7 @@ export interface FileRouteTypes {
     | '/smartops/legad-dashboard'
     | '/smartops/logistics'
     | '/smartops/mdo'
+    | '/smartops/menu-builder'
     | '/smartops/ontology'
     | '/smartops/orbat'
     | '/smartops/personnel'
@@ -1114,6 +1149,7 @@ export interface FileRouteTypes {
     | '/smartops/strike-optimizer'
     | '/smartops/supply-chain'
     | '/smartops/targeting-cell-dashboard'
+    | '/smartops/tor-manager'
     | '/smartops/triage'
     | '/smartops/uncertainty'
     | '/smartops/weather'
@@ -1297,6 +1333,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SmartopsTriageRouteImport
       parentRoute: typeof SmartopsRoute
     }
+    '/smartops/tor-manager': {
+      id: '/smartops/tor-manager'
+      path: '/tor-manager'
+      fullPath: '/smartops/tor-manager'
+      preLoaderRoute: typeof SmartopsTorManagerRouteImport
+      parentRoute: typeof SmartopsRoute
+    }
     '/smartops/targeting-cell-dashboard': {
       id: '/smartops/targeting-cell-dashboard'
       path: '/targeting-cell-dashboard'
@@ -1402,6 +1445,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SmartopsOntologyRouteImport
       parentRoute: typeof SmartopsRoute
     }
+    '/smartops/menu-builder': {
+      id: '/smartops/menu-builder'
+      path: '/menu-builder'
+      fullPath: '/smartops/menu-builder'
+      preLoaderRoute: typeof SmartopsMenuBuilderRouteImport
+      parentRoute: typeof SmartopsRoute
+    }
     '/smartops/mdo': {
       id: '/smartops/mdo'
       path: '/mdo'
@@ -1463,6 +1513,13 @@ declare module '@tanstack/react-router' {
       path: '/information-management'
       fullPath: '/smartops/information-management'
       preLoaderRoute: typeof SmartopsInformationManagementRouteImport
+      parentRoute: typeof SmartopsRoute
+    }
+    '/smartops/im-dashboard': {
+      id: '/smartops/im-dashboard'
+      path: '/im-dashboard'
+      fullPath: '/smartops/im-dashboard'
+      preLoaderRoute: typeof SmartopsImDashboardRouteImport
       parentRoute: typeof SmartopsRoute
     }
     '/smartops/gap-analysis': {
@@ -1875,6 +1932,7 @@ interface SmartopsRouteChildren {
   SmartopsExternalContextRoute: typeof SmartopsExternalContextRoute
   SmartopsFeedbackRoute: typeof SmartopsFeedbackRoute
   SmartopsGapAnalysisRoute: typeof SmartopsGapAnalysisRoute
+  SmartopsImDashboardRoute: typeof SmartopsImDashboardRoute
   SmartopsInformationManagementRoute: typeof SmartopsInformationManagementRoute
   SmartopsInfrastructureRoute: typeof SmartopsInfrastructureRoute
   SmartopsJ2DashboardRoute: typeof SmartopsJ2DashboardRoute
@@ -1884,6 +1942,7 @@ interface SmartopsRouteChildren {
   SmartopsLegadDashboardRoute: typeof SmartopsLegadDashboardRoute
   SmartopsLogisticsRoute: typeof SmartopsLogisticsRoute
   SmartopsMdoRoute: typeof SmartopsMdoRoute
+  SmartopsMenuBuilderRoute: typeof SmartopsMenuBuilderRoute
   SmartopsOntologyRoute: typeof SmartopsOntologyRoute
   SmartopsOrbatRoute: typeof SmartopsOrbatRoute
   SmartopsPersonnelRoute: typeof SmartopsPersonnelRoute
@@ -1899,6 +1958,7 @@ interface SmartopsRouteChildren {
   SmartopsStrikeOptimizerRoute: typeof SmartopsStrikeOptimizerRoute
   SmartopsSupplyChainRoute: typeof SmartopsSupplyChainRoute
   SmartopsTargetingCellDashboardRoute: typeof SmartopsTargetingCellDashboardRoute
+  SmartopsTorManagerRoute: typeof SmartopsTorManagerRoute
   SmartopsTriageRoute: typeof SmartopsTriageRoute
   SmartopsUncertaintyRoute: typeof SmartopsUncertaintyRoute
   SmartopsWeatherRoute: typeof SmartopsWeatherRoute
@@ -1946,6 +2006,7 @@ const SmartopsRouteChildren: SmartopsRouteChildren = {
   SmartopsExternalContextRoute: SmartopsExternalContextRoute,
   SmartopsFeedbackRoute: SmartopsFeedbackRoute,
   SmartopsGapAnalysisRoute: SmartopsGapAnalysisRoute,
+  SmartopsImDashboardRoute: SmartopsImDashboardRoute,
   SmartopsInformationManagementRoute: SmartopsInformationManagementRoute,
   SmartopsInfrastructureRoute: SmartopsInfrastructureRoute,
   SmartopsJ2DashboardRoute: SmartopsJ2DashboardRoute,
@@ -1955,6 +2016,7 @@ const SmartopsRouteChildren: SmartopsRouteChildren = {
   SmartopsLegadDashboardRoute: SmartopsLegadDashboardRoute,
   SmartopsLogisticsRoute: SmartopsLogisticsRoute,
   SmartopsMdoRoute: SmartopsMdoRoute,
+  SmartopsMenuBuilderRoute: SmartopsMenuBuilderRoute,
   SmartopsOntologyRoute: SmartopsOntologyRoute,
   SmartopsOrbatRoute: SmartopsOrbatRoute,
   SmartopsPersonnelRoute: SmartopsPersonnelRoute,
@@ -1970,6 +2032,7 @@ const SmartopsRouteChildren: SmartopsRouteChildren = {
   SmartopsStrikeOptimizerRoute: SmartopsStrikeOptimizerRoute,
   SmartopsSupplyChainRoute: SmartopsSupplyChainRoute,
   SmartopsTargetingCellDashboardRoute: SmartopsTargetingCellDashboardRoute,
+  SmartopsTorManagerRoute: SmartopsTorManagerRoute,
   SmartopsTriageRoute: SmartopsTriageRoute,
   SmartopsUncertaintyRoute: SmartopsUncertaintyRoute,
   SmartopsWeatherRoute: SmartopsWeatherRoute,

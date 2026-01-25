@@ -12,15 +12,15 @@ where S: Clone + Send + Sync + 'static {
     let repo = Arc::new(AssumptionRepository::new(pool));
 
     Router::new()
-        .route("/assumptions", 
+        .route("/", 
             post(handlers::create_assumption)
             .get(handlers::get_assumptions)
         )
-        .route("/assumptions/summary", get(handlers::get_summary))
-        .route("/assumptions/:id", 
+        .route("/summary", get(handlers::get_summary))
+        .route("/:id", 
             get(handlers::get_assumption)
-                .put(handlers::update_assumption)
-                .delete(handlers::delete_assumption)
+            .put(handlers::update_assumption)
+            .delete(handlers::delete_assumption)
         )
         .layer(Extension(repo))
 }

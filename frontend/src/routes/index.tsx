@@ -51,14 +51,46 @@ function Landing() {
 }
 
 function App() {
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated, isLoading, user } = useAuth()
 
   if (isLoading) {
     return <div className="flex min-h-screen items-center justify-center bg-background">Loading...</div>
   }
 
-  // If user is authenticated, redirect to SmartOps dashboard
+  // If user is authenticated, redirect based on role
   if (isAuthenticated) {
+    const hasPermission = (perm: string) => user?.permissions?.includes('*') || user?.permissions?.includes(perm);
+
+    // Check for permissions (Order matters for priority)
+
+    // Commander
+    if (hasPermission('commander.dashboard.view')) return <Navigate to="/smartops/cop-summary" />
+
+    // J3 Ops
+    if (hasPermission('j3.dashboard.view')) return <Navigate to="/smartops/j3-dashboard" />
+
+    // J2 Intel
+    if (hasPermission('j2.dashboard.view')) return <Navigate to="/smartops/j2-dashboard" />
+
+    // J4 Logistics
+    if (hasPermission('j4.dashboard.view')) return <Navigate to="/smartops/j4-dashboard" />
+
+    // J5 Plans
+    if (hasPermission('j5.dashboard.view')) return <Navigate to="/smartops/j5-dashboard" />
+
+    // Targeting Cell
+    if (hasPermission('targeting.dashboard.view')) return <Navigate to="/smartops/targeting-cell-dashboard" />
+
+    // LEGAD
+    if (hasPermission('legad.dashboard.view')) return <Navigate to="/smartops/legad-dashboard" />
+
+    // Information Manager
+    if (hasPermission('im.dashboard.view')) return <Navigate to="/smartops/information-management" />
+
+    // Analyst
+    if (hasPermission('analyst.dashboard.view')) return <Navigate to="/smartops/analyst-dashboard" />
+
+    // Fallback
     return <Navigate to="/smartops" />
   }
 

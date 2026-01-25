@@ -262,7 +262,7 @@ impl OntologyService {
         ];
         
         // Entity Types
-        let entity_types = vec![
+        let mut entity_types = vec![
             EntityTypeDefinition { 
                 name: "Unit".to_string(), 
                 description: "Military organization or force element".to_string(),
@@ -321,7 +321,53 @@ impl OntologyService {
                 valid_sources: vec!["Unit".to_string()],
                 valid_targets: vec!["Target".to_string()],
             },
+            RelationshipTypeDefinition {
+                name: "assigned_to".to_string(),
+                description: "Menu item assigned to a role".to_string(),
+                valid_sources: vec!["MenuItem".to_string()],
+                valid_targets: vec!["Role".to_string()],
+            },
+            RelationshipTypeDefinition {
+                name: "performs_action".to_string(),
+                description: "Menu item performs a specific action".to_string(),
+                valid_sources: vec!["MenuItem".to_string()],
+                valid_targets: vec!["Action".to_string()],
+            },
+            RelationshipTypeDefinition {
+                name: "operates_on".to_string(),
+                description: "Action operates on a specific dataset".to_string(),
+                valid_sources: vec!["Action".to_string()],
+                valid_targets: vec!["Dataset".to_string()],
+            },
+            RelationshipTypeDefinition {
+                name: "available_for".to_string(),
+                description: "Action is available for a specific role".to_string(),
+                valid_sources: vec!["Action".to_string()],
+                valid_targets: vec!["Role".to_string()],
+            },
         ];
+
+        // Add MenuItem and TOR to entity_types
+        entity_types.push(EntityTypeDefinition {
+            name: "MenuItem".to_string(),
+            description: "Application navigation item".to_string(),
+            properties_schema: None,
+        });
+        entity_types.push(EntityTypeDefinition {
+            name: "TOR".to_string(),
+            description: "Terms of Reference document".to_string(),
+            properties_schema: None,
+        });
+        entity_types.push(EntityTypeDefinition {
+            name: "Action".to_string(),
+            description: "Operational or administrative action".to_string(),
+            properties_schema: None,
+        });
+        entity_types.push(EntityTypeDefinition {
+            name: "Dataset".to_string(),
+            description: "Operational dataset or database".to_string(),
+            properties_schema: None,
+        });
 
         Ok(OntologySchema {
             version: "1.0.0".to_string(),

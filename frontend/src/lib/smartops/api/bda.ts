@@ -7,15 +7,29 @@ import { api } from '@/lib/api';
 // TYPES
 // ============================================================================
 
+
+export type PhysicalDamage = 'none' | 'light' | 'moderate' | 'severe' | 'destroyed';
+export type FunctionalDamage = 'none' | 'degraded' | 'non_mission_capable';
+export type AssessmentType = 'initial' | 'supplemental' | 'final';
+export type Recommendation = 'effect_achieved' | 're_attack' | 're_weaponeer' | 'monitor';
+export type EffectLevel = 'none' | 'limited' | 'significant' | 'full'; // Assuming values based on error context or standard BDA
+export type SensorType = 'SAR' | 'EO' | 'IR' | 'FMV' | 'Commercial' | 'Other';
+
+export interface CreateBdaReportRequest extends Partial<BdaReport> {
+  target_id: string;
+  // other required fields
+}
+
 export interface BdaReport {
   id: string;
   target_id: string;
   strike_id?: string;
   status: 'draft' | 'submitted' | 'approved' | 'rejected';
-  assessment_type: 'initial' | 'supplemental' | 'final';
-  physical_damage: 'none' | 'light' | 'moderate' | 'severe' | 'destroyed';
-  functional_damage: 'none' | 'degraded' | 'non_mission_capable';
-  recommendation: 'effect_achieved' | 're_attack' | 're_weaponeer' | 'monitor';
+  assessment_type: AssessmentType;
+  physical_damage: PhysicalDamage;
+  functional_damage: FunctionalDamage;
+  recommendation: Recommendation;
+  effect_level?: EffectLevel; // Added optional field if needed
   confidence: number;
   assessment_date: string;
   analyst_id: string;
@@ -35,7 +49,7 @@ export interface BdaImagery {
   bda_report_id: string;
   collection_date: string;
   collection_platform?: string;
-  sensor_type?: 'SAR' | 'EO' | 'IR' | 'FMV' | 'Commercial' | 'Other';
+  sensor_type?: SensorType;
   is_pre_strike_baseline: boolean;
   image_url: string;
   thumbnail_url?: string;
@@ -47,6 +61,7 @@ export interface BdaImagery {
   annotated_at?: string;
   [key: string]: any; // Allow additional fields
 }
+
 
 // ============================================================================
 // API SERVICE

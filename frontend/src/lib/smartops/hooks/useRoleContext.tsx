@@ -1,4 +1,6 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useContext, useState } from 'react';
+import { useAuth } from '@/features/auth/lib/context';
+import type { ReactNode } from 'react';
 
 export interface RoleCapabilities {
     // Intelligence
@@ -275,6 +277,45 @@ export const AVAILABLE_ROLES: Role[] = [
             canApproveDecisions: false,
             canSubmitProposals: false,
         }
+    },
+    {
+        id: 'im',
+        name: 'Information Manager',
+        shortName: 'IM',
+        description: 'Information lifecycle and knowledge management',
+        permissions: [
+            'rfis.view',
+            'ontology.view',
+            'ontology.manage',
+            'digital_twin.view',
+            'cop.view',
+            'rxp.view',
+            'documents.view',
+            'menu.manage',
+            'tor.manage',
+            'battle_rhythm.view'
+        ],
+        color: 'teal',
+        capabilities: {
+            canEditIntel: false,
+            canViewIntel: true,
+            canEditOperations: true, // IM can edit some operational data like TOR
+            canViewOperations: true,
+            canEditPlans: true, // IM can edit ontology-based plans
+            canViewPlans: true,
+            canEditAssumptions: true,
+            canEditTargets: false,
+            canApproveTargets: false,
+            canViewTargets: true,
+            canEditLogistics: false,
+            canRequestSupply: false,
+            canViewLogistics: true,
+            canEditLegal: false,
+            canApproveROE: false,
+            canViewLegal: false,
+            canApproveDecisions: false,
+            canSubmitProposals: true,
+        }
     }
 ];
 
@@ -287,8 +328,10 @@ interface RoleContextType {
 const RoleContext = createContext<RoleContextType | undefined>(undefined);
 
 export function RoleProvider({ children }: { children: ReactNode }) {
-    // Load role from localStorage or default to Commander
-    const [currentRole, setCurrentRole] = useState<Role>(() => {
+    const { user, isAuthenticated } = useAuth();
+
+    // Local state for demo mode (when not logged in)
+    const [demoRole, setDemoRole] = useState<Role>(() => {
         const stored = localStorage.getItem('demo-role');
         if (stored) {
             const role = AVAILABLE_ROLES.find(r => r.id === stored);
@@ -297,11 +340,52 @@ export function RoleProvider({ children }: { children: ReactNode }) {
         return AVAILABLE_ROLES[0]; // Default to Commander
     });
 
+    // Derive current role implies merging Auth state when available
+    // We construct a Role object from the authenticated user profile if available
+    const authenticatedRole: Role | null = isAuthenticated && user ? {
+        id: user.roles?.[0]?.role_name?.toLowerCase().replace(/\s+/g, '-') || 'unknown-role',
+        name: user.roles?.[0]?.role_name || 'Authenticated User',
+        shortName: user.username?.substring(0, 3).toUpperCase() || 'USR',
+        description: 'Authenticated User Role',
+        permissions: user.permissions || [],
+        color: 'blue', // Default color
+        // Capabilities could be derived from permissions in a real app, 
+        // for now we default to a safe view-only set + permission overrides if needed
+        capabilities: {
+            canEditIntel: user.permissions?.includes('intelligence.edit') || false,
+            canViewIntel: true,
+            canEditOperations: user.permissions?.includes('operations.edit') || false,
+            canViewOperations: true,
+            canEditPlans: user.permissions?.includes('plans.edit') || false,
+            canViewPlans: true,
+            canEditAssumptions: user.permissions?.includes('assumptions.edit') || false,
+            canEditTargets: user.permissions?.includes('targeting.edit') || false,
+            canApproveTargets: user.permissions?.includes('targeting.approve') || false,
+            canViewTargets: true,
+            canEditLogistics: user.permissions?.includes('logistics.edit') || false,
+            canRequestSupply: user.permissions?.includes('logistics.request') || false,
+            canViewLogistics: true,
+            canEditLegal: user.permissions?.includes('legal.edit') || false,
+            canApproveROE: user.permissions?.includes('roe.approve') || false,
+            canViewLegal: true,
+            canApproveDecisions: user.permissions?.includes('decisions.approve') || false,
+            canSubmitProposals: true,
+        }
+    } : null;
+
+    // Use authenticated role if logged in, otherwise demo role
+    const currentRole = authenticatedRole || demoRole;
+
     const setRole = (roleId: string) => {
-        const role = AVAILABLE_ROLES.find(r => r.id === roleId);
-        if (role) {
-            setCurrentRole(role);
-            localStorage.setItem('demo-role', roleId);
+        // Only allow switching demo roles if NOT authenticated
+        if (!isAuthenticated) {
+            const role = AVAILABLE_ROLES.find(r => r.id === roleId);
+            if (role) {
+                setDemoRole(role);
+                localStorage.setItem('demo-role', roleId);
+            }
+        } else {
+            console.warn("Cannot switch roles while authenticated via backend.");
         }
     };
 

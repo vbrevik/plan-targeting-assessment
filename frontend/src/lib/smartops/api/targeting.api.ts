@@ -121,6 +121,34 @@ export interface BDAAssessment {
     reAttackRecommended: boolean;
 }
 
+export interface MissionIntent {
+    id: string;
+    commander_intent: string;
+    end_state: string;
+    center_of_gravity: string;
+    lines_of_effort: string[];
+}
+
+export interface TargetingGuidance {
+    id: string;
+    priorities: string[];
+    restrictions: string[];
+    focus_areas: string[];
+}
+
+export interface DecisionAuthority {
+    level: string;
+    role: string;
+    authorities: string[];
+}
+
+export interface OperationalTempo {
+    current_phase: string;
+    tempo: 'HIGH' | 'MEDIUM' | 'LOW';
+    next_decision_point: string;
+}
+
+
 // ============================================================================
 // API CLIENT IMPLEMENTATION
 // ============================================================================
@@ -130,6 +158,38 @@ export const targetingApi = {
     async getDecisionGates(): Promise<DecisionGatesResponse> {
         return api.get<DecisionGatesResponse>('/targeting/decision-gates');
     },
+
+    async getMissionIntent(): Promise<MissionIntent> {
+        return api.get<MissionIntent>('/targeting/mission/intent').catch(() => ({
+            id: 'mock-intent',
+            commander_intent: 'Degrade adversary C2 capability...',
+            end_state: 'Adversary unable to coordinate large scale operations.',
+            center_of_gravity: 'Strategic Command Node',
+            lines_of_effort: ['C2 Degradation', 'Logistics Disruption']
+        }));
+    },
+
+    async getTargetingGuidance(): Promise<TargetingGuidance> {
+        return api.get<TargetingGuidance>('/targeting/mission/guidance').catch(() => ({
+            id: 'mock-guidance',
+            priorities: ['HVT C2', 'Logistics Hubs'],
+            restrictions: ['No strike within 500m of cultural sites'],
+            focus_areas: ['Sector Alpha', 'Sector Bravo']
+        }));
+    },
+
+    async getAuthorityMatrix(): Promise<DecisionAuthority[]> {
+        return api.get<DecisionAuthority[]>('/targeting/mission/authorities').catch(() => []);
+    },
+
+    async getOperationalTempo(): Promise<OperationalTempo> {
+        return api.get<OperationalTempo>('/targeting/mission/tempo').catch(() => ({
+            current_phase: 'Phase 2: Deter',
+            tempo: 'HIGH',
+            next_decision_point: 'H+48'
+        }));
+    },
+
 
     // Targets
     async getTargets(params?: { status?: string; priority?: string; limit?: number; domain?: Domain; level?: LevelOfWar; operationId?: string }): Promise<Target[]> {

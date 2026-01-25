@@ -42,7 +42,7 @@ export interface EntityFilter {
 export const OntologyService = {
     getEntities: async (filter?: EntityFilter): Promise<Entity[]> => {
         const params: Record<string, string> = {};
-        if (filter?.type) params.type = filter.type;
+        if (filter?.type) params.type_ = filter.type; // backend uses type_
         if (filter?.operation_id) params.operation_id = filter.operation_id;
         if (filter?.campaign_id) params.campaign_id = filter.campaign_id;
 

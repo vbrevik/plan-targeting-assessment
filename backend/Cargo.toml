@@ -46,3 +46,19 @@ path = "scripts/create_test_user.rs"
 [[bin]]
 name = "reset_user_password"
 path = "scripts/reset_user_password.rs"
+
+[[bin]]
+name = "reset_im_password"
+path = "scripts/reset_im_password.rs"
+
+[[bin]]
+name = "clean_im_roles"
+path = "scripts/clean_im_roles.rs"
+
+[[bin]]
+name = "setup_verification_users"
+path = "scripts/setup_verification_users.rs"
+
+[[bin]]
+name = "setup_assistant_im"
+path = "scripts/setup_assistant_im.rs"

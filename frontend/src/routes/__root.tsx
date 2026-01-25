@@ -13,17 +13,19 @@ export const Route = createRootRoute({
   component: () => {
     const location = useLocation()
     const isSmartOps = location.pathname.startsWith('/smartops')
+    const isAuthRoute = ['/login', '/register'].includes(location.pathname)
+    const shouldHideChrome = isSmartOps || isAuthRoute
 
     return (
       <AuthProvider>
         <div className="flex flex-col min-h-screen bg-background text-foreground">
           <SkipLink />
-          {!isSmartOps && <Navbar />}
-          {!isSmartOps && <Breadcrumbs />}
+          {!shouldHideChrome && <Navbar />}
+          {!shouldHideChrome && <Breadcrumbs />}
           <main className="flex-1" id="main-content">
             <Outlet />
           </main>
-          {!isSmartOps && <Footer />}
+          {!shouldHideChrome && <Footer />}
           <TanStackDevtools
             config={{
               position: 'bottom-right',

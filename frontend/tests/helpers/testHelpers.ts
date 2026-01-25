@@ -1,28 +1,66 @@
 // Test Helpers for Targeting Workbench E2E Tests
 // Provides common utility functions for test operations
 
-import { test, expect, Page, Request } from '@playwright/test';
-import { TestTarget, TestUser, TestBDAReport, mockApiResponses } from '../fixtures/testData';
+import { test, expect, type Page, type APIRequestContext } from '@playwright/test';
+import { type TestTarget, type TestUser, type TestBDAReport, mockApiResponses } from '../fixtures/testData';
+
+async function getAuthToken(request: APIRequestContext): Promise<string> {
+  const user = { username: 'e2e_tester', email: 'e2e_tester@test.mil', password: 'Password123!' };
+
+  // Try login
+  let loginRes = await request.post('http://localhost:3000/api/auth/login', {
+    data: { email: user.email, password: user.password }
+  });
+
+  // If failed (e.g. 404/401), try register
+  if (!loginRes.ok()) {
+    await request.post('http://localhost:3000/api/auth/register', {
+      data: user
+    });
+    // Login again
+    loginRes = await request.post('http://localhost:3000/api/auth/login', {
+      data: { email: user.email, password: user.password }
+    });
+  }
+
+  if (!loginRes.ok()) {
+    // Fallback for dev/mock env if backend not reachable or other error
+    return 'test-token-12345';
+  }
+
+  const body = await loginRes.json();
+  return body.access_token || 'test-token-12345';
+}
 
 // Custom test fixture with authenticated page
 export const authenticatedTest = test.extend<{
   authenticatedPage: Page;
-  authenticatedRequest: Request;
+  authenticatedRequest: APIRequestContext;
 }>({
-  authenticatedPage: async ({ page, context }, use) => {
+  authenticatedPage: async ({ page, context, request }, use) => {
+    const token = await getAuthToken(request);
+
     // Set up authentication token
-    await context.addInitScript(() => {
-      window.localStorage.setItem('auth_token', 'test-token-12345');
+    await context.addInitScript((accessToken) => {
+      window.localStorage.setItem('auth_token', accessToken);
       window.localStorage.setItem('user_role', 'TARGETEER');
       window.localStorage.setItem('user_clearance', 'SECRET');
-    });
-    
+    }, token);
+
     await use(page);
   },
-  authenticatedRequest: async ({ request }, use) => {
-    // Set up authenticated request context
-    const authenticatedRequest = request;
-    await use(authenticatedRequest);
+  authenticatedRequest: async ({ playwright, request }, use) => {
+    const token = await getAuthToken(request);
+
+    const apiContext = await playwright.request.newContext({
+      baseURL: 'http://localhost:3000',
+      extraHTTPHeaders: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await use(apiContext);
+    await apiContext.dispose();
   }
 });
 
@@ -64,21 +102,21 @@ export class NavigationHelper {
 export class TargetHelper {
   static async createTarget(page: Page, targetData: Partial<TestTarget> = {}) {
     await NavigationHelper.goToTargetNomination(page);
-    
+
     // Fill in target form
     await page.fill('[data-testid="target-name"]', targetData.name || 'TEST-TARGET-001');
     await page.selectOption('[data-testid="target-type"]', targetData.type || 'STANDARD');
     await page.selectOption('[data-testid="target-priority"]', targetData.priority || 'MEDIUM');
     await page.fill('[data-testid="target-coordinates"]', targetData.coordinates || '31.7683N, 35.2137E');
     await page.fill('[data-testid="target-description"]', targetData.description || 'Test target for E2E testing');
-    
+
     // Submit form
     await page.click('[data-testid="submit-nomination"]');
-    
+
     // Wait for API response and redirect
     await page.waitForResponse('**/api/targeting/targets');
     await page.waitForSelector('[data-testid="target-success-message"]', { timeout: 10000 });
-    
+
     // Get created target ID from URL or success message
     const targetId = await page.locator('[data-testid="target-id"]').textContent();
     return targetId;
@@ -87,16 +125,16 @@ export class TargetHelper {
   static async advanceTargetStage(page: Page, targetId: string, stage: string) {
     await page.goto(`/smartops/target/${targetId}`);
     await page.waitForLoadState('networkidle');
-    
+
     // Click advance stage button
     await page.click('[data-testid="advance-stage-button"]');
-    
+
     // Confirm stage advancement
     await page.click('[data-testid="confirm-advance-stage"]');
-    
+
     // Wait for API response
     await page.waitForResponse('**/api/targeting/targets/*/advance-stage');
-    
+
     // Verify stage updated
     await expect(page.locator('[data-testid="f3ead-stage"]')).toHaveText(stage);
   }
@@ -104,16 +142,16 @@ export class TargetHelper {
   static async updateTargetStatus(page: Page, targetId: string, status: string) {
     await page.goto(`/smartops/target/${targetId}`);
     await page.waitForLoadState('networkidle');
-    
+
     // Find and click status transition button
     await page.click(`[data-testid="transition-to-${status.toLowerCase()}"]`);
-    
+
     // Confirm status change
     await page.click('[data-testid="confirm-status-change"]');
-    
+
     // Wait for API response
     await page.waitForResponse('**/api/targeting/targets/*');
-    
+
     // Verify status updated
     await expect(page.locator('[data-testid="target-status"]')).toHaveText(status);
   }
@@ -121,7 +159,7 @@ export class TargetHelper {
   static async getTargetDetails(page: Page, targetId: string) {
     await page.goto(`/smartops/target/${targetId}`);
     await page.waitForLoadState('networkidle');
-    
+
     return {
       name: await page.locator('[data-testid="target-name"]').textContent(),
       type: await page.locator('[data-testid="target-type"]').textContent(),
@@ -136,22 +174,22 @@ export class TargetHelper {
 export class JTBHelper {
   static async createJTBSession(page: Page, sessionData: any = {}) {
     await NavigationHelper.goToJTBSession(page);
-    
+
     // Click create new session
     await page.click('[data-testid="create-jtb-session"]');
-    
+
     // Fill session details
     await page.fill('[data-testid="session-date"]', sessionData.date || '2026-01-23');
     await page.fill('[data-testid="session-time"]', sessionData.time || '14:00');
     await page.selectOption('[data-testid="session-chair"]', sessionData.chair || 'LTC Mike Brown');
-    
+
     // Submit session
     await page.click('[data-testid="submit-session"]');
-    
+
     // Wait for creation
     await page.waitForResponse('**/api/targeting/jtb/sessions');
     await page.waitForSelector('[data-testid="jtb-session-created"]', { timeout: 10000 });
-    
+
     // Get session ID
     const sessionId = await page.locator('[data-testid="session-id"]').textContent();
     return sessionId;
@@ -160,13 +198,13 @@ export class JTBHelper {
   static async addTargetToSession(page: Page, sessionId: string, targetId: string) {
     await page.goto(`/smartops/jtb-session/${sessionId}`);
     await page.waitForLoadState('networkidle');
-    
+
     // Add target to session
     await page.click('[data-testid="add-target-to-session"]');
     await page.fill('[data-testid="target-search"]', targetId);
     await page.click(`[data-testid="select-target-${targetId}"]`);
     await page.click('[data-testid="confirm-add-target"]');
-    
+
     // Wait for API response
     await page.waitForResponse('**/api/targeting/jtb/sessions/*/targets');
   }
@@ -174,19 +212,19 @@ export class JTBHelper {
   static async approveTarget(page: Page, sessionId: string, targetId: string) {
     await page.goto(`/smartops/jtb-session/${sessionId}`);
     await page.waitForLoadState('networkidle');
-    
+
     // Find target and click approve
     await page.click(`[data-testid="approve-target-${targetId}"]`);
-    
+
     // Fill approval rationale
     await page.fill('[data-testid="approval-rationale"]', 'Target meets all engagement criteria');
-    
+
     // Confirm approval
     await page.click('[data-testid="confirm-approval"]');
-    
+
     // Wait for API response
     await page.waitForResponse('**/api/targeting/jtb/targets/*/decision');
-    
+
     // Verify approval
     await expect(page.locator(`[data-testid="target-status-${targetId}"]`)).toHaveText('APPROVED');
   }
@@ -196,31 +234,31 @@ export class JTBHelper {
 export class BDAHelper {
   static async createBDAReport(page: Page, targetId: string, bdaData: Partial<TestBDAReport> = {}) {
     await NavigationHelper.goToBDAWorkbench(page);
-    
+
     // Click create BDA
     await page.click('[data-testid="create-bda-report"]');
-    
+
     // Select target
     await page.selectOption('[data-testid="target-select"]', targetId);
-    
+
     // Fill BDA details
     await page.fill('[data-testid="strike-id"]', bdaData.strike_id || 'STRIKE-001');
     await page.selectOption('[data-testid="bda-status"]', bdaData.bda_status || 'ASSESSING');
     await page.fill('[data-testid="effectiveness-pct"]', (bdaData.effectiveness_pct || 85).toString());
     await page.fill('[data-testid="bda-description"]', bdaData.description || 'Target successfully engaged');
-    
+
     // Upload images (if provided)
     if (bdaData.images && bdaData.images.length > 0) {
       const fileInput = page.locator('[data-testid="bda-images"]');
       await fileInput.setInputFiles(bdaData.images);
     }
-    
+
     // Submit BDA
     await page.click('[data-testid="submit-bda"]');
-    
+
     // Wait for API response
     await page.waitForResponse('**/api/targeting/bda/assessments');
-    
+
     // Get BDA ID
     const bdaId = await page.locator('[data-testid="bda-id"]').textContent();
     return bdaId;
@@ -229,14 +267,14 @@ export class BDAHelper {
   static async uploadBDAImage(page: Page, bdaId: string, imagePath: string) {
     await page.goto(`/smartops/bda/${bdaId}`);
     await page.waitForLoadState('networkidle');
-    
+
     // Upload image
     const fileInput = page.locator('[data-testid="upload-image"]');
     await fileInput.setInputFiles(imagePath);
-    
+
     // Wait for upload
     await page.waitForResponse('**/api/targeting/bda/assessments/*/images');
-    
+
     // Verify image uploaded
     await expect(page.locator('[data-testid="image-uploaded"]')).toBeVisible();
   }
@@ -256,14 +294,14 @@ export class DecisionGatesHelper {
   static async waitForGateRefresh(page: Page, timeout = 35000) {
     // Wait for refresh indicator
     await page.waitForSelector('[data-testid="refresh-indicator"]', { timeout });
-    
+
     // Wait for refresh to complete
     await page.waitForSelector('[data-testid="refresh-complete"]', { timeout: 5000 });
   }
 
   static async verifyAllGatesVisible(page: Page) {
     const gates = ['roe', 'cde', 'weather', 'deconfliction'];
-    
+
     for (const gate of gates) {
       await expect(page.locator(`[data-testid="gate-${gate}"]`)).toBeVisible();
       await expect(page.locator(`[data-testid="gate-${gate}-status"]`)).toBeVisible();
@@ -278,19 +316,19 @@ export class PerformanceHelper {
     await page.goto(url);
     await page.waitForLoadState('networkidle');
     const endTime = Date.now();
-    
+
     return endTime - startTime;
   }
 
   static async measureApiResponse(page: Page, apiPattern: string): Promise<number> {
     let responseTime = 0;
-    
+
     page.on('response', response => {
       if (response.url().includes(apiPattern)) {
         responseTime = Date.now() - response.request().timestamp();
       }
     });
-    
+
     return responseTime;
   }
 

@@ -11,9 +11,7 @@ pub use bda_repository::BdaRepository;
 pub use imagery_repository::ImageryRepository;
 pub use strike_repository::StrikeRepository;
 pub use report_history_repository::ReportHistoryRepository;
-pub use component_assessment_repository::ComponentAssessmentRepository;
-
-pub mod peer_review_repository;pub use peer_review_repository::PeerReviewRepository;
+pub use component_assessment_repository::ComponentAssessmentRepository;pub mod peer_review_repository;pub use peer_review_repository::PeerReviewRepository;
 
 pub mod distribution_repository;
 

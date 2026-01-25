@@ -1,6 +1,7 @@
 use std::net::SocketAddr;
 use std::sync::Arc;
 use axum::{Router, routing::get};
+use crate::features::auth::service::AuthService;
 use tower_http::cors::{CorsLayer, Any};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use sqlx::sqlite::SqlitePoolOptions;
@@ -194,7 +195,12 @@ async fn main() {
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/ontology",
-            features::ontology::ontology_router(ontology_service)
+            features::ontology::ontology_router(ontology_service.clone())
+                .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
+                .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
+        )
+        .nest("/navigation",
+            features::navigation::navigation_router::<AuthService>(ontology_service, abac_service)
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         );
