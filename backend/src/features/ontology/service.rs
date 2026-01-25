@@ -368,6 +368,31 @@ impl OntologyService {
             description: "Operational dataset or database".to_string(),
             properties_schema: None,
         });
+        entity_types.push(EntityTypeDefinition {
+            name: "RFI".to_string(),
+            description: "Request for Information".to_string(),
+            properties_schema: None,
+        });
+        entity_types.push(EntityTypeDefinition {
+            name: "Task".to_string(),
+            description: "Assigned operational task".to_string(),
+            properties_schema: None,
+        });
+        entity_types.push(EntityTypeDefinition {
+            name: "Meeting".to_string(),
+            description: "Scheduled meeting or event".to_string(),
+            properties_schema: None,
+        });
+        entity_types.push(EntityTypeDefinition {
+            name: "Decision".to_string(),
+            description: "Command decision".to_string(),
+            properties_schema: None,
+        });
+        entity_types.push(EntityTypeDefinition {
+            name: "Person".to_string(),
+            description: "Individual personnel".to_string(),
+            properties_schema: None,
+        });
 
         Ok(OntologySchema {
             version: "1.0.0".to_string(),

@@ -3,7 +3,8 @@
 // Supports Multi-Operation Context filtering.
 
 import { useState, useMemo, useEffect } from 'react';
-import { Target, Domain, LevelOfWar, targetingApi, OntologySchema } from '@/lib/smartops/api/targeting.api';
+import { targetingApi } from '@/lib/smartops/api/targeting.api';
+import type { Target, Domain, LevelOfWar, OntologySchema } from '@/lib/smartops/api/targeting.api';
 import { cn } from '@/lib/utils';
 import { Layers, Globe, Zap, Users, Brain, Activity, Filter, Eye } from 'lucide-react';
 

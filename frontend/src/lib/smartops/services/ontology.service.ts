@@ -39,7 +39,22 @@ export interface EntityFilter {
     campaign_id?: string;
 }
 
+export interface EntityTypeDefinition {
+    name: string;
+    description: string;
+    properties_schema?: any;
+}
+
+export interface OntologySchema {
+    entity_types: EntityTypeDefinition[];
+    relationship_types: any[]; // defining minimally for now
+}
+
 export const OntologyService = {
+    getSchema: async (): Promise<OntologySchema> => {
+        return api.get<OntologySchema>('/ontology/schema');
+    },
+
     getEntities: async (filter?: EntityFilter): Promise<Entity[]> => {
         const params: Record<string, string> = {};
         if (filter?.type) params.type_ = filter.type; // backend uses type_
