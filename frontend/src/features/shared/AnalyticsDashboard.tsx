@@ -9,9 +9,9 @@ import { AssessmentDistribution } from '@/features/shared/charts/AssessmentDistr
 import { EffectivenessTrends } from '@/features/shared/charts/EffectivenessTrends';
 import { HistoricalView } from '../bda/HistoricalView';
 import { ExportButton } from '../shared/ExportButton';
-import { BdaApi } from '@/lib/smartops/api/bda';
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
-import { useCachedQuery } from '@/lib/smartops/hooks/useCachedQuery';
+import { BdaApi } from '@/lib/mshnctrl/api/bda';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
+import { useCachedQuery } from '@/lib/mshnctrl/hooks/useCachedQuery';
 
 export function AnalyticsDashboard() {
   // Main Analytics Data

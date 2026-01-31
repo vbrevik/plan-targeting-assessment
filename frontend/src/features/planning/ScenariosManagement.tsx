@@ -11,8 +11,8 @@ import {
     Activity
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { Scenario } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { Scenario } from '@/lib/mshnctrl/types';
 
 export function ScenariosManagement() {
     const [scenarios, setScenarios] = useState<Scenario[]>([]);
@@ -20,7 +20,7 @@ export function ScenariosManagement() {
 
     useEffect(() => {
         async function loadScenarios() {
-            const data = await SmartOpsService.getScenarios();
+            const data = await MshnCtrlService.getScenarios();
             setScenarios(data);
             setLoading(false);
         }

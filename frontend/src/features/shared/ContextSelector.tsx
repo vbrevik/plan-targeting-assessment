@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { ChevronDown, Globe, Target, ArrowUp } from 'lucide-react';
-import { useOperationalContext, getPhaseColor } from '@/lib/smartops/hooks/useOperationalContext';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { Operation } from '@/lib/smartops/types';
+import { useOperationalContext, getPhaseColor } from '@/lib/mshnctrl/hooks/useOperationalContext';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { Operation } from '@/lib/mshnctrl/types';
 import { cn } from '@/lib/utils';
 
 export function ContextSelector() {
@@ -11,7 +11,7 @@ export function ContextSelector() {
     const [operations, setOperations] = useState<Operation[]>([]);
 
     const loadOperations = async () => {
-        const ops = await SmartOpsService.getOperations('c-001');
+        const ops = await MshnCtrlService.getOperations('c-001');
         setOperations(ops);
     };
 

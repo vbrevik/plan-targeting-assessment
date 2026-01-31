@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 
 export function WeatherManagement() {
     const [report, setReport] = useState<any>(null);
@@ -22,8 +22,8 @@ export function WeatherManagement() {
         async function load() {
             setLoading(true);
             const [r, i] = await Promise.all([
-                SmartOpsService.getWeatherReport(),
-                SmartOpsService.getWeatherImpacts()
+                MshnCtrlService.getWeatherReport(),
+                MshnCtrlService.getWeatherImpacts()
             ]);
             setReport(r);
             setImpacts(i);

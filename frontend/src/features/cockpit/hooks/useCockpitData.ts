@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useOperationalContext } from '@/lib/smartops/hooks/useOperationalContext';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import { DecisionService } from '@/lib/smartops/services/decision.service';
-import { DecisionTrackingService } from '@/lib/smartops/services/decision-tracking.service';
+import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import { DecisionService } from '@/lib/mshnctrl/services/decision.service';
+import { DecisionTrackingService } from '@/lib/mshnctrl/services/decision-tracking.service';
 import type {
     PoliticalStatement,
     NaturalDisaster,
@@ -12,7 +12,7 @@ import type {
     DecisionAnalysis,
     DecisionTracking,
     DecisionImpactMonitor
-} from '@/lib/smartops/types';
+} from '@/lib/mshnctrl/types';
 
 export function useCockpitData() {
     const { context, isStrategic } = useOperationalContext();
@@ -46,13 +46,13 @@ export function useCockpitData() {
     }, []);
 
     useEffect(() => {
-        SmartOpsService.getDashboardStats(context.operationId || undefined).then((res: any) => setStats(res));
+        MshnCtrlService.getDashboardStats(context.operationId || undefined).then((res: any) => setStats(res));
 
         Promise.all([
-            SmartOpsService.getPoliticalStatements(context.operationId || undefined),
-            SmartOpsService.getNaturalDisasters(context.operationId || undefined),
-            SmartOpsService.getDisinformationEvents(context.operationId || undefined),
-            SmartOpsService.getFakeMedia(context.operationId || undefined),
+            MshnCtrlService.getPoliticalStatements(context.operationId || undefined),
+            MshnCtrlService.getNaturalDisasters(context.operationId || undefined),
+            MshnCtrlService.getDisinformationEvents(context.operationId || undefined),
+            MshnCtrlService.getFakeMedia(context.operationId || undefined),
             DecisionService.getPendingDecisions(),
             DecisionTrackingService.getTrackedDecisions(),
             DecisionTrackingService.getImpactMonitors()

@@ -8,11 +8,11 @@ import { PipelineChart } from '@/features/shared/charts/PipelineChart';
 import { StatusTimeline } from '@/features/shared/charts/StatusTimeline';
 import { AssessmentDistribution } from '@/features/shared/charts/AssessmentDistribution';
 import { EffectivenessTrends } from '@/features/shared/charts/EffectivenessTrends';
-import { BdaApi } from '@/lib/smartops/api/bda';
+import { BdaApi } from '@/lib/mshnctrl/api/bda';
 // ...
 
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
-import { useCachedQuery } from '@/lib/smartops/hooks/useCachedQuery';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
+import { useCachedQuery } from '@/lib/mshnctrl/hooks/useCachedQuery';
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton';
 
 interface HistoricalViewProps {

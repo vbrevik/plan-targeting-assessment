@@ -15,12 +15,12 @@ import {
     ArrowUpRight
 } from 'lucide-react';
 import { GapAnalysisView } from '../planning/GapAnalysisView';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { cn } from '@/lib/utils';
 import type {
     AssessmentReport,
     Trend
-} from '@/lib/smartops/types';
+} from '@/lib/mshnctrl/types';
 
 export function AssessmentManagement() {
     const [assessments, setAssessments] = useState<AssessmentReport[]>([]);
@@ -30,9 +30,9 @@ export function AssessmentManagement() {
 
     useEffect(() => {
         async function loadAssessments() {
-            const activeCampaign = await SmartOpsService.getActiveCampaign();
+            const activeCampaign = await MshnCtrlService.getActiveCampaign();
             if (activeCampaign) {
-                const data = await SmartOpsService.getAssessments(activeCampaign.id);
+                const data = await MshnCtrlService.getAssessments(activeCampaign.id);
                 setAssessments(data);
                 if (data.length > 0) setActiveReport(data[0]);
             }
@@ -42,7 +42,7 @@ export function AssessmentManagement() {
     }, []);
 
     const handleRaiseRequirement = async (subject: string, description: string) => {
-        await SmartOpsService.createRFI({
+        await MshnCtrlService.createRFI({
             direction: 'Outbound',
             subject: `Assessment Finding: ${subject}`,
             description: `Auto-generated from assessment audit. Context: ${description}`,
@@ -127,13 +127,13 @@ export function AssessmentManagement() {
                     </div>
                     <div className="flex gap-2">
                         <Link
-                            to="/smartops/cog"
+                            to="/mshnctrl/cog"
                             className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 text-slate-300 hover:text-white text-[10px] font-black uppercase rounded border border-slate-700 hover:border-slate-500 transition-colors"
                         >
                             COG Analysis
                         </Link>
                         <Link
-                            to="/smartops/uncertainty"
+                            to="/mshnctrl/uncertainty"
                             className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 text-slate-300 hover:text-white text-[10px] font-black uppercase rounded border border-slate-700 hover:border-slate-500 transition-colors"
                         >
                             Uncertainty

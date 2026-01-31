@@ -13,7 +13,7 @@ import {
     BarChart3
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { DecisionTracking } from '@/lib/smartops/types';
+import type { DecisionTracking } from '@/lib/mshnctrl/types';
 
 interface DecisionTrackingPanelProps {
     tracking: DecisionTracking;

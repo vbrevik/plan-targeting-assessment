@@ -1,6 +1,6 @@
 import { TriangleAlert } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { LineOfOperation, DecisiveCondition } from '@/lib/smartops/types';
+import type { LineOfOperation, DecisiveCondition } from '@/lib/mshnctrl/types';
 
 interface LOOTimelineProps {
     loos: LineOfOperation[];

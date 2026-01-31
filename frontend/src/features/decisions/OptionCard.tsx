@@ -10,7 +10,7 @@ import {
     Sparkles
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { DecisionOption, Consequence, TradeOffAnalysis } from '@/lib/smartops/types';
+import type { DecisionOption, Consequence, TradeOffAnalysis } from '@/lib/mshnctrl/types';
 
 interface OptionCardProps {
     analyzedOption: {

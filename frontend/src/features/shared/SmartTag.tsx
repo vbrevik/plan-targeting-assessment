@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { cn } from '@/lib/utils';
 import {
     Shield,
@@ -37,22 +37,22 @@ export function SmartTag({ type, id, label }: SmartTagProps) {
                 const typeLower = type.toLowerCase();
 
                 if (typeLower === 'unit') {
-                    const units = await SmartOpsService.getUnits();
+                    const units = await MshnCtrlService.getUnits();
                     entity = units.find(u => u.id === id || u.designator === id);
                 } else if (typeLower === 'target') {
-                    const targets = await SmartOpsService.getTargets();
+                    const targets = await MshnCtrlService.getTargets();
                     entity = targets.find(t => t.id === id || t.designator === id);
                 } else if (typeLower === 'cog') {
-                    const cogs = await SmartOpsService.getCOGs();
+                    const cogs = await MshnCtrlService.getCOGs();
                     entity = cogs.find(c => c.id === id);
                 } else if (typeLower === 'political') {
-                    const pols = await SmartOpsService.getPoliticalStatements();
+                    const pols = await MshnCtrlService.getPoliticalStatements();
                     entity = pols.find(p => p.id === id);
                 } else if (typeLower === 'disaster') {
-                    const disasters = await SmartOpsService.getNaturalDisasters();
+                    const disasters = await MshnCtrlService.getNaturalDisasters();
                     entity = disasters.find(d => d.id === id);
                 } else if (typeLower === 'info' || typeLower === 'disinfo') {
-                    const events = await SmartOpsService.getDisinformationEvents();
+                    const events = await MshnCtrlService.getDisinformationEvents();
                     entity = events.find(e => e.id === id);
                 }
                 setData(entity);
@@ -93,13 +93,13 @@ export function SmartTag({ type, id, label }: SmartTagProps) {
     const handleAction = () => {
         const typeLower = type.toLowerCase();
         if (typeLower === 'unit' && data) {
-            navigate({ to: '/smartops/orbat', search: { unitId: data.id } });
+            navigate({ to: '/mshnctrl/orbat', search: { unitId: data.id } });
         } else if (typeLower === 'target' && data) {
-            navigate({ to: '/smartops/targeting', search: { targetId: data.id } });
+            navigate({ to: '/mshnctrl/targeting', search: { targetId: data.id } });
         } else if (typeLower === 'cog' && data) {
-            navigate({ to: '/smartops/cog', search: { cogId: data.id } });
+            navigate({ to: '/mshnctrl/cog', search: { cogId: data.id } });
         } else if (['political', 'disinfo', 'disaster', 'fakemedia'].includes(typeLower) && data) {
-            navigate({ to: '/smartops/external-context' });
+            navigate({ to: '/mshnctrl/external-context' });
         }
     };
 

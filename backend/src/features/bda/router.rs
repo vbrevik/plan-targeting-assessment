@@ -26,6 +26,8 @@ where S: Clone + Send + Sync + 'static {
     
     Router::new()
         // BDA Reports endpoints (relative to /api/bda)
+        .route("/", get(handlers::get_reports))
+        .route("/re-attack", get(handlers::get_reattack_recommendations))
         .route("/reports", 
             post(handlers::create_report)
             .get(handlers::get_reports)

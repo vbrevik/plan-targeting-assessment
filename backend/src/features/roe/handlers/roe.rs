@@ -11,7 +11,8 @@ use crate::features::roe::{
 use axum::{
     extract::{Path, Query, State, Extension},
     http::StatusCode,
-    response::{IntoResponse, IntoResponse as _},
+    response::IntoResponse,
+
     Json,
 };
 use crate::features::auth::jwt::Claims;
@@ -177,7 +178,8 @@ pub async fn auto_determine_roe_status(
     State(pool): State<Pool<Sqlite>>,
     Path(decision_id): Path<String>,
 ) -> Result<impl IntoResponse, StatusCode> {
-    use crate::features::roe::domain::ROEStatus;
+    // use crate::features::roe::domain::ROEStatus;
+
     
     let repo = ROERepository::new(pool);
 

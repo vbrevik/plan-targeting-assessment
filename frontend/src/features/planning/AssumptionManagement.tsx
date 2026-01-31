@@ -180,7 +180,7 @@ export function AssumptionManagement() {
                     <div className="pt-6 border-t border-slate-800/50 space-y-4">
                         <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest block">Related System</span>
                         <Link
-                            to="/smartops/uncertainty"
+                            to="/mshnctrl/uncertainty"
                             className="flex items-center justify-between p-3 bg-slate-900/40 border border-slate-800 rounded hover:border-blue-500/40 transition-all group"
                         >
                             <div className="flex items-center gap-2">

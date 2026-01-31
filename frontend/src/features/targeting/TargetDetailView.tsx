@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import { targetingApi, type Target as ApiTarget } from '@/lib/smartops/api/targeting.api';
-import type { Target, ROE, StrikeAnalysis, TargetSystem, ActivityLog, WeaponSystem, BDAReport, CollectionRequest } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import { targetingApi, type Target as ApiTarget } from '@/lib/mshnctrl/api/targeting.api';
+import type { Target, ROE, StrikeAnalysis, TargetSystem, ActivityLog, WeaponSystem, BDAReport, CollectionRequest } from '@/lib/mshnctrl/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -40,7 +40,7 @@ interface TargetDetailViewProps {
 }
 
 export function TargetDetailView({ targetId: propTargetId, isEmbedded, onClose }: TargetDetailViewProps) {
-    const routeParams = useParams({ from: '/smartops/targeting/$targetId', strict: false });
+    const routeParams = useParams({ from: '/mshnctrl/targeting/$targetId', strict: false });
     const targetId = propTargetId || routeParams.targetId;
     const navigate = useNavigate();
     const [target, setTarget] = useState<ApiTarget | null>(null);
@@ -64,7 +64,7 @@ export function TargetDetailView({ targetId: propTargetId, isEmbedded, onClose }
             const [apiTarget, timelineData, r] = await Promise.all([
                 targetingApi.getTarget(targetId).catch(() => null),
                 targetingApi.getTargetTimeline(targetId).catch(() => []),
-                SmartOpsService.getROEs().catch(() => [])
+                MshnCtrlService.getROEs().catch(() => [])
             ]);
 
             // Stubs for missing service methods
@@ -219,7 +219,7 @@ export function TargetDetailView({ targetId: propTargetId, isEmbedded, onClose }
                         <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => onClose ? onClose() : navigate({ to: '/smartops/targeting' })}
+                            onClick={() => onClose ? onClose() : navigate({ to: '/mshnctrl/targeting' })}
                             className="text-slate-400 hover:text-white"
                         >
                             <ArrowLeft size={20} />

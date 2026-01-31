@@ -54,7 +54,7 @@ export function DecisionGatesBar() {
     const fetchDecisionGates = async () => {
         try {
             // Import API client
-            const { targetingApi } = await import('@/lib/smartops/api/targeting.api');
+            const { targetingApi } = await import('@/lib/mshnctrl/api/targeting.api');
 
             // Fetch from actual API
             const data = await targetingApi.getDecisionGates();
@@ -152,22 +152,22 @@ export function DecisionGatesBar() {
                 <DecisionGate
                     icon={Shield}
                     gate={gates.roe}
-                    onClick={() => navigate({ to: '/smartops/roe' })}
+                    onClick={() => navigate({ to: '/mshnctrl/roe' })}
                 />
                 <DecisionGate
                     icon={Target}
                     gate={gates.cde}
-                    onClick={() => navigate({ to: '/smartops/cde' })}
+                    onClick={() => navigate({ to: '/mshnctrl/cde' })}
                 />
                 <DecisionGate
                     icon={CloudSun}
                     gate={gates.weather}
-                    onClick={() => navigate({ to: '/smartops/weather' })}
+                    onClick={() => navigate({ to: '/mshnctrl/weather' })}
                 />
                 <DecisionGate
                     icon={Radio}
                     gate={gates.deconfliction}
-                    onClick={() => navigate({ to: '/smartops/targeting/collaboration' })}
+                    onClick={() => navigate({ to: '/mshnctrl/targeting/collaboration' })}
                 />
             </div>
         </div>
@@ -261,7 +261,7 @@ export function DecisionGatesBarCompact() {
 
     const fetchDecisionGates = async () => {
         try {
-            const { targetingApi } = await import('@/lib/smartops/api/targeting.api');
+            const { targetingApi } = await import('@/lib/mshnctrl/api/targeting.api');
             const data = await targetingApi.getDecisionGates();
 
             const mappedData: DecisionGatesData = {
@@ -349,10 +349,10 @@ export function DecisionGatesBarCompact() {
 
     // Map gate keys to navigation routes
     const gateRoutes: Record<string, string> = {
-        roe: '/smartops/roe',
-        cde: '/smartops/cde',
-        weather: '/smartops/weather',
-        deconfliction: '/smartops/targeting/collaboration',
+        roe: '/mshnctrl/roe',
+        cde: '/mshnctrl/cde',
+        weather: '/mshnctrl/weather',
+        deconfliction: '/mshnctrl/targeting/collaboration',
     };
 
     return (

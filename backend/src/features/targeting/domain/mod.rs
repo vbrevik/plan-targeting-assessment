@@ -1,7 +1,8 @@
 // NATO COPD Targeting Cell - Domain Models
 // Aligned with existing database schema
 
-use chrono::{DateTime, Utc};
+// use chrono::{DateTime, Utc};
+
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 

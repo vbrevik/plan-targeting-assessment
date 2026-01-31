@@ -1,4 +1,4 @@
-use super::{handlers, repositories::SmartOpsRepository};
+use super::{handlers, repositories::MshnCtrlRepository};
 use axum::{
     routing::{get, post},
     Router,
@@ -9,7 +9,7 @@ use std::sync::Arc;
 
 pub fn router<S>(pool: Pool<Sqlite>) -> Router<S> 
 where S: Clone + Send + Sync + 'static {
-    let repo = Arc::new(SmartOpsRepository::new(pool));
+    let repo = Arc::new(MshnCtrlRepository::new(pool));
 
     Router::new()
         .route("/campaigns", post(handlers::create_campaign).get(handlers::get_campaigns))

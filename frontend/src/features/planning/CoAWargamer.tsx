@@ -12,8 +12,8 @@ import {
     Target
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { CourseOfAction, UUID } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { CourseOfAction, UUID } from '@/lib/mshnctrl/types';
 import { Button } from '@/components/ui/button';
 
 export function CoAWargamer() {
@@ -22,7 +22,7 @@ export function CoAWargamer() {
 
     useEffect(() => {
         async function loadCoas() {
-            const data = await SmartOpsService.getCOAs();
+            const data = await MshnCtrlService.getCOAs();
             setCoas(data);
             setLoading(false);
         }
@@ -35,7 +35,7 @@ export function CoAWargamer() {
         setCoas(updatedCoas);
 
         await Promise.all(coas.map(c =>
-            SmartOpsService.updateCOA(c.id, { selected: c.id === coaId })
+            MshnCtrlService.updateCOA(c.id, { selected: c.id === coaId })
         ));
     };
 

@@ -25,6 +25,7 @@ pub use bda_report::{
     BdaStatusCounts,
     BdaRecommendationCounts,
     BdaPhysicalDamageCounts,
+    ReAttackRecommendation,
 };
 
 pub use imagery::{

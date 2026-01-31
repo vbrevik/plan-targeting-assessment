@@ -66,7 +66,7 @@ export function ROEQuickReferencePanel() {
     const fetchROEData = async () => {
         try {
             // Get ROE status from decision gates
-            const { targetingApi } = await import('@/lib/smartops/api/targeting.api');
+            const { targetingApi } = await import('@/lib/mshnctrl/api/targeting.api');
             const gates = await targetingApi.getDecisionGates().catch(() => null);
             
             if (gates && gates.roe) {
@@ -356,7 +356,7 @@ export function ROEQuickReferencePanel() {
                     </div>
                     
                     <Link
-                        to="/smartops/roe"
+                        to="/mshnctrl/roe"
                         className="mt-3 flex items-center justify-center gap-2 px-4 py-2 bg-slate-800/50 border border-slate-700 rounded hover:border-blue-600 hover:bg-blue-950/20 transition-colors group"
                     >
                         <span className="text-xs font-bold text-slate-300 group-hover:text-white uppercase">

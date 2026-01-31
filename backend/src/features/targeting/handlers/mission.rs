@@ -220,7 +220,7 @@ async fn get_deconfliction_gate(pool: &Pool<Sqlite>) -> Result<DecisionGate, sql
             };
             
             Ok(DecisionGate {
-                name: "Deconfliction".to_string(),
+                name: "Decon".to_string(),
                 status,
                 value: format!("{} ({} pending)", deconf_status, pending),
                 classification: map_classification(&classification),
@@ -229,7 +229,7 @@ async fn get_deconfliction_gate(pool: &Pool<Sqlite>) -> Result<DecisionGate, sql
             })
         }
         None => Ok(DecisionGate {
-            name: "Deconfliction".to_string(),
+            name: "Decon".to_string(),
             status: GateStatus::Green,
             value: "CLEAR (0 pending)".to_string(),
             classification: ClassificationLevel::Cui,

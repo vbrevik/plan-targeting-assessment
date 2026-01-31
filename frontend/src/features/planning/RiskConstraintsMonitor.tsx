@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { Shield, Users, Building, Scale, AlertTriangle, TrendingUp } from 'lucide-react';
 import { SecurityBadge } from '@/components/SecurityBadge';
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 
 interface RiskAssessment {
   targetId: string;
@@ -173,7 +173,7 @@ export function RiskConstraintsMonitor() {
           {highRiskTargets.map((risk) => (
             <button
               key={risk.targetId}
-              onClick={() => navigate({ to: `/smartops/targeting/${risk.targetId}` })}
+              onClick={() => navigate({ to: `/mshnctrl/targeting/${risk.targetId}` })}
               className="w-full text-left p-4 bg-red-950/10 border border-red-900 rounded-lg hover:bg-red-950/20 transition-colors cursor-pointer"
               title={`Click to view ${risk.targetName} details`}
             >
@@ -271,7 +271,7 @@ export function RiskConstraintsMonitor() {
                     <span className="text-xs text-amber-400">Requires JAG review before approval</span>
                   </div>
                   <button
-                    onClick={(e) => { e.stopPropagation(); navigate({ to: '/smartops/targeting/risk' }); }}
+                    onClick={(e) => { e.stopPropagation(); navigate({ to: '/mshnctrl/targeting/risk' }); }}
                     className="px-2 py-1 bg-amber-900/30 hover:bg-amber-900/50 border border-amber-700 rounded text-xs font-bold text-amber-300 uppercase transition-colors cursor-pointer"
                   >
                     Request Review

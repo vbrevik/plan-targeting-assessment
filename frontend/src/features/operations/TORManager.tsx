@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { OntologyService, type Entity } from '@/lib/smartops/services/ontology.service';
+import { OntologyService, type Entity } from '@/lib/mshnctrl/services/ontology.service';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +12,8 @@ import {
     FileText,
     Shield,
     Clock,
-    AlertCircle
+    AlertCircle,
+    X
 } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 
@@ -20,6 +21,7 @@ export function TORManager() {
     const [tours, setTours] = useState<Entity[]>([]);
     const [loading, setLoading] = useState(true);
     const [editingTor, setEditingTor] = useState<Partial<Entity> | null>(null);
+    const [agendaPoints, setAgendaPoints] = useState<{ id?: string, title: string, description: string }[]>([]);
 
     useEffect(() => {
         loadTours();
@@ -37,29 +39,111 @@ export function TORManager() {
         }
     };
 
+    const handleEditClick = async (tor: Entity) => {
+        setLoading(true);
+        try {
+            const fullEntity = await OntologyService.getEntityWithRelationships(tor.id);
+            setEditingTor(fullEntity);
+
+            // Extract agenda points from relationships
+            // Looking for entities where relation_type is HAS_PART and target is an AgendaPoint
+            // But getEntityWithRelationships only gives us relationships, not the target entities details if we stored title in the entity name
+
+            // We need to fetch the agenda point entities
+            const outgoing = fullEntity.outgoing_relationships.filter(r => r.relation_type === 'HAS_PART');
+            const points: { id?: string, title: string, description: string }[] = [];
+
+            for (const rel of outgoing) {
+                try {
+                    const pointEntity = await OntologyService.getEntity(rel.target_id);
+                    if (pointEntity.type === 'AgendaPoint') {
+                        points.push({
+                            id: pointEntity.id,
+                            title: pointEntity.name,
+                            description: pointEntity.description || ''
+                        });
+                    }
+                } catch (e) {
+                    console.error('Failed to load agenda point', rel.target_id);
+                }
+            }
+            setAgendaPoints(points);
+        } catch (error) {
+            console.error('Failed to load generic entity details', error);
+            // Fallback to basic entity if relationship fetch fails
+            setEditingTor(tor);
+            setAgendaPoints([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleCreateClick = () => {
+        setEditingTor({ name: '', description: '', properties: { version: '1.0', classification: 'SECRET' } });
+        setAgendaPoints([]);
+    };
+
     const handleSaveTor = async () => {
         if (!editingTor?.name) return;
 
         try {
-            if (editingTor.id) {
-                await OntologyService.updateEntity(editingTor.id, {
+            let torId = editingTor.id;
+
+            if (torId) {
+                await OntologyService.updateEntity(torId, {
                     name: editingTor.name,
                     description: editingTor.description,
                     properties: editingTor.properties
                 });
                 toast({ title: 'Success', description: 'TOR updated' });
             } else {
-                await OntologyService.createEntity({
+                const newTor = await OntologyService.createEntity({
                     name: editingTor.name,
                     type: 'TOR',
                     description: editingTor.description,
                     properties: editingTor.properties || {}
                 });
+                torId = newTor.id;
                 toast({ title: 'Success', description: 'TOR created' });
             }
+
+            // Handle Agenda Points
+            // 1. For new points (no ID), create entity and relationship
+            // 2. For existing points (has ID), update entity
+            // 3. (Optional) Handle deletions - strictly speaking we should diff, but for MVP we might just append new ones
+
+            if (torId) {
+                for (const point of agendaPoints) {
+                    if (point.id) {
+                        // Update existing
+                        await OntologyService.updateEntity(point.id, {
+                            name: point.title,
+                            description: point.description
+                        });
+                    } else {
+                        // Create new
+                        const newPoint = await OntologyService.createEntity({
+                            name: point.title,
+                            type: 'AgendaPoint',
+                            description: point.description,
+                            properties: { parent_tor_id: torId }
+                        });
+
+                        // Link to TOR
+                        await OntologyService.createRelationship({
+                            source_id: torId,
+                            target_id: newPoint.id,
+                            relation_type: 'HAS_PART',
+                            properties: { order: 0 } // Could handle ordering
+                        });
+                    }
+                }
+            }
+
             setEditingTor(null);
             loadTours();
         } catch (error) {
+            console.error(error);
             toast({ title: 'Error', description: 'Failed to save TOR', variant: 'destructive' });
         }
     };
@@ -77,7 +161,7 @@ export function TORManager() {
                     </p>
                 </div>
                 <Button
-                    onClick={() => setEditingTor({ name: '', description: '', properties: { version: '1.0', classification: 'SECRET' } })}
+                    onClick={handleCreateClick}
                     className="bg-purple-600 hover:bg-purple-500 text-xs font-black uppercase"
                 >
                     <Plus size={16} className="mr-2" /> New TOR
@@ -120,7 +204,7 @@ export function TORManager() {
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
-                                                onClick={() => setEditingTor(tor)}
+                                                onClick={() => handleEditClick(tor)}
                                                 className="text-slate-400 hover:text-white uppercase font-black text-[10px]"
                                             >
                                                 Edit Mandate
@@ -202,6 +286,64 @@ export function TORManager() {
                                     />
                                 </div>
 
+                                <div className="space-y-4 pt-4 border-t border-slate-800">
+                                    <div className="flex justify-between items-center">
+                                        <Label className="text-[10px] uppercase font-black text-slate-500">Agenda Points (Standard)</Label>
+                                        <Button
+                                            size="sm"
+                                            variant="ghost"
+                                            className="h-6 text-[10px] bg-slate-800 hover:bg-slate-700"
+                                            onClick={() => setAgendaPoints([...agendaPoints, { title: '', description: '' }])}
+                                        >
+                                            <Plus size={10} className="mr-1" /> Add Point
+                                        </Button>
+                                    </div>
+                                    <div className="space-y-3">
+                                        {agendaPoints.map((point, index) => (
+                                            <div key={index} className="flex gap-2 items-start p-2 bg-slate-950/50 rounded border border-slate-800/50">
+                                                <div className="pt-2 text-[10px] font-mono text-slate-600">{(index + 1).toString().padStart(2, '0')}</div>
+                                                <div className="flex-1 space-y-2">
+                                                    <Input
+                                                        value={point.title}
+                                                        onChange={e => {
+                                                            const newPoints = [...agendaPoints];
+                                                            newPoints[index].title = e.target.value;
+                                                            setAgendaPoints(newPoints);
+                                                        }}
+                                                        placeholder="Agenda Item Title"
+                                                        className="h-7 text-xs bg-slate-900 border-none focus:ring-1"
+                                                    />
+                                                    <Textarea
+                                                        value={point.description}
+                                                        onChange={e => {
+                                                            const newPoints = [...agendaPoints];
+                                                            newPoints[index].description = e.target.value;
+                                                            setAgendaPoints(newPoints);
+                                                        }}
+                                                        placeholder="Context / Details..."
+                                                        className="h-12 min-h-[3rem] text-[10px] bg-slate-900 border-none resize-none"
+                                                    />
+                                                </div>
+                                                <Button
+                                                    size="icon"
+                                                    variant="ghost"
+                                                    className="h-6 w-6 text-slate-600 hover:text-red-500"
+                                                    onClick={() => {
+                                                        const newPoints = [...agendaPoints];
+                                                        newPoints.splice(index, 1);
+                                                        setAgendaPoints(newPoints);
+                                                    }}
+                                                >
+                                                    <X size={12} />
+                                                </Button>
+                                            </div>
+                                        ))}
+                                        {agendaPoints.length === 0 && (
+                                            <div className="text-center py-4 text-[10px] text-slate-600 italic">No standard agenda points defined</div>
+                                        )}
+                                    </div>
+                                </div>
+
                                 <div className="pt-4 flex flex-col gap-2">
                                     <Button
                                         onClick={handleSaveTor}
@@ -236,5 +378,6 @@ export function TORManager() {
                 </div>
             </div>
         </div>
+
     );
 }

@@ -136,7 +136,7 @@ export function SituationAwarenessCockpit() {
                                 <span className="text-xs font-black text-white uppercase tracking-widest">Campaign Lines of Operation</span>
                             </div>
                             <Link
-                                to="/smartops/campaign"
+                                to="/mshnctrl/campaign"
                                 className="text-[10px] font-black text-slate-500 hover:text-blue-400 transition-colors uppercase tracking-widest flex items-center gap-1"
                             >
                                 View Full Campaign <ChevronRight size={12} />

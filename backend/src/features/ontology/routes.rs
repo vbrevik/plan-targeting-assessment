@@ -17,6 +17,7 @@ where
     Router::new()
         .route("/entities", get(list_entities).post(create_entity))
         .route("/entities/:id", get(get_entity).patch(update_entity).delete(delete_entity))
+        .route("/entities/:id/acknowledge", post(acknowledge_entity))
         .route("/relationships", get(list_relationships).post(create_relationship))
         .route("/schema", get(get_schema))
         .with_state(Arc::new(service))
@@ -102,6 +103,17 @@ async fn create_relationship(
 ) -> impl IntoResponse {
     match service.create_relationship(req).await {
         Ok(rel) => (StatusCode::CREATED, Json(rel)).into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, Json(json!({ "error": e.to_string() }))).into_response(),
+    }
+}
+
+async fn acknowledge_entity(
+    Path(id): Path<String>,
+    State(service): State<Arc<OntologyService>>,
+    Json(req): Json<AcknowledgeEntityRequest>,
+) -> impl IntoResponse {
+    match service.acknowledge_entity(&id, req).await {
+        Ok(entity) => (StatusCode::OK, Json(entity)).into_response(),
         Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, Json(json!({ "error": e.to_string() }))).into_response(),
     }
 }

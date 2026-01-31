@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 
 import { SecurityBadge } from '@/components/SecurityBadge';
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 
 
 interface MultiINTFusion {
@@ -189,7 +189,7 @@ export function IntelligenceIntegrationPanel() {
             {multiINT.map((fusion) => (
               <button
                 key={fusion.targetId}
-                onClick={() => navigate({ to: '/smartops/targeting/targets' })}
+                onClick={() => navigate({ to: '/mshnctrl/targeting/targets' })}
                 className="mb-4 w-full text-left hover:bg-slate-800/50 rounded-lg p-2 -m-2 transition-colors cursor-pointer"
                 title={`Click to view target ${fusion.targetName} details`}
               >
@@ -299,7 +299,7 @@ export function IntelligenceIntegrationPanel() {
               {activePlatforms.map((platform) => (
                 <button
                   key={platform.id}
-                  onClick={() => navigate({ to: '/smartops/targeting/assets' })}
+                  onClick={() => navigate({ to: '/mshnctrl/targeting/assets' })}
                   className="w-full text-left p-2 bg-slate-900/50 border border-slate-700 rounded hover:bg-slate-800/50 transition-colors cursor-pointer"
                   title={`Click to view ${platform.name} details`}
                 >
@@ -391,7 +391,7 @@ export function IntelligenceIntegrationPanel() {
                   that confirms target location. Contradictory HUMINT report from yesterday being dismissed.
                 </div>
                 <button
-                  onClick={() => navigate({ to: '/smartops/targeting/analysis' })}
+                  onClick={() => navigate({ to: '/mshnctrl/targeting/analysis' })}
                   className="mt-2 text-xs text-amber-400 hover:text-amber-300 font-medium uppercase transition-colors cursor-pointer"
                 >
                   Review HUMINT Report →

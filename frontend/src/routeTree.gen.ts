@@ -11,107 +11,102 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SmartopsRouteImport } from './routes/smartops'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as MshnctrlRouteImport } from './routes/mshnctrl'
 import { Route as LogsRouteImport } from './routes/logs'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DebugRouteImport } from './routes/debug'
 import { Route as ApiManagementRouteImport } from './routes/api-management'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SmartopsIndexRouteImport } from './routes/smartops.index'
+import { Route as MshnctrlIndexRouteImport } from './routes/mshnctrl.index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as StatsUsersRouteImport } from './routes/stats/users'
 import { Route as StatsSystemRouteImport } from './routes/stats/system'
 import { Route as StatsSessionsRouteImport } from './routes/stats/sessions'
-import { Route as SmartopsWeatherRouteImport } from './routes/smartops.weather'
-import { Route as SmartopsUncertaintyRouteImport } from './routes/smartops.uncertainty'
-import { Route as SmartopsTriageRouteImport } from './routes/smartops.triage'
-import { Route as SmartopsTorManagerRouteImport } from './routes/smartops.tor-manager'
-import { Route as SmartopsTargetingCellDashboardRouteImport } from './routes/smartops.targeting-cell-dashboard'
-import { Route as SmartopsSupplyChainRouteImport } from './routes/smartops.supply-chain'
-import { Route as SmartopsStrikeOptimizerRouteImport } from './routes/smartops.strike-optimizer'
-import { Route as SmartopsStrategicDirectionRouteImport } from './routes/smartops.strategic-direction'
-import { Route as SmartopsStaffRouteImport } from './routes/smartops.staff'
-import { Route as SmartopsSocialDomainRouteImport } from './routes/smartops.social-domain'
-import { Route as SmartopsSecurityRouteImport } from './routes/smartops.security'
-import { Route as SmartopsScenariosRouteImport } from './routes/smartops.scenarios'
-import { Route as SmartopsRxpRouteImport } from './routes/smartops.rxp'
-import { Route as SmartopsRoeRouteImport } from './routes/smartops.roe'
-import { Route as SmartopsRfisRouteImport } from './routes/smartops.rfis'
-import { Route as SmartopsProductsRouteImport } from './routes/smartops.products'
-import { Route as SmartopsPersonnelRouteImport } from './routes/smartops.personnel'
-import { Route as SmartopsOrbatRouteImport } from './routes/smartops.orbat'
-import { Route as SmartopsOntologyRouteImport } from './routes/smartops.ontology'
-import { Route as SmartopsMenuBuilderRouteImport } from './routes/smartops.menu-builder'
-import { Route as SmartopsMdoRouteImport } from './routes/smartops.mdo'
-import { Route as SmartopsLogisticsRouteImport } from './routes/smartops.logistics'
-import { Route as SmartopsLegadDashboardRouteImport } from './routes/smartops.legad-dashboard'
-import { Route as SmartopsJ5DashboardRouteImport } from './routes/smartops.j5-dashboard'
-import { Route as SmartopsJ4DashboardRouteImport } from './routes/smartops.j4-dashboard'
-import { Route as SmartopsJ3DashboardRouteImport } from './routes/smartops.j3-dashboard'
-import { Route as SmartopsJ2DashboardRouteImport } from './routes/smartops.j2-dashboard'
-import { Route as SmartopsInfrastructureRouteImport } from './routes/smartops.infrastructure'
-import { Route as SmartopsInformationManagementRouteImport } from './routes/smartops.information-management'
-import { Route as SmartopsImDashboardRouteImport } from './routes/smartops/im-dashboard'
-import { Route as SmartopsGapAnalysisRouteImport } from './routes/smartops.gap-analysis'
-import { Route as SmartopsFeedbackRouteImport } from './routes/smartops.feedback'
-import { Route as SmartopsExternalContextRouteImport } from './routes/smartops.external-context'
-import { Route as SmartopsDigitalTwinRouteImport } from './routes/smartops.digital-twin'
-import { Route as SmartopsDecisionBoardRouteImport } from './routes/smartops.decision-board'
-import { Route as SmartopsCopSummaryRouteImport } from './routes/smartops.cop-summary'
-import { Route as SmartopsConopsRouteImport } from './routes/smartops.conops'
-import { Route as SmartopsCogRouteImport } from './routes/smartops.cog'
-import { Route as SmartopsCoaWargamerRouteImport } from './routes/smartops.coa-wargamer'
-import { Route as SmartopsCnrRouteImport } from './routes/smartops.cnr'
-import { Route as SmartopsCdeRouteImport } from './routes/smartops.cde'
-import { Route as SmartopsCcirRouteImport } from './routes/smartops.ccir'
-import { Route as SmartopsCampaignRouteImport } from './routes/smartops.campaign'
-import { Route as SmartopsBriefingRouteImport } from './routes/smartops.briefing'
-import { Route as SmartopsBrainstormingRouteImport } from './routes/smartops.brainstorming'
-import { Route as SmartopsBdaRouteImport } from './routes/smartops.bda'
-import { Route as SmartopsBattleRhythmRouteImport } from './routes/smartops.battle-rhythm'
-import { Route as SmartopsAssumptionsRouteImport } from './routes/smartops.assumptions'
-import { Route as SmartopsAssessmentRouteImport } from './routes/smartops.assessment'
-import { Route as SmartopsAnalystDashboardRouteImport } from './routes/smartops.analyst-dashboard'
-import { Route as SmartopsAdvisoryRouteImport } from './routes/smartops.advisory'
-import { Route as SmartopsA2adRouteImport } from './routes/smartops.a2ad'
+import { Route as MshnctrlWeatherRouteImport } from './routes/mshnctrl.weather'
+import { Route as MshnctrlUncertaintyRouteImport } from './routes/mshnctrl.uncertainty'
+import { Route as MshnctrlTriageRouteImport } from './routes/mshnctrl.triage'
+import { Route as MshnctrlTorManagerRouteImport } from './routes/mshnctrl.tor-manager'
+import { Route as MshnctrlTargetingCellDashboardRouteImport } from './routes/mshnctrl.targeting-cell-dashboard'
+import { Route as MshnctrlSupplyChainRouteImport } from './routes/mshnctrl.supply-chain'
+import { Route as MshnctrlStrikeOptimizerRouteImport } from './routes/mshnctrl.strike-optimizer'
+import { Route as MshnctrlStrategicDirectionRouteImport } from './routes/mshnctrl.strategic-direction'
+import { Route as MshnctrlStaffRouteImport } from './routes/mshnctrl.staff'
+import { Route as MshnctrlSocialDomainRouteImport } from './routes/mshnctrl.social-domain'
+import { Route as MshnctrlSecurityRouteImport } from './routes/mshnctrl.security'
+import { Route as MshnctrlScenariosRouteImport } from './routes/mshnctrl.scenarios'
+import { Route as MshnctrlRxpRouteImport } from './routes/mshnctrl.rxp'
+import { Route as MshnctrlRoeRouteImport } from './routes/mshnctrl.roe'
+import { Route as MshnctrlRfisRouteImport } from './routes/mshnctrl.rfis'
+import { Route as MshnctrlProductsRouteImport } from './routes/mshnctrl.products'
+import { Route as MshnctrlPersonnelRouteImport } from './routes/mshnctrl.personnel'
+import { Route as MshnctrlOrbatRouteImport } from './routes/mshnctrl.orbat'
+import { Route as MshnctrlOntologyRouteImport } from './routes/mshnctrl.ontology'
+import { Route as MshnctrlMenuBuilderRouteImport } from './routes/mshnctrl.menu-builder'
+import { Route as MshnctrlMdoRouteImport } from './routes/mshnctrl.mdo'
+import { Route as MshnctrlLogisticsRouteImport } from './routes/mshnctrl.logistics'
+import { Route as MshnctrlLegadDashboardRouteImport } from './routes/mshnctrl.legad-dashboard'
+import { Route as MshnctrlJ5DashboardRouteImport } from './routes/mshnctrl.j5-dashboard'
+import { Route as MshnctrlJ4DashboardRouteImport } from './routes/mshnctrl.j4-dashboard'
+import { Route as MshnctrlJ3DashboardRouteImport } from './routes/mshnctrl.j3-dashboard'
+import { Route as MshnctrlJ2DashboardRouteImport } from './routes/mshnctrl.j2-dashboard'
+import { Route as MshnctrlInfrastructureRouteImport } from './routes/mshnctrl.infrastructure'
+import { Route as MshnctrlInformationManagementRouteImport } from './routes/mshnctrl.information-management'
+import { Route as MshnctrlImDashboardRouteImport } from './routes/mshnctrl/im-dashboard'
+import { Route as MshnctrlGapAnalysisRouteImport } from './routes/mshnctrl.gap-analysis'
+import { Route as MshnctrlFeedbackRouteImport } from './routes/mshnctrl.feedback'
+import { Route as MshnctrlExternalContextRouteImport } from './routes/mshnctrl.external-context'
+import { Route as MshnctrlDigitalTwinRouteImport } from './routes/mshnctrl.digital-twin'
+import { Route as MshnctrlDecisionBoardRouteImport } from './routes/mshnctrl.decision-board'
+import { Route as MshnctrlCopSummaryRouteImport } from './routes/mshnctrl.cop-summary'
+import { Route as MshnctrlConopsRouteImport } from './routes/mshnctrl.conops'
+import { Route as MshnctrlCogRouteImport } from './routes/mshnctrl.cog'
+import { Route as MshnctrlCoaWargamerRouteImport } from './routes/mshnctrl.coa-wargamer'
+import { Route as MshnctrlCnrRouteImport } from './routes/mshnctrl.cnr'
+import { Route as MshnctrlCdeRouteImport } from './routes/mshnctrl.cde'
+import { Route as MshnctrlCcirRouteImport } from './routes/mshnctrl.ccir'
+import { Route as MshnctrlCampaignRouteImport } from './routes/mshnctrl.campaign'
+import { Route as MshnctrlBriefingRouteImport } from './routes/mshnctrl.briefing'
+import { Route as MshnctrlBrainstormingRouteImport } from './routes/mshnctrl.brainstorming'
+import { Route as MshnctrlBdaRouteImport } from './routes/mshnctrl.bda'
+import { Route as MshnctrlBattleRhythmRouteImport } from './routes/mshnctrl.battle-rhythm'
+import { Route as MshnctrlAssumptionsRouteImport } from './routes/mshnctrl.assumptions'
+import { Route as MshnctrlAssessmentRouteImport } from './routes/mshnctrl.assessment'
+import { Route as MshnctrlAnalystDashboardRouteImport } from './routes/mshnctrl.analyst-dashboard'
+import { Route as MshnctrlAdvisoryRouteImport } from './routes/mshnctrl.advisory'
+import { Route as MshnctrlA2adRouteImport } from './routes/mshnctrl.a2ad'
 import { Route as AdminUsersRouteImport } from './routes/admin/users'
 import { Route as AdminRateLimitsRouteImport } from './routes/admin/rate-limits'
 import { Route as AdminNewRouteImport } from './routes/admin/new'
 import { Route as AdminDiscoveryRouteImport } from './routes/admin/discovery'
 import { Route as AdminAbacRouteImport } from './routes/admin/abac'
-import { Route as SmartopsTargetingIndexRouteImport } from './routes/smartops.targeting.index'
-import { Route as SmartopsProposalsIndexRouteImport } from './routes/smartops.proposals.index'
+import { Route as MshnctrlTargetingIndexRouteImport } from './routes/mshnctrl.targeting.index'
+import { Route as MshnctrlProposalsIndexRouteImport } from './routes/mshnctrl.proposals.index'
 import { Route as AdminDiscoveryIndexRouteImport } from './routes/admin/discovery/index'
-import { Route as SmartopsTargetingTargetsRouteImport } from './routes/smartops.targeting.targets'
-import { Route as SmartopsTargetingRiskRouteImport } from './routes/smartops.targeting.risk'
-import { Route as SmartopsTargetingNominateRouteImport } from './routes/smartops.targeting.nominate'
-import { Route as SmartopsTargetingMissionCommandRouteImport } from './routes/smartops.targeting.mission-command'
-import { Route as SmartopsTargetingJtbRouteImport } from './routes/smartops.targeting.jtb'
-import { Route as SmartopsTargetingIntelligenceRouteImport } from './routes/smartops.targeting.intelligence'
-import { Route as SmartopsTargetingEmergencyRouteImport } from './routes/smartops.targeting.emergency'
-import { Route as SmartopsTargetingEffectsRouteImport } from './routes/smartops.targeting.effects'
-import { Route as SmartopsTargetingCollaborationRouteImport } from './routes/smartops.targeting.collaboration'
-import { Route as SmartopsTargetingAssetsRouteImport } from './routes/smartops.targeting.assets'
-import { Route as SmartopsTargetingAnalyticsRouteImport } from './routes/smartops.targeting.analytics'
-import { Route as SmartopsTargetingAnalysisRouteImport } from './routes/smartops.targeting.analysis'
-import { Route as SmartopsTargetingTargetIdRouteImport } from './routes/smartops.targeting.$targetId'
-import { Route as SmartopsProposalsProposalIdRouteImport } from './routes/smartops.proposals.$proposalId'
-import { Route as SmartopsConductSessionIdRouteImport } from './routes/smartops.conduct.$sessionId'
-import { Route as SmartopsBdaCreateRouteImport } from './routes/smartops.bda.create'
-import { Route as SmartopsBdaReportIdRouteImport } from './routes/smartops.bda.$reportId'
+import { Route as MshnctrlTargetingTargetsRouteImport } from './routes/mshnctrl.targeting.targets'
+import { Route as MshnctrlTargetingRiskRouteImport } from './routes/mshnctrl.targeting.risk'
+import { Route as MshnctrlTargetingNominateRouteImport } from './routes/mshnctrl.targeting.nominate'
+import { Route as MshnctrlTargetingMissionCommandRouteImport } from './routes/mshnctrl.targeting.mission-command'
+import { Route as MshnctrlTargetingJtbRouteImport } from './routes/mshnctrl.targeting.jtb'
+import { Route as MshnctrlTargetingIntelligenceRouteImport } from './routes/mshnctrl.targeting.intelligence'
+import { Route as MshnctrlTargetingEmergencyRouteImport } from './routes/mshnctrl.targeting.emergency'
+import { Route as MshnctrlTargetingEffectsRouteImport } from './routes/mshnctrl.targeting.effects'
+import { Route as MshnctrlTargetingCollaborationRouteImport } from './routes/mshnctrl.targeting.collaboration'
+import { Route as MshnctrlTargetingAssetsRouteImport } from './routes/mshnctrl.targeting.assets'
+import { Route as MshnctrlTargetingAnalyticsRouteImport } from './routes/mshnctrl.targeting.analytics'
+import { Route as MshnctrlTargetingAnalysisRouteImport } from './routes/mshnctrl.targeting.analysis'
+import { Route as MshnctrlTargetingTargetIdRouteImport } from './routes/mshnctrl.targeting.$targetId'
+import { Route as MshnctrlProposalsProposalIdRouteImport } from './routes/mshnctrl.proposals.$proposalId'
+import { Route as MshnctrlConductSessionIdRouteImport } from './routes/mshnctrl.conduct.$sessionId'
+import { Route as MshnctrlBdaCreateRouteImport } from './routes/mshnctrl.bda.create'
+import { Route as MshnctrlBdaReportIdRouteImport } from './routes/mshnctrl.bda.$reportId'
 import { Route as AdminDiscoveryServiceIdRouteImport } from './routes/admin/discovery/$serviceId'
 
-const SmartopsOplanLazyRouteImport = createFileRoute('/smartops/oplan')()
+const MshnctrlOplanLazyRouteImport = createFileRoute('/mshnctrl/oplan')()
 
-const SmartopsRoute = SmartopsRouteImport.update({
-  id: '/smartops',
-  path: '/smartops',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ReportsRoute = ReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
@@ -125,6 +120,11 @@ const RegisterRoute = RegisterRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MshnctrlRoute = MshnctrlRouteImport.update({
+  id: '/mshnctrl',
+  path: '/mshnctrl',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LogsRoute = LogsRouteImport.update({
@@ -157,22 +157,22 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SmartopsIndexRoute = SmartopsIndexRouteImport.update({
+const MshnctrlIndexRoute = MshnctrlIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
-const SmartopsOplanLazyRoute = SmartopsOplanLazyRouteImport.update({
+const MshnctrlOplanLazyRoute = MshnctrlOplanLazyRouteImport.update({
   id: '/oplan',
   path: '/oplan',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any).lazy(() =>
-  import('./routes/smartops.oplan.lazy').then((d) => d.Route),
+  import('./routes/mshnctrl.oplan.lazy').then((d) => d.Route),
 )
 const StatsUsersRoute = StatsUsersRouteImport.update({
   id: '/stats/users',
@@ -189,280 +189,280 @@ const StatsSessionsRoute = StatsSessionsRouteImport.update({
   path: '/stats/sessions',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SmartopsWeatherRoute = SmartopsWeatherRouteImport.update({
+const MshnctrlWeatherRoute = MshnctrlWeatherRouteImport.update({
   id: '/weather',
   path: '/weather',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsUncertaintyRoute = SmartopsUncertaintyRouteImport.update({
+const MshnctrlUncertaintyRoute = MshnctrlUncertaintyRouteImport.update({
   id: '/uncertainty',
   path: '/uncertainty',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsTriageRoute = SmartopsTriageRouteImport.update({
+const MshnctrlTriageRoute = MshnctrlTriageRouteImport.update({
   id: '/triage',
   path: '/triage',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any).lazy(() =>
-  import('./routes/smartops.triage.lazy').then((d) => d.Route),
+  import('./routes/mshnctrl.triage.lazy').then((d) => d.Route),
 )
-const SmartopsTorManagerRoute = SmartopsTorManagerRouteImport.update({
+const MshnctrlTorManagerRoute = MshnctrlTorManagerRouteImport.update({
   id: '/tor-manager',
   path: '/tor-manager',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsTargetingCellDashboardRoute =
-  SmartopsTargetingCellDashboardRouteImport.update({
+const MshnctrlTargetingCellDashboardRoute =
+  MshnctrlTargetingCellDashboardRouteImport.update({
     id: '/targeting-cell-dashboard',
     path: '/targeting-cell-dashboard',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsSupplyChainRoute = SmartopsSupplyChainRouteImport.update({
+const MshnctrlSupplyChainRoute = MshnctrlSupplyChainRouteImport.update({
   id: '/supply-chain',
   path: '/supply-chain',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsStrikeOptimizerRoute = SmartopsStrikeOptimizerRouteImport.update({
+const MshnctrlStrikeOptimizerRoute = MshnctrlStrikeOptimizerRouteImport.update({
   id: '/strike-optimizer',
   path: '/strike-optimizer',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsStrategicDirectionRoute =
-  SmartopsStrategicDirectionRouteImport.update({
+const MshnctrlStrategicDirectionRoute =
+  MshnctrlStrategicDirectionRouteImport.update({
     id: '/strategic-direction',
     path: '/strategic-direction',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsStaffRoute = SmartopsStaffRouteImport.update({
+const MshnctrlStaffRoute = MshnctrlStaffRouteImport.update({
   id: '/staff',
   path: '/staff',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsSocialDomainRoute = SmartopsSocialDomainRouteImport.update({
+const MshnctrlSocialDomainRoute = MshnctrlSocialDomainRouteImport.update({
   id: '/social-domain',
   path: '/social-domain',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsSecurityRoute = SmartopsSecurityRouteImport.update({
+const MshnctrlSecurityRoute = MshnctrlSecurityRouteImport.update({
   id: '/security',
   path: '/security',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsScenariosRoute = SmartopsScenariosRouteImport.update({
+const MshnctrlScenariosRoute = MshnctrlScenariosRouteImport.update({
   id: '/scenarios',
   path: '/scenarios',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsRxpRoute = SmartopsRxpRouteImport.update({
+const MshnctrlRxpRoute = MshnctrlRxpRouteImport.update({
   id: '/rxp',
   path: '/rxp',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsRoeRoute = SmartopsRoeRouteImport.update({
+const MshnctrlRoeRoute = MshnctrlRoeRouteImport.update({
   id: '/roe',
   path: '/roe',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsRfisRoute = SmartopsRfisRouteImport.update({
+const MshnctrlRfisRoute = MshnctrlRfisRouteImport.update({
   id: '/rfis',
   path: '/rfis',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsProductsRoute = SmartopsProductsRouteImport.update({
+const MshnctrlProductsRoute = MshnctrlProductsRouteImport.update({
   id: '/products',
   path: '/products',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsPersonnelRoute = SmartopsPersonnelRouteImport.update({
+const MshnctrlPersonnelRoute = MshnctrlPersonnelRouteImport.update({
   id: '/personnel',
   path: '/personnel',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsOrbatRoute = SmartopsOrbatRouteImport.update({
+const MshnctrlOrbatRoute = MshnctrlOrbatRouteImport.update({
   id: '/orbat',
   path: '/orbat',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsOntologyRoute = SmartopsOntologyRouteImport.update({
+const MshnctrlOntologyRoute = MshnctrlOntologyRouteImport.update({
   id: '/ontology',
   path: '/ontology',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsMenuBuilderRoute = SmartopsMenuBuilderRouteImport.update({
+const MshnctrlMenuBuilderRoute = MshnctrlMenuBuilderRouteImport.update({
   id: '/menu-builder',
   path: '/menu-builder',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsMdoRoute = SmartopsMdoRouteImport.update({
+const MshnctrlMdoRoute = MshnctrlMdoRouteImport.update({
   id: '/mdo',
   path: '/mdo',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsLogisticsRoute = SmartopsLogisticsRouteImport.update({
+const MshnctrlLogisticsRoute = MshnctrlLogisticsRouteImport.update({
   id: '/logistics',
   path: '/logistics',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsLegadDashboardRoute = SmartopsLegadDashboardRouteImport.update({
+const MshnctrlLegadDashboardRoute = MshnctrlLegadDashboardRouteImport.update({
   id: '/legad-dashboard',
   path: '/legad-dashboard',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsJ5DashboardRoute = SmartopsJ5DashboardRouteImport.update({
+const MshnctrlJ5DashboardRoute = MshnctrlJ5DashboardRouteImport.update({
   id: '/j5-dashboard',
   path: '/j5-dashboard',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsJ4DashboardRoute = SmartopsJ4DashboardRouteImport.update({
+const MshnctrlJ4DashboardRoute = MshnctrlJ4DashboardRouteImport.update({
   id: '/j4-dashboard',
   path: '/j4-dashboard',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsJ3DashboardRoute = SmartopsJ3DashboardRouteImport.update({
+const MshnctrlJ3DashboardRoute = MshnctrlJ3DashboardRouteImport.update({
   id: '/j3-dashboard',
   path: '/j3-dashboard',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsJ2DashboardRoute = SmartopsJ2DashboardRouteImport.update({
+const MshnctrlJ2DashboardRoute = MshnctrlJ2DashboardRouteImport.update({
   id: '/j2-dashboard',
   path: '/j2-dashboard',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsInfrastructureRoute = SmartopsInfrastructureRouteImport.update({
+const MshnctrlInfrastructureRoute = MshnctrlInfrastructureRouteImport.update({
   id: '/infrastructure',
   path: '/infrastructure',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsInformationManagementRoute =
-  SmartopsInformationManagementRouteImport.update({
+const MshnctrlInformationManagementRoute =
+  MshnctrlInformationManagementRouteImport.update({
     id: '/information-management',
     path: '/information-management',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsImDashboardRoute = SmartopsImDashboardRouteImport.update({
+const MshnctrlImDashboardRoute = MshnctrlImDashboardRouteImport.update({
   id: '/im-dashboard',
   path: '/im-dashboard',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsGapAnalysisRoute = SmartopsGapAnalysisRouteImport.update({
+const MshnctrlGapAnalysisRoute = MshnctrlGapAnalysisRouteImport.update({
   id: '/gap-analysis',
   path: '/gap-analysis',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any).lazy(() =>
-  import('./routes/smartops.gap-analysis.lazy').then((d) => d.Route),
+  import('./routes/mshnctrl.gap-analysis.lazy').then((d) => d.Route),
 )
-const SmartopsFeedbackRoute = SmartopsFeedbackRouteImport.update({
+const MshnctrlFeedbackRoute = MshnctrlFeedbackRouteImport.update({
   id: '/feedback',
   path: '/feedback',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsExternalContextRoute = SmartopsExternalContextRouteImport.update({
+const MshnctrlExternalContextRoute = MshnctrlExternalContextRouteImport.update({
   id: '/external-context',
   path: '/external-context',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsDigitalTwinRoute = SmartopsDigitalTwinRouteImport.update({
+const MshnctrlDigitalTwinRoute = MshnctrlDigitalTwinRouteImport.update({
   id: '/digital-twin',
   path: '/digital-twin',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any).lazy(() =>
-  import('./routes/smartops.digital-twin.lazy').then((d) => d.Route),
+  import('./routes/mshnctrl.digital-twin.lazy').then((d) => d.Route),
 )
-const SmartopsDecisionBoardRoute = SmartopsDecisionBoardRouteImport.update({
+const MshnctrlDecisionBoardRoute = MshnctrlDecisionBoardRouteImport.update({
   id: '/decision-board',
   path: '/decision-board',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsCopSummaryRoute = SmartopsCopSummaryRouteImport.update({
+const MshnctrlCopSummaryRoute = MshnctrlCopSummaryRouteImport.update({
   id: '/cop-summary',
   path: '/cop-summary',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsConopsRoute = SmartopsConopsRouteImport.update({
+const MshnctrlConopsRoute = MshnctrlConopsRouteImport.update({
   id: '/conops',
   path: '/conops',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsCogRoute = SmartopsCogRouteImport.update({
+const MshnctrlCogRoute = MshnctrlCogRouteImport.update({
   id: '/cog',
   path: '/cog',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsCoaWargamerRoute = SmartopsCoaWargamerRouteImport.update({
+const MshnctrlCoaWargamerRoute = MshnctrlCoaWargamerRouteImport.update({
   id: '/coa-wargamer',
   path: '/coa-wargamer',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsCnrRoute = SmartopsCnrRouteImport.update({
+const MshnctrlCnrRoute = MshnctrlCnrRouteImport.update({
   id: '/cnr',
   path: '/cnr',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsCdeRoute = SmartopsCdeRouteImport.update({
+const MshnctrlCdeRoute = MshnctrlCdeRouteImport.update({
   id: '/cde',
   path: '/cde',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsCcirRoute = SmartopsCcirRouteImport.update({
+const MshnctrlCcirRoute = MshnctrlCcirRouteImport.update({
   id: '/ccir',
   path: '/ccir',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsCampaignRoute = SmartopsCampaignRouteImport.update({
+const MshnctrlCampaignRoute = MshnctrlCampaignRouteImport.update({
   id: '/campaign',
   path: '/campaign',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsBriefingRoute = SmartopsBriefingRouteImport.update({
+const MshnctrlBriefingRoute = MshnctrlBriefingRouteImport.update({
   id: '/briefing',
   path: '/briefing',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsBrainstormingRoute = SmartopsBrainstormingRouteImport.update({
+const MshnctrlBrainstormingRoute = MshnctrlBrainstormingRouteImport.update({
   id: '/brainstorming',
   path: '/brainstorming',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsBdaRoute = SmartopsBdaRouteImport.update({
+const MshnctrlBdaRoute = MshnctrlBdaRouteImport.update({
   id: '/bda',
   path: '/bda',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsBattleRhythmRoute = SmartopsBattleRhythmRouteImport.update({
+const MshnctrlBattleRhythmRoute = MshnctrlBattleRhythmRouteImport.update({
   id: '/battle-rhythm',
   path: '/battle-rhythm',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any).lazy(() =>
-  import('./routes/smartops.battle-rhythm.lazy').then((d) => d.Route),
+  import('./routes/mshnctrl.battle-rhythm.lazy').then((d) => d.Route),
 )
-const SmartopsAssumptionsRoute = SmartopsAssumptionsRouteImport.update({
+const MshnctrlAssumptionsRoute = MshnctrlAssumptionsRouteImport.update({
   id: '/assumptions',
   path: '/assumptions',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsAssessmentRoute = SmartopsAssessmentRouteImport.update({
+const MshnctrlAssessmentRoute = MshnctrlAssessmentRouteImport.update({
   id: '/assessment',
   path: '/assessment',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsAnalystDashboardRoute =
-  SmartopsAnalystDashboardRouteImport.update({
+const MshnctrlAnalystDashboardRoute =
+  MshnctrlAnalystDashboardRouteImport.update({
     id: '/analyst-dashboard',
     path: '/analyst-dashboard',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsAdvisoryRoute = SmartopsAdvisoryRouteImport.update({
+const MshnctrlAdvisoryRoute = MshnctrlAdvisoryRouteImport.update({
   id: '/advisory',
   path: '/advisory',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any).lazy(() =>
-  import('./routes/smartops.advisory.lazy').then((d) => d.Route),
+  import('./routes/mshnctrl.advisory.lazy').then((d) => d.Route),
 )
-const SmartopsA2adRoute = SmartopsA2adRouteImport.update({
+const MshnctrlA2adRoute = MshnctrlA2adRouteImport.update({
   id: '/a2ad',
   path: '/a2ad',
-  getParentRoute: () => SmartopsRoute,
-} as any).lazy(() => import('./routes/smartops.a2ad.lazy').then((d) => d.Route))
+  getParentRoute: () => MshnctrlRoute,
+} as any).lazy(() => import('./routes/mshnctrl.a2ad.lazy').then((d) => d.Route))
 const AdminUsersRoute = AdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -488,119 +488,119 @@ const AdminAbacRoute = AdminAbacRouteImport.update({
   path: '/abac',
   getParentRoute: () => AdminRoute,
 } as any)
-const SmartopsTargetingIndexRoute = SmartopsTargetingIndexRouteImport.update({
+const MshnctrlTargetingIndexRoute = MshnctrlTargetingIndexRouteImport.update({
   id: '/targeting/',
   path: '/targeting/',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsProposalsIndexRoute = SmartopsProposalsIndexRouteImport.update({
+const MshnctrlProposalsIndexRoute = MshnctrlProposalsIndexRouteImport.update({
   id: '/proposals/',
   path: '/proposals/',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
 const AdminDiscoveryIndexRoute = AdminDiscoveryIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminDiscoveryRoute,
 } as any)
-const SmartopsTargetingTargetsRoute =
-  SmartopsTargetingTargetsRouteImport.update({
+const MshnctrlTargetingTargetsRoute =
+  MshnctrlTargetingTargetsRouteImport.update({
     id: '/targeting/targets',
     path: '/targeting/targets',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsTargetingRiskRoute = SmartopsTargetingRiskRouteImport.update({
+const MshnctrlTargetingRiskRoute = MshnctrlTargetingRiskRouteImport.update({
   id: '/targeting/risk',
   path: '/targeting/risk',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsTargetingNominateRoute =
-  SmartopsTargetingNominateRouteImport.update({
+const MshnctrlTargetingNominateRoute =
+  MshnctrlTargetingNominateRouteImport.update({
     id: '/targeting/nominate',
     path: '/targeting/nominate',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsTargetingMissionCommandRoute =
-  SmartopsTargetingMissionCommandRouteImport.update({
+const MshnctrlTargetingMissionCommandRoute =
+  MshnctrlTargetingMissionCommandRouteImport.update({
     id: '/targeting/mission-command',
     path: '/targeting/mission-command',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsTargetingJtbRoute = SmartopsTargetingJtbRouteImport.update({
+const MshnctrlTargetingJtbRoute = MshnctrlTargetingJtbRouteImport.update({
   id: '/targeting/jtb',
   path: '/targeting/jtb',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsTargetingIntelligenceRoute =
-  SmartopsTargetingIntelligenceRouteImport.update({
+const MshnctrlTargetingIntelligenceRoute =
+  MshnctrlTargetingIntelligenceRouteImport.update({
     id: '/targeting/intelligence',
     path: '/targeting/intelligence',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsTargetingEmergencyRoute =
-  SmartopsTargetingEmergencyRouteImport.update({
+const MshnctrlTargetingEmergencyRoute =
+  MshnctrlTargetingEmergencyRouteImport.update({
     id: '/targeting/emergency',
     path: '/targeting/emergency',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsTargetingEffectsRoute =
-  SmartopsTargetingEffectsRouteImport.update({
+const MshnctrlTargetingEffectsRoute =
+  MshnctrlTargetingEffectsRouteImport.update({
     id: '/targeting/effects',
     path: '/targeting/effects',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsTargetingCollaborationRoute =
-  SmartopsTargetingCollaborationRouteImport.update({
+const MshnctrlTargetingCollaborationRoute =
+  MshnctrlTargetingCollaborationRouteImport.update({
     id: '/targeting/collaboration',
     path: '/targeting/collaboration',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsTargetingAssetsRoute = SmartopsTargetingAssetsRouteImport.update({
+const MshnctrlTargetingAssetsRoute = MshnctrlTargetingAssetsRouteImport.update({
   id: '/targeting/assets',
   path: '/targeting/assets',
-  getParentRoute: () => SmartopsRoute,
+  getParentRoute: () => MshnctrlRoute,
 } as any)
-const SmartopsTargetingAnalyticsRoute =
-  SmartopsTargetingAnalyticsRouteImport.update({
+const MshnctrlTargetingAnalyticsRoute =
+  MshnctrlTargetingAnalyticsRouteImport.update({
     id: '/targeting/analytics',
     path: '/targeting/analytics',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsTargetingAnalysisRoute =
-  SmartopsTargetingAnalysisRouteImport.update({
+const MshnctrlTargetingAnalysisRoute =
+  MshnctrlTargetingAnalysisRouteImport.update({
     id: '/targeting/analysis',
     path: '/targeting/analysis',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsTargetingTargetIdRoute =
-  SmartopsTargetingTargetIdRouteImport.update({
+const MshnctrlTargetingTargetIdRoute =
+  MshnctrlTargetingTargetIdRouteImport.update({
     id: '/targeting/$targetId',
     path: '/targeting/$targetId',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsProposalsProposalIdRoute =
-  SmartopsProposalsProposalIdRouteImport.update({
+const MshnctrlProposalsProposalIdRoute =
+  MshnctrlProposalsProposalIdRouteImport.update({
     id: '/proposals/$proposalId',
     path: '/proposals/$proposalId',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any)
-const SmartopsConductSessionIdRoute =
-  SmartopsConductSessionIdRouteImport.update({
+const MshnctrlConductSessionIdRoute =
+  MshnctrlConductSessionIdRouteImport.update({
     id: '/conduct/$sessionId',
     path: '/conduct/$sessionId',
-    getParentRoute: () => SmartopsRoute,
+    getParentRoute: () => MshnctrlRoute,
   } as any).lazy(() =>
-    import('./routes/smartops.conduct.$sessionId.lazy').then((d) => d.Route),
+    import('./routes/mshnctrl.conduct.$sessionId.lazy').then((d) => d.Route),
   )
-const SmartopsBdaCreateRoute = SmartopsBdaCreateRouteImport.update({
+const MshnctrlBdaCreateRoute = MshnctrlBdaCreateRouteImport.update({
   id: '/create',
   path: '/create',
-  getParentRoute: () => SmartopsBdaRoute,
+  getParentRoute: () => MshnctrlBdaRoute,
 } as any)
-const SmartopsBdaReportIdRoute = SmartopsBdaReportIdRouteImport.update({
+const MshnctrlBdaReportIdRoute = MshnctrlBdaReportIdRouteImport.update({
   id: '/$reportId',
   path: '/$reportId',
-  getParentRoute: () => SmartopsBdaRoute,
+  getParentRoute: () => MshnctrlBdaRoute,
 } as any)
 const AdminDiscoveryServiceIdRoute = AdminDiscoveryServiceIdRouteImport.update({
   id: '/$serviceId',
@@ -615,94 +615,94 @@ export interface FileRoutesByFullPath {
   '/debug': typeof DebugRoute
   '/login': typeof LoginRoute
   '/logs': typeof LogsRoute
+  '/mshnctrl': typeof MshnctrlRouteWithChildren
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/reports': typeof ReportsRoute
-  '/smartops': typeof SmartopsRouteWithChildren
   '/admin/abac': typeof AdminAbacRoute
   '/admin/discovery': typeof AdminDiscoveryRouteWithChildren
   '/admin/new': typeof AdminNewRoute
   '/admin/rate-limits': typeof AdminRateLimitsRoute
   '/admin/users': typeof AdminUsersRoute
-  '/smartops/a2ad': typeof SmartopsA2adRoute
-  '/smartops/advisory': typeof SmartopsAdvisoryRoute
-  '/smartops/analyst-dashboard': typeof SmartopsAnalystDashboardRoute
-  '/smartops/assessment': typeof SmartopsAssessmentRoute
-  '/smartops/assumptions': typeof SmartopsAssumptionsRoute
-  '/smartops/battle-rhythm': typeof SmartopsBattleRhythmRoute
-  '/smartops/bda': typeof SmartopsBdaRouteWithChildren
-  '/smartops/brainstorming': typeof SmartopsBrainstormingRoute
-  '/smartops/briefing': typeof SmartopsBriefingRoute
-  '/smartops/campaign': typeof SmartopsCampaignRoute
-  '/smartops/ccir': typeof SmartopsCcirRoute
-  '/smartops/cde': typeof SmartopsCdeRoute
-  '/smartops/cnr': typeof SmartopsCnrRoute
-  '/smartops/coa-wargamer': typeof SmartopsCoaWargamerRoute
-  '/smartops/cog': typeof SmartopsCogRoute
-  '/smartops/conops': typeof SmartopsConopsRoute
-  '/smartops/cop-summary': typeof SmartopsCopSummaryRoute
-  '/smartops/decision-board': typeof SmartopsDecisionBoardRoute
-  '/smartops/digital-twin': typeof SmartopsDigitalTwinRoute
-  '/smartops/external-context': typeof SmartopsExternalContextRoute
-  '/smartops/feedback': typeof SmartopsFeedbackRoute
-  '/smartops/gap-analysis': typeof SmartopsGapAnalysisRoute
-  '/smartops/im-dashboard': typeof SmartopsImDashboardRoute
-  '/smartops/information-management': typeof SmartopsInformationManagementRoute
-  '/smartops/infrastructure': typeof SmartopsInfrastructureRoute
-  '/smartops/j2-dashboard': typeof SmartopsJ2DashboardRoute
-  '/smartops/j3-dashboard': typeof SmartopsJ3DashboardRoute
-  '/smartops/j4-dashboard': typeof SmartopsJ4DashboardRoute
-  '/smartops/j5-dashboard': typeof SmartopsJ5DashboardRoute
-  '/smartops/legad-dashboard': typeof SmartopsLegadDashboardRoute
-  '/smartops/logistics': typeof SmartopsLogisticsRoute
-  '/smartops/mdo': typeof SmartopsMdoRoute
-  '/smartops/menu-builder': typeof SmartopsMenuBuilderRoute
-  '/smartops/ontology': typeof SmartopsOntologyRoute
-  '/smartops/orbat': typeof SmartopsOrbatRoute
-  '/smartops/personnel': typeof SmartopsPersonnelRoute
-  '/smartops/products': typeof SmartopsProductsRoute
-  '/smartops/rfis': typeof SmartopsRfisRoute
-  '/smartops/roe': typeof SmartopsRoeRoute
-  '/smartops/rxp': typeof SmartopsRxpRoute
-  '/smartops/scenarios': typeof SmartopsScenariosRoute
-  '/smartops/security': typeof SmartopsSecurityRoute
-  '/smartops/social-domain': typeof SmartopsSocialDomainRoute
-  '/smartops/staff': typeof SmartopsStaffRoute
-  '/smartops/strategic-direction': typeof SmartopsStrategicDirectionRoute
-  '/smartops/strike-optimizer': typeof SmartopsStrikeOptimizerRoute
-  '/smartops/supply-chain': typeof SmartopsSupplyChainRoute
-  '/smartops/targeting-cell-dashboard': typeof SmartopsTargetingCellDashboardRoute
-  '/smartops/tor-manager': typeof SmartopsTorManagerRoute
-  '/smartops/triage': typeof SmartopsTriageRoute
-  '/smartops/uncertainty': typeof SmartopsUncertaintyRoute
-  '/smartops/weather': typeof SmartopsWeatherRoute
+  '/mshnctrl/a2ad': typeof MshnctrlA2adRoute
+  '/mshnctrl/advisory': typeof MshnctrlAdvisoryRoute
+  '/mshnctrl/analyst-dashboard': typeof MshnctrlAnalystDashboardRoute
+  '/mshnctrl/assessment': typeof MshnctrlAssessmentRoute
+  '/mshnctrl/assumptions': typeof MshnctrlAssumptionsRoute
+  '/mshnctrl/battle-rhythm': typeof MshnctrlBattleRhythmRoute
+  '/mshnctrl/bda': typeof MshnctrlBdaRouteWithChildren
+  '/mshnctrl/brainstorming': typeof MshnctrlBrainstormingRoute
+  '/mshnctrl/briefing': typeof MshnctrlBriefingRoute
+  '/mshnctrl/campaign': typeof MshnctrlCampaignRoute
+  '/mshnctrl/ccir': typeof MshnctrlCcirRoute
+  '/mshnctrl/cde': typeof MshnctrlCdeRoute
+  '/mshnctrl/cnr': typeof MshnctrlCnrRoute
+  '/mshnctrl/coa-wargamer': typeof MshnctrlCoaWargamerRoute
+  '/mshnctrl/cog': typeof MshnctrlCogRoute
+  '/mshnctrl/conops': typeof MshnctrlConopsRoute
+  '/mshnctrl/cop-summary': typeof MshnctrlCopSummaryRoute
+  '/mshnctrl/decision-board': typeof MshnctrlDecisionBoardRoute
+  '/mshnctrl/digital-twin': typeof MshnctrlDigitalTwinRoute
+  '/mshnctrl/external-context': typeof MshnctrlExternalContextRoute
+  '/mshnctrl/feedback': typeof MshnctrlFeedbackRoute
+  '/mshnctrl/gap-analysis': typeof MshnctrlGapAnalysisRoute
+  '/mshnctrl/im-dashboard': typeof MshnctrlImDashboardRoute
+  '/mshnctrl/information-management': typeof MshnctrlInformationManagementRoute
+  '/mshnctrl/infrastructure': typeof MshnctrlInfrastructureRoute
+  '/mshnctrl/j2-dashboard': typeof MshnctrlJ2DashboardRoute
+  '/mshnctrl/j3-dashboard': typeof MshnctrlJ3DashboardRoute
+  '/mshnctrl/j4-dashboard': typeof MshnctrlJ4DashboardRoute
+  '/mshnctrl/j5-dashboard': typeof MshnctrlJ5DashboardRoute
+  '/mshnctrl/legad-dashboard': typeof MshnctrlLegadDashboardRoute
+  '/mshnctrl/logistics': typeof MshnctrlLogisticsRoute
+  '/mshnctrl/mdo': typeof MshnctrlMdoRoute
+  '/mshnctrl/menu-builder': typeof MshnctrlMenuBuilderRoute
+  '/mshnctrl/ontology': typeof MshnctrlOntologyRoute
+  '/mshnctrl/orbat': typeof MshnctrlOrbatRoute
+  '/mshnctrl/personnel': typeof MshnctrlPersonnelRoute
+  '/mshnctrl/products': typeof MshnctrlProductsRoute
+  '/mshnctrl/rfis': typeof MshnctrlRfisRoute
+  '/mshnctrl/roe': typeof MshnctrlRoeRoute
+  '/mshnctrl/rxp': typeof MshnctrlRxpRoute
+  '/mshnctrl/scenarios': typeof MshnctrlScenariosRoute
+  '/mshnctrl/security': typeof MshnctrlSecurityRoute
+  '/mshnctrl/social-domain': typeof MshnctrlSocialDomainRoute
+  '/mshnctrl/staff': typeof MshnctrlStaffRoute
+  '/mshnctrl/strategic-direction': typeof MshnctrlStrategicDirectionRoute
+  '/mshnctrl/strike-optimizer': typeof MshnctrlStrikeOptimizerRoute
+  '/mshnctrl/supply-chain': typeof MshnctrlSupplyChainRoute
+  '/mshnctrl/targeting-cell-dashboard': typeof MshnctrlTargetingCellDashboardRoute
+  '/mshnctrl/tor-manager': typeof MshnctrlTorManagerRoute
+  '/mshnctrl/triage': typeof MshnctrlTriageRoute
+  '/mshnctrl/uncertainty': typeof MshnctrlUncertaintyRoute
+  '/mshnctrl/weather': typeof MshnctrlWeatherRoute
   '/stats/sessions': typeof StatsSessionsRoute
   '/stats/system': typeof StatsSystemRoute
   '/stats/users': typeof StatsUsersRoute
-  '/smartops/oplan': typeof SmartopsOplanLazyRoute
+  '/mshnctrl/oplan': typeof MshnctrlOplanLazyRoute
   '/admin/': typeof AdminIndexRoute
-  '/smartops/': typeof SmartopsIndexRoute
+  '/mshnctrl/': typeof MshnctrlIndexRoute
   '/admin/discovery/$serviceId': typeof AdminDiscoveryServiceIdRoute
-  '/smartops/bda/$reportId': typeof SmartopsBdaReportIdRoute
-  '/smartops/bda/create': typeof SmartopsBdaCreateRoute
-  '/smartops/conduct/$sessionId': typeof SmartopsConductSessionIdRoute
-  '/smartops/proposals/$proposalId': typeof SmartopsProposalsProposalIdRoute
-  '/smartops/targeting/$targetId': typeof SmartopsTargetingTargetIdRoute
-  '/smartops/targeting/analysis': typeof SmartopsTargetingAnalysisRoute
-  '/smartops/targeting/analytics': typeof SmartopsTargetingAnalyticsRoute
-  '/smartops/targeting/assets': typeof SmartopsTargetingAssetsRoute
-  '/smartops/targeting/collaboration': typeof SmartopsTargetingCollaborationRoute
-  '/smartops/targeting/effects': typeof SmartopsTargetingEffectsRoute
-  '/smartops/targeting/emergency': typeof SmartopsTargetingEmergencyRoute
-  '/smartops/targeting/intelligence': typeof SmartopsTargetingIntelligenceRoute
-  '/smartops/targeting/jtb': typeof SmartopsTargetingJtbRoute
-  '/smartops/targeting/mission-command': typeof SmartopsTargetingMissionCommandRoute
-  '/smartops/targeting/nominate': typeof SmartopsTargetingNominateRoute
-  '/smartops/targeting/risk': typeof SmartopsTargetingRiskRoute
-  '/smartops/targeting/targets': typeof SmartopsTargetingTargetsRoute
+  '/mshnctrl/bda/$reportId': typeof MshnctrlBdaReportIdRoute
+  '/mshnctrl/bda/create': typeof MshnctrlBdaCreateRoute
+  '/mshnctrl/conduct/$sessionId': typeof MshnctrlConductSessionIdRoute
+  '/mshnctrl/proposals/$proposalId': typeof MshnctrlProposalsProposalIdRoute
+  '/mshnctrl/targeting/$targetId': typeof MshnctrlTargetingTargetIdRoute
+  '/mshnctrl/targeting/analysis': typeof MshnctrlTargetingAnalysisRoute
+  '/mshnctrl/targeting/analytics': typeof MshnctrlTargetingAnalyticsRoute
+  '/mshnctrl/targeting/assets': typeof MshnctrlTargetingAssetsRoute
+  '/mshnctrl/targeting/collaboration': typeof MshnctrlTargetingCollaborationRoute
+  '/mshnctrl/targeting/effects': typeof MshnctrlTargetingEffectsRoute
+  '/mshnctrl/targeting/emergency': typeof MshnctrlTargetingEmergencyRoute
+  '/mshnctrl/targeting/intelligence': typeof MshnctrlTargetingIntelligenceRoute
+  '/mshnctrl/targeting/jtb': typeof MshnctrlTargetingJtbRoute
+  '/mshnctrl/targeting/mission-command': typeof MshnctrlTargetingMissionCommandRoute
+  '/mshnctrl/targeting/nominate': typeof MshnctrlTargetingNominateRoute
+  '/mshnctrl/targeting/risk': typeof MshnctrlTargetingRiskRoute
+  '/mshnctrl/targeting/targets': typeof MshnctrlTargetingTargetsRoute
   '/admin/discovery/': typeof AdminDiscoveryIndexRoute
-  '/smartops/proposals': typeof SmartopsProposalsIndexRoute
-  '/smartops/targeting': typeof SmartopsTargetingIndexRoute
+  '/mshnctrl/proposals': typeof MshnctrlProposalsIndexRoute
+  '/mshnctrl/targeting': typeof MshnctrlTargetingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -717,85 +717,85 @@ export interface FileRoutesByTo {
   '/admin/new': typeof AdminNewRoute
   '/admin/rate-limits': typeof AdminRateLimitsRoute
   '/admin/users': typeof AdminUsersRoute
-  '/smartops/a2ad': typeof SmartopsA2adRoute
-  '/smartops/advisory': typeof SmartopsAdvisoryRoute
-  '/smartops/analyst-dashboard': typeof SmartopsAnalystDashboardRoute
-  '/smartops/assessment': typeof SmartopsAssessmentRoute
-  '/smartops/assumptions': typeof SmartopsAssumptionsRoute
-  '/smartops/battle-rhythm': typeof SmartopsBattleRhythmRoute
-  '/smartops/bda': typeof SmartopsBdaRouteWithChildren
-  '/smartops/brainstorming': typeof SmartopsBrainstormingRoute
-  '/smartops/briefing': typeof SmartopsBriefingRoute
-  '/smartops/campaign': typeof SmartopsCampaignRoute
-  '/smartops/ccir': typeof SmartopsCcirRoute
-  '/smartops/cde': typeof SmartopsCdeRoute
-  '/smartops/cnr': typeof SmartopsCnrRoute
-  '/smartops/coa-wargamer': typeof SmartopsCoaWargamerRoute
-  '/smartops/cog': typeof SmartopsCogRoute
-  '/smartops/conops': typeof SmartopsConopsRoute
-  '/smartops/cop-summary': typeof SmartopsCopSummaryRoute
-  '/smartops/decision-board': typeof SmartopsDecisionBoardRoute
-  '/smartops/digital-twin': typeof SmartopsDigitalTwinRoute
-  '/smartops/external-context': typeof SmartopsExternalContextRoute
-  '/smartops/feedback': typeof SmartopsFeedbackRoute
-  '/smartops/gap-analysis': typeof SmartopsGapAnalysisRoute
-  '/smartops/im-dashboard': typeof SmartopsImDashboardRoute
-  '/smartops/information-management': typeof SmartopsInformationManagementRoute
-  '/smartops/infrastructure': typeof SmartopsInfrastructureRoute
-  '/smartops/j2-dashboard': typeof SmartopsJ2DashboardRoute
-  '/smartops/j3-dashboard': typeof SmartopsJ3DashboardRoute
-  '/smartops/j4-dashboard': typeof SmartopsJ4DashboardRoute
-  '/smartops/j5-dashboard': typeof SmartopsJ5DashboardRoute
-  '/smartops/legad-dashboard': typeof SmartopsLegadDashboardRoute
-  '/smartops/logistics': typeof SmartopsLogisticsRoute
-  '/smartops/mdo': typeof SmartopsMdoRoute
-  '/smartops/menu-builder': typeof SmartopsMenuBuilderRoute
-  '/smartops/ontology': typeof SmartopsOntologyRoute
-  '/smartops/orbat': typeof SmartopsOrbatRoute
-  '/smartops/personnel': typeof SmartopsPersonnelRoute
-  '/smartops/products': typeof SmartopsProductsRoute
-  '/smartops/rfis': typeof SmartopsRfisRoute
-  '/smartops/roe': typeof SmartopsRoeRoute
-  '/smartops/rxp': typeof SmartopsRxpRoute
-  '/smartops/scenarios': typeof SmartopsScenariosRoute
-  '/smartops/security': typeof SmartopsSecurityRoute
-  '/smartops/social-domain': typeof SmartopsSocialDomainRoute
-  '/smartops/staff': typeof SmartopsStaffRoute
-  '/smartops/strategic-direction': typeof SmartopsStrategicDirectionRoute
-  '/smartops/strike-optimizer': typeof SmartopsStrikeOptimizerRoute
-  '/smartops/supply-chain': typeof SmartopsSupplyChainRoute
-  '/smartops/targeting-cell-dashboard': typeof SmartopsTargetingCellDashboardRoute
-  '/smartops/tor-manager': typeof SmartopsTorManagerRoute
-  '/smartops/triage': typeof SmartopsTriageRoute
-  '/smartops/uncertainty': typeof SmartopsUncertaintyRoute
-  '/smartops/weather': typeof SmartopsWeatherRoute
+  '/mshnctrl/a2ad': typeof MshnctrlA2adRoute
+  '/mshnctrl/advisory': typeof MshnctrlAdvisoryRoute
+  '/mshnctrl/analyst-dashboard': typeof MshnctrlAnalystDashboardRoute
+  '/mshnctrl/assessment': typeof MshnctrlAssessmentRoute
+  '/mshnctrl/assumptions': typeof MshnctrlAssumptionsRoute
+  '/mshnctrl/battle-rhythm': typeof MshnctrlBattleRhythmRoute
+  '/mshnctrl/bda': typeof MshnctrlBdaRouteWithChildren
+  '/mshnctrl/brainstorming': typeof MshnctrlBrainstormingRoute
+  '/mshnctrl/briefing': typeof MshnctrlBriefingRoute
+  '/mshnctrl/campaign': typeof MshnctrlCampaignRoute
+  '/mshnctrl/ccir': typeof MshnctrlCcirRoute
+  '/mshnctrl/cde': typeof MshnctrlCdeRoute
+  '/mshnctrl/cnr': typeof MshnctrlCnrRoute
+  '/mshnctrl/coa-wargamer': typeof MshnctrlCoaWargamerRoute
+  '/mshnctrl/cog': typeof MshnctrlCogRoute
+  '/mshnctrl/conops': typeof MshnctrlConopsRoute
+  '/mshnctrl/cop-summary': typeof MshnctrlCopSummaryRoute
+  '/mshnctrl/decision-board': typeof MshnctrlDecisionBoardRoute
+  '/mshnctrl/digital-twin': typeof MshnctrlDigitalTwinRoute
+  '/mshnctrl/external-context': typeof MshnctrlExternalContextRoute
+  '/mshnctrl/feedback': typeof MshnctrlFeedbackRoute
+  '/mshnctrl/gap-analysis': typeof MshnctrlGapAnalysisRoute
+  '/mshnctrl/im-dashboard': typeof MshnctrlImDashboardRoute
+  '/mshnctrl/information-management': typeof MshnctrlInformationManagementRoute
+  '/mshnctrl/infrastructure': typeof MshnctrlInfrastructureRoute
+  '/mshnctrl/j2-dashboard': typeof MshnctrlJ2DashboardRoute
+  '/mshnctrl/j3-dashboard': typeof MshnctrlJ3DashboardRoute
+  '/mshnctrl/j4-dashboard': typeof MshnctrlJ4DashboardRoute
+  '/mshnctrl/j5-dashboard': typeof MshnctrlJ5DashboardRoute
+  '/mshnctrl/legad-dashboard': typeof MshnctrlLegadDashboardRoute
+  '/mshnctrl/logistics': typeof MshnctrlLogisticsRoute
+  '/mshnctrl/mdo': typeof MshnctrlMdoRoute
+  '/mshnctrl/menu-builder': typeof MshnctrlMenuBuilderRoute
+  '/mshnctrl/ontology': typeof MshnctrlOntologyRoute
+  '/mshnctrl/orbat': typeof MshnctrlOrbatRoute
+  '/mshnctrl/personnel': typeof MshnctrlPersonnelRoute
+  '/mshnctrl/products': typeof MshnctrlProductsRoute
+  '/mshnctrl/rfis': typeof MshnctrlRfisRoute
+  '/mshnctrl/roe': typeof MshnctrlRoeRoute
+  '/mshnctrl/rxp': typeof MshnctrlRxpRoute
+  '/mshnctrl/scenarios': typeof MshnctrlScenariosRoute
+  '/mshnctrl/security': typeof MshnctrlSecurityRoute
+  '/mshnctrl/social-domain': typeof MshnctrlSocialDomainRoute
+  '/mshnctrl/staff': typeof MshnctrlStaffRoute
+  '/mshnctrl/strategic-direction': typeof MshnctrlStrategicDirectionRoute
+  '/mshnctrl/strike-optimizer': typeof MshnctrlStrikeOptimizerRoute
+  '/mshnctrl/supply-chain': typeof MshnctrlSupplyChainRoute
+  '/mshnctrl/targeting-cell-dashboard': typeof MshnctrlTargetingCellDashboardRoute
+  '/mshnctrl/tor-manager': typeof MshnctrlTorManagerRoute
+  '/mshnctrl/triage': typeof MshnctrlTriageRoute
+  '/mshnctrl/uncertainty': typeof MshnctrlUncertaintyRoute
+  '/mshnctrl/weather': typeof MshnctrlWeatherRoute
   '/stats/sessions': typeof StatsSessionsRoute
   '/stats/system': typeof StatsSystemRoute
   '/stats/users': typeof StatsUsersRoute
-  '/smartops/oplan': typeof SmartopsOplanLazyRoute
+  '/mshnctrl/oplan': typeof MshnctrlOplanLazyRoute
   '/admin': typeof AdminIndexRoute
-  '/smartops': typeof SmartopsIndexRoute
+  '/mshnctrl': typeof MshnctrlIndexRoute
   '/admin/discovery/$serviceId': typeof AdminDiscoveryServiceIdRoute
-  '/smartops/bda/$reportId': typeof SmartopsBdaReportIdRoute
-  '/smartops/bda/create': typeof SmartopsBdaCreateRoute
-  '/smartops/conduct/$sessionId': typeof SmartopsConductSessionIdRoute
-  '/smartops/proposals/$proposalId': typeof SmartopsProposalsProposalIdRoute
-  '/smartops/targeting/$targetId': typeof SmartopsTargetingTargetIdRoute
-  '/smartops/targeting/analysis': typeof SmartopsTargetingAnalysisRoute
-  '/smartops/targeting/analytics': typeof SmartopsTargetingAnalyticsRoute
-  '/smartops/targeting/assets': typeof SmartopsTargetingAssetsRoute
-  '/smartops/targeting/collaboration': typeof SmartopsTargetingCollaborationRoute
-  '/smartops/targeting/effects': typeof SmartopsTargetingEffectsRoute
-  '/smartops/targeting/emergency': typeof SmartopsTargetingEmergencyRoute
-  '/smartops/targeting/intelligence': typeof SmartopsTargetingIntelligenceRoute
-  '/smartops/targeting/jtb': typeof SmartopsTargetingJtbRoute
-  '/smartops/targeting/mission-command': typeof SmartopsTargetingMissionCommandRoute
-  '/smartops/targeting/nominate': typeof SmartopsTargetingNominateRoute
-  '/smartops/targeting/risk': typeof SmartopsTargetingRiskRoute
-  '/smartops/targeting/targets': typeof SmartopsTargetingTargetsRoute
+  '/mshnctrl/bda/$reportId': typeof MshnctrlBdaReportIdRoute
+  '/mshnctrl/bda/create': typeof MshnctrlBdaCreateRoute
+  '/mshnctrl/conduct/$sessionId': typeof MshnctrlConductSessionIdRoute
+  '/mshnctrl/proposals/$proposalId': typeof MshnctrlProposalsProposalIdRoute
+  '/mshnctrl/targeting/$targetId': typeof MshnctrlTargetingTargetIdRoute
+  '/mshnctrl/targeting/analysis': typeof MshnctrlTargetingAnalysisRoute
+  '/mshnctrl/targeting/analytics': typeof MshnctrlTargetingAnalyticsRoute
+  '/mshnctrl/targeting/assets': typeof MshnctrlTargetingAssetsRoute
+  '/mshnctrl/targeting/collaboration': typeof MshnctrlTargetingCollaborationRoute
+  '/mshnctrl/targeting/effects': typeof MshnctrlTargetingEffectsRoute
+  '/mshnctrl/targeting/emergency': typeof MshnctrlTargetingEmergencyRoute
+  '/mshnctrl/targeting/intelligence': typeof MshnctrlTargetingIntelligenceRoute
+  '/mshnctrl/targeting/jtb': typeof MshnctrlTargetingJtbRoute
+  '/mshnctrl/targeting/mission-command': typeof MshnctrlTargetingMissionCommandRoute
+  '/mshnctrl/targeting/nominate': typeof MshnctrlTargetingNominateRoute
+  '/mshnctrl/targeting/risk': typeof MshnctrlTargetingRiskRoute
+  '/mshnctrl/targeting/targets': typeof MshnctrlTargetingTargetsRoute
   '/admin/discovery': typeof AdminDiscoveryIndexRoute
-  '/smartops/proposals': typeof SmartopsProposalsIndexRoute
-  '/smartops/targeting': typeof SmartopsTargetingIndexRoute
+  '/mshnctrl/proposals': typeof MshnctrlProposalsIndexRoute
+  '/mshnctrl/targeting': typeof MshnctrlTargetingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -805,94 +805,94 @@ export interface FileRoutesById {
   '/debug': typeof DebugRoute
   '/login': typeof LoginRoute
   '/logs': typeof LogsRoute
+  '/mshnctrl': typeof MshnctrlRouteWithChildren
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/reports': typeof ReportsRoute
-  '/smartops': typeof SmartopsRouteWithChildren
   '/admin/abac': typeof AdminAbacRoute
   '/admin/discovery': typeof AdminDiscoveryRouteWithChildren
   '/admin/new': typeof AdminNewRoute
   '/admin/rate-limits': typeof AdminRateLimitsRoute
   '/admin/users': typeof AdminUsersRoute
-  '/smartops/a2ad': typeof SmartopsA2adRoute
-  '/smartops/advisory': typeof SmartopsAdvisoryRoute
-  '/smartops/analyst-dashboard': typeof SmartopsAnalystDashboardRoute
-  '/smartops/assessment': typeof SmartopsAssessmentRoute
-  '/smartops/assumptions': typeof SmartopsAssumptionsRoute
-  '/smartops/battle-rhythm': typeof SmartopsBattleRhythmRoute
-  '/smartops/bda': typeof SmartopsBdaRouteWithChildren
-  '/smartops/brainstorming': typeof SmartopsBrainstormingRoute
-  '/smartops/briefing': typeof SmartopsBriefingRoute
-  '/smartops/campaign': typeof SmartopsCampaignRoute
-  '/smartops/ccir': typeof SmartopsCcirRoute
-  '/smartops/cde': typeof SmartopsCdeRoute
-  '/smartops/cnr': typeof SmartopsCnrRoute
-  '/smartops/coa-wargamer': typeof SmartopsCoaWargamerRoute
-  '/smartops/cog': typeof SmartopsCogRoute
-  '/smartops/conops': typeof SmartopsConopsRoute
-  '/smartops/cop-summary': typeof SmartopsCopSummaryRoute
-  '/smartops/decision-board': typeof SmartopsDecisionBoardRoute
-  '/smartops/digital-twin': typeof SmartopsDigitalTwinRoute
-  '/smartops/external-context': typeof SmartopsExternalContextRoute
-  '/smartops/feedback': typeof SmartopsFeedbackRoute
-  '/smartops/gap-analysis': typeof SmartopsGapAnalysisRoute
-  '/smartops/im-dashboard': typeof SmartopsImDashboardRoute
-  '/smartops/information-management': typeof SmartopsInformationManagementRoute
-  '/smartops/infrastructure': typeof SmartopsInfrastructureRoute
-  '/smartops/j2-dashboard': typeof SmartopsJ2DashboardRoute
-  '/smartops/j3-dashboard': typeof SmartopsJ3DashboardRoute
-  '/smartops/j4-dashboard': typeof SmartopsJ4DashboardRoute
-  '/smartops/j5-dashboard': typeof SmartopsJ5DashboardRoute
-  '/smartops/legad-dashboard': typeof SmartopsLegadDashboardRoute
-  '/smartops/logistics': typeof SmartopsLogisticsRoute
-  '/smartops/mdo': typeof SmartopsMdoRoute
-  '/smartops/menu-builder': typeof SmartopsMenuBuilderRoute
-  '/smartops/ontology': typeof SmartopsOntologyRoute
-  '/smartops/orbat': typeof SmartopsOrbatRoute
-  '/smartops/personnel': typeof SmartopsPersonnelRoute
-  '/smartops/products': typeof SmartopsProductsRoute
-  '/smartops/rfis': typeof SmartopsRfisRoute
-  '/smartops/roe': typeof SmartopsRoeRoute
-  '/smartops/rxp': typeof SmartopsRxpRoute
-  '/smartops/scenarios': typeof SmartopsScenariosRoute
-  '/smartops/security': typeof SmartopsSecurityRoute
-  '/smartops/social-domain': typeof SmartopsSocialDomainRoute
-  '/smartops/staff': typeof SmartopsStaffRoute
-  '/smartops/strategic-direction': typeof SmartopsStrategicDirectionRoute
-  '/smartops/strike-optimizer': typeof SmartopsStrikeOptimizerRoute
-  '/smartops/supply-chain': typeof SmartopsSupplyChainRoute
-  '/smartops/targeting-cell-dashboard': typeof SmartopsTargetingCellDashboardRoute
-  '/smartops/tor-manager': typeof SmartopsTorManagerRoute
-  '/smartops/triage': typeof SmartopsTriageRoute
-  '/smartops/uncertainty': typeof SmartopsUncertaintyRoute
-  '/smartops/weather': typeof SmartopsWeatherRoute
+  '/mshnctrl/a2ad': typeof MshnctrlA2adRoute
+  '/mshnctrl/advisory': typeof MshnctrlAdvisoryRoute
+  '/mshnctrl/analyst-dashboard': typeof MshnctrlAnalystDashboardRoute
+  '/mshnctrl/assessment': typeof MshnctrlAssessmentRoute
+  '/mshnctrl/assumptions': typeof MshnctrlAssumptionsRoute
+  '/mshnctrl/battle-rhythm': typeof MshnctrlBattleRhythmRoute
+  '/mshnctrl/bda': typeof MshnctrlBdaRouteWithChildren
+  '/mshnctrl/brainstorming': typeof MshnctrlBrainstormingRoute
+  '/mshnctrl/briefing': typeof MshnctrlBriefingRoute
+  '/mshnctrl/campaign': typeof MshnctrlCampaignRoute
+  '/mshnctrl/ccir': typeof MshnctrlCcirRoute
+  '/mshnctrl/cde': typeof MshnctrlCdeRoute
+  '/mshnctrl/cnr': typeof MshnctrlCnrRoute
+  '/mshnctrl/coa-wargamer': typeof MshnctrlCoaWargamerRoute
+  '/mshnctrl/cog': typeof MshnctrlCogRoute
+  '/mshnctrl/conops': typeof MshnctrlConopsRoute
+  '/mshnctrl/cop-summary': typeof MshnctrlCopSummaryRoute
+  '/mshnctrl/decision-board': typeof MshnctrlDecisionBoardRoute
+  '/mshnctrl/digital-twin': typeof MshnctrlDigitalTwinRoute
+  '/mshnctrl/external-context': typeof MshnctrlExternalContextRoute
+  '/mshnctrl/feedback': typeof MshnctrlFeedbackRoute
+  '/mshnctrl/gap-analysis': typeof MshnctrlGapAnalysisRoute
+  '/mshnctrl/im-dashboard': typeof MshnctrlImDashboardRoute
+  '/mshnctrl/information-management': typeof MshnctrlInformationManagementRoute
+  '/mshnctrl/infrastructure': typeof MshnctrlInfrastructureRoute
+  '/mshnctrl/j2-dashboard': typeof MshnctrlJ2DashboardRoute
+  '/mshnctrl/j3-dashboard': typeof MshnctrlJ3DashboardRoute
+  '/mshnctrl/j4-dashboard': typeof MshnctrlJ4DashboardRoute
+  '/mshnctrl/j5-dashboard': typeof MshnctrlJ5DashboardRoute
+  '/mshnctrl/legad-dashboard': typeof MshnctrlLegadDashboardRoute
+  '/mshnctrl/logistics': typeof MshnctrlLogisticsRoute
+  '/mshnctrl/mdo': typeof MshnctrlMdoRoute
+  '/mshnctrl/menu-builder': typeof MshnctrlMenuBuilderRoute
+  '/mshnctrl/ontology': typeof MshnctrlOntologyRoute
+  '/mshnctrl/orbat': typeof MshnctrlOrbatRoute
+  '/mshnctrl/personnel': typeof MshnctrlPersonnelRoute
+  '/mshnctrl/products': typeof MshnctrlProductsRoute
+  '/mshnctrl/rfis': typeof MshnctrlRfisRoute
+  '/mshnctrl/roe': typeof MshnctrlRoeRoute
+  '/mshnctrl/rxp': typeof MshnctrlRxpRoute
+  '/mshnctrl/scenarios': typeof MshnctrlScenariosRoute
+  '/mshnctrl/security': typeof MshnctrlSecurityRoute
+  '/mshnctrl/social-domain': typeof MshnctrlSocialDomainRoute
+  '/mshnctrl/staff': typeof MshnctrlStaffRoute
+  '/mshnctrl/strategic-direction': typeof MshnctrlStrategicDirectionRoute
+  '/mshnctrl/strike-optimizer': typeof MshnctrlStrikeOptimizerRoute
+  '/mshnctrl/supply-chain': typeof MshnctrlSupplyChainRoute
+  '/mshnctrl/targeting-cell-dashboard': typeof MshnctrlTargetingCellDashboardRoute
+  '/mshnctrl/tor-manager': typeof MshnctrlTorManagerRoute
+  '/mshnctrl/triage': typeof MshnctrlTriageRoute
+  '/mshnctrl/uncertainty': typeof MshnctrlUncertaintyRoute
+  '/mshnctrl/weather': typeof MshnctrlWeatherRoute
   '/stats/sessions': typeof StatsSessionsRoute
   '/stats/system': typeof StatsSystemRoute
   '/stats/users': typeof StatsUsersRoute
-  '/smartops/oplan': typeof SmartopsOplanLazyRoute
+  '/mshnctrl/oplan': typeof MshnctrlOplanLazyRoute
   '/admin/': typeof AdminIndexRoute
-  '/smartops/': typeof SmartopsIndexRoute
+  '/mshnctrl/': typeof MshnctrlIndexRoute
   '/admin/discovery/$serviceId': typeof AdminDiscoveryServiceIdRoute
-  '/smartops/bda/$reportId': typeof SmartopsBdaReportIdRoute
-  '/smartops/bda/create': typeof SmartopsBdaCreateRoute
-  '/smartops/conduct/$sessionId': typeof SmartopsConductSessionIdRoute
-  '/smartops/proposals/$proposalId': typeof SmartopsProposalsProposalIdRoute
-  '/smartops/targeting/$targetId': typeof SmartopsTargetingTargetIdRoute
-  '/smartops/targeting/analysis': typeof SmartopsTargetingAnalysisRoute
-  '/smartops/targeting/analytics': typeof SmartopsTargetingAnalyticsRoute
-  '/smartops/targeting/assets': typeof SmartopsTargetingAssetsRoute
-  '/smartops/targeting/collaboration': typeof SmartopsTargetingCollaborationRoute
-  '/smartops/targeting/effects': typeof SmartopsTargetingEffectsRoute
-  '/smartops/targeting/emergency': typeof SmartopsTargetingEmergencyRoute
-  '/smartops/targeting/intelligence': typeof SmartopsTargetingIntelligenceRoute
-  '/smartops/targeting/jtb': typeof SmartopsTargetingJtbRoute
-  '/smartops/targeting/mission-command': typeof SmartopsTargetingMissionCommandRoute
-  '/smartops/targeting/nominate': typeof SmartopsTargetingNominateRoute
-  '/smartops/targeting/risk': typeof SmartopsTargetingRiskRoute
-  '/smartops/targeting/targets': typeof SmartopsTargetingTargetsRoute
+  '/mshnctrl/bda/$reportId': typeof MshnctrlBdaReportIdRoute
+  '/mshnctrl/bda/create': typeof MshnctrlBdaCreateRoute
+  '/mshnctrl/conduct/$sessionId': typeof MshnctrlConductSessionIdRoute
+  '/mshnctrl/proposals/$proposalId': typeof MshnctrlProposalsProposalIdRoute
+  '/mshnctrl/targeting/$targetId': typeof MshnctrlTargetingTargetIdRoute
+  '/mshnctrl/targeting/analysis': typeof MshnctrlTargetingAnalysisRoute
+  '/mshnctrl/targeting/analytics': typeof MshnctrlTargetingAnalyticsRoute
+  '/mshnctrl/targeting/assets': typeof MshnctrlTargetingAssetsRoute
+  '/mshnctrl/targeting/collaboration': typeof MshnctrlTargetingCollaborationRoute
+  '/mshnctrl/targeting/effects': typeof MshnctrlTargetingEffectsRoute
+  '/mshnctrl/targeting/emergency': typeof MshnctrlTargetingEmergencyRoute
+  '/mshnctrl/targeting/intelligence': typeof MshnctrlTargetingIntelligenceRoute
+  '/mshnctrl/targeting/jtb': typeof MshnctrlTargetingJtbRoute
+  '/mshnctrl/targeting/mission-command': typeof MshnctrlTargetingMissionCommandRoute
+  '/mshnctrl/targeting/nominate': typeof MshnctrlTargetingNominateRoute
+  '/mshnctrl/targeting/risk': typeof MshnctrlTargetingRiskRoute
+  '/mshnctrl/targeting/targets': typeof MshnctrlTargetingTargetsRoute
   '/admin/discovery/': typeof AdminDiscoveryIndexRoute
-  '/smartops/proposals/': typeof SmartopsProposalsIndexRoute
-  '/smartops/targeting/': typeof SmartopsTargetingIndexRoute
+  '/mshnctrl/proposals/': typeof MshnctrlProposalsIndexRoute
+  '/mshnctrl/targeting/': typeof MshnctrlTargetingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -903,94 +903,94 @@ export interface FileRouteTypes {
     | '/debug'
     | '/login'
     | '/logs'
+    | '/mshnctrl'
     | '/profile'
     | '/register'
     | '/reports'
-    | '/smartops'
     | '/admin/abac'
     | '/admin/discovery'
     | '/admin/new'
     | '/admin/rate-limits'
     | '/admin/users'
-    | '/smartops/a2ad'
-    | '/smartops/advisory'
-    | '/smartops/analyst-dashboard'
-    | '/smartops/assessment'
-    | '/smartops/assumptions'
-    | '/smartops/battle-rhythm'
-    | '/smartops/bda'
-    | '/smartops/brainstorming'
-    | '/smartops/briefing'
-    | '/smartops/campaign'
-    | '/smartops/ccir'
-    | '/smartops/cde'
-    | '/smartops/cnr'
-    | '/smartops/coa-wargamer'
-    | '/smartops/cog'
-    | '/smartops/conops'
-    | '/smartops/cop-summary'
-    | '/smartops/decision-board'
-    | '/smartops/digital-twin'
-    | '/smartops/external-context'
-    | '/smartops/feedback'
-    | '/smartops/gap-analysis'
-    | '/smartops/im-dashboard'
-    | '/smartops/information-management'
-    | '/smartops/infrastructure'
-    | '/smartops/j2-dashboard'
-    | '/smartops/j3-dashboard'
-    | '/smartops/j4-dashboard'
-    | '/smartops/j5-dashboard'
-    | '/smartops/legad-dashboard'
-    | '/smartops/logistics'
-    | '/smartops/mdo'
-    | '/smartops/menu-builder'
-    | '/smartops/ontology'
-    | '/smartops/orbat'
-    | '/smartops/personnel'
-    | '/smartops/products'
-    | '/smartops/rfis'
-    | '/smartops/roe'
-    | '/smartops/rxp'
-    | '/smartops/scenarios'
-    | '/smartops/security'
-    | '/smartops/social-domain'
-    | '/smartops/staff'
-    | '/smartops/strategic-direction'
-    | '/smartops/strike-optimizer'
-    | '/smartops/supply-chain'
-    | '/smartops/targeting-cell-dashboard'
-    | '/smartops/tor-manager'
-    | '/smartops/triage'
-    | '/smartops/uncertainty'
-    | '/smartops/weather'
+    | '/mshnctrl/a2ad'
+    | '/mshnctrl/advisory'
+    | '/mshnctrl/analyst-dashboard'
+    | '/mshnctrl/assessment'
+    | '/mshnctrl/assumptions'
+    | '/mshnctrl/battle-rhythm'
+    | '/mshnctrl/bda'
+    | '/mshnctrl/brainstorming'
+    | '/mshnctrl/briefing'
+    | '/mshnctrl/campaign'
+    | '/mshnctrl/ccir'
+    | '/mshnctrl/cde'
+    | '/mshnctrl/cnr'
+    | '/mshnctrl/coa-wargamer'
+    | '/mshnctrl/cog'
+    | '/mshnctrl/conops'
+    | '/mshnctrl/cop-summary'
+    | '/mshnctrl/decision-board'
+    | '/mshnctrl/digital-twin'
+    | '/mshnctrl/external-context'
+    | '/mshnctrl/feedback'
+    | '/mshnctrl/gap-analysis'
+    | '/mshnctrl/im-dashboard'
+    | '/mshnctrl/information-management'
+    | '/mshnctrl/infrastructure'
+    | '/mshnctrl/j2-dashboard'
+    | '/mshnctrl/j3-dashboard'
+    | '/mshnctrl/j4-dashboard'
+    | '/mshnctrl/j5-dashboard'
+    | '/mshnctrl/legad-dashboard'
+    | '/mshnctrl/logistics'
+    | '/mshnctrl/mdo'
+    | '/mshnctrl/menu-builder'
+    | '/mshnctrl/ontology'
+    | '/mshnctrl/orbat'
+    | '/mshnctrl/personnel'
+    | '/mshnctrl/products'
+    | '/mshnctrl/rfis'
+    | '/mshnctrl/roe'
+    | '/mshnctrl/rxp'
+    | '/mshnctrl/scenarios'
+    | '/mshnctrl/security'
+    | '/mshnctrl/social-domain'
+    | '/mshnctrl/staff'
+    | '/mshnctrl/strategic-direction'
+    | '/mshnctrl/strike-optimizer'
+    | '/mshnctrl/supply-chain'
+    | '/mshnctrl/targeting-cell-dashboard'
+    | '/mshnctrl/tor-manager'
+    | '/mshnctrl/triage'
+    | '/mshnctrl/uncertainty'
+    | '/mshnctrl/weather'
     | '/stats/sessions'
     | '/stats/system'
     | '/stats/users'
-    | '/smartops/oplan'
+    | '/mshnctrl/oplan'
     | '/admin/'
-    | '/smartops/'
+    | '/mshnctrl/'
     | '/admin/discovery/$serviceId'
-    | '/smartops/bda/$reportId'
-    | '/smartops/bda/create'
-    | '/smartops/conduct/$sessionId'
-    | '/smartops/proposals/$proposalId'
-    | '/smartops/targeting/$targetId'
-    | '/smartops/targeting/analysis'
-    | '/smartops/targeting/analytics'
-    | '/smartops/targeting/assets'
-    | '/smartops/targeting/collaboration'
-    | '/smartops/targeting/effects'
-    | '/smartops/targeting/emergency'
-    | '/smartops/targeting/intelligence'
-    | '/smartops/targeting/jtb'
-    | '/smartops/targeting/mission-command'
-    | '/smartops/targeting/nominate'
-    | '/smartops/targeting/risk'
-    | '/smartops/targeting/targets'
+    | '/mshnctrl/bda/$reportId'
+    | '/mshnctrl/bda/create'
+    | '/mshnctrl/conduct/$sessionId'
+    | '/mshnctrl/proposals/$proposalId'
+    | '/mshnctrl/targeting/$targetId'
+    | '/mshnctrl/targeting/analysis'
+    | '/mshnctrl/targeting/analytics'
+    | '/mshnctrl/targeting/assets'
+    | '/mshnctrl/targeting/collaboration'
+    | '/mshnctrl/targeting/effects'
+    | '/mshnctrl/targeting/emergency'
+    | '/mshnctrl/targeting/intelligence'
+    | '/mshnctrl/targeting/jtb'
+    | '/mshnctrl/targeting/mission-command'
+    | '/mshnctrl/targeting/nominate'
+    | '/mshnctrl/targeting/risk'
+    | '/mshnctrl/targeting/targets'
     | '/admin/discovery/'
-    | '/smartops/proposals'
-    | '/smartops/targeting'
+    | '/mshnctrl/proposals'
+    | '/mshnctrl/targeting'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -1005,85 +1005,85 @@ export interface FileRouteTypes {
     | '/admin/new'
     | '/admin/rate-limits'
     | '/admin/users'
-    | '/smartops/a2ad'
-    | '/smartops/advisory'
-    | '/smartops/analyst-dashboard'
-    | '/smartops/assessment'
-    | '/smartops/assumptions'
-    | '/smartops/battle-rhythm'
-    | '/smartops/bda'
-    | '/smartops/brainstorming'
-    | '/smartops/briefing'
-    | '/smartops/campaign'
-    | '/smartops/ccir'
-    | '/smartops/cde'
-    | '/smartops/cnr'
-    | '/smartops/coa-wargamer'
-    | '/smartops/cog'
-    | '/smartops/conops'
-    | '/smartops/cop-summary'
-    | '/smartops/decision-board'
-    | '/smartops/digital-twin'
-    | '/smartops/external-context'
-    | '/smartops/feedback'
-    | '/smartops/gap-analysis'
-    | '/smartops/im-dashboard'
-    | '/smartops/information-management'
-    | '/smartops/infrastructure'
-    | '/smartops/j2-dashboard'
-    | '/smartops/j3-dashboard'
-    | '/smartops/j4-dashboard'
-    | '/smartops/j5-dashboard'
-    | '/smartops/legad-dashboard'
-    | '/smartops/logistics'
-    | '/smartops/mdo'
-    | '/smartops/menu-builder'
-    | '/smartops/ontology'
-    | '/smartops/orbat'
-    | '/smartops/personnel'
-    | '/smartops/products'
-    | '/smartops/rfis'
-    | '/smartops/roe'
-    | '/smartops/rxp'
-    | '/smartops/scenarios'
-    | '/smartops/security'
-    | '/smartops/social-domain'
-    | '/smartops/staff'
-    | '/smartops/strategic-direction'
-    | '/smartops/strike-optimizer'
-    | '/smartops/supply-chain'
-    | '/smartops/targeting-cell-dashboard'
-    | '/smartops/tor-manager'
-    | '/smartops/triage'
-    | '/smartops/uncertainty'
-    | '/smartops/weather'
+    | '/mshnctrl/a2ad'
+    | '/mshnctrl/advisory'
+    | '/mshnctrl/analyst-dashboard'
+    | '/mshnctrl/assessment'
+    | '/mshnctrl/assumptions'
+    | '/mshnctrl/battle-rhythm'
+    | '/mshnctrl/bda'
+    | '/mshnctrl/brainstorming'
+    | '/mshnctrl/briefing'
+    | '/mshnctrl/campaign'
+    | '/mshnctrl/ccir'
+    | '/mshnctrl/cde'
+    | '/mshnctrl/cnr'
+    | '/mshnctrl/coa-wargamer'
+    | '/mshnctrl/cog'
+    | '/mshnctrl/conops'
+    | '/mshnctrl/cop-summary'
+    | '/mshnctrl/decision-board'
+    | '/mshnctrl/digital-twin'
+    | '/mshnctrl/external-context'
+    | '/mshnctrl/feedback'
+    | '/mshnctrl/gap-analysis'
+    | '/mshnctrl/im-dashboard'
+    | '/mshnctrl/information-management'
+    | '/mshnctrl/infrastructure'
+    | '/mshnctrl/j2-dashboard'
+    | '/mshnctrl/j3-dashboard'
+    | '/mshnctrl/j4-dashboard'
+    | '/mshnctrl/j5-dashboard'
+    | '/mshnctrl/legad-dashboard'
+    | '/mshnctrl/logistics'
+    | '/mshnctrl/mdo'
+    | '/mshnctrl/menu-builder'
+    | '/mshnctrl/ontology'
+    | '/mshnctrl/orbat'
+    | '/mshnctrl/personnel'
+    | '/mshnctrl/products'
+    | '/mshnctrl/rfis'
+    | '/mshnctrl/roe'
+    | '/mshnctrl/rxp'
+    | '/mshnctrl/scenarios'
+    | '/mshnctrl/security'
+    | '/mshnctrl/social-domain'
+    | '/mshnctrl/staff'
+    | '/mshnctrl/strategic-direction'
+    | '/mshnctrl/strike-optimizer'
+    | '/mshnctrl/supply-chain'
+    | '/mshnctrl/targeting-cell-dashboard'
+    | '/mshnctrl/tor-manager'
+    | '/mshnctrl/triage'
+    | '/mshnctrl/uncertainty'
+    | '/mshnctrl/weather'
     | '/stats/sessions'
     | '/stats/system'
     | '/stats/users'
-    | '/smartops/oplan'
+    | '/mshnctrl/oplan'
     | '/admin'
-    | '/smartops'
+    | '/mshnctrl'
     | '/admin/discovery/$serviceId'
-    | '/smartops/bda/$reportId'
-    | '/smartops/bda/create'
-    | '/smartops/conduct/$sessionId'
-    | '/smartops/proposals/$proposalId'
-    | '/smartops/targeting/$targetId'
-    | '/smartops/targeting/analysis'
-    | '/smartops/targeting/analytics'
-    | '/smartops/targeting/assets'
-    | '/smartops/targeting/collaboration'
-    | '/smartops/targeting/effects'
-    | '/smartops/targeting/emergency'
-    | '/smartops/targeting/intelligence'
-    | '/smartops/targeting/jtb'
-    | '/smartops/targeting/mission-command'
-    | '/smartops/targeting/nominate'
-    | '/smartops/targeting/risk'
-    | '/smartops/targeting/targets'
+    | '/mshnctrl/bda/$reportId'
+    | '/mshnctrl/bda/create'
+    | '/mshnctrl/conduct/$sessionId'
+    | '/mshnctrl/proposals/$proposalId'
+    | '/mshnctrl/targeting/$targetId'
+    | '/mshnctrl/targeting/analysis'
+    | '/mshnctrl/targeting/analytics'
+    | '/mshnctrl/targeting/assets'
+    | '/mshnctrl/targeting/collaboration'
+    | '/mshnctrl/targeting/effects'
+    | '/mshnctrl/targeting/emergency'
+    | '/mshnctrl/targeting/intelligence'
+    | '/mshnctrl/targeting/jtb'
+    | '/mshnctrl/targeting/mission-command'
+    | '/mshnctrl/targeting/nominate'
+    | '/mshnctrl/targeting/risk'
+    | '/mshnctrl/targeting/targets'
     | '/admin/discovery'
-    | '/smartops/proposals'
-    | '/smartops/targeting'
+    | '/mshnctrl/proposals'
+    | '/mshnctrl/targeting'
   id:
     | '__root__'
     | '/'
@@ -1092,94 +1092,94 @@ export interface FileRouteTypes {
     | '/debug'
     | '/login'
     | '/logs'
+    | '/mshnctrl'
     | '/profile'
     | '/register'
     | '/reports'
-    | '/smartops'
     | '/admin/abac'
     | '/admin/discovery'
     | '/admin/new'
     | '/admin/rate-limits'
     | '/admin/users'
-    | '/smartops/a2ad'
-    | '/smartops/advisory'
-    | '/smartops/analyst-dashboard'
-    | '/smartops/assessment'
-    | '/smartops/assumptions'
-    | '/smartops/battle-rhythm'
-    | '/smartops/bda'
-    | '/smartops/brainstorming'
-    | '/smartops/briefing'
-    | '/smartops/campaign'
-    | '/smartops/ccir'
-    | '/smartops/cde'
-    | '/smartops/cnr'
-    | '/smartops/coa-wargamer'
-    | '/smartops/cog'
-    | '/smartops/conops'
-    | '/smartops/cop-summary'
-    | '/smartops/decision-board'
-    | '/smartops/digital-twin'
-    | '/smartops/external-context'
-    | '/smartops/feedback'
-    | '/smartops/gap-analysis'
-    | '/smartops/im-dashboard'
-    | '/smartops/information-management'
-    | '/smartops/infrastructure'
-    | '/smartops/j2-dashboard'
-    | '/smartops/j3-dashboard'
-    | '/smartops/j4-dashboard'
-    | '/smartops/j5-dashboard'
-    | '/smartops/legad-dashboard'
-    | '/smartops/logistics'
-    | '/smartops/mdo'
-    | '/smartops/menu-builder'
-    | '/smartops/ontology'
-    | '/smartops/orbat'
-    | '/smartops/personnel'
-    | '/smartops/products'
-    | '/smartops/rfis'
-    | '/smartops/roe'
-    | '/smartops/rxp'
-    | '/smartops/scenarios'
-    | '/smartops/security'
-    | '/smartops/social-domain'
-    | '/smartops/staff'
-    | '/smartops/strategic-direction'
-    | '/smartops/strike-optimizer'
-    | '/smartops/supply-chain'
-    | '/smartops/targeting-cell-dashboard'
-    | '/smartops/tor-manager'
-    | '/smartops/triage'
-    | '/smartops/uncertainty'
-    | '/smartops/weather'
+    | '/mshnctrl/a2ad'
+    | '/mshnctrl/advisory'
+    | '/mshnctrl/analyst-dashboard'
+    | '/mshnctrl/assessment'
+    | '/mshnctrl/assumptions'
+    | '/mshnctrl/battle-rhythm'
+    | '/mshnctrl/bda'
+    | '/mshnctrl/brainstorming'
+    | '/mshnctrl/briefing'
+    | '/mshnctrl/campaign'
+    | '/mshnctrl/ccir'
+    | '/mshnctrl/cde'
+    | '/mshnctrl/cnr'
+    | '/mshnctrl/coa-wargamer'
+    | '/mshnctrl/cog'
+    | '/mshnctrl/conops'
+    | '/mshnctrl/cop-summary'
+    | '/mshnctrl/decision-board'
+    | '/mshnctrl/digital-twin'
+    | '/mshnctrl/external-context'
+    | '/mshnctrl/feedback'
+    | '/mshnctrl/gap-analysis'
+    | '/mshnctrl/im-dashboard'
+    | '/mshnctrl/information-management'
+    | '/mshnctrl/infrastructure'
+    | '/mshnctrl/j2-dashboard'
+    | '/mshnctrl/j3-dashboard'
+    | '/mshnctrl/j4-dashboard'
+    | '/mshnctrl/j5-dashboard'
+    | '/mshnctrl/legad-dashboard'
+    | '/mshnctrl/logistics'
+    | '/mshnctrl/mdo'
+    | '/mshnctrl/menu-builder'
+    | '/mshnctrl/ontology'
+    | '/mshnctrl/orbat'
+    | '/mshnctrl/personnel'
+    | '/mshnctrl/products'
+    | '/mshnctrl/rfis'
+    | '/mshnctrl/roe'
+    | '/mshnctrl/rxp'
+    | '/mshnctrl/scenarios'
+    | '/mshnctrl/security'
+    | '/mshnctrl/social-domain'
+    | '/mshnctrl/staff'
+    | '/mshnctrl/strategic-direction'
+    | '/mshnctrl/strike-optimizer'
+    | '/mshnctrl/supply-chain'
+    | '/mshnctrl/targeting-cell-dashboard'
+    | '/mshnctrl/tor-manager'
+    | '/mshnctrl/triage'
+    | '/mshnctrl/uncertainty'
+    | '/mshnctrl/weather'
     | '/stats/sessions'
     | '/stats/system'
     | '/stats/users'
-    | '/smartops/oplan'
+    | '/mshnctrl/oplan'
     | '/admin/'
-    | '/smartops/'
+    | '/mshnctrl/'
     | '/admin/discovery/$serviceId'
-    | '/smartops/bda/$reportId'
-    | '/smartops/bda/create'
-    | '/smartops/conduct/$sessionId'
-    | '/smartops/proposals/$proposalId'
-    | '/smartops/targeting/$targetId'
-    | '/smartops/targeting/analysis'
-    | '/smartops/targeting/analytics'
-    | '/smartops/targeting/assets'
-    | '/smartops/targeting/collaboration'
-    | '/smartops/targeting/effects'
-    | '/smartops/targeting/emergency'
-    | '/smartops/targeting/intelligence'
-    | '/smartops/targeting/jtb'
-    | '/smartops/targeting/mission-command'
-    | '/smartops/targeting/nominate'
-    | '/smartops/targeting/risk'
-    | '/smartops/targeting/targets'
+    | '/mshnctrl/bda/$reportId'
+    | '/mshnctrl/bda/create'
+    | '/mshnctrl/conduct/$sessionId'
+    | '/mshnctrl/proposals/$proposalId'
+    | '/mshnctrl/targeting/$targetId'
+    | '/mshnctrl/targeting/analysis'
+    | '/mshnctrl/targeting/analytics'
+    | '/mshnctrl/targeting/assets'
+    | '/mshnctrl/targeting/collaboration'
+    | '/mshnctrl/targeting/effects'
+    | '/mshnctrl/targeting/emergency'
+    | '/mshnctrl/targeting/intelligence'
+    | '/mshnctrl/targeting/jtb'
+    | '/mshnctrl/targeting/mission-command'
+    | '/mshnctrl/targeting/nominate'
+    | '/mshnctrl/targeting/risk'
+    | '/mshnctrl/targeting/targets'
     | '/admin/discovery/'
-    | '/smartops/proposals/'
-    | '/smartops/targeting/'
+    | '/mshnctrl/proposals/'
+    | '/mshnctrl/targeting/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1189,10 +1189,10 @@ export interface RootRouteChildren {
   DebugRoute: typeof DebugRoute
   LoginRoute: typeof LoginRoute
   LogsRoute: typeof LogsRoute
+  MshnctrlRoute: typeof MshnctrlRouteWithChildren
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
   ReportsRoute: typeof ReportsRoute
-  SmartopsRoute: typeof SmartopsRouteWithChildren
   StatsSessionsRoute: typeof StatsSessionsRoute
   StatsSystemRoute: typeof StatsSystemRoute
   StatsUsersRoute: typeof StatsUsersRoute
@@ -1200,13 +1200,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/smartops': {
-      id: '/smartops'
-      path: '/smartops'
-      fullPath: '/smartops'
-      preLoaderRoute: typeof SmartopsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/reports': {
       id: '/reports'
       path: '/reports'
@@ -1226,6 +1219,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mshnctrl': {
+      id: '/mshnctrl'
+      path: '/mshnctrl'
+      fullPath: '/mshnctrl'
+      preLoaderRoute: typeof MshnctrlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/logs': {
@@ -1270,12 +1270,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/smartops/': {
-      id: '/smartops/'
+    '/mshnctrl/': {
+      id: '/mshnctrl/'
       path: '/'
-      fullPath: '/smartops/'
-      preLoaderRoute: typeof SmartopsIndexRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/'
+      preLoaderRoute: typeof MshnctrlIndexRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
     '/admin/': {
       id: '/admin/'
@@ -1284,12 +1284,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/smartops/oplan': {
-      id: '/smartops/oplan'
+    '/mshnctrl/oplan': {
+      id: '/mshnctrl/oplan'
       path: '/oplan'
-      fullPath: '/smartops/oplan'
-      preLoaderRoute: typeof SmartopsOplanLazyRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/oplan'
+      preLoaderRoute: typeof MshnctrlOplanLazyRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
     '/stats/users': {
       id: '/stats/users'
@@ -1312,369 +1312,369 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StatsSessionsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/smartops/weather': {
-      id: '/smartops/weather'
+    '/mshnctrl/weather': {
+      id: '/mshnctrl/weather'
       path: '/weather'
-      fullPath: '/smartops/weather'
-      preLoaderRoute: typeof SmartopsWeatherRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/weather'
+      preLoaderRoute: typeof MshnctrlWeatherRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/uncertainty': {
-      id: '/smartops/uncertainty'
+    '/mshnctrl/uncertainty': {
+      id: '/mshnctrl/uncertainty'
       path: '/uncertainty'
-      fullPath: '/smartops/uncertainty'
-      preLoaderRoute: typeof SmartopsUncertaintyRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/uncertainty'
+      preLoaderRoute: typeof MshnctrlUncertaintyRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/triage': {
-      id: '/smartops/triage'
+    '/mshnctrl/triage': {
+      id: '/mshnctrl/triage'
       path: '/triage'
-      fullPath: '/smartops/triage'
-      preLoaderRoute: typeof SmartopsTriageRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/triage'
+      preLoaderRoute: typeof MshnctrlTriageRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/tor-manager': {
-      id: '/smartops/tor-manager'
+    '/mshnctrl/tor-manager': {
+      id: '/mshnctrl/tor-manager'
       path: '/tor-manager'
-      fullPath: '/smartops/tor-manager'
-      preLoaderRoute: typeof SmartopsTorManagerRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/tor-manager'
+      preLoaderRoute: typeof MshnctrlTorManagerRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/targeting-cell-dashboard': {
-      id: '/smartops/targeting-cell-dashboard'
+    '/mshnctrl/targeting-cell-dashboard': {
+      id: '/mshnctrl/targeting-cell-dashboard'
       path: '/targeting-cell-dashboard'
-      fullPath: '/smartops/targeting-cell-dashboard'
-      preLoaderRoute: typeof SmartopsTargetingCellDashboardRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting-cell-dashboard'
+      preLoaderRoute: typeof MshnctrlTargetingCellDashboardRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/supply-chain': {
-      id: '/smartops/supply-chain'
+    '/mshnctrl/supply-chain': {
+      id: '/mshnctrl/supply-chain'
       path: '/supply-chain'
-      fullPath: '/smartops/supply-chain'
-      preLoaderRoute: typeof SmartopsSupplyChainRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/supply-chain'
+      preLoaderRoute: typeof MshnctrlSupplyChainRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/strike-optimizer': {
-      id: '/smartops/strike-optimizer'
+    '/mshnctrl/strike-optimizer': {
+      id: '/mshnctrl/strike-optimizer'
       path: '/strike-optimizer'
-      fullPath: '/smartops/strike-optimizer'
-      preLoaderRoute: typeof SmartopsStrikeOptimizerRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/strike-optimizer'
+      preLoaderRoute: typeof MshnctrlStrikeOptimizerRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/strategic-direction': {
-      id: '/smartops/strategic-direction'
+    '/mshnctrl/strategic-direction': {
+      id: '/mshnctrl/strategic-direction'
       path: '/strategic-direction'
-      fullPath: '/smartops/strategic-direction'
-      preLoaderRoute: typeof SmartopsStrategicDirectionRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/strategic-direction'
+      preLoaderRoute: typeof MshnctrlStrategicDirectionRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/staff': {
-      id: '/smartops/staff'
+    '/mshnctrl/staff': {
+      id: '/mshnctrl/staff'
       path: '/staff'
-      fullPath: '/smartops/staff'
-      preLoaderRoute: typeof SmartopsStaffRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/staff'
+      preLoaderRoute: typeof MshnctrlStaffRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/social-domain': {
-      id: '/smartops/social-domain'
+    '/mshnctrl/social-domain': {
+      id: '/mshnctrl/social-domain'
       path: '/social-domain'
-      fullPath: '/smartops/social-domain'
-      preLoaderRoute: typeof SmartopsSocialDomainRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/social-domain'
+      preLoaderRoute: typeof MshnctrlSocialDomainRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/security': {
-      id: '/smartops/security'
+    '/mshnctrl/security': {
+      id: '/mshnctrl/security'
       path: '/security'
-      fullPath: '/smartops/security'
-      preLoaderRoute: typeof SmartopsSecurityRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/security'
+      preLoaderRoute: typeof MshnctrlSecurityRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/scenarios': {
-      id: '/smartops/scenarios'
+    '/mshnctrl/scenarios': {
+      id: '/mshnctrl/scenarios'
       path: '/scenarios'
-      fullPath: '/smartops/scenarios'
-      preLoaderRoute: typeof SmartopsScenariosRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/scenarios'
+      preLoaderRoute: typeof MshnctrlScenariosRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/rxp': {
-      id: '/smartops/rxp'
+    '/mshnctrl/rxp': {
+      id: '/mshnctrl/rxp'
       path: '/rxp'
-      fullPath: '/smartops/rxp'
-      preLoaderRoute: typeof SmartopsRxpRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/rxp'
+      preLoaderRoute: typeof MshnctrlRxpRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/roe': {
-      id: '/smartops/roe'
+    '/mshnctrl/roe': {
+      id: '/mshnctrl/roe'
       path: '/roe'
-      fullPath: '/smartops/roe'
-      preLoaderRoute: typeof SmartopsRoeRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/roe'
+      preLoaderRoute: typeof MshnctrlRoeRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/rfis': {
-      id: '/smartops/rfis'
+    '/mshnctrl/rfis': {
+      id: '/mshnctrl/rfis'
       path: '/rfis'
-      fullPath: '/smartops/rfis'
-      preLoaderRoute: typeof SmartopsRfisRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/rfis'
+      preLoaderRoute: typeof MshnctrlRfisRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/products': {
-      id: '/smartops/products'
+    '/mshnctrl/products': {
+      id: '/mshnctrl/products'
       path: '/products'
-      fullPath: '/smartops/products'
-      preLoaderRoute: typeof SmartopsProductsRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/products'
+      preLoaderRoute: typeof MshnctrlProductsRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/personnel': {
-      id: '/smartops/personnel'
+    '/mshnctrl/personnel': {
+      id: '/mshnctrl/personnel'
       path: '/personnel'
-      fullPath: '/smartops/personnel'
-      preLoaderRoute: typeof SmartopsPersonnelRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/personnel'
+      preLoaderRoute: typeof MshnctrlPersonnelRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/orbat': {
-      id: '/smartops/orbat'
+    '/mshnctrl/orbat': {
+      id: '/mshnctrl/orbat'
       path: '/orbat'
-      fullPath: '/smartops/orbat'
-      preLoaderRoute: typeof SmartopsOrbatRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/orbat'
+      preLoaderRoute: typeof MshnctrlOrbatRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/ontology': {
-      id: '/smartops/ontology'
+    '/mshnctrl/ontology': {
+      id: '/mshnctrl/ontology'
       path: '/ontology'
-      fullPath: '/smartops/ontology'
-      preLoaderRoute: typeof SmartopsOntologyRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/ontology'
+      preLoaderRoute: typeof MshnctrlOntologyRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/menu-builder': {
-      id: '/smartops/menu-builder'
+    '/mshnctrl/menu-builder': {
+      id: '/mshnctrl/menu-builder'
       path: '/menu-builder'
-      fullPath: '/smartops/menu-builder'
-      preLoaderRoute: typeof SmartopsMenuBuilderRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/menu-builder'
+      preLoaderRoute: typeof MshnctrlMenuBuilderRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/mdo': {
-      id: '/smartops/mdo'
+    '/mshnctrl/mdo': {
+      id: '/mshnctrl/mdo'
       path: '/mdo'
-      fullPath: '/smartops/mdo'
-      preLoaderRoute: typeof SmartopsMdoRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/mdo'
+      preLoaderRoute: typeof MshnctrlMdoRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/logistics': {
-      id: '/smartops/logistics'
+    '/mshnctrl/logistics': {
+      id: '/mshnctrl/logistics'
       path: '/logistics'
-      fullPath: '/smartops/logistics'
-      preLoaderRoute: typeof SmartopsLogisticsRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/logistics'
+      preLoaderRoute: typeof MshnctrlLogisticsRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/legad-dashboard': {
-      id: '/smartops/legad-dashboard'
+    '/mshnctrl/legad-dashboard': {
+      id: '/mshnctrl/legad-dashboard'
       path: '/legad-dashboard'
-      fullPath: '/smartops/legad-dashboard'
-      preLoaderRoute: typeof SmartopsLegadDashboardRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/legad-dashboard'
+      preLoaderRoute: typeof MshnctrlLegadDashboardRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/j5-dashboard': {
-      id: '/smartops/j5-dashboard'
+    '/mshnctrl/j5-dashboard': {
+      id: '/mshnctrl/j5-dashboard'
       path: '/j5-dashboard'
-      fullPath: '/smartops/j5-dashboard'
-      preLoaderRoute: typeof SmartopsJ5DashboardRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/j5-dashboard'
+      preLoaderRoute: typeof MshnctrlJ5DashboardRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/j4-dashboard': {
-      id: '/smartops/j4-dashboard'
+    '/mshnctrl/j4-dashboard': {
+      id: '/mshnctrl/j4-dashboard'
       path: '/j4-dashboard'
-      fullPath: '/smartops/j4-dashboard'
-      preLoaderRoute: typeof SmartopsJ4DashboardRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/j4-dashboard'
+      preLoaderRoute: typeof MshnctrlJ4DashboardRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/j3-dashboard': {
-      id: '/smartops/j3-dashboard'
+    '/mshnctrl/j3-dashboard': {
+      id: '/mshnctrl/j3-dashboard'
       path: '/j3-dashboard'
-      fullPath: '/smartops/j3-dashboard'
-      preLoaderRoute: typeof SmartopsJ3DashboardRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/j3-dashboard'
+      preLoaderRoute: typeof MshnctrlJ3DashboardRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/j2-dashboard': {
-      id: '/smartops/j2-dashboard'
+    '/mshnctrl/j2-dashboard': {
+      id: '/mshnctrl/j2-dashboard'
       path: '/j2-dashboard'
-      fullPath: '/smartops/j2-dashboard'
-      preLoaderRoute: typeof SmartopsJ2DashboardRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/j2-dashboard'
+      preLoaderRoute: typeof MshnctrlJ2DashboardRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/infrastructure': {
-      id: '/smartops/infrastructure'
+    '/mshnctrl/infrastructure': {
+      id: '/mshnctrl/infrastructure'
       path: '/infrastructure'
-      fullPath: '/smartops/infrastructure'
-      preLoaderRoute: typeof SmartopsInfrastructureRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/infrastructure'
+      preLoaderRoute: typeof MshnctrlInfrastructureRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/information-management': {
-      id: '/smartops/information-management'
+    '/mshnctrl/information-management': {
+      id: '/mshnctrl/information-management'
       path: '/information-management'
-      fullPath: '/smartops/information-management'
-      preLoaderRoute: typeof SmartopsInformationManagementRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/information-management'
+      preLoaderRoute: typeof MshnctrlInformationManagementRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/im-dashboard': {
-      id: '/smartops/im-dashboard'
+    '/mshnctrl/im-dashboard': {
+      id: '/mshnctrl/im-dashboard'
       path: '/im-dashboard'
-      fullPath: '/smartops/im-dashboard'
-      preLoaderRoute: typeof SmartopsImDashboardRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/im-dashboard'
+      preLoaderRoute: typeof MshnctrlImDashboardRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/gap-analysis': {
-      id: '/smartops/gap-analysis'
+    '/mshnctrl/gap-analysis': {
+      id: '/mshnctrl/gap-analysis'
       path: '/gap-analysis'
-      fullPath: '/smartops/gap-analysis'
-      preLoaderRoute: typeof SmartopsGapAnalysisRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/gap-analysis'
+      preLoaderRoute: typeof MshnctrlGapAnalysisRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/feedback': {
-      id: '/smartops/feedback'
+    '/mshnctrl/feedback': {
+      id: '/mshnctrl/feedback'
       path: '/feedback'
-      fullPath: '/smartops/feedback'
-      preLoaderRoute: typeof SmartopsFeedbackRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/feedback'
+      preLoaderRoute: typeof MshnctrlFeedbackRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/external-context': {
-      id: '/smartops/external-context'
+    '/mshnctrl/external-context': {
+      id: '/mshnctrl/external-context'
       path: '/external-context'
-      fullPath: '/smartops/external-context'
-      preLoaderRoute: typeof SmartopsExternalContextRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/external-context'
+      preLoaderRoute: typeof MshnctrlExternalContextRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/digital-twin': {
-      id: '/smartops/digital-twin'
+    '/mshnctrl/digital-twin': {
+      id: '/mshnctrl/digital-twin'
       path: '/digital-twin'
-      fullPath: '/smartops/digital-twin'
-      preLoaderRoute: typeof SmartopsDigitalTwinRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/digital-twin'
+      preLoaderRoute: typeof MshnctrlDigitalTwinRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/decision-board': {
-      id: '/smartops/decision-board'
+    '/mshnctrl/decision-board': {
+      id: '/mshnctrl/decision-board'
       path: '/decision-board'
-      fullPath: '/smartops/decision-board'
-      preLoaderRoute: typeof SmartopsDecisionBoardRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/decision-board'
+      preLoaderRoute: typeof MshnctrlDecisionBoardRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/cop-summary': {
-      id: '/smartops/cop-summary'
+    '/mshnctrl/cop-summary': {
+      id: '/mshnctrl/cop-summary'
       path: '/cop-summary'
-      fullPath: '/smartops/cop-summary'
-      preLoaderRoute: typeof SmartopsCopSummaryRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/cop-summary'
+      preLoaderRoute: typeof MshnctrlCopSummaryRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/conops': {
-      id: '/smartops/conops'
+    '/mshnctrl/conops': {
+      id: '/mshnctrl/conops'
       path: '/conops'
-      fullPath: '/smartops/conops'
-      preLoaderRoute: typeof SmartopsConopsRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/conops'
+      preLoaderRoute: typeof MshnctrlConopsRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/cog': {
-      id: '/smartops/cog'
+    '/mshnctrl/cog': {
+      id: '/mshnctrl/cog'
       path: '/cog'
-      fullPath: '/smartops/cog'
-      preLoaderRoute: typeof SmartopsCogRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/cog'
+      preLoaderRoute: typeof MshnctrlCogRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/coa-wargamer': {
-      id: '/smartops/coa-wargamer'
+    '/mshnctrl/coa-wargamer': {
+      id: '/mshnctrl/coa-wargamer'
       path: '/coa-wargamer'
-      fullPath: '/smartops/coa-wargamer'
-      preLoaderRoute: typeof SmartopsCoaWargamerRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/coa-wargamer'
+      preLoaderRoute: typeof MshnctrlCoaWargamerRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/cnr': {
-      id: '/smartops/cnr'
+    '/mshnctrl/cnr': {
+      id: '/mshnctrl/cnr'
       path: '/cnr'
-      fullPath: '/smartops/cnr'
-      preLoaderRoute: typeof SmartopsCnrRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/cnr'
+      preLoaderRoute: typeof MshnctrlCnrRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/cde': {
-      id: '/smartops/cde'
+    '/mshnctrl/cde': {
+      id: '/mshnctrl/cde'
       path: '/cde'
-      fullPath: '/smartops/cde'
-      preLoaderRoute: typeof SmartopsCdeRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/cde'
+      preLoaderRoute: typeof MshnctrlCdeRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/ccir': {
-      id: '/smartops/ccir'
+    '/mshnctrl/ccir': {
+      id: '/mshnctrl/ccir'
       path: '/ccir'
-      fullPath: '/smartops/ccir'
-      preLoaderRoute: typeof SmartopsCcirRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/ccir'
+      preLoaderRoute: typeof MshnctrlCcirRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/campaign': {
-      id: '/smartops/campaign'
+    '/mshnctrl/campaign': {
+      id: '/mshnctrl/campaign'
       path: '/campaign'
-      fullPath: '/smartops/campaign'
-      preLoaderRoute: typeof SmartopsCampaignRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/campaign'
+      preLoaderRoute: typeof MshnctrlCampaignRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/briefing': {
-      id: '/smartops/briefing'
+    '/mshnctrl/briefing': {
+      id: '/mshnctrl/briefing'
       path: '/briefing'
-      fullPath: '/smartops/briefing'
-      preLoaderRoute: typeof SmartopsBriefingRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/briefing'
+      preLoaderRoute: typeof MshnctrlBriefingRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/brainstorming': {
-      id: '/smartops/brainstorming'
+    '/mshnctrl/brainstorming': {
+      id: '/mshnctrl/brainstorming'
       path: '/brainstorming'
-      fullPath: '/smartops/brainstorming'
-      preLoaderRoute: typeof SmartopsBrainstormingRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/brainstorming'
+      preLoaderRoute: typeof MshnctrlBrainstormingRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/bda': {
-      id: '/smartops/bda'
+    '/mshnctrl/bda': {
+      id: '/mshnctrl/bda'
       path: '/bda'
-      fullPath: '/smartops/bda'
-      preLoaderRoute: typeof SmartopsBdaRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/bda'
+      preLoaderRoute: typeof MshnctrlBdaRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/battle-rhythm': {
-      id: '/smartops/battle-rhythm'
+    '/mshnctrl/battle-rhythm': {
+      id: '/mshnctrl/battle-rhythm'
       path: '/battle-rhythm'
-      fullPath: '/smartops/battle-rhythm'
-      preLoaderRoute: typeof SmartopsBattleRhythmRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/battle-rhythm'
+      preLoaderRoute: typeof MshnctrlBattleRhythmRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/assumptions': {
-      id: '/smartops/assumptions'
+    '/mshnctrl/assumptions': {
+      id: '/mshnctrl/assumptions'
       path: '/assumptions'
-      fullPath: '/smartops/assumptions'
-      preLoaderRoute: typeof SmartopsAssumptionsRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/assumptions'
+      preLoaderRoute: typeof MshnctrlAssumptionsRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/assessment': {
-      id: '/smartops/assessment'
+    '/mshnctrl/assessment': {
+      id: '/mshnctrl/assessment'
       path: '/assessment'
-      fullPath: '/smartops/assessment'
-      preLoaderRoute: typeof SmartopsAssessmentRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/assessment'
+      preLoaderRoute: typeof MshnctrlAssessmentRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/analyst-dashboard': {
-      id: '/smartops/analyst-dashboard'
+    '/mshnctrl/analyst-dashboard': {
+      id: '/mshnctrl/analyst-dashboard'
       path: '/analyst-dashboard'
-      fullPath: '/smartops/analyst-dashboard'
-      preLoaderRoute: typeof SmartopsAnalystDashboardRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/analyst-dashboard'
+      preLoaderRoute: typeof MshnctrlAnalystDashboardRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/advisory': {
-      id: '/smartops/advisory'
+    '/mshnctrl/advisory': {
+      id: '/mshnctrl/advisory'
       path: '/advisory'
-      fullPath: '/smartops/advisory'
-      preLoaderRoute: typeof SmartopsAdvisoryRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/advisory'
+      preLoaderRoute: typeof MshnctrlAdvisoryRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/a2ad': {
-      id: '/smartops/a2ad'
+    '/mshnctrl/a2ad': {
+      id: '/mshnctrl/a2ad'
       path: '/a2ad'
-      fullPath: '/smartops/a2ad'
-      preLoaderRoute: typeof SmartopsA2adRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/a2ad'
+      preLoaderRoute: typeof MshnctrlA2adRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
     '/admin/users': {
       id: '/admin/users'
@@ -1711,19 +1711,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAbacRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/smartops/targeting/': {
-      id: '/smartops/targeting/'
+    '/mshnctrl/targeting/': {
+      id: '/mshnctrl/targeting/'
       path: '/targeting'
-      fullPath: '/smartops/targeting'
-      preLoaderRoute: typeof SmartopsTargetingIndexRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting'
+      preLoaderRoute: typeof MshnctrlTargetingIndexRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/proposals/': {
-      id: '/smartops/proposals/'
+    '/mshnctrl/proposals/': {
+      id: '/mshnctrl/proposals/'
       path: '/proposals'
-      fullPath: '/smartops/proposals'
-      preLoaderRoute: typeof SmartopsProposalsIndexRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/proposals'
+      preLoaderRoute: typeof MshnctrlProposalsIndexRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
     '/admin/discovery/': {
       id: '/admin/discovery/'
@@ -1732,124 +1732,124 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDiscoveryIndexRouteImport
       parentRoute: typeof AdminDiscoveryRoute
     }
-    '/smartops/targeting/targets': {
-      id: '/smartops/targeting/targets'
+    '/mshnctrl/targeting/targets': {
+      id: '/mshnctrl/targeting/targets'
       path: '/targeting/targets'
-      fullPath: '/smartops/targeting/targets'
-      preLoaderRoute: typeof SmartopsTargetingTargetsRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting/targets'
+      preLoaderRoute: typeof MshnctrlTargetingTargetsRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/targeting/risk': {
-      id: '/smartops/targeting/risk'
+    '/mshnctrl/targeting/risk': {
+      id: '/mshnctrl/targeting/risk'
       path: '/targeting/risk'
-      fullPath: '/smartops/targeting/risk'
-      preLoaderRoute: typeof SmartopsTargetingRiskRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting/risk'
+      preLoaderRoute: typeof MshnctrlTargetingRiskRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/targeting/nominate': {
-      id: '/smartops/targeting/nominate'
+    '/mshnctrl/targeting/nominate': {
+      id: '/mshnctrl/targeting/nominate'
       path: '/targeting/nominate'
-      fullPath: '/smartops/targeting/nominate'
-      preLoaderRoute: typeof SmartopsTargetingNominateRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting/nominate'
+      preLoaderRoute: typeof MshnctrlTargetingNominateRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/targeting/mission-command': {
-      id: '/smartops/targeting/mission-command'
+    '/mshnctrl/targeting/mission-command': {
+      id: '/mshnctrl/targeting/mission-command'
       path: '/targeting/mission-command'
-      fullPath: '/smartops/targeting/mission-command'
-      preLoaderRoute: typeof SmartopsTargetingMissionCommandRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting/mission-command'
+      preLoaderRoute: typeof MshnctrlTargetingMissionCommandRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/targeting/jtb': {
-      id: '/smartops/targeting/jtb'
+    '/mshnctrl/targeting/jtb': {
+      id: '/mshnctrl/targeting/jtb'
       path: '/targeting/jtb'
-      fullPath: '/smartops/targeting/jtb'
-      preLoaderRoute: typeof SmartopsTargetingJtbRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting/jtb'
+      preLoaderRoute: typeof MshnctrlTargetingJtbRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/targeting/intelligence': {
-      id: '/smartops/targeting/intelligence'
+    '/mshnctrl/targeting/intelligence': {
+      id: '/mshnctrl/targeting/intelligence'
       path: '/targeting/intelligence'
-      fullPath: '/smartops/targeting/intelligence'
-      preLoaderRoute: typeof SmartopsTargetingIntelligenceRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting/intelligence'
+      preLoaderRoute: typeof MshnctrlTargetingIntelligenceRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/targeting/emergency': {
-      id: '/smartops/targeting/emergency'
+    '/mshnctrl/targeting/emergency': {
+      id: '/mshnctrl/targeting/emergency'
       path: '/targeting/emergency'
-      fullPath: '/smartops/targeting/emergency'
-      preLoaderRoute: typeof SmartopsTargetingEmergencyRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting/emergency'
+      preLoaderRoute: typeof MshnctrlTargetingEmergencyRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/targeting/effects': {
-      id: '/smartops/targeting/effects'
+    '/mshnctrl/targeting/effects': {
+      id: '/mshnctrl/targeting/effects'
       path: '/targeting/effects'
-      fullPath: '/smartops/targeting/effects'
-      preLoaderRoute: typeof SmartopsTargetingEffectsRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting/effects'
+      preLoaderRoute: typeof MshnctrlTargetingEffectsRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/targeting/collaboration': {
-      id: '/smartops/targeting/collaboration'
+    '/mshnctrl/targeting/collaboration': {
+      id: '/mshnctrl/targeting/collaboration'
       path: '/targeting/collaboration'
-      fullPath: '/smartops/targeting/collaboration'
-      preLoaderRoute: typeof SmartopsTargetingCollaborationRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting/collaboration'
+      preLoaderRoute: typeof MshnctrlTargetingCollaborationRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/targeting/assets': {
-      id: '/smartops/targeting/assets'
+    '/mshnctrl/targeting/assets': {
+      id: '/mshnctrl/targeting/assets'
       path: '/targeting/assets'
-      fullPath: '/smartops/targeting/assets'
-      preLoaderRoute: typeof SmartopsTargetingAssetsRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting/assets'
+      preLoaderRoute: typeof MshnctrlTargetingAssetsRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/targeting/analytics': {
-      id: '/smartops/targeting/analytics'
+    '/mshnctrl/targeting/analytics': {
+      id: '/mshnctrl/targeting/analytics'
       path: '/targeting/analytics'
-      fullPath: '/smartops/targeting/analytics'
-      preLoaderRoute: typeof SmartopsTargetingAnalyticsRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting/analytics'
+      preLoaderRoute: typeof MshnctrlTargetingAnalyticsRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/targeting/analysis': {
-      id: '/smartops/targeting/analysis'
+    '/mshnctrl/targeting/analysis': {
+      id: '/mshnctrl/targeting/analysis'
       path: '/targeting/analysis'
-      fullPath: '/smartops/targeting/analysis'
-      preLoaderRoute: typeof SmartopsTargetingAnalysisRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting/analysis'
+      preLoaderRoute: typeof MshnctrlTargetingAnalysisRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/targeting/$targetId': {
-      id: '/smartops/targeting/$targetId'
+    '/mshnctrl/targeting/$targetId': {
+      id: '/mshnctrl/targeting/$targetId'
       path: '/targeting/$targetId'
-      fullPath: '/smartops/targeting/$targetId'
-      preLoaderRoute: typeof SmartopsTargetingTargetIdRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/targeting/$targetId'
+      preLoaderRoute: typeof MshnctrlTargetingTargetIdRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/proposals/$proposalId': {
-      id: '/smartops/proposals/$proposalId'
+    '/mshnctrl/proposals/$proposalId': {
+      id: '/mshnctrl/proposals/$proposalId'
       path: '/proposals/$proposalId'
-      fullPath: '/smartops/proposals/$proposalId'
-      preLoaderRoute: typeof SmartopsProposalsProposalIdRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/proposals/$proposalId'
+      preLoaderRoute: typeof MshnctrlProposalsProposalIdRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/conduct/$sessionId': {
-      id: '/smartops/conduct/$sessionId'
+    '/mshnctrl/conduct/$sessionId': {
+      id: '/mshnctrl/conduct/$sessionId'
       path: '/conduct/$sessionId'
-      fullPath: '/smartops/conduct/$sessionId'
-      preLoaderRoute: typeof SmartopsConductSessionIdRouteImport
-      parentRoute: typeof SmartopsRoute
+      fullPath: '/mshnctrl/conduct/$sessionId'
+      preLoaderRoute: typeof MshnctrlConductSessionIdRouteImport
+      parentRoute: typeof MshnctrlRoute
     }
-    '/smartops/bda/create': {
-      id: '/smartops/bda/create'
+    '/mshnctrl/bda/create': {
+      id: '/mshnctrl/bda/create'
       path: '/create'
-      fullPath: '/smartops/bda/create'
-      preLoaderRoute: typeof SmartopsBdaCreateRouteImport
-      parentRoute: typeof SmartopsBdaRoute
+      fullPath: '/mshnctrl/bda/create'
+      preLoaderRoute: typeof MshnctrlBdaCreateRouteImport
+      parentRoute: typeof MshnctrlBdaRoute
     }
-    '/smartops/bda/$reportId': {
-      id: '/smartops/bda/$reportId'
+    '/mshnctrl/bda/$reportId': {
+      id: '/mshnctrl/bda/$reportId'
       path: '/$reportId'
-      fullPath: '/smartops/bda/$reportId'
-      preLoaderRoute: typeof SmartopsBdaReportIdRouteImport
-      parentRoute: typeof SmartopsBdaRoute
+      fullPath: '/mshnctrl/bda/$reportId'
+      preLoaderRoute: typeof MshnctrlBdaReportIdRouteImport
+      parentRoute: typeof MshnctrlBdaRoute
     }
     '/admin/discovery/$serviceId': {
       id: '/admin/discovery/$serviceId'
@@ -1895,170 +1895,170 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
-interface SmartopsBdaRouteChildren {
-  SmartopsBdaReportIdRoute: typeof SmartopsBdaReportIdRoute
-  SmartopsBdaCreateRoute: typeof SmartopsBdaCreateRoute
+interface MshnctrlBdaRouteChildren {
+  MshnctrlBdaReportIdRoute: typeof MshnctrlBdaReportIdRoute
+  MshnctrlBdaCreateRoute: typeof MshnctrlBdaCreateRoute
 }
 
-const SmartopsBdaRouteChildren: SmartopsBdaRouteChildren = {
-  SmartopsBdaReportIdRoute: SmartopsBdaReportIdRoute,
-  SmartopsBdaCreateRoute: SmartopsBdaCreateRoute,
+const MshnctrlBdaRouteChildren: MshnctrlBdaRouteChildren = {
+  MshnctrlBdaReportIdRoute: MshnctrlBdaReportIdRoute,
+  MshnctrlBdaCreateRoute: MshnctrlBdaCreateRoute,
 }
 
-const SmartopsBdaRouteWithChildren = SmartopsBdaRoute._addFileChildren(
-  SmartopsBdaRouteChildren,
+const MshnctrlBdaRouteWithChildren = MshnctrlBdaRoute._addFileChildren(
+  MshnctrlBdaRouteChildren,
 )
 
-interface SmartopsRouteChildren {
-  SmartopsA2adRoute: typeof SmartopsA2adRoute
-  SmartopsAdvisoryRoute: typeof SmartopsAdvisoryRoute
-  SmartopsAnalystDashboardRoute: typeof SmartopsAnalystDashboardRoute
-  SmartopsAssessmentRoute: typeof SmartopsAssessmentRoute
-  SmartopsAssumptionsRoute: typeof SmartopsAssumptionsRoute
-  SmartopsBattleRhythmRoute: typeof SmartopsBattleRhythmRoute
-  SmartopsBdaRoute: typeof SmartopsBdaRouteWithChildren
-  SmartopsBrainstormingRoute: typeof SmartopsBrainstormingRoute
-  SmartopsBriefingRoute: typeof SmartopsBriefingRoute
-  SmartopsCampaignRoute: typeof SmartopsCampaignRoute
-  SmartopsCcirRoute: typeof SmartopsCcirRoute
-  SmartopsCdeRoute: typeof SmartopsCdeRoute
-  SmartopsCnrRoute: typeof SmartopsCnrRoute
-  SmartopsCoaWargamerRoute: typeof SmartopsCoaWargamerRoute
-  SmartopsCogRoute: typeof SmartopsCogRoute
-  SmartopsConopsRoute: typeof SmartopsConopsRoute
-  SmartopsCopSummaryRoute: typeof SmartopsCopSummaryRoute
-  SmartopsDecisionBoardRoute: typeof SmartopsDecisionBoardRoute
-  SmartopsDigitalTwinRoute: typeof SmartopsDigitalTwinRoute
-  SmartopsExternalContextRoute: typeof SmartopsExternalContextRoute
-  SmartopsFeedbackRoute: typeof SmartopsFeedbackRoute
-  SmartopsGapAnalysisRoute: typeof SmartopsGapAnalysisRoute
-  SmartopsImDashboardRoute: typeof SmartopsImDashboardRoute
-  SmartopsInformationManagementRoute: typeof SmartopsInformationManagementRoute
-  SmartopsInfrastructureRoute: typeof SmartopsInfrastructureRoute
-  SmartopsJ2DashboardRoute: typeof SmartopsJ2DashboardRoute
-  SmartopsJ3DashboardRoute: typeof SmartopsJ3DashboardRoute
-  SmartopsJ4DashboardRoute: typeof SmartopsJ4DashboardRoute
-  SmartopsJ5DashboardRoute: typeof SmartopsJ5DashboardRoute
-  SmartopsLegadDashboardRoute: typeof SmartopsLegadDashboardRoute
-  SmartopsLogisticsRoute: typeof SmartopsLogisticsRoute
-  SmartopsMdoRoute: typeof SmartopsMdoRoute
-  SmartopsMenuBuilderRoute: typeof SmartopsMenuBuilderRoute
-  SmartopsOntologyRoute: typeof SmartopsOntologyRoute
-  SmartopsOrbatRoute: typeof SmartopsOrbatRoute
-  SmartopsPersonnelRoute: typeof SmartopsPersonnelRoute
-  SmartopsProductsRoute: typeof SmartopsProductsRoute
-  SmartopsRfisRoute: typeof SmartopsRfisRoute
-  SmartopsRoeRoute: typeof SmartopsRoeRoute
-  SmartopsRxpRoute: typeof SmartopsRxpRoute
-  SmartopsScenariosRoute: typeof SmartopsScenariosRoute
-  SmartopsSecurityRoute: typeof SmartopsSecurityRoute
-  SmartopsSocialDomainRoute: typeof SmartopsSocialDomainRoute
-  SmartopsStaffRoute: typeof SmartopsStaffRoute
-  SmartopsStrategicDirectionRoute: typeof SmartopsStrategicDirectionRoute
-  SmartopsStrikeOptimizerRoute: typeof SmartopsStrikeOptimizerRoute
-  SmartopsSupplyChainRoute: typeof SmartopsSupplyChainRoute
-  SmartopsTargetingCellDashboardRoute: typeof SmartopsTargetingCellDashboardRoute
-  SmartopsTorManagerRoute: typeof SmartopsTorManagerRoute
-  SmartopsTriageRoute: typeof SmartopsTriageRoute
-  SmartopsUncertaintyRoute: typeof SmartopsUncertaintyRoute
-  SmartopsWeatherRoute: typeof SmartopsWeatherRoute
-  SmartopsOplanLazyRoute: typeof SmartopsOplanLazyRoute
-  SmartopsIndexRoute: typeof SmartopsIndexRoute
-  SmartopsConductSessionIdRoute: typeof SmartopsConductSessionIdRoute
-  SmartopsProposalsProposalIdRoute: typeof SmartopsProposalsProposalIdRoute
-  SmartopsTargetingTargetIdRoute: typeof SmartopsTargetingTargetIdRoute
-  SmartopsTargetingAnalysisRoute: typeof SmartopsTargetingAnalysisRoute
-  SmartopsTargetingAnalyticsRoute: typeof SmartopsTargetingAnalyticsRoute
-  SmartopsTargetingAssetsRoute: typeof SmartopsTargetingAssetsRoute
-  SmartopsTargetingCollaborationRoute: typeof SmartopsTargetingCollaborationRoute
-  SmartopsTargetingEffectsRoute: typeof SmartopsTargetingEffectsRoute
-  SmartopsTargetingEmergencyRoute: typeof SmartopsTargetingEmergencyRoute
-  SmartopsTargetingIntelligenceRoute: typeof SmartopsTargetingIntelligenceRoute
-  SmartopsTargetingJtbRoute: typeof SmartopsTargetingJtbRoute
-  SmartopsTargetingMissionCommandRoute: typeof SmartopsTargetingMissionCommandRoute
-  SmartopsTargetingNominateRoute: typeof SmartopsTargetingNominateRoute
-  SmartopsTargetingRiskRoute: typeof SmartopsTargetingRiskRoute
-  SmartopsTargetingTargetsRoute: typeof SmartopsTargetingTargetsRoute
-  SmartopsProposalsIndexRoute: typeof SmartopsProposalsIndexRoute
-  SmartopsTargetingIndexRoute: typeof SmartopsTargetingIndexRoute
+interface MshnctrlRouteChildren {
+  MshnctrlA2adRoute: typeof MshnctrlA2adRoute
+  MshnctrlAdvisoryRoute: typeof MshnctrlAdvisoryRoute
+  MshnctrlAnalystDashboardRoute: typeof MshnctrlAnalystDashboardRoute
+  MshnctrlAssessmentRoute: typeof MshnctrlAssessmentRoute
+  MshnctrlAssumptionsRoute: typeof MshnctrlAssumptionsRoute
+  MshnctrlBattleRhythmRoute: typeof MshnctrlBattleRhythmRoute
+  MshnctrlBdaRoute: typeof MshnctrlBdaRouteWithChildren
+  MshnctrlBrainstormingRoute: typeof MshnctrlBrainstormingRoute
+  MshnctrlBriefingRoute: typeof MshnctrlBriefingRoute
+  MshnctrlCampaignRoute: typeof MshnctrlCampaignRoute
+  MshnctrlCcirRoute: typeof MshnctrlCcirRoute
+  MshnctrlCdeRoute: typeof MshnctrlCdeRoute
+  MshnctrlCnrRoute: typeof MshnctrlCnrRoute
+  MshnctrlCoaWargamerRoute: typeof MshnctrlCoaWargamerRoute
+  MshnctrlCogRoute: typeof MshnctrlCogRoute
+  MshnctrlConopsRoute: typeof MshnctrlConopsRoute
+  MshnctrlCopSummaryRoute: typeof MshnctrlCopSummaryRoute
+  MshnctrlDecisionBoardRoute: typeof MshnctrlDecisionBoardRoute
+  MshnctrlDigitalTwinRoute: typeof MshnctrlDigitalTwinRoute
+  MshnctrlExternalContextRoute: typeof MshnctrlExternalContextRoute
+  MshnctrlFeedbackRoute: typeof MshnctrlFeedbackRoute
+  MshnctrlGapAnalysisRoute: typeof MshnctrlGapAnalysisRoute
+  MshnctrlImDashboardRoute: typeof MshnctrlImDashboardRoute
+  MshnctrlInformationManagementRoute: typeof MshnctrlInformationManagementRoute
+  MshnctrlInfrastructureRoute: typeof MshnctrlInfrastructureRoute
+  MshnctrlJ2DashboardRoute: typeof MshnctrlJ2DashboardRoute
+  MshnctrlJ3DashboardRoute: typeof MshnctrlJ3DashboardRoute
+  MshnctrlJ4DashboardRoute: typeof MshnctrlJ4DashboardRoute
+  MshnctrlJ5DashboardRoute: typeof MshnctrlJ5DashboardRoute
+  MshnctrlLegadDashboardRoute: typeof MshnctrlLegadDashboardRoute
+  MshnctrlLogisticsRoute: typeof MshnctrlLogisticsRoute
+  MshnctrlMdoRoute: typeof MshnctrlMdoRoute
+  MshnctrlMenuBuilderRoute: typeof MshnctrlMenuBuilderRoute
+  MshnctrlOntologyRoute: typeof MshnctrlOntologyRoute
+  MshnctrlOrbatRoute: typeof MshnctrlOrbatRoute
+  MshnctrlPersonnelRoute: typeof MshnctrlPersonnelRoute
+  MshnctrlProductsRoute: typeof MshnctrlProductsRoute
+  MshnctrlRfisRoute: typeof MshnctrlRfisRoute
+  MshnctrlRoeRoute: typeof MshnctrlRoeRoute
+  MshnctrlRxpRoute: typeof MshnctrlRxpRoute
+  MshnctrlScenariosRoute: typeof MshnctrlScenariosRoute
+  MshnctrlSecurityRoute: typeof MshnctrlSecurityRoute
+  MshnctrlSocialDomainRoute: typeof MshnctrlSocialDomainRoute
+  MshnctrlStaffRoute: typeof MshnctrlStaffRoute
+  MshnctrlStrategicDirectionRoute: typeof MshnctrlStrategicDirectionRoute
+  MshnctrlStrikeOptimizerRoute: typeof MshnctrlStrikeOptimizerRoute
+  MshnctrlSupplyChainRoute: typeof MshnctrlSupplyChainRoute
+  MshnctrlTargetingCellDashboardRoute: typeof MshnctrlTargetingCellDashboardRoute
+  MshnctrlTorManagerRoute: typeof MshnctrlTorManagerRoute
+  MshnctrlTriageRoute: typeof MshnctrlTriageRoute
+  MshnctrlUncertaintyRoute: typeof MshnctrlUncertaintyRoute
+  MshnctrlWeatherRoute: typeof MshnctrlWeatherRoute
+  MshnctrlOplanLazyRoute: typeof MshnctrlOplanLazyRoute
+  MshnctrlIndexRoute: typeof MshnctrlIndexRoute
+  MshnctrlConductSessionIdRoute: typeof MshnctrlConductSessionIdRoute
+  MshnctrlProposalsProposalIdRoute: typeof MshnctrlProposalsProposalIdRoute
+  MshnctrlTargetingTargetIdRoute: typeof MshnctrlTargetingTargetIdRoute
+  MshnctrlTargetingAnalysisRoute: typeof MshnctrlTargetingAnalysisRoute
+  MshnctrlTargetingAnalyticsRoute: typeof MshnctrlTargetingAnalyticsRoute
+  MshnctrlTargetingAssetsRoute: typeof MshnctrlTargetingAssetsRoute
+  MshnctrlTargetingCollaborationRoute: typeof MshnctrlTargetingCollaborationRoute
+  MshnctrlTargetingEffectsRoute: typeof MshnctrlTargetingEffectsRoute
+  MshnctrlTargetingEmergencyRoute: typeof MshnctrlTargetingEmergencyRoute
+  MshnctrlTargetingIntelligenceRoute: typeof MshnctrlTargetingIntelligenceRoute
+  MshnctrlTargetingJtbRoute: typeof MshnctrlTargetingJtbRoute
+  MshnctrlTargetingMissionCommandRoute: typeof MshnctrlTargetingMissionCommandRoute
+  MshnctrlTargetingNominateRoute: typeof MshnctrlTargetingNominateRoute
+  MshnctrlTargetingRiskRoute: typeof MshnctrlTargetingRiskRoute
+  MshnctrlTargetingTargetsRoute: typeof MshnctrlTargetingTargetsRoute
+  MshnctrlProposalsIndexRoute: typeof MshnctrlProposalsIndexRoute
+  MshnctrlTargetingIndexRoute: typeof MshnctrlTargetingIndexRoute
 }
 
-const SmartopsRouteChildren: SmartopsRouteChildren = {
-  SmartopsA2adRoute: SmartopsA2adRoute,
-  SmartopsAdvisoryRoute: SmartopsAdvisoryRoute,
-  SmartopsAnalystDashboardRoute: SmartopsAnalystDashboardRoute,
-  SmartopsAssessmentRoute: SmartopsAssessmentRoute,
-  SmartopsAssumptionsRoute: SmartopsAssumptionsRoute,
-  SmartopsBattleRhythmRoute: SmartopsBattleRhythmRoute,
-  SmartopsBdaRoute: SmartopsBdaRouteWithChildren,
-  SmartopsBrainstormingRoute: SmartopsBrainstormingRoute,
-  SmartopsBriefingRoute: SmartopsBriefingRoute,
-  SmartopsCampaignRoute: SmartopsCampaignRoute,
-  SmartopsCcirRoute: SmartopsCcirRoute,
-  SmartopsCdeRoute: SmartopsCdeRoute,
-  SmartopsCnrRoute: SmartopsCnrRoute,
-  SmartopsCoaWargamerRoute: SmartopsCoaWargamerRoute,
-  SmartopsCogRoute: SmartopsCogRoute,
-  SmartopsConopsRoute: SmartopsConopsRoute,
-  SmartopsCopSummaryRoute: SmartopsCopSummaryRoute,
-  SmartopsDecisionBoardRoute: SmartopsDecisionBoardRoute,
-  SmartopsDigitalTwinRoute: SmartopsDigitalTwinRoute,
-  SmartopsExternalContextRoute: SmartopsExternalContextRoute,
-  SmartopsFeedbackRoute: SmartopsFeedbackRoute,
-  SmartopsGapAnalysisRoute: SmartopsGapAnalysisRoute,
-  SmartopsImDashboardRoute: SmartopsImDashboardRoute,
-  SmartopsInformationManagementRoute: SmartopsInformationManagementRoute,
-  SmartopsInfrastructureRoute: SmartopsInfrastructureRoute,
-  SmartopsJ2DashboardRoute: SmartopsJ2DashboardRoute,
-  SmartopsJ3DashboardRoute: SmartopsJ3DashboardRoute,
-  SmartopsJ4DashboardRoute: SmartopsJ4DashboardRoute,
-  SmartopsJ5DashboardRoute: SmartopsJ5DashboardRoute,
-  SmartopsLegadDashboardRoute: SmartopsLegadDashboardRoute,
-  SmartopsLogisticsRoute: SmartopsLogisticsRoute,
-  SmartopsMdoRoute: SmartopsMdoRoute,
-  SmartopsMenuBuilderRoute: SmartopsMenuBuilderRoute,
-  SmartopsOntologyRoute: SmartopsOntologyRoute,
-  SmartopsOrbatRoute: SmartopsOrbatRoute,
-  SmartopsPersonnelRoute: SmartopsPersonnelRoute,
-  SmartopsProductsRoute: SmartopsProductsRoute,
-  SmartopsRfisRoute: SmartopsRfisRoute,
-  SmartopsRoeRoute: SmartopsRoeRoute,
-  SmartopsRxpRoute: SmartopsRxpRoute,
-  SmartopsScenariosRoute: SmartopsScenariosRoute,
-  SmartopsSecurityRoute: SmartopsSecurityRoute,
-  SmartopsSocialDomainRoute: SmartopsSocialDomainRoute,
-  SmartopsStaffRoute: SmartopsStaffRoute,
-  SmartopsStrategicDirectionRoute: SmartopsStrategicDirectionRoute,
-  SmartopsStrikeOptimizerRoute: SmartopsStrikeOptimizerRoute,
-  SmartopsSupplyChainRoute: SmartopsSupplyChainRoute,
-  SmartopsTargetingCellDashboardRoute: SmartopsTargetingCellDashboardRoute,
-  SmartopsTorManagerRoute: SmartopsTorManagerRoute,
-  SmartopsTriageRoute: SmartopsTriageRoute,
-  SmartopsUncertaintyRoute: SmartopsUncertaintyRoute,
-  SmartopsWeatherRoute: SmartopsWeatherRoute,
-  SmartopsOplanLazyRoute: SmartopsOplanLazyRoute,
-  SmartopsIndexRoute: SmartopsIndexRoute,
-  SmartopsConductSessionIdRoute: SmartopsConductSessionIdRoute,
-  SmartopsProposalsProposalIdRoute: SmartopsProposalsProposalIdRoute,
-  SmartopsTargetingTargetIdRoute: SmartopsTargetingTargetIdRoute,
-  SmartopsTargetingAnalysisRoute: SmartopsTargetingAnalysisRoute,
-  SmartopsTargetingAnalyticsRoute: SmartopsTargetingAnalyticsRoute,
-  SmartopsTargetingAssetsRoute: SmartopsTargetingAssetsRoute,
-  SmartopsTargetingCollaborationRoute: SmartopsTargetingCollaborationRoute,
-  SmartopsTargetingEffectsRoute: SmartopsTargetingEffectsRoute,
-  SmartopsTargetingEmergencyRoute: SmartopsTargetingEmergencyRoute,
-  SmartopsTargetingIntelligenceRoute: SmartopsTargetingIntelligenceRoute,
-  SmartopsTargetingJtbRoute: SmartopsTargetingJtbRoute,
-  SmartopsTargetingMissionCommandRoute: SmartopsTargetingMissionCommandRoute,
-  SmartopsTargetingNominateRoute: SmartopsTargetingNominateRoute,
-  SmartopsTargetingRiskRoute: SmartopsTargetingRiskRoute,
-  SmartopsTargetingTargetsRoute: SmartopsTargetingTargetsRoute,
-  SmartopsProposalsIndexRoute: SmartopsProposalsIndexRoute,
-  SmartopsTargetingIndexRoute: SmartopsTargetingIndexRoute,
+const MshnctrlRouteChildren: MshnctrlRouteChildren = {
+  MshnctrlA2adRoute: MshnctrlA2adRoute,
+  MshnctrlAdvisoryRoute: MshnctrlAdvisoryRoute,
+  MshnctrlAnalystDashboardRoute: MshnctrlAnalystDashboardRoute,
+  MshnctrlAssessmentRoute: MshnctrlAssessmentRoute,
+  MshnctrlAssumptionsRoute: MshnctrlAssumptionsRoute,
+  MshnctrlBattleRhythmRoute: MshnctrlBattleRhythmRoute,
+  MshnctrlBdaRoute: MshnctrlBdaRouteWithChildren,
+  MshnctrlBrainstormingRoute: MshnctrlBrainstormingRoute,
+  MshnctrlBriefingRoute: MshnctrlBriefingRoute,
+  MshnctrlCampaignRoute: MshnctrlCampaignRoute,
+  MshnctrlCcirRoute: MshnctrlCcirRoute,
+  MshnctrlCdeRoute: MshnctrlCdeRoute,
+  MshnctrlCnrRoute: MshnctrlCnrRoute,
+  MshnctrlCoaWargamerRoute: MshnctrlCoaWargamerRoute,
+  MshnctrlCogRoute: MshnctrlCogRoute,
+  MshnctrlConopsRoute: MshnctrlConopsRoute,
+  MshnctrlCopSummaryRoute: MshnctrlCopSummaryRoute,
+  MshnctrlDecisionBoardRoute: MshnctrlDecisionBoardRoute,
+  MshnctrlDigitalTwinRoute: MshnctrlDigitalTwinRoute,
+  MshnctrlExternalContextRoute: MshnctrlExternalContextRoute,
+  MshnctrlFeedbackRoute: MshnctrlFeedbackRoute,
+  MshnctrlGapAnalysisRoute: MshnctrlGapAnalysisRoute,
+  MshnctrlImDashboardRoute: MshnctrlImDashboardRoute,
+  MshnctrlInformationManagementRoute: MshnctrlInformationManagementRoute,
+  MshnctrlInfrastructureRoute: MshnctrlInfrastructureRoute,
+  MshnctrlJ2DashboardRoute: MshnctrlJ2DashboardRoute,
+  MshnctrlJ3DashboardRoute: MshnctrlJ3DashboardRoute,
+  MshnctrlJ4DashboardRoute: MshnctrlJ4DashboardRoute,
+  MshnctrlJ5DashboardRoute: MshnctrlJ5DashboardRoute,
+  MshnctrlLegadDashboardRoute: MshnctrlLegadDashboardRoute,
+  MshnctrlLogisticsRoute: MshnctrlLogisticsRoute,
+  MshnctrlMdoRoute: MshnctrlMdoRoute,
+  MshnctrlMenuBuilderRoute: MshnctrlMenuBuilderRoute,
+  MshnctrlOntologyRoute: MshnctrlOntologyRoute,
+  MshnctrlOrbatRoute: MshnctrlOrbatRoute,
+  MshnctrlPersonnelRoute: MshnctrlPersonnelRoute,
+  MshnctrlProductsRoute: MshnctrlProductsRoute,
+  MshnctrlRfisRoute: MshnctrlRfisRoute,
+  MshnctrlRoeRoute: MshnctrlRoeRoute,
+  MshnctrlRxpRoute: MshnctrlRxpRoute,
+  MshnctrlScenariosRoute: MshnctrlScenariosRoute,
+  MshnctrlSecurityRoute: MshnctrlSecurityRoute,
+  MshnctrlSocialDomainRoute: MshnctrlSocialDomainRoute,
+  MshnctrlStaffRoute: MshnctrlStaffRoute,
+  MshnctrlStrategicDirectionRoute: MshnctrlStrategicDirectionRoute,
+  MshnctrlStrikeOptimizerRoute: MshnctrlStrikeOptimizerRoute,
+  MshnctrlSupplyChainRoute: MshnctrlSupplyChainRoute,
+  MshnctrlTargetingCellDashboardRoute: MshnctrlTargetingCellDashboardRoute,
+  MshnctrlTorManagerRoute: MshnctrlTorManagerRoute,
+  MshnctrlTriageRoute: MshnctrlTriageRoute,
+  MshnctrlUncertaintyRoute: MshnctrlUncertaintyRoute,
+  MshnctrlWeatherRoute: MshnctrlWeatherRoute,
+  MshnctrlOplanLazyRoute: MshnctrlOplanLazyRoute,
+  MshnctrlIndexRoute: MshnctrlIndexRoute,
+  MshnctrlConductSessionIdRoute: MshnctrlConductSessionIdRoute,
+  MshnctrlProposalsProposalIdRoute: MshnctrlProposalsProposalIdRoute,
+  MshnctrlTargetingTargetIdRoute: MshnctrlTargetingTargetIdRoute,
+  MshnctrlTargetingAnalysisRoute: MshnctrlTargetingAnalysisRoute,
+  MshnctrlTargetingAnalyticsRoute: MshnctrlTargetingAnalyticsRoute,
+  MshnctrlTargetingAssetsRoute: MshnctrlTargetingAssetsRoute,
+  MshnctrlTargetingCollaborationRoute: MshnctrlTargetingCollaborationRoute,
+  MshnctrlTargetingEffectsRoute: MshnctrlTargetingEffectsRoute,
+  MshnctrlTargetingEmergencyRoute: MshnctrlTargetingEmergencyRoute,
+  MshnctrlTargetingIntelligenceRoute: MshnctrlTargetingIntelligenceRoute,
+  MshnctrlTargetingJtbRoute: MshnctrlTargetingJtbRoute,
+  MshnctrlTargetingMissionCommandRoute: MshnctrlTargetingMissionCommandRoute,
+  MshnctrlTargetingNominateRoute: MshnctrlTargetingNominateRoute,
+  MshnctrlTargetingRiskRoute: MshnctrlTargetingRiskRoute,
+  MshnctrlTargetingTargetsRoute: MshnctrlTargetingTargetsRoute,
+  MshnctrlProposalsIndexRoute: MshnctrlProposalsIndexRoute,
+  MshnctrlTargetingIndexRoute: MshnctrlTargetingIndexRoute,
 }
 
-const SmartopsRouteWithChildren = SmartopsRoute._addFileChildren(
-  SmartopsRouteChildren,
+const MshnctrlRouteWithChildren = MshnctrlRoute._addFileChildren(
+  MshnctrlRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
@@ -2068,10 +2068,10 @@ const rootRouteChildren: RootRouteChildren = {
   DebugRoute: DebugRoute,
   LoginRoute: LoginRoute,
   LogsRoute: LogsRoute,
+  MshnctrlRoute: MshnctrlRouteWithChildren,
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
   ReportsRoute: ReportsRoute,
-  SmartopsRoute: SmartopsRouteWithChildren,
   StatsSessionsRoute: StatsSessionsRoute,
   StatsSystemRoute: StatsSystemRoute,
   StatsUsersRoute: StatsUsersRoute,

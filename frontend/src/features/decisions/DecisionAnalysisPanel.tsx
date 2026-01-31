@@ -19,11 +19,11 @@ import {
     Zap
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { Decision, DecisionAnalysis, ROEStatus } from '@/lib/smartops/types';
+import type { Decision, DecisionAnalysis, ROEStatus } from '@/lib/mshnctrl/types';
 import { OptionCard } from './OptionCard';
 import { RiskFactorsSection } from './RiskFactorsSection';
 import { DecisionSupport } from './DecisionSupport';
-import { AssumptionService } from '@/lib/smartops/services/AssumptionService';
+import { AssumptionService } from '@/lib/mshnctrl/services/AssumptionService';
 import { AlertCircle } from 'lucide-react';
 
 interface DecisionAnalysisPanelProps {

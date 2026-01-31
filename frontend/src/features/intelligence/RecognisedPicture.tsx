@@ -16,8 +16,8 @@ import {
     Shield
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { Track, UUID } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { Track, UUID } from '@/lib/mshnctrl/types';
 import { Button } from '@/components/ui/button';
 
 export function RecognisedPicture() {
@@ -32,7 +32,7 @@ export function RecognisedPicture() {
 
     async function loadPicture() {
         setLoading(true);
-        const data = await SmartOpsService.getRecognisedPicture(selectedDomain);
+        const data = await MshnCtrlService.getRecognisedPicture(selectedDomain);
         setTracks(data);
         setLoading(false);
     }

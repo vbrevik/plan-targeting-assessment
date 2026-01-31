@@ -3,7 +3,7 @@ import { Activity, Shield, TrendingUp, TrendingDown, Crosshair, AlertTriangle, M
 import { cn } from '@/lib/utils';
 import { DecisionTracker } from '../decisions/DecisionTracker';
 import { DecisionImpactMonitorComponent } from '../decisions/DecisionImpactMonitor';
-import type { DecisionTracking, DecisionImpactMonitor } from '@/lib/smartops/types';
+import type { DecisionTracking, DecisionImpactMonitor } from '@/lib/mshnctrl/types';
 
 interface ActiveMonitoringZoneProps {
     readinessTrend: number;
@@ -103,7 +103,7 @@ export function ActiveMonitoringZone({
 
             {/* Intel Insights Summary */}
             <Link
-                to="/smartops/advisory"
+                to="/mshnctrl/advisory"
                 className="block p-4 rounded-lg bg-slate-900/60 border border-slate-700 hover:border-purple-500/40 transition-all cursor-pointer group"
             >
                 <div className="flex items-center justify-between mb-2">

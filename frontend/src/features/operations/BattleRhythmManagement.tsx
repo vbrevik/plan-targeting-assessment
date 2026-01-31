@@ -15,10 +15,10 @@ import {
     CheckCircle2,
     XCircle
 } from 'lucide-react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { OntologyService, type Entity } from '@/lib/mshnctrl/services/ontology.service';
 import { cn } from '@/lib/utils';
-import type { GovernanceSession, BattleRhythmEvent, TermsOfReference } from '@/lib/smartops/types';
-import { BattleRhythmType } from '@/lib/smartops/types';
+import type { GovernanceSession, BattleRhythmEvent, TermsOfReference } from '@/lib/mshnctrl/types';
+import { BattleRhythmType } from '@/lib/mshnctrl/types';
 import { useNavigate } from '@tanstack/react-router';
 
 type ViewMode = 'Week' | 'Month';
@@ -39,15 +39,43 @@ export function BattleRhythmManagement() {
     useEffect(() => {
         async function loadData() {
             setLoading(true);
-            const [eData, sData, tData] = await Promise.all([
-                SmartOpsService.getBattleRhythmEvents(),
-                SmartOpsService.getGovernanceSessions(),
-                SmartOpsService.getTORs()
-            ]);
-            setEvents(eData);
-            setSessions(sData);
-            setTors(tData);
-            setLoading(false);
+            try {
+                // Fetch all Events from Ontology
+                const eventsRaw = await OntologyService.getEntities({ type: 'Event' });
+                // We also need TORs? Maybe fetch all 'TOR' entities
+                // const torsRaw = await OntologyService.getEntities({ type: 'TOR' }); 
+                // For MVP, lets assume Events contain enough info or we map them.
+
+                // Map Entity -> BattleRhythmEvent / GovernanceSession
+                // Assumption: 'Event' entities represent specific scheduled sessions.
+                const mappedSessions: GovernanceSession[] = eventsRaw.map((e: Entity) => ({
+                    id: e.id,
+                    title: e.name,
+                    type: (Object.values(BattleRhythmType).includes(e.properties?.type) ? e.properties.type : BattleRhythmType.CoordinationMeeting),
+                    startTime: e.properties?.start_time || new Date().toISOString(),
+                    endTime: e.properties?.end_time || new Date(new Date(e.properties?.start_time || Date.now()).getTime() + 60 * 60 * 1000).toISOString(),
+                    duration: e.properties?.duration || 60,
+                    location: e.properties?.location || 'Virtual',
+                    chair: e.properties?.chair || 'J3',
+                    attendees: [], // Fetch if needed or map from properties
+                    agenda: [],
+                    status: e.properties?.status || 'Scheduled',
+                    meetingRecord: e.properties?.meetingRecord,
+                    inputs: [],
+                    outputs: []
+                }));
+
+                setSessions(mappedSessions);
+                // For 'events' (recurring definitions), we might not have them in Ontology as separate types yet. 
+                // We'll just use sessions for the calendar for now.
+                setEvents([]);
+                setTors([]); // TODO: Fetch TORs if linked
+
+            } catch (err) {
+                console.error("Failed to load battle rhythm", err);
+            } finally {
+                setLoading(false);
+            }
         }
         loadData();
     }, []);
@@ -281,7 +309,7 @@ export function BattleRhythmManagement() {
                                                             <button
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
-                                                                    navigate({ to: `/smartops/conduct/${event.id}` });
+                                                                    navigate({ to: `/mshnctrl/conduct/${event.id}` });
                                                                 }}
                                                                 className="opacity-0 group-hover:opacity-100 p-1 bg-blue-600 hover:bg-blue-500 rounded text-white transition-all transform scale-90 hover:scale-100 flex items-center shadow-lg shadow-blue-900/20"
                                                                 title="Run Meeting"
@@ -343,7 +371,7 @@ export function BattleRhythmManagement() {
                                         onClick={() => {
                                             const currentSession = sessions.find(s => s.id === selectedEventId || (activeTor?.eventId && s.id === activeTor.eventId.replace('bre-', 'gs-')));
                                             if (currentSession) {
-                                                navigate({ to: '/smartops/conduct/$sessionId', params: { sessionId: currentSession.id } });
+                                                navigate({ to: '/mshnctrl/conduct/$sessionId', params: { sessionId: currentSession.id } });
                                             }
                                         }}
                                         className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded text-[10px] font-bold uppercase flex items-center gap-2 transition-colors shadow-lg shadow-blue-500/20"

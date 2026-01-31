@@ -72,6 +72,11 @@ pub struct CreateRelationshipRequest {
     pub properties: Option<Value>,
 }
 
+#[derive(Debug, Deserialize)]
+pub struct AcknowledgeEntityRequest {
+    pub acknowledged_by: String,
+}
+
 #[derive(Debug, Serialize)]
 pub struct EntityWithRelationships {
     #[serde(flatten)]
@@ -85,6 +90,8 @@ pub struct EntityFilter {
     pub type_: Option<String>,
     pub operation_id: Option<String>,
     pub campaign_id: Option<String>,
+    pub urgent_only: Option<bool>,
+    pub created_after: Option<DateTime<Utc>>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

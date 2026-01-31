@@ -14,9 +14,9 @@ import {
     Clock,
     Crosshair
 } from 'lucide-react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { Track, CenterOfGravity } from '@/lib/smartops/types';
-import { useOperationalContext } from '@/lib/smartops/hooks/useOperationalContext';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { Track, CenterOfGravity } from '@/lib/mshnctrl/types';
+import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
 
 export function COPSummary() {
     const navigate = useNavigate();
@@ -28,10 +28,10 @@ export function COPSummary() {
     useEffect(() => {
         async function loadData() {
             const [air, sea, land, blueCogs] = await Promise.all([
-                SmartOpsService.getRecognisedPicture('Air'),
-                SmartOpsService.getRecognisedPicture('Maritime'),
-                SmartOpsService.getRecognisedPicture('Ground'),
-                SmartOpsService.getCOGs('Blue')
+                MshnCtrlService.getRecognisedPicture('Air'),
+                MshnCtrlService.getRecognisedPicture('Maritime'),
+                MshnCtrlService.getRecognisedPicture('Ground'),
+                MshnCtrlService.getCOGs('Blue')
             ]);
             setTracks([...air, ...sea, ...land].filter(filterByContext));
             setCogs(blueCogs.filter(filterByContext));
@@ -80,7 +80,7 @@ export function COPSummary() {
                 {/* Critical Indicators Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <button
-                        onClick={() => navigate({ to: '/smartops/targeting/assets' })}
+                        onClick={() => navigate({ to: '/mshnctrl/targeting/assets' })}
                         className="bg-slate-950 border-2 border-slate-900 rounded-[2rem] p-8 transition-all hover:border-blue-500/50 hover:bg-slate-900/50 cursor-pointer text-left"
                     >
                         <div className="flex justify-between items-center mb-6">
@@ -98,7 +98,7 @@ export function COPSummary() {
                     </button>
 
                     <button
-                        onClick={() => navigate({ to: '/smartops/targeting' })}
+                        onClick={() => navigate({ to: '/mshnctrl/targeting' })}
                         className="bg-slate-950 border-2 border-slate-900 rounded-[2rem] p-8 transition-all hover:border-red-500/50 hover:bg-slate-900/50 cursor-pointer text-left"
                     >
                         <div className="flex justify-between items-center mb-6">
@@ -113,7 +113,7 @@ export function COPSummary() {
                     </button>
 
                     <button
-                        onClick={() => navigate({ to: '/smartops/roe' })}
+                        onClick={() => navigate({ to: '/mshnctrl/roe' })}
                         className="bg-slate-950 border-2 border-slate-900 rounded-[2rem] p-8 transition-all hover:border-amber-500/50 hover:bg-slate-900/50 cursor-pointer text-left"
                     >
                         <div className="flex justify-between items-center mb-6">

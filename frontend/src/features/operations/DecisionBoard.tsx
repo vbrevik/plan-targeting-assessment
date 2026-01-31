@@ -12,9 +12,9 @@ import {
     ChevronRight,
     ShieldCheck
 } from 'lucide-react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { cn } from '@/lib/utils';
-import type { DecisionBoard } from '@/lib/smartops/types';
+import type { DecisionBoard } from '@/lib/mshnctrl/types';
 
 export function DecisionBoardView() {
     const [boards, setBoards] = useState<DecisionBoard[]>([]);
@@ -23,7 +23,7 @@ export function DecisionBoardView() {
 
     useEffect(() => {
         async function loadData() {
-            const data = await SmartOpsService.getDecisionBoards() as DecisionBoard[];
+            const data = await MshnCtrlService.getDecisionBoards() as DecisionBoard[];
             setBoards(data);
             if (data.length > 0) {
                 setSelectedBoard(data[0]);

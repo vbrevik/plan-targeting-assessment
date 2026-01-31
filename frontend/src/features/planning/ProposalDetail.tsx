@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { WorkflowState } from '@/lib/smartops/types';
-import type { Proposal } from '@/lib/smartops/types';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { WorkflowState } from '@/lib/mshnctrl/types';
+import type { Proposal } from '@/lib/mshnctrl/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, CheckCircle, XCircle, Send, FileEdit } from 'lucide-react';
@@ -18,7 +18,7 @@ export function ProposalDetail({ proposalId }: ProposalDetailProps) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        SmartOpsService.getProposal(proposalId).then((p) => {
+        MshnCtrlService.getProposal(proposalId).then((p) => {
             setProposal(p || null);
             setLoading(false);
         });
@@ -26,7 +26,7 @@ export function ProposalDetail({ proposalId }: ProposalDetailProps) {
 
     const handleAction = async (newState: WorkflowState) => {
         if (!proposal) return;
-        const updated = await SmartOpsService.updateProposalStatus(proposal.id, newState);
+        const updated = await MshnCtrlService.updateProposalStatus(proposal.id, newState);
         setProposal(updated);
     };
 
@@ -37,7 +37,7 @@ export function ProposalDetail({ proposalId }: ProposalDetailProps) {
         <div className="max-w-5xl mx-auto space-y-6">
             {/* Header */}
             <div className="flex items-center gap-4">
-                <Button variant="ghost" size="icon" onClick={() => navigate({ to: '/smartops/proposals' })}>
+                <Button variant="ghost" size="icon" onClick={() => navigate({ to: '/mshnctrl/proposals' })}>
                     <ArrowLeft className="h-5 w-5" />
                 </Button>
                 <div className="flex-1">

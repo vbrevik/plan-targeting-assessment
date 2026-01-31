@@ -11,9 +11,9 @@ import {
     ChevronRight,
     Gavel
 } from 'lucide-react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { cn } from '@/lib/utils';
-import type { StrikeAnalysis, Target as TargetType } from '@/lib/smartops/types';
+import type { StrikeAnalysis, Target as TargetType } from '@/lib/mshnctrl/types';
 
 export function StrikeOptimizer() {
     const [targets, setTargets] = useState<TargetType[]>([]);
@@ -23,7 +23,7 @@ export function StrikeOptimizer() {
 
     useEffect(() => {
         async function loadTargets() {
-            const data = await SmartOpsService.getTargets();
+            const data = await MshnCtrlService.getTargets();
             setTargets(data);
             if (data.length > 0) {
                 setSelectedTargetId(data[0].id);
@@ -36,7 +36,7 @@ export function StrikeOptimizer() {
     useEffect(() => {
         if (selectedTargetId) {
             async function loadAnalysis() {
-                const data = await SmartOpsService.getStrikeAnalysis(selectedTargetId as string);
+                const data = await MshnCtrlService.getStrikeAnalysis(selectedTargetId as string);
                 setAnalysis(data || null);
             }
             loadAnalysis();

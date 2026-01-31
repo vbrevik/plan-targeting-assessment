@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { BdaApi, type BdaReport, type BdaStatistics } from '@/lib/smartops/api/bda';
+import { BdaApi, type BdaReport, type BdaStatistics } from '@/lib/mshnctrl/api/bda';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { useOperationalContext } from '@/lib/smartops/hooks/useOperationalContext';
+import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
 import { cn } from '@/lib/utils';
 import {
     Camera,
@@ -128,7 +128,7 @@ export function BDAManagementView() {
                     variant="ghost" 
                     size="sm" 
                     className="text-slate-500 hover:text-white gap-2 uppercase font-black text-[10px]"
-                    onClick={() => navigate({ to: '/smartops/bda/create' })}
+                    onClick={() => navigate({ to: '/mshnctrl/bda/create' })}
                 >
                     <Plus size={14} /> New Assessment
                 </Button>
@@ -160,7 +160,7 @@ export function BDAManagementView() {
                             <Card 
                                 key={report.id} 
                                 className="bg-slate-900/40 border-slate-800 hover:border-slate-700 transition-colors group cursor-pointer" 
-                                onClick={() => navigate({ to: `/smartops/bda/${report.id}` })}
+                                onClick={() => navigate({ to: `/mshnctrl/bda/${report.id}` })}
                             >
                                 <CardContent className="p-4 flex gap-6 items-center">
                                     <div className="w-12 h-12 bg-slate-800 rounded flex items-center justify-center border border-slate-700 relative overflow-hidden shrink-0">

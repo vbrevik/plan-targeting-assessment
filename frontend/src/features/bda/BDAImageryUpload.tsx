@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { BdaApi, type BdaImagery, type SensorType } from '@/lib/smartops/api/bda';
+import { BdaApi, type BdaImagery, type SensorType } from '@/lib/mshnctrl/api/bda';
 import { Upload, X, Camera, AlertCircle } from 'lucide-react';
 
 interface BDAImageryUploadProps {

@@ -5,6 +5,7 @@ use crate::features::bda::domain::{
     BdaReport, CreateBdaReportRequest, UpdateBdaReportRequest,
     BdaStatistics, BdaStatusCounts, BdaRecommendationCounts, BdaPhysicalDamageCounts,
     PhysicalDamage, FunctionalDamage, AssessmentType, BdaStatus, Recommendation,
+    ReAttackRecommendation,
 };
 use sqlx::{Pool, Sqlite, Row};
 use uuid::Uuid;
@@ -221,6 +222,29 @@ impl BdaRepository {
         }
         
         Ok(reports)
+    }
+
+    /// Get re-attack recommendations (from view)
+    pub async fn get_re_attack_recommendations(&self) -> Result<Vec<ReAttackRecommendation>, sqlx::Error> {
+        let rows = sqlx::query("SELECT * FROM v_bda_reattack_targets")
+            .fetch_all(&self.pool)
+            .await?;
+            
+        let mut results = Vec::new();
+        for row in rows {
+            results.push(ReAttackRecommendation {
+                bda_report_id: row.get("bda_report_id"),
+                target_id: row.get("target_id"),
+                recommendation: self.parse_recommendation(row.get("recommendation")),
+                re_attack_priority: row.get("re_attack_priority"),
+                re_attack_rationale: row.get("re_attack_rationale"),
+                physical_damage: row.get::<Option<String>, _>("physical_damage").map(|s| self.parse_physical_damage(s)),
+                functional_damage: row.get::<Option<String>, _>("functional_damage").map(|s| self.parse_functional_damage(s)),
+                confidence_level: row.get::<f64, _>("confidence_level") as f32,
+                assessment_date: row.get::<chrono::DateTime<chrono::Utc>, _>("assessment_date").to_rfc3339(),
+            });
+        }
+        Ok(results)
     }
     
     /// Update BDA report

@@ -231,7 +231,7 @@ export default function Dashboard() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <ShieldCheck className="h-5 w-5" />
-                SmartOps System
+                MshnCtrl System
               </CardTitle>
               <CardDescription className="text-blue-100">Military Operations Planning & Assessment</CardDescription>
             </CardHeader>
@@ -240,9 +240,9 @@ export default function Dashboard() {
                 Access the J3/J5 operational planning environment.
                 <br />Current Scenario: <strong>Exercise Northern Shield</strong>
               </p>
-              <Link to="/smartops" className="block">
+              <Link to="/mshnctrl" className="block">
                 <button className="w-full bg-white text-blue-900 hover:bg-blue-50 font-bold py-2.5 px-4 rounded-md flex items-center justify-center gap-2 transition-colors shadow-sm">
-                  Launch SmartOps <ArrowRight size={16} />
+                  Launch MshnCtrl <ArrowRight size={16} />
                 </button>
               </Link>
             </CardContent>

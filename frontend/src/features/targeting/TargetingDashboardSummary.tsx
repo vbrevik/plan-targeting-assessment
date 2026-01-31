@@ -22,9 +22,9 @@ import { useNavigate } from '@tanstack/react-router';
 import { MetricCard } from '../shared/MetricCard';
 import { CollapsibleSection } from '../shared/CollapsibleSection';
 import { RecentlyViewed } from '../shared/RecentlyViewed';
-import { BdaApi } from '@/lib/smartops/api/bda';
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
-import { useCachedQuery } from '@/lib/smartops/hooks/useCachedQuery';
+import { BdaApi } from '@/lib/mshnctrl/api/bda';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
+import { useCachedQuery } from '@/lib/mshnctrl/hooks/useCachedQuery';
 
 export function TargetingDashboardSummary() {
   const navigate = useNavigate();
@@ -155,7 +155,7 @@ export function TargetingDashboardSummary() {
             label="Active Targets"
             value={metrics.activeTargets}
             color="blue"
-            href="/smartops/targeting/targets"
+            href="/mshnctrl/targeting/targets"
           />
           <MetricCard
             icon={CheckCircle2}
@@ -164,7 +164,7 @@ export function TargetingDashboardSummary() {
             change={metrics.pendingApprovals > 0 ? `${metrics.pendingApprovals} items` : 'None'}
             changeType={metrics.pendingApprovals > 0 ? 'negative' : 'positive'}
             color="amber"
-            href="/smartops/targeting/targets"
+            href="/mshnctrl/targeting/targets"
           />
           <MetricCard
             icon={Clock}
@@ -174,7 +174,7 @@ export function TargetingDashboardSummary() {
             changeType={metrics.tstAlerts > 0 ? 'negative' : 'positive'}
             color={metrics.tstAlerts > 0 ? 'red' : 'green'}
             alert={metrics.tstAlerts > 0}
-            href="/smartops/targeting/targets"
+            href="/mshnctrl/targeting/targets"
           />
         </div>
       )}
@@ -196,14 +196,14 @@ export function TargetingDashboardSummary() {
             </div>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => navigate({ to: '/smartops/targeting/analytics' })}
+                onClick={() => navigate({ to: '/mshnctrl/targeting/analytics' })}
                 className="text-xs font-bold text-cyan-400 hover:text-cyan-300 uppercase"
                 aria-label="View analytics"
               >
                 Analytics →
               </button>
               <button
-                onClick={() => navigate({ to: '/smartops/targeting/targets' })}
+                onClick={() => navigate({ to: '/mshnctrl/targeting/targets' })}
                 className="text-xs font-bold text-blue-400 hover:text-blue-300 uppercase"
               >
                 View Full Pipeline →
@@ -226,7 +226,7 @@ export function TargetingDashboardSummary() {
               return (
                 <button
                   key={stage}
-                  onClick={() => navigate({ to: '/smartops/targeting/targets' })}
+                  onClick={() => navigate({ to: '/mshnctrl/targeting/targets' })}
                   className="bg-slate-800/50 border border-slate-700 rounded-lg p-2 sm:p-4 hover:border-slate-600 active:bg-slate-700 transition-colors text-center w-full touch-manipulation"
                 >
                   <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 mx-auto mb-1 sm:mb-2" />
@@ -253,7 +253,7 @@ export function TargetingDashboardSummary() {
               Top Priority Targets
             </h2>
             <button
-              onClick={() => navigate({ to: '/smartops/targeting/targets' })}
+              onClick={() => navigate({ to: '/mshnctrl/targeting/targets' })}
               className="text-xs font-bold text-blue-400 hover:text-blue-300 active:text-blue-200 uppercase touch-manipulation"
             >
               View All →
@@ -263,7 +263,7 @@ export function TargetingDashboardSummary() {
             {metrics.topPriorityTargets.map((target) => (
               <button
                 key={target.id}
-                onClick={() => navigate({ to: `/smartops/targeting/${target.id}` })}
+                onClick={() => navigate({ to: `/mshnctrl/targeting/${target.id}` })}
                 className="w-full text-left bg-slate-800/50 border border-slate-700 rounded-lg p-2 sm:p-3 hover:border-slate-600 active:bg-slate-700 transition-colors touch-manipulation"
               >
                 <div className="flex items-center justify-between">
@@ -304,7 +304,7 @@ export function TargetingDashboardSummary() {
               <div className="text-sm font-bold text-blue-400">{metrics.missionPhase}</div>
             </div>
             <button
-              onClick={() => navigate({ to: '/smartops/targeting/mission-command' })}
+              onClick={() => navigate({ to: '/mshnctrl/targeting/mission-command' })}
               className="text-xs font-bold text-blue-400 hover:text-blue-300 uppercase"
             >
               View Full Mission Command →
@@ -323,7 +323,7 @@ export function TargetingDashboardSummary() {
         >
           <div className="grid grid-cols-4 gap-4">
             <button
-              onClick={() => navigate({ to: '/smartops/targeting/intelligence' })}
+              onClick={() => navigate({ to: '/mshnctrl/targeting/intelligence' })}
               className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 hover:border-slate-600 transition-colors text-center w-full"
             >
               <Brain className="w-6 h-6 text-blue-400 mx-auto mb-2" />
@@ -331,7 +331,7 @@ export function TargetingDashboardSummary() {
               <div className="text-xs text-slate-400 uppercase">ISR Platforms</div>
             </button>
             <button
-              onClick={() => navigate({ to: '/smartops/targeting/assets' })}
+              onClick={() => navigate({ to: '/mshnctrl/targeting/assets' })}
               className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 hover:border-slate-600 transition-colors text-center w-full"
             >
               <Zap className="w-6 h-6 text-amber-400 mx-auto mb-2" />
@@ -339,7 +339,7 @@ export function TargetingDashboardSummary() {
               <div className="text-xs text-slate-400 uppercase">Strike Platforms</div>
             </button>
             <button
-              onClick={() => navigate({ to: '/smartops/targeting/risk' })}
+              onClick={() => navigate({ to: '/mshnctrl/targeting/risk' })}
               className="bg-slate-800/50 border border-slate-700 rounded-lg p-3 sm:p-4 hover:border-slate-600 active:bg-slate-700 transition-colors text-center w-full touch-manipulation"
             >
               <AlertTriangle className="w-6 h-6 text-red-400 mx-auto mb-2" />
@@ -347,7 +347,7 @@ export function TargetingDashboardSummary() {
               <div className="text-xs text-slate-400 uppercase">High Risk</div>
             </button>
             <button
-              onClick={() => navigate({ to: '/smartops/targeting/effects' })}
+              onClick={() => navigate({ to: '/mshnctrl/targeting/effects' })}
               className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 hover:border-slate-600 transition-colors text-center w-full"
             >
               <BarChart3 className="w-6 h-6 text-cyan-400 mx-auto mb-2" />
@@ -357,7 +357,7 @@ export function TargetingDashboardSummary() {
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4">
             <button
-              onClick={() => navigate({ to: '/smartops/targeting/analysis' })}
+              onClick={() => navigate({ to: '/mshnctrl/targeting/analysis' })}
               className="w-full text-left bg-slate-800/50 border border-slate-700 rounded-lg p-4 hover:border-slate-600 transition-colors"
             >
               <div className="flex items-center gap-2 mb-2">
@@ -367,7 +367,7 @@ export function TargetingDashboardSummary() {
               <div className="text-xs text-slate-400">Assumptions & Bias Alerts</div>
             </button>
             <button
-              onClick={() => navigate({ to: '/smartops/targeting/collaboration' })}
+              onClick={() => navigate({ to: '/mshnctrl/targeting/collaboration' })}
               className="w-full text-left bg-slate-800/50 border border-slate-700 rounded-lg p-4 hover:border-slate-600 transition-colors"
             >
               <div className="flex items-center gap-2 mb-2">

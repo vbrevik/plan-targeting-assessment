@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { Target, CheckCircle2, AlertCircle, RefreshCw, Users, Building2 } from 'lucide-react';
 import { SecurityBadge } from '@/components/SecurityBadge';
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 
 interface BDAAssessment {
   strikeId: string;
@@ -152,7 +152,7 @@ export function EffectsAssessmentDashboard() {
       {/* Summary Cards */}
       <div className="grid grid-cols-4 gap-3 mb-4">
         <button
-          onClick={() => navigate({ to: '/smartops/targeting/effects' })}
+          onClick={() => navigate({ to: '/mshnctrl/targeting/effects' })}
           className="p-3 bg-slate-800/50 border border-slate-700 rounded-lg hover:bg-slate-700/50 transition-colors cursor-pointer text-left"
         >
           <div className="text-xs text-slate-500 uppercase mb-1">Today's Strikes</div>
@@ -177,7 +177,7 @@ export function EffectsAssessmentDashboard() {
         {activeBDA.map((bda) => (
           <div
             key={bda.strikeId}
-            onClick={() => navigate({ to: '/smartops/targeting' })}
+            onClick={() => navigate({ to: '/mshnctrl/targeting' })}
             className={`p-4 bg-slate-800/30 border rounded-lg transition-all hover:bg-slate-800/50 cursor-pointer group ${bda.reAttackRecommended
               ? 'border-red-700 bg-red-950/10'
               : 'border-slate-700'
@@ -287,7 +287,7 @@ export function EffectsAssessmentDashboard() {
                 </div>
                 <div className="text-xs text-slate-300 mb-3">{bda.reAttackReason}</div>
                 <button
-                  onClick={(e) => { e.stopPropagation(); navigate({ to: '/smartops/targeting/targets' }); }}
+                  onClick={(e) => { e.stopPropagation(); navigate({ to: '/mshnctrl/targeting/targets' }); }}
                   className="px-3 py-1.5 bg-red-900/30 hover:bg-red-900/50 border border-red-700 rounded text-xs font-bold text-red-300 uppercase transition-colors cursor-pointer"
                 >
                   Nominate Re-Attack

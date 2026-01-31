@@ -2,11 +2,11 @@ use super::domain::{Campaign, CreateCampaignRequest, CreateOperationRequest, Ope
 use sqlx::{Pool, Sqlite};
 use uuid::Uuid;
 
-pub struct SmartOpsRepository {
+pub struct MshnCtrlRepository {
     pool: Pool<Sqlite>,
 }
 
-impl SmartOpsRepository {
+impl MshnCtrlRepository {
     pub fn new(pool: Pool<Sqlite>) -> Self {
         Self { pool }
     }

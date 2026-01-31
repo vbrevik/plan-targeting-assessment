@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import {
     Package,
     Truck,
@@ -20,8 +20,8 @@ export function LogisticsManagement() {
         async function load() {
             setLoading(true);
             const [c, f] = await Promise.all([
-                SmartOpsService.getSupplyStatuses(),
-                SmartOpsService.getVehicleAssets()
+                MshnCtrlService.getSupplyStatuses(),
+                MshnCtrlService.getVehicleAssets()
             ]);
             setCategories(c);
             setFleet(f);

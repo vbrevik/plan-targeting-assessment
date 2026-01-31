@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { Target } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { Target } from '@/lib/mshnctrl/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -23,7 +23,7 @@ export function JTBVotingView() {
     const [loading, setLoading] = useState(true);
 
     const loadData = async () => {
-        const targets = await SmartOpsService.getTargets();
+        const targets = await MshnCtrlService.getTargets();
         // Filter for "Nominated" targets
         setNominatedTargets(targets.filter(t => t.targetStatus === 'Nominated'));
         setLoading(false);

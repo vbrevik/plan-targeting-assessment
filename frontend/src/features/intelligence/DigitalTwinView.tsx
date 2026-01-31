@@ -154,12 +154,12 @@ export function DigitalTwinView() {
                                 <div
                                     onClick={() => {
                                         // Specific Routing Logic
-                                        if (mod.id === 'targeting') navigate({ to: '/smartops/targeting' });
-                                        else if (mod.id === 'proposals' || mod.name.includes('Workflow')) navigate({ to: '/smartops/proposals' });
+                                        if (mod.id === 'targeting') navigate({ to: '/mshnctrl/targeting' });
+                                        else if (mod.id === 'proposals' || mod.name.includes('Workflow')) navigate({ to: '/mshnctrl/proposals' });
                                         else if (mod.id === 'digital_twin') toast({ title: 'Digital Twin', description: 'You are already viewing the Digital Twin simulation.' });
-                                        else if (mod.id === 'mdo') navigate({ to: '/smartops/mdo' });
-                                        else if (mod.id === 'fusion') navigate({ to: '/smartops/rxp' }); // Intel Fusion -> RXP
-                                        else if (mod.id === 'dashboard') navigate({ to: '/smartops/dashboard' });
+                                        else if (mod.id === 'mdo') navigate({ to: '/mshnctrl/mdo' });
+                                        else if (mod.id === 'fusion') navigate({ to: '/mshnctrl/rxp' }); // Intel Fusion -> RXP
+                                        else if (mod.id === 'dashboard') navigate({ to: '/mshnctrl/dashboard' });
                                         else {
                                             // Fallback for others
                                             toast({

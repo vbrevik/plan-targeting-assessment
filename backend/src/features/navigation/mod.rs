@@ -93,6 +93,8 @@ async fn build_navigation_for_roles(
         type_: Some("MenuItem".to_string()),
         operation_id: None,
         campaign_id: None,
+        urgent_only: None,
+        created_after: None,
     };
     
     let menu_entities = state.ontology_service.get_entities(menu_filter).await
@@ -106,14 +108,14 @@ async fn build_navigation_for_roles(
                 items: vec![
                     SidebarItem { 
                         label: "IM Dashboard".to_string(), 
-                        to: "/smartops/im-dashboard".to_string(), 
+                        to: "/mshnctrl/im-dashboard".to_string(), 
                         icon: "LayoutDashboard".to_string(), 
                         permission: None,
                         actions: None,
                     },
                     SidebarItem { 
                         label: "Menu Builder".to_string(), 
-                        to: "/smartops/menu-builder".to_string(), 
+                        to: "/mshnctrl/menu-builder".to_string(), 
                         icon: "Settings".to_string(), 
                         permission: Some("menu.manage".to_string()),
                         actions: None,
@@ -128,6 +130,8 @@ async fn build_navigation_for_roles(
         type_: Some("Action".to_string()),
         operation_id: None,
         campaign_id: None,
+        urgent_only: None,
+        created_after: None,
     };
     let all_actions = state.ontology_service.get_entities(action_filter).await
         .unwrap_or_default();
@@ -137,6 +141,8 @@ async fn build_navigation_for_roles(
         type_: Some("Dataset".to_string()),
         operation_id: None,
         campaign_id: None,
+        urgent_only: None,
+        created_after: None,
     };
     let all_datasets = state.ontology_service.get_entities(dataset_filter).await
         .unwrap_or_default();

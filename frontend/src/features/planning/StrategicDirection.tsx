@@ -13,16 +13,17 @@ import {
 import { cn } from '@/lib/utils';
 import { useNavigate } from '@tanstack/react-router';
 import { useToast } from '@/components/ui/use-toast';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { StrategicGuidance } from '@/lib/smartops/types';
-import { useOperationalContext } from '@/lib/smartops/hooks/useOperationalContext';
+import { strategicApi } from '@/lib/strategy';
+import type { StrategicGuidance } from '@/lib/mshnctrl/types';
+import { roeApi, type ROE } from '@/lib/roe';
+import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
 import { Button } from '@/components/ui/button';
 
 export function StrategicDirection() {
     const { filterByContext } = useOperationalContext();
     const { toast } = useToast();
     const [guidance, setGuidance] = useState<StrategicGuidance | null>(null);
-    const [roes, setRoes] = useState<any[]>([]); // We'll fetch full ROE objects
+    const [roes, setRoes] = useState<ROE[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedObjectiveId, setSelectedObjectiveId] = useState<string | null>(null);
     const navigate = useNavigate();
@@ -30,8 +31,8 @@ export function StrategicDirection() {
     useEffect(() => {
         async function loadGuidance() {
             const [guidanceData, roeData] = await Promise.all([
-                SmartOpsService.getStrategicGuidance(),
-                SmartOpsService.getROEs()
+                strategicApi.getGuidance(),
+                roeApi.getAll()
             ]);
 
             if (guidanceData && filterByContext(guidanceData)) {
@@ -46,7 +47,17 @@ export function StrategicDirection() {
         loadGuidance();
     }, []);
 
-    if (loading || !guidance) return <div className="p-12 text-center text-slate-500 animate-pulse uppercase font-black tracking-widest text-xs">Parsing Strategic Intelligence...</div>;
+    if (loading) return <div className="p-12 text-center text-slate-500 animate-pulse uppercase font-black tracking-widest text-xs">Parsing Strategic Intelligence...</div>;
+
+    if (!guidance) return (
+        <div className="flex flex-col items-center justify-center h-full bg-[#020617] text-slate-200">
+            <div className="w-24 h-24 rounded-full border-2 border-red-900 flex items-center justify-center mb-8 bg-red-950/20 animate-pulse">
+                <AlertCircle size={40} className="text-red-600" />
+            </div>
+            <h3 className="text-xl font-black uppercase tracking-[0.4em] text-red-500">Intelligence Feed Offline</h3>
+            <p className="text-xs font-bold uppercase text-slate-600 mt-2 max-w-sm text-center">Unable to parse SACEUR Directives. Verify secure link establishment.</p>
+        </div>
+    );
 
     const selectedObjective = guidance.objectives.find(o => o.id === selectedObjectiveId);
 
@@ -140,14 +151,16 @@ export function StrategicDirection() {
                                         {guidance.recommendedRoeIds.map(roeId => {
                                             const roe = roes.find(r => r.id === roeId);
                                             if (!roe) return null;
+                                            // Match backend ROE structure to UI expectations
+                                            const displayName = roe.description || roe.code;
                                             return (
                                                 <div key={roeId} className="bg-slate-950 border border-slate-800 p-4 rounded-xl flex flex-col gap-2">
                                                     <div className="flex justify-between items-start">
                                                         <span className="text-xs font-black text-amber-500 uppercase">{roe.code}</span>
                                                         <span className="px-1.5 py-0.5 bg-slate-800 rounded text-[9px] text-slate-400 uppercase font-bold">{roe.status}</span>
                                                     </div>
-                                                    <p className="text-sm font-bold text-slate-200">{roe.name}</p>
-                                                    <p className="text-[10px] text-slate-500 leading-snug">{roe.description}</p>
+                                                    <p className="text-sm font-bold text-slate-200">{displayName}</p>
+                                                    {roe.notes && <p className="text-[10px] text-slate-500 leading-snug">{roe.notes}</p>}
                                                 </div>
                                             );
                                         })}
@@ -171,7 +184,7 @@ export function StrategicDirection() {
                                         <p className="text-xs text-slate-500 font-medium leading-relaxed mb-6">Currently active in MD Synchronization matrix. Achieving 84% effectiveness metrics.</p>
                                         <Button
                                             variant="ghost"
-                                            onClick={() => navigate({ to: '/smartops/mdo' })}
+                                            onClick={() => navigate({ to: '/mshnctrl/mdo' })}
                                             className="w-full justify-between border-t border-slate-800 pt-6 rounded-none text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white group"
                                         >
                                             View Operational Data <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />

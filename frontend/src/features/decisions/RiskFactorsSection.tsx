@@ -1,6 +1,6 @@
 import { AlertOctagon, AlertTriangle, Shield, FileWarning } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { RiskFactor } from '@/lib/smartops/types';
+import type { RiskFactor } from '@/lib/mshnctrl/types';
 
 interface RiskFactorsSectionProps {
     factors: RiskFactor[];

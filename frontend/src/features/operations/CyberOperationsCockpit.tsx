@@ -6,7 +6,7 @@ import { useState, useMemo } from 'react';
 import { Globe, Shield, Terminal, Zap, Activity, Server, Share2, Lock, ZapOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SecurityBadge } from '@/components/SecurityBadge';
-import type { Domain } from '@/lib/smartops/api/targeting.api';
+import type { Domain } from '@/lib/mshnctrl/api/targeting.api';
 
 interface NetworkNode {
     id: string;

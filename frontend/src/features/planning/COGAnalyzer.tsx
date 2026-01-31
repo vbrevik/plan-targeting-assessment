@@ -17,8 +17,8 @@ import {
     Lock
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { CenterOfGravity, UUID } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { CenterOfGravity, UUID } from '@/lib/mshnctrl/types';
 import { Button } from '@/components/ui/button';
 
 export function COGAnalyzer() {
@@ -27,7 +27,7 @@ export function COGAnalyzer() {
     const [viewMode, setViewMode] = useState<'Red' | 'Blue'>('Red'); // Default to Red (Attack)
     const [expandedNodes, setExpandedNodes] = useState<Set<UUID>>(new Set());
 
-    const search = useSearch({ from: '/smartops/cog' });
+    const search = useSearch({ from: '/mshnctrl/cog' });
     const selectedCogId = search.cogId;
 
     useEffect(() => {
@@ -52,7 +52,7 @@ export function COGAnalyzer() {
 
     const loadData = async () => {
         setLoading(true);
-        const data = await SmartOpsService.getCOGs();
+        const data = await MshnCtrlService.getCOGs();
         setCogs(data);
         setLoading(false);
     };
@@ -66,18 +66,18 @@ export function COGAnalyzer() {
 
     // --- Red Actions ---
     const handlePromoteToTarget = async (cvId: UUID) => {
-        await SmartOpsService.updateCVStatus(cvId, 'Targeted');
+        await MshnCtrlService.updateCVStatus(cvId, 'Targeted');
         loadData();
     };
 
     // --- Blue Actions ---
     const handleFortify = async (cvId: UUID) => {
-        await SmartOpsService.updateCVProtection(cvId, 'Fortified', 100);
+        await MshnCtrlService.updateCVProtection(cvId, 'Fortified', 100);
         loadData();
     };
 
     const handleAssignGuard = async (cvId: UUID) => {
-        await SmartOpsService.updateCVProtection(cvId, 'Guarded', 75);
+        await MshnCtrlService.updateCVProtection(cvId, 'Guarded', 75);
         loadData();
     };
 

@@ -1,16 +1,16 @@
 import { useEffect, useState, useRef } from 'react';
-import { OntologyService, type Entity, type EntityRelationship } from '@/lib/smartops/services/ontology.service';
+import { OntologyService, type Entity, type EntityRelationship } from '@/lib/mshnctrl/services/ontology.service';
 import { cn } from '@/lib/utils';
 import {
     Network,
     Search,
-    MapPin,
     Target as TargetIcon,
     Box,
     X,
     Activity,
     Layers,
-    Cpu
+    Cpu,
+    ArrowRight
 } from 'lucide-react';
 
 // --- Graph Types ---
@@ -23,6 +23,12 @@ interface GraphNode extends Entity {
     color: string;
 }
 
+interface GraphLink {
+    source: string;
+    target: string;
+    type: string;
+}
+
 // --- Inspector Component ---
 function Inspector({ entityId, onClose }: { entityId: string | null; onClose: () => void }) {
     const [data, setData] = useState<{ entity: Entity; outgoing: EntityRelationship[]; incoming: EntityRelationship[] } | null>(null);
@@ -31,10 +37,10 @@ function Inspector({ entityId, onClose }: { entityId: string | null; onClose: ()
     useEffect(() => {
         if (entityId) {
             setLoading(true);
-            OntologyService.getEntity(entityId)
+            OntologyService.getEntityWithRelationships(entityId)
                 .then(res => {
                     setData({
-                        entity: res.entity,
+                        entity: res,
                         outgoing: res.outgoing_relationships,
                         incoming: res.incoming_relationships
                     });
@@ -128,14 +134,14 @@ function Inspector({ entityId, onClose }: { entityId: string | null; onClose: ()
                             )}
                             {outgoing.map((rel, idx) => (
                                 <div key={idx} className="flex items-center justify-between text-[10px] bg-slate-900 p-1.5 rounded border border-slate-800/50">
-                                    <span className="text-slate-400">--- {rel.relation_type} --&gt;</span>
+                                    <span className="text-slate-400 flex items-center gap-1">--- {rel.relation_type} <ArrowRight size={8} /></span>
                                     <span className="text-white font-bold">{rel.target_id.substring(0, 8)}</span>
                                 </div>
                             ))}
                             {incoming.map((rel, idx) => (
                                 <div key={idx} className="flex items-center justify-between text-[10px] bg-slate-900 p-1.5 rounded border border-slate-800/50">
                                     <span className="text-white font-bold">{rel.source_id.substring(0, 8)}</span>
-                                    <span className="text-slate-400">-- {rel.relation_type} --&gt; ME</span>
+                                    <span className="text-slate-400 flex items-center gap-1"><ArrowRight size={8} /> {rel.relation_type} --- ME</span>
                                 </div>
                             ))}
                         </div>
@@ -161,14 +167,17 @@ export function OntologyManager() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
     const [nodes, setNodes] = useState<GraphNode[]>([]);
+    const [links, setLinks] = useState<GraphLink[]>([]);
     const [loading, setLoading] = useState(true);
     const [viewMode, setViewMode] = useState<'Instance' | 'Schema'>('Instance');
-    const requestRef = useRef<number>();
+    const requestRef = useRef<number | null>(null);
 
     // --- Physics Constants ---
     const REPULSION = 3000;
     const CENTER_PULL = 0.04;
     const DAMPING = 0.8;
+    const SPRING_LENGTH = 150;
+    const SPRING_STRENGTH = 0.05;
 
     // Load Data
     useEffect(() => {
@@ -176,8 +185,9 @@ export function OntologyManager() {
             setLoading(true);
 
             if (viewMode === 'Instance') {
-                const [entities] = await Promise.all([
-                    OntologyService.getEntities()
+                const [entities, relationships] = await Promise.all([
+                    OntologyService.getEntities({}),
+                    OntologyService.getRelationships()
                 ]);
 
                 const width = window.innerWidth;
@@ -194,7 +204,14 @@ export function OntologyManager() {
                     color: e.type === 'TARGET' ? '#ef4444' : e.type === 'UNIT' ? '#3b82f6' : '#a855f7'
                 }));
 
+                const graphLinks: GraphLink[] = relationships.map(r => ({
+                    source: r.source_id,
+                    target: r.target_id,
+                    type: r.relation_type
+                }));
+
                 setNodes(graphNodes);
+                setLinks(graphLinks);
             } else {
                 // Schema View - Static for prototype
                 const width = window.innerWidth;
@@ -208,6 +225,7 @@ export function OntologyManager() {
                     { id: 'S-Relationship', name: 'Link Specification', type: 'META', x: cx, y: cy + 150, vx: 0, vy: 0, radius: 20, color: '#a855f7', created_at: '', updated_at: '' }
                 ];
                 setNodes(schemaNodes);
+                setLinks([]);
             }
             setLoading(false);
         }
@@ -219,6 +237,7 @@ export function OntologyManager() {
         if (loading || nodes.length === 0) return;
 
         const currentNodes = [...nodes];
+        const currentLinks = [...links];
 
         const render = () => {
             const canvas = canvasRef.current;
@@ -238,6 +257,7 @@ export function OntologyManager() {
                 node.vx += ((canvas.width / 2) - node.x) * CENTER_PULL * 0.1;
                 node.vy += ((canvas.height / 2) - node.y) * CENTER_PULL * 0.1;
 
+                // Repulsion
                 for (let j = 0; j < currentNodes.length; j++) {
                     if (i === j) continue;
                     const other = currentNodes[j];
@@ -252,12 +272,48 @@ export function OntologyManager() {
                         node.vy += (dy / dist) * force;
                     }
 
-                    // Cluster by type
+                    // Cluster by type (gentle attraction)
                     if (node.type === other.type) {
                         node.vx -= (dx / dist) * 0.05;
                         node.vy -= (dy / dist) * 0.05;
                     }
                 }
+
+                // Spring Forces (Links)
+                // This is O(Links * Nodes), could be optimized with a map but fine for <1000 nodes
+                currentLinks.forEach(link => {
+                    if (link.source === node.id) {
+                        const targetNode = currentNodes.find(n => n.id === link.target);
+                        if (targetNode) {
+                            const dx = node.x - targetNode.x;
+                            const dy = node.y - targetNode.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                            const displacement = dist - SPRING_LENGTH;
+                            const force = displacement * SPRING_STRENGTH;
+
+                            const fx = (dx / dist) * force;
+                            const fy = (dy / dist) * force;
+
+                            node.vx -= fx;
+                            node.vy -= fy;
+                        }
+                    } else if (link.target === node.id) {
+                        const sourceNode = currentNodes.find(n => n.id === link.source);
+                        if (sourceNode) {
+                            const dx = node.x - sourceNode.x;
+                            const dy = node.y - sourceNode.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                            const displacement = dist - SPRING_LENGTH;
+                            const force = displacement * SPRING_STRENGTH;
+
+                            const fx = (dx / dist) * force;
+                            const fy = (dy / dist) * force;
+
+                            node.vx -= fx;
+                            node.vy -= fy;
+                        }
+                    }
+                });
 
                 node.vx *= DAMPING;
                 node.vy *= DAMPING;
@@ -265,38 +321,169 @@ export function OntologyManager() {
                 node.y += node.vy;
             }
 
-            // Draw Relationships (Simplified for now - just clusters)
+            // Draw Links
+            ctx.lineWidth = 1;
+            currentLinks.forEach(link => {
+                const source = currentNodes.find(n => n.id === link.source);
+                const target = currentNodes.find(n => n.id === link.target);
+
+                if (source && target) {
+                    // Focus Mode: Dim links not connected to selection
+                    let linkOpacity = 0.3;
+                    if (selectedEntityId) {
+                        const isConnected = link.source === selectedEntityId || link.target === selectedEntityId;
+                        linkOpacity = isConnected ? 0.8 : 0.05;
+                    }
+
+                    ctx.globalAlpha = linkOpacity;
+
+                    ctx.beginPath();
+                    ctx.moveTo(source.x, source.y);
+                    ctx.lineTo(target.x, target.y);
+
+                    const gradient = ctx.createLinearGradient(source.x, source.y, target.x, target.y);
+                    gradient.addColorStop(0, source.color);
+                    gradient.addColorStop(1, target.color);
+                    ctx.strokeStyle = gradient;
+                    ctx.stroke();
+
+                    // Arrows and Labels only if visible enough
+                    if (linkOpacity > 0.1) {
+                        // Draw Directional Arrow (midpoint)
+                        const midX = (source.x + target.x) / 2;
+                        const midY = (source.y + target.y) / 2;
+                        const angle = Math.atan2(target.y - source.y, target.x - source.x);
+
+                        ctx.save();
+                        ctx.translate(midX, midY);
+                        ctx.rotate(angle);
+
+                        // Arrow
+                        ctx.beginPath();
+                        ctx.moveTo(-3, -3);
+                        ctx.lineTo(3, 0);
+                        ctx.lineTo(-3, 3);
+                        ctx.fillStyle = '#64748b'; // slate-500
+                        ctx.fill();
+
+                        // Label Background and Text
+                        if (viewMode === 'Instance' && nodes.length < 100) {
+                            const label = link.type.replace(/_/g, ' ');
+                            ctx.font = 'bold 8px monospace';
+                            const metrics = ctx.measureText(label);
+                            const padding = 2;
+
+                            // Draw background for readability
+                            ctx.fillStyle = '#020617';
+                            ctx.fillRect(-metrics.width / 2 - padding, -10, metrics.width + padding * 2, 8);
+
+                            ctx.fillStyle = '#475569'; // slate-600
+                            ctx.textAlign = 'center';
+                            ctx.fillText(label, 0, -3);
+                        }
+
+                        ctx.restore();
+                    }
+
+                    ctx.globalAlpha = 1.0;
+                }
+            });
 
             // Draw Nodes
             currentNodes.forEach(node => {
-                ctx.beginPath();
-                ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-
-                // Highlight if selected
-                if (selectedEntityId === node.id) {
-                    ctx.shadowColor = '#fff';
-                    ctx.shadowBlur = 20;
-                    ctx.fillStyle = '#fff';
-                } else {
-                    ctx.shadowBlur = 0;
-                    ctx.fillStyle = node.color;
+                // Focus Mode Opacity
+                let opacity = 1.0;
+                if (selectedEntityId) {
+                    if (node.id === selectedEntityId) {
+                        opacity = 1.0;
+                    } else {
+                        // Check if neighbor
+                        const isNeighbor = currentLinks.some(l =>
+                            (l.source === selectedEntityId && l.target === node.id) ||
+                            (l.target === selectedEntityId && l.source === node.id)
+                        );
+                        opacity = isNeighbor ? 0.8 : 0.1;
+                    }
                 }
 
-                ctx.fill();
+                ctx.globalAlpha = opacity;
 
-                // Advanced Ring Effect
-                ctx.strokeStyle = node.color;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.arc(node.x, node.y, node.radius + 3, 0, Math.PI * 2);
-                ctx.setLineDash([5, 5]);
-                ctx.stroke();
-                ctx.setLineDash([]);
+                // --- SHAPE RENDERING ---
+
+                if (node.type === 'UNIT') {
+                    // Draw Box for Units
+                    const size = node.radius * 2;
+                    const x = node.x - node.radius;
+                    const y = node.y - node.radius;
+
+                    ctx.fillStyle = node.color;
+                    ctx.shadowColor = node.color;
+                    ctx.shadowBlur = selectedEntityId === node.id ? 20 : 0;
+
+                    ctx.fillRect(x, y, size, size);
+
+                    // Inner detail
+                    ctx.strokeStyle = '#000000';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(x + 2, y + 2, size - 4, size - 4);
+
+                } else if (node.type === 'TARGET') {
+                    // Draw Crosshair/Scope for Targets
+                    ctx.shadowColor = node.color;
+                    ctx.shadowBlur = selectedEntityId === node.id ? 20 : 0;
+
+                    // Main Circle
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `${node.color}40`; // Transparent fill
+                    ctx.fill();
+                    ctx.strokeStyle = node.color;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    // Crosshairs
+                    ctx.beginPath();
+                    ctx.moveTo(node.x - node.radius - 2, node.y);
+                    ctx.lineTo(node.x + node.radius + 2, node.y);
+                    ctx.moveTo(node.x, node.y - node.radius - 2);
+                    ctx.lineTo(node.x, node.y + node.radius + 2);
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                } else {
+                    // Default Circle (Meta/Other)
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+
+                    if (selectedEntityId === node.id) {
+                        ctx.shadowColor = '#fff';
+                        ctx.shadowBlur = 20;
+                        ctx.fillStyle = '#fff';
+                    } else {
+                        ctx.shadowBlur = 0;
+                        ctx.fillStyle = node.color;
+                    }
+                    ctx.fill();
+                }
+
+                // Ring Effect for Selection - Universal
+                if (selectedEntityId === node.id) {
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, node.radius + 6, 0, Math.PI * 2);
+                    ctx.setLineDash([2, 4]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
 
                 // Label
-                ctx.fillStyle = '#94a3b8';
-                ctx.font = 'bold 9px monospace';
-                ctx.fillText(node.name.toUpperCase().substring(0, 18), node.x + node.radius + 8, node.y + 3);
+                if (opacity > 0.3) {
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = 'bold 9px monospace';
+                    ctx.fillText(node.name.toUpperCase().substring(0, 18), node.x + node.radius + 8, node.y + 3);
+                }
+
+                ctx.globalAlpha = 1.0;
             });
 
             requestRef.current = requestAnimationFrame(render);
@@ -307,7 +494,7 @@ export function OntologyManager() {
         return () => {
             if (requestRef.current) cancelAnimationFrame(requestRef.current);
         };
-    }, [loading, nodes.length, selectedEntityId]);
+    }, [loading, nodes.length, selectedEntityId, links.length]);
 
     return (
         <div className="flex h-full bg-[#020617] text-slate-200 overflow-hidden font-sans relative">
@@ -343,6 +530,11 @@ export function OntologyManager() {
                         >
                             Schema View
                         </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-[9px] text-slate-500 font-mono uppercase">
+                        <div>Nodes: <span className="text-white font-bold">{nodes.length}</span></div>
+                        <div>Links: <span className="text-white font-bold">{links.length}</span></div>
                     </div>
                 </div>
 

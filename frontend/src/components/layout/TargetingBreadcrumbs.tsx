@@ -16,26 +16,26 @@ export function TargetingBreadcrumbs() {
   // Parse breadcrumbs from pathname
   const getBreadcrumbs = (): BreadcrumbItem[] => {
     const items: BreadcrumbItem[] = [
-      { label: 'Dashboard', path: '/smartops/targeting-cell-dashboard' },
+      { label: 'Dashboard', path: '/mshnctrl/targeting-cell-dashboard' },
     ];
 
     // Parse targeting detail pages
     if (pathname.includes('/targeting/targets')) {
-      items.push({ label: 'Targets', path: '/smartops/targeting/targets' });
+      items.push({ label: 'Targets', path: '/mshnctrl/targeting/targets' });
     } else if (pathname.includes('/targeting/intelligence')) {
-      items.push({ label: 'Intelligence', path: '/smartops/targeting/intelligence' });
+      items.push({ label: 'Intelligence', path: '/mshnctrl/targeting/intelligence' });
     } else if (pathname.includes('/targeting/effects')) {
-      items.push({ label: 'Effects Assessment', path: '/smartops/targeting/effects' });
+      items.push({ label: 'Effects Assessment', path: '/mshnctrl/targeting/effects' });
     } else if (pathname.includes('/targeting/assets')) {
-      items.push({ label: 'Assets & Capabilities', path: '/smartops/targeting/assets' });
+      items.push({ label: 'Assets & Capabilities', path: '/mshnctrl/targeting/assets' });
     } else if (pathname.includes('/targeting/risk')) {
-      items.push({ label: 'Risk & Constraints', path: '/smartops/targeting/risk' });
+      items.push({ label: 'Risk & Constraints', path: '/mshnctrl/targeting/risk' });
     } else if (pathname.includes('/targeting/analysis')) {
-      items.push({ label: 'Alternative Analysis', path: '/smartops/targeting/analysis' });
+      items.push({ label: 'Alternative Analysis', path: '/mshnctrl/targeting/analysis' });
     } else if (pathname.includes('/targeting/collaboration')) {
-      items.push({ label: 'Collaboration', path: '/smartops/targeting/collaboration' });
+      items.push({ label: 'Collaboration', path: '/mshnctrl/targeting/collaboration' });
     } else if (pathname.includes('/targeting/mission-command')) {
-      items.push({ label: 'Mission Command', path: '/smartops/targeting/mission-command' });
+      items.push({ label: 'Mission Command', path: '/mshnctrl/targeting/mission-command' });
     }
 
     return items;
@@ -46,7 +46,7 @@ export function TargetingBreadcrumbs() {
   return (
     <nav className="flex items-center gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-slate-900 border-b border-slate-800 overflow-x-auto">
       <Link
-        to="/smartops/targeting-cell-dashboard"
+        to="/mshnctrl/targeting-cell-dashboard"
         className="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-blue-400 active:text-blue-300 transition-colors touch-manipulation flex-shrink-0"
       >
         <Home className="w-3 h-3" />

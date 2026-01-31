@@ -5,7 +5,7 @@ import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ZoomIn, ZoomOut, RotateCcw, Maximize2 } from 'lucide-react';
-import type { BdaImagery } from '@/lib/smartops/api/bda';
+import type { BdaImagery } from '@/lib/mshnctrl/api/bda';
 import { cn } from '@/lib/utils';
 
 interface BDAImageComparisonViewerProps {

@@ -15,8 +15,17 @@ function Landing() {
         {/* Background Gradients */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-blue-900/20 rounded-full blur-3xl -z-10 opacity-50" />
 
+        <div className="mb-8 relative group">
+          <div className="absolute inset-0 bg-blue-500/20 blur-3xl rounded-full opacity-50 group-hover:opacity-75 transition-opacity" />
+          <img
+            src="/mshnctrl-logo.svg"
+            alt="MshnCtrl Logo"
+            className="w-24 h-24 md:w-32 md:h-32 relative z-10 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+          />
+        </div>
+
         <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-blue-100 text-blue-900 hover:bg-blue-200 mb-6 uppercase tracking-wider">
-          SmartOps v2.0 - Active
+          MshnCtrl v2.0 - Active
         </div>
 
         <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 max-w-4xl">
@@ -64,34 +73,34 @@ function App() {
     // Check for permissions (Order matters for priority)
 
     // Commander
-    if (hasPermission('commander.dashboard.view')) return <Navigate to="/smartops/cop-summary" />
+    if (hasPermission('commander.dashboard.view')) return <Navigate to="/mshnctrl/cop-summary" />
 
     // J3 Ops
-    if (hasPermission('j3.dashboard.view')) return <Navigate to="/smartops/j3-dashboard" />
+    if (hasPermission('j3.dashboard.view')) return <Navigate to="/mshnctrl/j3-dashboard" />
 
     // J2 Intel
-    if (hasPermission('j2.dashboard.view')) return <Navigate to="/smartops/j2-dashboard" />
+    if (hasPermission('j2.dashboard.view')) return <Navigate to="/mshnctrl/j2-dashboard" />
 
     // J4 Logistics
-    if (hasPermission('j4.dashboard.view')) return <Navigate to="/smartops/j4-dashboard" />
+    if (hasPermission('j4.dashboard.view')) return <Navigate to="/mshnctrl/j4-dashboard" />
 
     // J5 Plans
-    if (hasPermission('j5.dashboard.view')) return <Navigate to="/smartops/j5-dashboard" />
+    if (hasPermission('j5.dashboard.view')) return <Navigate to="/mshnctrl/j5-dashboard" />
 
     // Targeting Cell
-    if (hasPermission('targeting.dashboard.view')) return <Navigate to="/smartops/targeting-cell-dashboard" />
+    if (hasPermission('targeting.dashboard.view')) return <Navigate to="/mshnctrl/targeting-cell-dashboard" />
 
     // LEGAD
-    if (hasPermission('legad.dashboard.view')) return <Navigate to="/smartops/legad-dashboard" />
+    if (hasPermission('legad.dashboard.view')) return <Navigate to="/mshnctrl/legad-dashboard" />
 
     // Information Manager
-    if (hasPermission('im.dashboard.view')) return <Navigate to="/smartops/information-management" />
+    if (hasPermission('im.dashboard.view')) return <Navigate to="/mshnctrl/information-management" />
 
     // Analyst
-    if (hasPermission('analyst.dashboard.view')) return <Navigate to="/smartops/analyst-dashboard" />
+    if (hasPermission('analyst.dashboard.view')) return <Navigate to="/mshnctrl/analyst-dashboard" />
 
     // Fallback
-    return <Navigate to="/smartops" />
+    return <Navigate to="/mshnctrl" />
   }
 
   // Public landing page

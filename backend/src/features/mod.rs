@@ -12,3 +12,4 @@ pub mod bda;
 pub mod roe;
 pub mod ontology;
 pub mod navigation;
+pub mod strategy;

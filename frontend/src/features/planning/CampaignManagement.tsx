@@ -8,7 +8,7 @@ import {
     Plus,
     ArrowUpRight
 } from 'lucide-react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { cn } from '@/lib/utils';
 import type {
     Campaign,
@@ -16,7 +16,7 @@ import type {
     DecisiveCondition,
     Operation,
     DCStatus
-} from '@/lib/smartops/types';
+} from '@/lib/mshnctrl/types';
 
 export function CampaignManagement() {
     const [campaign, setCampaign] = useState<Campaign | null>(null);
@@ -27,13 +27,13 @@ export function CampaignManagement() {
 
     useEffect(() => {
         async function loadData() {
-            const activeCampaign = await SmartOpsService.getActiveCampaign();
+            const activeCampaign = await MshnCtrlService.getActiveCampaign();
             if (activeCampaign) {
                 setCampaign(activeCampaign);
                 const [loosData, dcsData, opsData] = await Promise.all([
-                    SmartOpsService.getCampaignLOOs(activeCampaign.id),
-                    SmartOpsService.getLOODecisiveConditions(activeCampaign.id),
-                    SmartOpsService.getOperations(activeCampaign.id)
+                    MshnCtrlService.getCampaignLOOs(activeCampaign.id),
+                    MshnCtrlService.getLOODecisiveConditions(activeCampaign.id),
+                    MshnCtrlService.getOperations(activeCampaign.id)
                 ]);
                 setLoos(loosData);
                 setDcs(dcsData);
@@ -45,7 +45,7 @@ export function CampaignManagement() {
     }, []);
 
     const handleStatusChange = async (dcId: string, newStatus: DCStatus) => {
-        await SmartOpsService.updateDCStatus(dcId, newStatus);
+        await MshnCtrlService.updateDCStatus(dcId, newStatus);
         const updatedDcs = dcs.map(dc => dc.id === dcId ? { ...dc, status: newStatus } : dc);
         setDcs(updatedDcs);
     };

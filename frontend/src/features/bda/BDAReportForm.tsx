@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BdaApi, type CreateBdaReportRequest, type BdaReport, type PhysicalDamage, type FunctionalDamage, type AssessmentType, type Recommendation, type EffectLevel } from '@/lib/smartops/api/bda';
+import { BdaApi, type CreateBdaReportRequest, type BdaReport, type PhysicalDamage, type FunctionalDamage, type AssessmentType, type Recommendation, type EffectLevel } from '@/lib/mshnctrl/api/bda';
 import { Save, X, AlertCircle } from 'lucide-react';
 
 interface BDAReportFormProps {

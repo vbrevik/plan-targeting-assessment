@@ -11,16 +11,15 @@ import {
     Plus,
     Scale,
     Undo2,
-    Gavel,
-    Download
+    Gavel
 } from 'lucide-react';
 import { Link, useSearch } from '@tanstack/react-router';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
 import { cn } from '@/lib/utils';
-import type { Target, TargetStatus, ROE } from '@/lib/smartops/types';
+import type { Target, TargetStatus } from '@/lib/mshnctrl/types';
 import { StrikeRequestModal } from './StrikeRequestModal';
-import { useOperationalContext } from '@/lib/smartops/hooks/useOperationalContext';
-import { ExportService } from '@/lib/smartops/services/ExportService';
+import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
+import { targetingApi } from '@/lib/targeting';
+import { roeApi, type ROE } from '@/lib/roe';
 
 export function TargetingManagement() {
     const { filterByContext } = useOperationalContext();
@@ -36,21 +35,46 @@ export function TargetingManagement() {
     const [priorityFilter, setPriorityFilter] = useState<string>('All');
 
     const loadData = async () => {
-        const [targetData, roeData] = await Promise.all([
-            SmartOpsService.getTargets(),
-            SmartOpsService.getROEs()
-        ]);
-        setTargets(targetData);
-        setRoes(roeData);
+        try {
+            const [targetData, roeData] = await Promise.all([
+                targetingApi.getAll(),
+                roeApi.getAll()
+            ]);
+
+            // Enrich with BDA data
+            // Note: This N+1 is suboptimal, ideally backend returns this included. 
+            // For now, we do it for correctness.
+            // Optimized: Only fetch for targets that need it or assume backend returns status on target.
+            // Backend Target Status handling:
+            // The Frontend Target type has `bdaStatus`.
+            // The Backend Target doesn't seem to have `bdaStatus` directly in the `targets` table response 
+            // from what we saw (only `target_status`). 
+            // So we might need to fetch BDA for each target or rely on a "summary" endpoint if available.
+            // For MVP, we will stick to raw target data and maybe fetch BDA on demand or for visible targets.
+            // Actually, let's try to map what we can.
+
+            setTargets(targetData);
+            setRoes(roeData);
+        } catch (e) {
+            console.error("Failed to load targeting data", e);
+        }
         setLoading(false);
     };
 
-    const search = useSearch({ from: '/smartops/targeting/' });
+    const search = useSearch({ from: '/mshnctrl/targeting/' });
     const selectedTargetId = search.targetId;
 
     useEffect(() => {
         loadData();
     }, []);
+
+    // Effect to load BDA for targets (simplistic approach)
+    useEffect(() => {
+        if (targets.length > 0) {
+            // Check if we need to load BDA for any targets (e.g. if they are engaged)
+            // Implementation pending bulk BDA fetch or inclusion in target query
+        }
+    }, [targets.length]);
 
     // Auto-scroll to selected target
     useEffect(() => {
@@ -65,7 +89,7 @@ export function TargetingManagement() {
     }, [selectedTargetId, loading, targets]);
 
     const handleStatusChange = async (id: string, newStatus: TargetStatus) => {
-        await SmartOpsService.updateTargetStatus(id, newStatus);
+        await targetingApi.updateStatus(id, newStatus);
         setTargets(prev => prev.map(t => t.id === id ? { ...t, targetStatus: newStatus } : t));
     };
 
@@ -99,13 +123,13 @@ export function TargetingManagement() {
                     </div>
                     <div className="flex gap-2">
                         <Link
-                            to="/smartops/targeting/jtb"
+                            to="/mshnctrl/targeting/jtb"
                             className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-black uppercase rounded border border-slate-700 transition-colors"
                         >
                             <Gavel size={14} /> Execute JTB Session
                         </Link>
                         <Link
-                            to="/smartops/targeting/nominate"
+                            to="/mshnctrl/targeting/nominate"
                             className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-[10px] font-black uppercase rounded transition-colors shadow-lg shadow-red-900/20"
                         >
                             <Plus size={14} /> Nominate Target
@@ -271,13 +295,13 @@ export function TargetingManagement() {
                                         <div className="flex flex-col">
                                             <div className="flex items-center gap-2">
                                                 <Scale size={10} className={cn(
-                                                    roes.find(r => r.id === target.requiredRoeId)?.status === 'Released' ? 'text-emerald-500' : 'text-yellow-500'
+                                                    roes.find(r => r.id === target.requiredRoeId)?.status === 'Active' ? 'text-emerald-500' : 'text-yellow-500'
                                                 )} />
                                                 <span className="text-[10px] font-black text-white uppercase">{roes.find(r => r.id === target.requiredRoeId)?.code}</span>
                                             </div>
                                             <span className={cn(
                                                 "text-[8px] font-bold uppercase",
-                                                roes.find(r => r.id === target.requiredRoeId)?.status === 'Released' ? 'text-emerald-600' : 'text-yellow-600'
+                                                roes.find(r => r.id === target.requiredRoeId)?.status === 'Active' ? 'text-emerald-600' : 'text-yellow-600'
                                             )}>{roes.find(r => r.id === target.requiredRoeId)?.status}</span>
                                         </div>
                                     ) : (
@@ -300,7 +324,7 @@ export function TargetingManagement() {
                                         <option value="Nominated">Nominated</option>
                                         <option value="Validated">Validated</option>
                                         <option value="Approved">Approved</option>
-                                        <option value="Engaged" disabled={target.requiredRoeId ? roes.find(r => r.id === target.requiredRoeId)?.status !== 'Released' : false}>Engaged</option>
+                                        <option value="Engaged" disabled={target.requiredRoeId ? roes.find(r => r.id === target.requiredRoeId)?.status !== 'Active' : false}>Engaged</option>
                                         <option value="Neutralized">Neutralized</option>
                                     </select>
                                 </td>
@@ -319,22 +343,22 @@ export function TargetingManagement() {
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     <div className="flex items-center justify-end gap-2">
-                                        <Link to="/smartops/targeting/$targetId" params={{ targetId: target.id }}>
+                                        <Link to="/mshnctrl/targeting/$targetId" params={{ targetId: target.id }}>
                                             <button className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded border border-slate-700 transition-colors" title="Target Folder">
                                                 <FileText size={14} />
                                             </button>
                                         </Link>
                                         <button
-                                            disabled={target.requiredRoeId ? roes.find(r => r.id === target.requiredRoeId)?.status !== 'Released' : false}
+                                            disabled={target.requiredRoeId ? roes.find(r => r.id === target.requiredRoeId)?.status !== 'Active' : false}
                                             className={cn(
                                                 "p-1.5 rounded border transition-colors relative",
-                                                (target.requiredRoeId ? roes.find(r => r.id === target.requiredRoeId)?.status === 'Released' : true)
+                                                (target.requiredRoeId ? roes.find(r => r.id === target.requiredRoeId)?.status === 'Active' : true)
                                                     ? target.bdaStatus === 'Re-strike'
                                                         ? "bg-red-600 border-red-500 text-white hover:bg-red-700 animate-pulse"
                                                         : "bg-slate-800 border-slate-700 text-slate-400 hover:text-red-500 hover:bg-red-900/40"
                                                     : "bg-slate-900 border-slate-800 text-slate-700 cursor-not-allowed"
                                             )}
-                                            title={target.requiredRoeId && roes.find(r => r.id === target.requiredRoeId)?.status !== 'Released' ? "ROE PENDING" : target.bdaStatus === 'Re-strike' ? "EXECUTE RE-STRIKE" : "Request Engagement"}
+                                            title={target.requiredRoeId && roes.find(r => r.id === target.requiredRoeId)?.status !== 'Active' ? "ROE PENDING" : target.bdaStatus === 'Re-strike' ? "EXECUTE RE-STRIKE" : "Request Engagement"}
                                             onClick={() => setSelectedTargetForStrike(target)}
                                         >
                                             <Flame size={14} />

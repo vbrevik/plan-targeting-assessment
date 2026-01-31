@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, Users, Shield, User } from 'lucide-react';
-import { useRoleContext } from '@/lib/smartops/hooks/useRoleContext';
+import { useRoleContext } from '@/lib/mshnctrl/hooks/useRoleContext';
 import { cn } from '@/lib/utils';
 
 export function RoleSelector() {

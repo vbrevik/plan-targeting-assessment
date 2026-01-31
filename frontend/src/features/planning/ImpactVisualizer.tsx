@@ -1,5 +1,5 @@
 import { AlertTriangle, GitPullRequest, ArrowDown, Target, ShieldAlert } from 'lucide-react';
-import type { Assumption } from '@/lib/smartops/domain/assumption';
+import type { Assumption } from '@/lib/mshnctrl/domain/assumption';
 
 interface ImpactVisualizerProps {
     assumptions: Assumption[];

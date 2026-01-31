@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Globe, AlertTriangle, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useOperationalContext } from '@/lib/smartops/hooks/useOperationalContext';
+import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
 import { PoliticalStatementsView } from '@/features/shared/context/PoliticalStatementsView';
 
 type TabView = 'political' | 'disinfo' | 'environment';

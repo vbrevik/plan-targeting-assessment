@@ -8,9 +8,9 @@ import {
     Target,
     Activity
 } from 'lucide-react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { cn } from '@/lib/utils';
-import type { EffectivenessGap } from '@/lib/smartops/types';
+import type { EffectivenessGap } from '@/lib/mshnctrl/types';
 
 export function GapAnalysisView() {
     const [gaps, setGaps] = useState<EffectivenessGap[]>([]);
@@ -18,9 +18,9 @@ export function GapAnalysisView() {
 
     useEffect(() => {
         async function loadData() {
-            const campaign = await SmartOpsService.getActiveCampaign();
+            const campaign = await MshnCtrlService.getActiveCampaign();
             if (campaign) {
-                const data = await SmartOpsService.getGapAnalysis(campaign.id);
+                const data = await MshnCtrlService.getGapAnalysis(campaign.id);
                 setGaps(data);
             }
             setLoading(false);

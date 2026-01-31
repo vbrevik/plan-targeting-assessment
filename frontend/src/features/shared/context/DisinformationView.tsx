@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import { DisinformationEvent, FakeMedia } from '@/lib/smartops/types';
-import { useOperationalContext } from '@/lib/smartops/hooks/useOperationalContext';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import { DisinformationEvent, FakeMedia } from '@/lib/mshnctrl/types';
+import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
 import { Search, Zap, AlertTriangle, Video, Image, Volume2, ShieldCheck, Share2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -19,8 +19,8 @@ export function DisinformationView() {
             setLoading(true);
             try {
                 const [eventsData, mediaData] = await Promise.all([
-                    SmartOpsService.getDisinformationEvents(context.operationId || undefined),
-                    SmartOpsService.getFakeMedia(context.operationId || undefined)
+                    MshnCtrlService.getDisinformationEvents(context.operationId || undefined),
+                    MshnCtrlService.getFakeMedia(context.operationId || undefined)
                 ]);
                 setEvents(eventsData);
                 setMedia(mediaData);

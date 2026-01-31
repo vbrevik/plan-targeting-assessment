@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { BdaApi, type BdaDistributionList, type BdaReportDistribution, type BdaDistributionSummary } from '@/lib/smartops/api/bda';
+import { BdaApi, type BdaDistributionList, type BdaReportDistribution, type BdaDistributionSummary } from '@/lib/mshnctrl/api/bda';
 import { Send, Users, CheckCircle2, Clock, XCircle, Plus, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

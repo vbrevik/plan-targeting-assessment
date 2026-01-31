@@ -112,11 +112,12 @@ async fn main() {
     // Create services (clonable for router state)
     let abac_service = features::abac::AbacService::new(pool.clone());
     let user_service = features::users::service::UserService::new(pool.clone());
-    let auth_service = features::auth::service::AuthService::new(pool.clone(), config.clone(), abac_service.clone(), user_service.clone());
+    let ontology_service = features::ontology::OntologyService::new(pool.clone());
+    let auth_service = features::auth::service::AuthService::new(pool.clone(), config.clone(), abac_service.clone(), user_service.clone(), ontology_service.clone());
     let system_service = features::system::service::SystemService::new();
     let discovery_service = features::discovery::service::DiscoveryService::new();
     let rate_limit_service = Arc::new(features::rate_limit::RateLimitService::new(pool.clone(), false));
-    let ontology_service = features::ontology::OntologyService::new(pool.clone());
+    let strategy_service = features::strategy::service::StrategyService::new();
 
     // Create router and attach state
     // API router contains feature routes and an API-scoped health check
@@ -201,6 +202,11 @@ async fn main() {
         )
         .nest("/navigation",
             features::navigation::navigation_router::<AuthService>(ontology_service, abac_service)
+                .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
+                .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
+        ).nest("/strategy",
+            features::strategy::routes::strategy_routes()
+                .with_state(strategy_service)
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         );

@@ -13,6 +13,7 @@ use argon2::{
 use chrono::Utc;
 use crate::features::auth::jwt::{create_jwt, create_refresh_token, UserRoleClaim};
 use crate::features::abac::AbacService;
+use crate::features::ontology::{OntologyService, models::{CreateEntityRequest, CreateRelationshipRequest}};
 use crate::features::users::service::UserService;
 use thiserror::Error;
 use axum::response::IntoResponse;
@@ -63,12 +64,13 @@ pub struct AuthService {
     abac_service: AbacService,
     user_service: UserService,
     notification_tx: broadcast::Sender<NotificationEvent>,
+    ontology_service: OntologyService,
 }
 
 impl AuthService {
-    pub fn new(pool: SqlitePool, config: Config, abac_service: AbacService, user_service: UserService) -> Self {
+    pub fn new(pool: SqlitePool, config: Config, abac_service: AbacService, user_service: UserService, ontology_service: OntologyService) -> Self {
         let (notification_tx, _) = broadcast::channel(100);
-        Self { pool, config, abac_service, user_service, notification_tx }
+        Self { pool, config, abac_service, user_service, notification_tx, ontology_service }
     }
 
     pub fn get_user_service(&self) -> &UserService {
@@ -132,7 +134,46 @@ impl AuthService {
         .await?;
 
         // Generate tokens
-        self.generate_tokens(created_user.id, created_user.username, created_user.email, false).await
+        let response = self.generate_tokens(created_user.id.clone(), created_user.username.clone(), created_user.email.clone(), false).await?;
+
+        // 1. Assign default role (legacy ABAC)
+        use crate::features::abac::models::AssignRoleInput;
+        self.abac_service.assign_role(AssignRoleInput {
+            user_id: created_user.id.clone(),
+            role_name: "viewer".to_string(),
+            resource_id: None,
+        }).await.map_err(|e| AuthError::DatabaseError(sqlx::Error::Protocol(e.to_string())))?;
+
+        // 2. Sync to Ontology
+        let props = serde_json::json!({
+            "email": created_user.email,
+            "role": "viewer"
+        });
+        
+        self.ontology_service.create_entity(CreateEntityRequest {
+            id: Some(created_user.id.clone()),
+            operation_id: None,
+            campaign_id: None,
+            name: created_user.username.clone(),
+            type_: "Person".to_string(),
+            description: Some(format!("User {}", created_user.email)),
+            status: Some("Active".to_string()),
+            location_lat: None,
+            location_lng: None,
+            properties: Some(props),
+            source: Some("auth-service".to_string()),
+            classification: Some("UNCLASSIFIED".to_string()),
+            confidence: Some(1.0),
+        }).await.map_err(|e| AuthError::DatabaseError(sqlx::Error::Protocol(e.to_string())))?;
+
+        self.ontology_service.create_relationship(CreateRelationshipRequest {
+            source_id: created_user.id.clone(),
+            target_id: "viewer".to_string(),
+            relation_type: "assigned_to".to_string(),
+            properties: None,
+        }).await.map_err(|e| AuthError::DatabaseError(sqlx::Error::Protocol(e.to_string())))?;
+
+        Ok(response)
     }
 
     pub async fn login(&self, login_user: LoginUser, ip: Option<String>, user_agent: Option<String>) -> Result<AuthResponse, AuthError> {

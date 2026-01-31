@@ -11,7 +11,7 @@ import {
     Activity
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from '@tanstack/react-router';
 
@@ -34,7 +34,7 @@ export function CONOPSBuilder() {
     const handleSave = async () => {
         setPublishing(true);
         // Simulate product generation
-        await SmartOpsService.generateProductReport(
+        await MshnCtrlService.generateProductReport(
             conops.title,
             'FRAGO', // Reusing FRAGO type for now as 'CONOPS' isn't in top-level union yet
             conops,
@@ -43,7 +43,7 @@ export function CONOPSBuilder() {
 
         setTimeout(() => {
             setPublishing(false);
-            navigate({ to: '/smartops/products' });
+            navigate({ to: '/mshnctrl/products' });
         }, 1500);
     };
 

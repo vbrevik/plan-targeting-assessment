@@ -7,7 +7,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { Plane, Zap, Cloud, Radio, Package, TrendingUp, Wifi, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SecurityBadge } from '@/components/SecurityBadge';
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 
 interface StrikePlatform {
   id: string;
@@ -214,7 +214,7 @@ export function AssetCapabilityManagement() {
 
         {/* Forces Ready (Integrated Style) */}
         <button
-          onClick={() => navigate({ to: '/smartops/targeting/assets' })}
+          onClick={() => navigate({ to: '/mshnctrl/targeting/assets' })}
           className="bg-slate-950 border-2 border-blue-900/50 rounded-[2rem] p-6 transition-all hover:border-blue-500/50 hover:bg-slate-900/50 cursor-pointer text-left relative overflow-hidden group"
         >
           <div className="absolute top-0 right-0 p-6 opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity">
@@ -253,7 +253,7 @@ export function AssetCapabilityManagement() {
           {activePlatforms.map((platform) => (
             <button
               key={platform.id}
-              onClick={() => navigate({ to: '/smartops/targeting/assets' })}
+              onClick={() => navigate({ to: '/mshnctrl/targeting/assets' })}
               className="group p-5 bg-slate-950/50 border border-slate-800 rounded-2xl hover:border-blue-500/50 transition-all text-left"
             >
               <div className="flex items-start justify-between mb-4">

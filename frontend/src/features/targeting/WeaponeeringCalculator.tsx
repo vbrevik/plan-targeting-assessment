@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import type { Target, WeaponSystem } from '@/lib/smartops/types';
+import type { Target, WeaponSystem } from '@/lib/mshnctrl/types';
 import { Crosshair, ShieldAlert, Target as TargetIcon, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

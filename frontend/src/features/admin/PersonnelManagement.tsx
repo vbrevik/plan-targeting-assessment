@@ -9,9 +9,9 @@ import {
     Briefcase,
     Clock
 } from 'lucide-react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { cn } from '@/lib/utils';
-import type { StaffMember, Unit } from '@/lib/smartops/types';
+import type { StaffMember, Unit } from '@/lib/mshnctrl/types';
 
 export function PersonnelManagement() {
     const [staff, setStaff] = useState<StaffMember[]>([]);
@@ -24,8 +24,8 @@ export function PersonnelManagement() {
     useEffect(() => {
         async function loadData() {
             const [staffData, unitsData] = await Promise.all([
-                SmartOpsService.getStaffMembers(),
-                SmartOpsService.getOrbat() as Promise<Unit[]>
+                MshnCtrlService.getStaffMembers(),
+                MshnCtrlService.getOrbat() as Promise<Unit[]>
             ]);
             setStaff(staffData);
             setUnits(unitsData);

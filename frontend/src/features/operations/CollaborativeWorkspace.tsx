@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { MessageSquare, FileText, Clock, Globe, Plane, Ship, Wifi, Satellite, Info, Users, Brain, Zap, Heart } from 'lucide-react';
 import { SecurityBadge } from '@/components/SecurityBadge';
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 
 interface DecisionLogEntry {
   id: string;
@@ -236,7 +236,7 @@ export function CollaborativeWorkspace() {
           </div>
 
           <button
-            onClick={() => navigate({ to: '/smartops/targeting/collaboration' })}
+            onClick={() => navigate({ to: '/mshnctrl/targeting/collaboration' })}
             className="mt-3 w-full text-xs text-purple-400 hover:text-purple-300 font-medium uppercase transition-colors cursor-pointer"
           >
             View Complete Decision Log →
@@ -329,7 +329,7 @@ export function CollaborativeWorkspace() {
           </div>
 
           <button
-            onClick={() => navigate({ to: '/smartops/targeting/collaboration' })}
+            onClick={() => navigate({ to: '/mshnctrl/targeting/collaboration' })}
             className="w-full px-3 py-2 bg-blue-900/30 hover:bg-blue-900/50 border border-blue-700 rounded text-xs font-bold text-blue-300 uppercase transition-colors cursor-pointer"
           >
             Generate Full Handover Report

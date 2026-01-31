@@ -3,7 +3,8 @@
 
 use super::handlers;
 use axum::{
-    routing::{get, post, patch},
+    routing::{get, post},
+
     Router,
 };
 use sqlx::{Pool, Sqlite};

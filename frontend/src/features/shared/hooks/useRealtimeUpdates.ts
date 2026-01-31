@@ -2,11 +2,11 @@
 // Subscribes to real-time updates via WebSocket/SSE
 
 import { useEffect, useState, useCallback } from 'react';
-import { realtimeClient, type RealtimeUpdate } from '@/lib/smartops/websocket';
-import type { UpdateType } from '@/lib/smartops/websocket';
+import { realtimeClient, type RealtimeUpdate } from '@/lib/mshnctrl/websocket';
+import type { UpdateType } from '@/lib/mshnctrl/websocket';
 
 // Re-export UpdateType for convenience
-export type { UpdateType } from '@/lib/smartops/websocket';
+export type { UpdateType } from '@/lib/mshnctrl/websocket';
 
 interface UseRealtimeUpdatesOptions {
   types?: UpdateType[]; // Filter by update types

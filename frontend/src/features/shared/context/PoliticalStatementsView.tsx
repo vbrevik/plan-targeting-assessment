@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { PoliticalStatement } from '@/lib/smartops/types';
-import { useOperationalContext } from '@/lib/smartops/hooks/useOperationalContext';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { PoliticalStatement } from '@/lib/mshnctrl/types';
+import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
 import { Search, MapPin, Calendar, ExternalLink, AlertTriangle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -17,7 +17,7 @@ export function PoliticalStatementsView() {
         const fetchStatements = async () => {
             setLoading(true);
             try {
-                const data = await SmartOpsService.getPoliticalStatements(context.operationId || undefined);
+                const data = await MshnCtrlService.getPoliticalStatements(context.operationId || undefined);
                 setStatements(data);
             } catch (err) {
                 console.error('Failed to fetch political statements:', err);

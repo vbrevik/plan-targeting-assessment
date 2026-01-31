@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { BdaApi, type GenerateReportRequest, type BdaReportTemplate, type ReportGenerationResponse } from '@/lib/smartops/api/bda';
+import { BdaApi, type GenerateReportRequest, type BdaReportTemplate, type ReportGenerationResponse } from '@/lib/mshnctrl/api/bda';
 import { FileDown, FileText, Download, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

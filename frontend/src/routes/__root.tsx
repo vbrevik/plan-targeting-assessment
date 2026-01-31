@@ -12,9 +12,9 @@ import { SkipLink } from '@/components/accessibility/SkipLink'
 export const Route = createRootRoute({
   component: () => {
     const location = useLocation()
-    const isSmartOps = location.pathname.startsWith('/smartops')
+    const isMshnCtrl = location.pathname.startsWith('/mshnctrl')
     const isAuthRoute = ['/login', '/register'].includes(location.pathname)
-    const shouldHideChrome = isSmartOps || isAuthRoute
+    const shouldHideChrome = isMshnCtrl || isAuthRoute
 
     return (
       <AuthProvider>

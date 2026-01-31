@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { BdaApi, type BdaReportHistory, type ReportHistoryResponse } from '@/lib/smartops/api/bda';
+import { BdaApi, type BdaReportHistory, type ReportHistoryResponse } from '@/lib/mshnctrl/api/bda';
 import { Clock, User, GitBranch, Eye, FileDiff } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';

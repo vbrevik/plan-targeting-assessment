@@ -22,15 +22,15 @@ export function RecentlyViewed() {
 
   // Page labels mapping
   const pageLabels: Record<string, string> = {
-    '/smartops/targeting-cell-dashboard': 'Dashboard',
-    '/smartops/targeting/targets': 'Targets',
-    '/smartops/targeting/intelligence': 'Intelligence',
-    '/smartops/targeting/effects': 'Effects Assessment',
-    '/smartops/targeting/assets': 'Assets & Capabilities',
-    '/smartops/targeting/risk': 'Risk & Constraints',
-    '/smartops/targeting/analysis': 'Alternative Analysis',
-    '/smartops/targeting/collaboration': 'Collaboration',
-    '/smartops/targeting/mission-command': 'Mission Command',
+    '/mshnctrl/targeting-cell-dashboard': 'Dashboard',
+    '/mshnctrl/targeting/targets': 'Targets',
+    '/mshnctrl/targeting/intelligence': 'Intelligence',
+    '/mshnctrl/targeting/effects': 'Effects Assessment',
+    '/mshnctrl/targeting/assets': 'Assets & Capabilities',
+    '/mshnctrl/targeting/risk': 'Risk & Constraints',
+    '/mshnctrl/targeting/analysis': 'Alternative Analysis',
+    '/mshnctrl/targeting/collaboration': 'Collaboration',
+    '/mshnctrl/targeting/mission-command': 'Mission Command',
   };
 
   // Load items from localStorage

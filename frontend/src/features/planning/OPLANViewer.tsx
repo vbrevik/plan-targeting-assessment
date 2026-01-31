@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { OPLAN, PlanSection } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { OPLAN, PlanSection } from '@/lib/mshnctrl/types';
 import { PlanContentRenderer } from './PlanContentRenderer';
 import {
     Filter,
@@ -18,7 +18,7 @@ export function OPLANViewer() {
 
     // Load Plans
     useEffect(() => {
-        SmartOpsService.getOPLANs().then(data => {
+        MshnCtrlService.getOPLANs().then(data => {
             setPlans(data);
             if (data.length > 0) setSelectedPlanId(data[0].id);
             setLoading(false);

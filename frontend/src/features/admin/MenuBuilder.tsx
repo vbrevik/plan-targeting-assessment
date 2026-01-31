@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { OntologyService, type Entity } from '@/lib/smartops/services/ontology.service';
+import { OntologyService, type Entity } from '@/lib/mshnctrl/services/ontology.service';
 import { cn } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,7 @@ import {
     Shield
 } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
-import { AVAILABLE_ROLES } from '@/lib/smartops/hooks/useRoleContext';
+import { AVAILABLE_ROLES } from '@/lib/mshnctrl/hooks/useRoleContext';
 import { Badge } from '@/components/ui/badge';
 
 export function MenuBuilder() {
@@ -252,7 +252,7 @@ export function MenuBuilder() {
                                                     properties: { ...editingItem.properties, to: e.target.value }
                                                 })}
                                                 className="bg-slate-950 border-slate-800 text-xs font-mono"
-                                                placeholder="/smartops/im-dashboard"
+                                                placeholder="/mshnctrl/im-dashboard"
                                             />
                                         </div>
                                         <div className="space-y-2">

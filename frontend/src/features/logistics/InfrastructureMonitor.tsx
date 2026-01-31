@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { InfrastructureNode, CivilAgency, CivilDependency } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { InfrastructureNode, CivilAgency, CivilDependency } from '@/lib/mshnctrl/types';
 import { cn } from '@/lib/utils';
 import {
     Factory,
@@ -26,9 +26,9 @@ export function InfrastructureMonitor() {
         async function load() {
             setLoading(true);
             const [n, a, d] = await Promise.all([
-                SmartOpsService.getInfrastructure(),
-                SmartOpsService.getCivilAgencies(),
-                SmartOpsService.getCivilDependencies()
+                MshnCtrlService.getInfrastructure(),
+                MshnCtrlService.getCivilAgencies(),
+                MshnCtrlService.getCivilDependencies()
             ]);
             setNodes(n);
             setAgencies(a);

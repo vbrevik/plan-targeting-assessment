@@ -8,9 +8,9 @@ import {
     ArrowRight,
     ShieldAlert
 } from 'lucide-react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { cn } from '@/lib/utils';
-import type { SupplyNode, Vendor } from '@/lib/smartops/types';
+import type { SupplyNode, Vendor } from '@/lib/mshnctrl/types';
 
 export function SupplyChainManagement() {
     const [nodes, setNodes] = useState<SupplyNode[]>([]);
@@ -21,9 +21,9 @@ export function SupplyChainManagement() {
 
     useEffect(() => {
         async function loadData() {
-            const { nodes, vendors } = await SmartOpsService.getLibraryData() as { nodes: SupplyNode[], vendors: Vendor[] };
-            const hBlue = await SmartOpsService.getOverallSupplyHealth('Blue') as number;
-            const hRed = await SmartOpsService.getOverallSupplyHealth('Red') as number;
+            const { nodes, vendors } = await MshnCtrlService.getLibraryData() as { nodes: SupplyNode[], vendors: Vendor[] };
+            const hBlue = await MshnCtrlService.getOverallSupplyHealth('Blue') as number;
+            const hRed = await MshnCtrlService.getOverallSupplyHealth('Red') as number;
 
             setNodes(nodes);
             setVendors(vendors);

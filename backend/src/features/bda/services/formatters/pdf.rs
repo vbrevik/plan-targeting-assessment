@@ -24,7 +24,8 @@ pub fn generate_pdf(
     // I will call it to be safe (side effects? none).
     let _html = generate_html(report, request)?;
     
-    let classification = request.classification
+    let _classification = request.classification
+
         .unwrap_or(ReportClassification::Secret);
     
     let title_str = format!("BDA Report - {}", request.template_type.display_name());

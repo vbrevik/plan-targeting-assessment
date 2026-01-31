@@ -7,7 +7,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { Target, Users, Gauge, AlertTriangle, CheckCircle2, Crosshair, Activity, History } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SecurityBadge } from '@/components/SecurityBadge';
-import { targetingApi, type MissionIntent, type TargetingGuidance, type DecisionAuthority, type OperationalTempo } from '@/lib/smartops/api/targeting.api';
+import { targetingApi, type MissionIntent, type TargetingGuidance, type DecisionAuthority, type OperationalTempo } from '@/lib/mshnctrl/api/targeting.api';
 
 // Local components use types from targetingApi
 
@@ -147,7 +147,7 @@ export function MissionCommandOverview({ isEmbedded = false }: MissionCommandPro
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* 1. Commander's Intent Tracker */}
         <button
-          onClick={() => !isEmbedded && navigate({ to: '/smartops/targeting/mission-command' })}
+          onClick={() => !isEmbedded && navigate({ to: '/mshnctrl/targeting/mission-command' })}
           className={cn(
             "bg-slate-900/40 border border-slate-800 rounded-xl p-5 text-left transition-all group relative overflow-hidden",
             !isEmbedded && "hover:border-blue-500/50 hover:bg-slate-800/60 cursor-pointer"
@@ -211,7 +211,7 @@ export function MissionCommandOverview({ isEmbedded = false }: MissionCommandPro
 
         {/* 2. Targeting Guidance Status */}
         <button
-          onClick={() => !isEmbedded && navigate({ to: '/smartops/targeting/mission-command' })}
+          onClick={() => !isEmbedded && navigate({ to: '/mshnctrl/targeting/mission-command' })}
           className={cn(
             "bg-slate-900/40 border border-slate-800 rounded-xl p-5 text-left transition-all group relative overflow-hidden",
             !isEmbedded && "hover:border-green-500/50 hover:bg-slate-800/60 cursor-pointer"
@@ -266,7 +266,7 @@ export function MissionCommandOverview({ isEmbedded = false }: MissionCommandPro
 
         {/* 3. Decision Authority Matrix */}
         <button
-          onClick={() => !isEmbedded && navigate({ to: '/smartops/targeting/mission-command' })}
+          onClick={() => !isEmbedded && navigate({ to: '/mshnctrl/targeting/mission-command' })}
           className={cn(
             "bg-slate-900/40 border border-slate-800 rounded-xl p-5 text-left transition-all group relative overflow-hidden",
             !isEmbedded && "hover:border-purple-500/50 hover:bg-slate-800/60 cursor-pointer"
@@ -313,7 +313,7 @@ export function MissionCommandOverview({ isEmbedded = false }: MissionCommandPro
 
         {/* 4. Operational Tempo Gauge */}
         <button
-          onClick={() => !isEmbedded && navigate({ to: '/smartops/targeting/mission-command' })}
+          onClick={() => !isEmbedded && navigate({ to: '/mshnctrl/targeting/mission-command' })}
           className={cn(
             "bg-slate-900/40 border border-slate-800 rounded-xl p-5 text-left transition-all group relative overflow-hidden",
             !isEmbedded && "hover:border-cyan-500/50 hover:bg-slate-800/60 cursor-pointer"
@@ -426,7 +426,7 @@ export function MissionCommandOverview({ isEmbedded = false }: MissionCommandPro
             "Priority shift: Category 1 targets now take precedence over Category 2. All TSTs require CG approval if CDE ≥ 30."
           </p>
           <button
-            onClick={() => !isEmbedded && navigate({ to: '/smartops/targeting/mission-command' })}
+            onClick={() => !isEmbedded && navigate({ to: '/mshnctrl/targeting/mission-command' })}
             className="mt-6 w-full py-2 bg-amber-900/30 hover:bg-amber-900/50 border border-amber-700/50 rounded text-[10px] font-black text-amber-300 uppercase transition-colors"
           >
             Acknowledge Receipt

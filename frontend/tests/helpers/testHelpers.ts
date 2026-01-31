@@ -5,31 +5,32 @@ import { test, expect, type Page, type APIRequestContext } from '@playwright/tes
 import { type TestTarget, type TestUser, type TestBDAReport, mockApiResponses } from '../fixtures/testData';
 
 async function getAuthToken(request: APIRequestContext): Promise<string> {
-  const user = { username: 'e2e_tester', email: 'e2e_tester@test.mil', password: 'Password123!' };
+  // Use known test user - login field is 'identifier' not 'email'
+  const testUsers = [
+    { identifier: 'im@test.mil', password: 'Password123!' },
+    { identifier: 'admin@example.com', password: 'Password123!' },
+  ];
 
-  // Try login
-  let loginRes = await request.post('http://localhost:3000/api/auth/login', {
-    data: { email: user.email, password: user.password }
-  });
+  for (const user of testUsers) {
+    try {
+      const loginRes = await request.post('http://localhost:3000/api/auth/login', {
+        data: user
+      });
 
-  // If failed (e.g. 404/401), try register
-  if (!loginRes.ok()) {
-    await request.post('http://localhost:3000/api/auth/register', {
-      data: user
-    });
-    // Login again
-    loginRes = await request.post('http://localhost:3000/api/auth/login', {
-      data: { email: user.email, password: user.password }
-    });
+      if (loginRes.ok()) {
+        const body = await loginRes.json();
+        if (body.access_token) {
+          return body.access_token;
+        }
+      }
+    } catch {
+      // Continue to next user
+    }
   }
 
-  if (!loginRes.ok()) {
-    // Fallback for dev/mock env if backend not reachable or other error
-    return 'test-token-12345';
-  }
-
-  const body = await loginRes.json();
-  return body.access_token || 'test-token-12345';
+  // Fallback token for mock environments
+  console.warn('Could not authenticate, using fallback token');
+  return 'test-token-12345';
 }
 
 // Custom test fixture with authenticated page

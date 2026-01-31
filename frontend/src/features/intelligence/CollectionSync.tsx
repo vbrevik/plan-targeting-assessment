@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import type { CollectionRequest } from '@/lib/smartops/types';
+import type { CollectionRequest } from '@/lib/mshnctrl/types';
 import { cn } from '@/lib/utils';
 import {
     Radar,

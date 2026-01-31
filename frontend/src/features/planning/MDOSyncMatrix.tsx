@@ -13,15 +13,15 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { ProductReport } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { ProductReport } from '@/lib/mshnctrl/types';
 
 export function MDOSyncMatrix() {
     const [reports, setReports] = useState<ProductReport[]>([]);
 
     useEffect(() => {
         async function loadReports() {
-            const data = await SmartOpsService.getProductReports();
+            const data = await MshnCtrlService.getProductReports();
             setReports(data.filter(r => r.type === 'FRAGO' || r.type === 'JCO'));
         }
         loadReports();

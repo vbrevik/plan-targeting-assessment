@@ -13,12 +13,12 @@ import {
     Activity,
     ShieldAlert
 } from 'lucide-react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { cn } from '@/lib/utils';
-import type { Unit } from '@/lib/smartops/types';
+import type { Unit } from '@/lib/mshnctrl/types';
 
 export function OrbatManagement() {
-    const search = useSearch({ from: '/smartops/orbat' });
+    const search = useSearch({ from: '/mshnctrl/orbat' });
     const selectedUnitId = search.unitId;
 
     const [units, setUnits] = useState<Unit[]>([]);
@@ -55,7 +55,7 @@ export function OrbatManagement() {
 
     useEffect(() => {
         async function loadData() {
-            const data = await SmartOpsService.getOrbat() as Unit[];
+            const data = await MshnCtrlService.getOrbat() as Unit[];
             setUnits(data);
             setLoading(false);
         }

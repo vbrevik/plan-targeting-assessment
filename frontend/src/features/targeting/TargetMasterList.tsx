@@ -84,6 +84,7 @@ export function TargetMasterList({
                                             ? "bg-blue-600/10 border-blue-500"
                                             : "border-transparent hover:bg-slate-900/50"
                                     )}
+                                    data-testid="target-list-item"
                                 >
                                     <div className="flex items-start justify-between mb-1.5">
                                         <div className="flex flex-col min-w-0">

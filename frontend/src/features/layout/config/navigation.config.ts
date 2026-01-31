@@ -33,7 +33,7 @@ import {
 } from 'lucide-react';
 
 
-import type { Role } from '@/lib/smartops/hooks/useRoleContext';
+import type { Role } from '@/lib/mshnctrl/hooks/useRoleContext';
 import type { LucideIcon } from 'lucide-react';
 
 
@@ -51,12 +51,12 @@ export interface NavGroup {
 
 // Common items most roles can access
 const commonItems = {
-    cop: { icon: LayoutDashboard, label: 'COP Summary', to: '/smartops/cop-summary', permission: 'cop.view' },
-    battleRhythm: { icon: CalendarDays, label: 'Battle Rhythm', to: '/smartops/battle-rhythm', permission: 'battle_rhythm.view' },
-    proposals: { icon: Files, label: 'Proposals', to: '/smartops/proposals', permission: 'proposals.view' },
-    rfis: { icon: Inbox, label: 'RFI Management', to: '/smartops/rfis', permission: 'rfis.view' },
-    orbat: { icon: Users, label: 'ORBAT', to: '/smartops/orbat', permission: 'orbat.view' },
-    weather: { icon: CloudSun, label: 'Environment', to: '/smartops/weather', permission: 'weather.view' },
+    cop: { icon: LayoutDashboard, label: 'COP Summary', to: '/mshnctrl/cop-summary', permission: 'cop.view' },
+    battleRhythm: { icon: CalendarDays, label: 'Battle Rhythm', to: '/mshnctrl/battle-rhythm', permission: 'battle_rhythm.view' },
+    proposals: { icon: Files, label: 'Proposals', to: '/mshnctrl/proposals', permission: 'proposals.view' },
+    rfis: { icon: Inbox, label: 'RFI Management', to: '/mshnctrl/rfis', permission: 'rfis.view' },
+    orbat: { icon: Users, label: 'ORBAT', to: '/mshnctrl/orbat', permission: 'orbat.view' },
+    weather: { icon: CloudSun, label: 'Environment', to: '/mshnctrl/weather', permission: 'weather.view' },
 };
 
 // Generate role-specific navigation based on permissions
@@ -70,29 +70,30 @@ export const getRoleSpecificNav = (role: Role): NavGroup[] => {
             {
                 label: 'Command Suite',
                 items: [
-                    { icon: LayoutDashboard, label: 'Command Dashboard', to: '/smartops/cop-summary', permission: 'cop.view' },
-                    { icon: Brain, label: 'Cognitive Readiness', to: '/smartops/staff', permission: 'staff.view' },
-                    { icon: ShieldCheck, label: 'Decision Board', to: '/smartops/decision-board', permission: 'decision_board.view' },
-                    { icon: Flag, label: 'Strategic Direction', to: '/smartops/strategic-direction', permission: 'strategic.view' },
-                    { icon: ShieldAlert, label: 'CCIR Manager', to: '/smartops/ccir', permission: 'ccir.view' },
+                    { icon: LayoutDashboard, label: 'Command Dashboard', to: '/mshnctrl/cop-summary', permission: 'cop.view' },
+                    { icon: Brain, label: 'Cognitive Readiness', to: '/mshnctrl/staff', permission: 'staff.view' },
+                    { icon: ShieldCheck, label: 'Decision Board', to: '/mshnctrl/decision-board', permission: 'decision_board.view' },
+                    { icon: Flag, label: 'Strategic Direction', to: '/mshnctrl/strategic-direction', permission: 'strategic.view' },
+                    { icon: ShieldAlert, label: 'CCIR Manager', to: '/mshnctrl/ccir', permission: 'ccir.view' },
                 ]
             },
             {
                 label: 'Operations & Targeting',
                 items: [
                     commonItems.battleRhythm,
-                    { icon: Target, label: 'Targeting Board', to: '/smartops/targeting', permission: 'targeting.view' },
-                    { icon: Shield, label: 'ROE', to: '/smartops/roe', permission: 'roe.view' },
-                    { icon: Crosshair, label: 'BDA Workbench', to: '/smartops/bda', permission: 'bda.view' },
+                    { icon: Target, label: 'Targeting Board', to: '/mshnctrl/targeting', permission: 'targeting.view' },
+                    { icon: Shield, label: 'ROE', to: '/mshnctrl/roe', permission: 'roe.view' },
+                    { icon: Crosshair, label: 'BDA Workbench', to: '/mshnctrl/bda', permission: 'bda.view' },
                 ]
             },
             {
                 label: 'Planning & Intelligence',
                 items: [
-                    { icon: ScrollText, label: 'OPLAN Manager', to: '/smartops/oplan', permission: 'oplan.view' },
-                    { icon: Shield, label: 'Planning Assumptions', to: '/smartops/assumptions', permission: 'assumptions.view' },
-                    { icon: Search, label: 'Uncertainty', to: '/smartops/uncertainty', permission: 'uncertainty.view' },
-                    { icon: Globe, label: 'Overview Picture', to: '/smartops/rxp', permission: 'rxp.view' },
+                    { icon: ScrollText, label: 'OPLAN Manager', to: '/mshnctrl/oplan', permission: 'oplan.view' },
+                    { icon: Shield, label: 'Planning Assumptions', to: '/mshnctrl/assumptions', permission: 'assumptions.view' },
+                    { icon: Search, label: 'Uncertainty', to: '/mshnctrl/uncertainty', permission: 'uncertainty.view' },
+                    { icon: Globe, label: 'Overview Picture', to: '/mshnctrl/rxp', permission: 'rxp.view' },
+                    { icon: Layers, label: 'Ontology Matrix', to: '/mshnctrl/ontology', permission: 'ontology.view' },
                 ]
             },
         ],
@@ -100,17 +101,17 @@ export const getRoleSpecificNav = (role: Role): NavGroup[] => {
             {
                 label: 'J2 Dashboard',
                 items: [
-                    { icon: Brain, label: 'J2 Operations Center', to: '/smartops/j2-dashboard', permission: 'intelligence.view' },
+                    { icon: Brain, label: 'J2 Operations Center', to: '/mshnctrl/j2-dashboard', permission: 'intelligence.view' },
                 ]
             },
             {
                 label: 'Intelligence Management',
                 items: [
-                    { icon: Search, label: 'Uncertainty Analysis', to: '/smartops/uncertainty', permission: 'uncertainty.view' },
-                    { icon: Globe, label: 'RXP Overview', to: '/smartops/rxp', permission: 'rxp.view' },
-                    { icon: Users, label: 'Social Domain', to: '/smartops/social-domain', permission: 'social.view' },
-                    { icon: Zap, label: 'Digital Twin', to: '/smartops/digital-twin', permission: 'digital_twin.view' },
-                    { icon: Radio, label: 'Sensor Triage', to: '/smartops/triage', permission: 'triage.view' },
+                    { icon: Search, label: 'Uncertainty Analysis', to: '/mshnctrl/uncertainty', permission: 'uncertainty.view' },
+                    { icon: Globe, label: 'RXP Overview', to: '/mshnctrl/rxp', permission: 'rxp.view' },
+                    { icon: Users, label: 'Social Domain', to: '/mshnctrl/social-domain', permission: 'social.view' },
+                    { icon: Zap, label: 'Digital Twin', to: '/mshnctrl/digital-twin', permission: 'digital_twin.view' },
+                    { icon: Radio, label: 'Sensor Triage', to: '/mshnctrl/triage', permission: 'triage.view' },
                     commonItems.orbat,
                 ]
             },
@@ -128,7 +129,7 @@ export const getRoleSpecificNav = (role: Role): NavGroup[] => {
             {
                 label: 'J3 Dashboard',
                 items: [
-                    { icon: Activity, label: 'J3 Operations Center', to: '/smartops/j3-dashboard', permission: 'cop.view' },
+                    { icon: Activity, label: 'J3 Operations Center', to: '/mshnctrl/j3-dashboard', permission: 'cop.view' },
                 ]
             },
             {
@@ -137,8 +138,8 @@ export const getRoleSpecificNav = (role: Role): NavGroup[] => {
                     commonItems.battleRhythm,
                     commonItems.proposals,
                     commonItems.rfis,
-                    { icon: Radio, label: 'Combat Net Radio', to: '/smartops/cnr', permission: 'cnr.view' },
-                    { icon: Target, label: 'Targeting Board', to: '/smartops/targeting', permission: 'targeting.view' },
+                    { icon: Radio, label: 'Combat Net Radio', to: '/mshnctrl/cnr', permission: 'cnr.view' },
+                    { icon: Target, label: 'Targeting Board', to: '/mshnctrl/targeting', permission: 'targeting.view' },
                 ]
             },
             {
@@ -146,7 +147,7 @@ export const getRoleSpecificNav = (role: Role): NavGroup[] => {
                 items: [
                     commonItems.cop,
                     commonItems.orbat,
-                    { icon: Globe, label: 'RXP Overview', to: '/smartops/rxp', permission: 'rxp.view' },
+                    { icon: Globe, label: 'RXP Overview', to: '/mshnctrl/rxp', permission: 'rxp.view' },
                     commonItems.weather,
                 ]
             },
@@ -155,15 +156,15 @@ export const getRoleSpecificNav = (role: Role): NavGroup[] => {
             {
                 label: 'J4 Dashboard',
                 items: [
-                    { icon: Package, label: 'J4 Logistics Center', to: '/smartops/j4-dashboard', permission: 'logistics.view' },
+                    { icon: Package, label: 'J4 Logistics Center', to: '/mshnctrl/j4-dashboard', permission: 'logistics.view' },
                 ]
             },
             {
                 label: 'Logistics Management',
                 items: [
-                    { icon: Package, label: 'Supply Status', to: '/smartops/logistics', permission: 'logistics.view' },
-                    { icon: Factory, label: 'Critical Infrastructure', to: '/smartops/infrastructure', permission: 'infrastructure.view' },
-                    { icon: Network, label: 'Supply Network', to: '/smartops/supply-chain', permission: 'supply_chain.view' },
+                    { icon: Package, label: 'Supply Status', to: '/mshnctrl/logistics', permission: 'logistics.view' },
+                    { icon: Factory, label: 'Critical Infrastructure', to: '/mshnctrl/infrastructure', permission: 'infrastructure.view' },
+                    { icon: Network, label: 'Supply Network', to: '/mshnctrl/supply-chain', permission: 'supply_chain.view' },
                 ]
             },
             {
@@ -179,26 +180,26 @@ export const getRoleSpecificNav = (role: Role): NavGroup[] => {
             {
                 label: 'J5 Dashboard',
                 items: [
-                    { icon: ScrollText, label: 'J5 Plans Center', to: '/smartops/j5-dashboard', permission: 'oplan.view' },
-                    { icon: Layers, label: 'Ontology Matrix', to: '/smartops/ontology', permission: 'ontology.view' },
+                    { icon: ScrollText, label: 'J5 Plans Center', to: '/mshnctrl/j5-dashboard', permission: 'oplan.view' },
+                    { icon: Layers, label: 'Ontology Matrix', to: '/mshnctrl/ontology', permission: 'ontology.view' },
                 ]
             },
             {
                 label: 'Strategic Planning',
                 items: [
-                    { icon: ScrollText, label: 'OPLAN Manager', to: '/smartops/oplan', permission: 'oplan.view' },
-                    { icon: Shield, label: 'Planning Assumptions', to: '/smartops/assumptions', permission: 'assumptions.view' },
-                    { icon: Map, label: 'Campaign Design', to: '/smartops/campaign', permission: 'campaign.view' },
-                    { icon: Compass, label: 'CONOPS Builder', to: '/smartops/conops', permission: 'conops.view' },
-                    { icon: Divide, label: 'CoA Wargamer', to: '/smartops/coa-wargamer', permission: 'coa.view' },
-                    { icon: Activity, label: 'COG Analysis', to: '/smartops/cog', permission: 'cog.view' },
+                    { icon: ScrollText, label: 'OPLAN Manager', to: '/mshnctrl/oplan', permission: 'oplan.view' },
+                    { icon: Shield, label: 'Planning Assumptions', to: '/mshnctrl/assumptions', permission: 'assumptions.view' },
+                    { icon: Map, label: 'Campaign Design', to: '/mshnctrl/campaign', permission: 'campaign.view' },
+                    { icon: Compass, label: 'CONOPS Builder', to: '/mshnctrl/conops', permission: 'conops.view' },
+                    { icon: Divide, label: 'CoA Wargamer', to: '/mshnctrl/coa-wargamer', permission: 'coa.view' },
+                    { icon: Activity, label: 'COG Analysis', to: '/mshnctrl/cog', permission: 'cog.view' },
                 ]
             },
             {
                 label: 'Coordination & Intel',
                 items: [
-                    { icon: Search, label: 'Uncertainty', to: '/smartops/uncertainty', permission: 'uncertainty.view' },
-                    { icon: Globe, label: 'RXP Overview', to: '/smartops/rxp', permission: 'rxp.view' },
+                    { icon: Search, label: 'Uncertainty', to: '/mshnctrl/uncertainty', permission: 'uncertainty.view' },
+                    { icon: Globe, label: 'RXP Overview', to: '/mshnctrl/rxp', permission: 'rxp.view' },
                     commonItems.cop,
                     commonItems.battleRhythm,
                 ]
@@ -208,16 +209,16 @@ export const getRoleSpecificNav = (role: Role): NavGroup[] => {
             {
                 label: 'LEGAD Dashboard',
                 items: [
-                    { icon: Scale, label: 'Legal Advisory Center', to: '/smartops/legad-dashboard', permission: 'advisory.view' },
+                    { icon: Scale, label: 'Legal Advisory Center', to: '/mshnctrl/legad-dashboard', permission: 'advisory.view' },
                 ]
             },
             {
                 label: 'Legal Reviews',
                 items: [
-                    { icon: Scale, label: 'Advisory Queue', to: '/smartops/advisory', permission: 'advisory.view' },
-                    { icon: Shield, label: 'ROE Management', to: '/smartops/roe', permission: 'roe.view' },
-                    { icon: ShieldCheck, label: 'Decision Board', to: '/smartops/decision-board', permission: 'decision_board.view' },
-                    { icon: Target, label: 'Targeting Review', to: '/smartops/targeting', permission: 'targeting.view' },
+                    { icon: Scale, label: 'Advisory Queue', to: '/mshnctrl/advisory', permission: 'advisory.view' },
+                    { icon: Shield, label: 'ROE Management', to: '/mshnctrl/roe', permission: 'roe.view' },
+                    { icon: ShieldCheck, label: 'Decision Board', to: '/mshnctrl/decision-board', permission: 'decision_board.view' },
+                    { icon: Target, label: 'Targeting Review', to: '/mshnctrl/targeting', permission: 'targeting.view' },
                 ]
             },
             {
@@ -232,48 +233,48 @@ export const getRoleSpecificNav = (role: Role): NavGroup[] => {
             {
                 label: 'Targeting Cell HQ',
                 items: [
-                    { icon: LayoutDashboard, label: 'Targeting Dashboard', to: '/smartops/targeting-cell-dashboard', permission: 'targeting.view' },
+                    { icon: LayoutDashboard, label: 'Targeting Dashboard', to: '/mshnctrl/targeting-cell-dashboard', permission: 'targeting.view' },
                 ]
             },
             {
                 label: 'Targeting Operations',
                 items: [
-                    { icon: Target, label: 'Targets', to: '/smartops/targeting/targets', permission: 'targeting.view' },
-                    { icon: Brain, label: 'Intelligence', to: '/smartops/targeting/intelligence', permission: 'targeting.view' },
-                    { icon: BarChart3, label: 'Effects', to: '/smartops/targeting/effects', permission: 'targeting.view' },
-                    { icon: Zap, label: 'Assets', to: '/smartops/targeting/assets', permission: 'targeting.view' },
-                    { icon: ShieldAlert, label: 'Risk', to: '/smartops/targeting/risk', permission: 'targeting.view' },
-                    { icon: Brain, label: 'Analysis', to: '/smartops/targeting/analysis', permission: 'targeting.view' },
-                    { icon: Users, label: 'Collaboration', to: '/smartops/targeting/collaboration', permission: 'targeting.view' },
-                    { icon: Shield, label: 'Mission Command', to: '/smartops/targeting/mission-command', permission: 'targeting.view' },
+                    { icon: Target, label: 'Targets', to: '/mshnctrl/targeting/targets', permission: 'targeting.view' },
+                    { icon: Brain, label: 'Intelligence', to: '/mshnctrl/targeting/intelligence', permission: 'targeting.view' },
+                    { icon: BarChart3, label: 'Effects', to: '/mshnctrl/targeting/effects', permission: 'targeting.view' },
+                    { icon: Zap, label: 'Assets', to: '/mshnctrl/targeting/assets', permission: 'targeting.view' },
+                    { icon: ShieldAlert, label: 'Risk', to: '/mshnctrl/targeting/risk', permission: 'targeting.view' },
+                    { icon: Brain, label: 'Analysis', to: '/mshnctrl/targeting/analysis', permission: 'targeting.view' },
+                    { icon: Users, label: 'Collaboration', to: '/mshnctrl/targeting/collaboration', permission: 'targeting.view' },
+                    { icon: Shield, label: 'Mission Command', to: '/mshnctrl/targeting/mission-command', permission: 'targeting.view' },
                 ]
             },
             {
                 label: 'Quick Actions',
                 items: [
-                    { icon: ShieldAlert, label: 'Emergency Nomination', to: '/smartops/targeting/emergency', permission: 'targeting.nominate' },
-                    { icon: Target, label: 'My Pending Targets', to: '/smartops/targeting/targets', permission: 'targeting.view' },
-                    { icon: FileCheck, label: 'Today\'s Strike Briefing', to: '/smartops/briefing', permission: 'targeting.view' },
-                    { icon: Package, label: 'Generate Target Package', to: '/smartops/targeting/targets', permission: 'targeting.manage' },
-                    { icon: Activity, label: 'Request CDE Analysis', to: '/smartops/cde', permission: 'targeting.manage' },
+                    { icon: ShieldAlert, label: 'Emergency Nomination', to: '/mshnctrl/targeting/emergency', permission: 'targeting.nominate' },
+                    { icon: Target, label: 'My Pending Targets', to: '/mshnctrl/targeting/targets', permission: 'targeting.view' },
+                    { icon: FileCheck, label: 'Today\'s Strike Briefing', to: '/mshnctrl/briefing', permission: 'targeting.view' },
+                    { icon: Package, label: 'Generate Target Package', to: '/mshnctrl/targeting/targets', permission: 'targeting.manage' },
+                    { icon: Activity, label: 'Request CDE Analysis', to: '/mshnctrl/cde', permission: 'targeting.manage' },
                 ]
             },
             {
                 label: 'Targeting Operations',
                 items: [
-                    { icon: Target, label: 'Targeting Board', to: '/smartops/targeting', permission: 'targeting.view' },
-                    { icon: Crosshair, label: 'BDA Workbench', to: '/smartops/bda', permission: 'bda.view' },
-                    { icon: Shield, label: 'ROE Reference', to: '/smartops/roe', permission: 'roe.view' },
-                    { icon: ShieldAlert, label: 'A2/AD Analysis', to: '/smartops/a2ad', permission: 'a2ad.view' },
-                    { icon: Zap, label: 'Strike Optimizer', to: '/smartops/strike-optimizer', permission: 'strike.view' },
+                    { icon: Target, label: 'Targeting Board', to: '/mshnctrl/targeting', permission: 'targeting.view' },
+                    { icon: Crosshair, label: 'BDA Workbench', to: '/mshnctrl/bda', permission: 'bda.view' },
+                    { icon: Shield, label: 'ROE Reference', to: '/mshnctrl/roe', permission: 'roe.view' },
+                    { icon: ShieldAlert, label: 'A2/AD Analysis', to: '/mshnctrl/a2ad', permission: 'a2ad.view' },
+                    { icon: Zap, label: 'Strike Optimizer', to: '/mshnctrl/strike-optimizer', permission: 'strike.view' },
                 ]
             },
             {
                 label: 'Intelligence Support',
                 items: [
-                    { icon: Globe, label: 'RXP Overview', to: '/smartops/rxp', permission: 'rxp.view' },
+                    { icon: Globe, label: 'RXP Overview', to: '/mshnctrl/rxp', permission: 'rxp.view' },
                     commonItems.orbat,
-                    { icon: Search, label: 'Uncertainty', to: '/smartops/uncertainty', permission: 'uncertainty.view' },
+                    { icon: Search, label: 'Uncertainty', to: '/mshnctrl/uncertainty', permission: 'uncertainty.view' },
                     commonItems.cop,
                 ]
             },
@@ -282,14 +283,14 @@ export const getRoleSpecificNav = (role: Role): NavGroup[] => {
             {
                 label: 'Analyst Workspace',
                 items: [
-                    { icon: Lightbulb, label: 'My Dashboard', to: '/smartops/analyst-dashboard', permission: 'cop.view' },
+                    { icon: Lightbulb, label: 'My Dashboard', to: '/mshnctrl/analyst-dashboard', permission: 'cop.view' },
                 ]
             },
             {
                 label: 'Analysis Tools (Read-Only)',
                 items: [
                     commonItems.cop,
-                    { icon: Globe, label: 'RXP Overview', to: '/smartops/rxp', permission: 'rxp.view' },
+                    { icon: Globe, label: 'RXP Overview', to: '/mshnctrl/rxp', permission: 'rxp.view' },
                     commonItems.orbat,
                     commonItems.weather,
                 ]
@@ -299,19 +300,19 @@ export const getRoleSpecificNav = (role: Role): NavGroup[] => {
             {
                 label: 'Info Management',
                 items: [
-                    { icon: LayoutDashboard, label: 'IM Dashboard', to: '/smartops/information-management', permission: 'cop.view' },
-                    { icon: Settings, label: 'Menu Builder', to: '/smartops/menu-builder', permission: 'menu.manage' },
-                    { icon: Inbox, label: 'RFI Manager', to: '/smartops/rfis', permission: 'rfis.view' },
+                    { icon: LayoutDashboard, label: 'IM Dashboard', to: '/mshnctrl/information-management', permission: 'cop.view' },
+                    { icon: Settings, label: 'Menu Builder', to: '/mshnctrl/menu-builder', permission: 'menu.manage' },
+                    { icon: Inbox, label: 'RFI Manager', to: '/mshnctrl/rfis', permission: 'rfis.view' },
                 ]
             },
             {
                 label: 'Knowledge Base',
                 items: [
-                    { icon: Layers, label: 'Ontology Manager', to: '/smartops/ontology', permission: 'ontology.view' },
-                    { icon: ScrollText, label: 'TOR Manager', to: '/smartops/tor-manager', permission: 'tor.manage' },
-                    { icon: Zap, label: 'Digital Twin', to: '/smartops/digital-twin', permission: 'digital_twin.view' },
-                    { icon: Files, label: 'Document Library', to: '/smartops/documents', permission: 'documents.view' },
-                    { icon: Globe, label: 'RXP Overview', to: '/smartops/rxp', permission: 'rxp.view' },
+                    { icon: Layers, label: 'Ontology Manager', to: '/mshnctrl/ontology', permission: 'ontology.view' },
+                    { icon: ScrollText, label: 'TOR Manager', to: '/mshnctrl/tor-manager', permission: 'tor.manage' },
+                    { icon: Zap, label: 'Digital Twin', to: '/mshnctrl/digital-twin', permission: 'digital_twin.view' },
+                    { icon: Files, label: 'Document Library', to: '/mshnctrl/documents', permission: 'documents.view' },
+                    { icon: Globe, label: 'RXP Overview', to: '/mshnctrl/rxp', permission: 'rxp.view' },
                 ]
             },
             {

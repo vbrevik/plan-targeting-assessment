@@ -26,6 +26,13 @@ impl OntologyService {
         if filter.campaign_id.is_some() {
             query.push_str(" AND campaign_id = ?");
         }
+        if let Some(true) = filter.urgent_only {
+            // Using SQLite JSON extraction to check priority
+            query.push_str(" AND (json_extract(properties, '$.priority') = 'critical' OR json_extract(properties, '$.priority') = 'high')");
+        }
+        if filter.created_after.is_some() {
+            query.push_str(" AND created_at > ?");
+        }
 
         let mut sql_query = sqlx::query_as::<_, Entity>(&query);
 
@@ -37,6 +44,9 @@ impl OntologyService {
         }
         if let Some(camp) = filter.campaign_id {
             sql_query = sql_query.bind(camp);
+        }
+        if let Some(date) = filter.created_after {
+            sql_query = sql_query.bind(date);
         }
 
         let entities = sql_query.fetch_all(&self.pool).await?;
@@ -146,6 +156,35 @@ impl OntologyService {
         .await?;
 
         self.get_entity_only(id).await
+    }
+
+    pub async fn acknowledge_entity(&self, id: &str, req: AcknowledgeEntityRequest) -> Result<Entity> {
+        let entity = self.get_entity_only(id).await?;
+        
+        let mut properties = match entity.properties {
+            Some(p) => p,
+            None => serde_json::json!({}),
+        };
+
+        if let serde_json::Value::Object(ref mut map) = properties {
+            map.insert("acknowledged".to_string(), serde_json::Value::Bool(true));
+            map.insert("acknowledged_at".to_string(), serde_json::Value::String(Utc::now().to_rfc3339()));
+            map.insert("acknowledged_by".to_string(), serde_json::Value::String(req.acknowledged_by));
+        }
+
+        let update_req = UpdateEntityRequest {
+            properties: Some(properties),
+            name: None,
+            description: None,
+            status: None,
+            location_lat: None,
+            location_lng: None,
+            source: None,
+            classification: None,
+            confidence: None,
+        };
+
+        self.update_entity(id, update_req).await
     }
 
     pub async fn delete_entity(&self, id: &str) -> Result<()> {
@@ -345,6 +384,24 @@ impl OntologyService {
                 valid_sources: vec!["Action".to_string()],
                 valid_targets: vec!["Role".to_string()],
             },
+            RelationshipTypeDefinition {
+                name: "leads_to".to_string(),
+                description: "Agenda point leads to a decision".to_string(),
+                valid_sources: vec!["AgendaPoint".to_string()],
+                valid_targets: vec!["Decision".to_string()],
+            },
+            RelationshipTypeDefinition {
+                name: "based_on".to_string(),
+                description: "Decision is based on an assumption".to_string(),
+                valid_sources: vec!["Decision".to_string()],
+                valid_targets: vec!["Assumption".to_string()],
+            },
+            RelationshipTypeDefinition {
+                name: "has_part".to_string(),
+                description: "Hierarchical composition".to_string(),
+                valid_sources: vec!["TOR".to_string()],
+                valid_targets: vec!["AgendaPoint".to_string()],
+            },
         ];
 
         // Add MenuItem and TOR to entity_types
@@ -394,6 +451,16 @@ impl OntologyService {
             properties_schema: None,
         });
 
+        entity_types.push(EntityTypeDefinition {
+            name: "AgendaPoint".to_string(),
+            description: "Discussion item within a TOR or Meeting".to_string(),
+            properties_schema: None,
+        });
+        entity_types.push(EntityTypeDefinition {
+            name: "Assumption".to_string(),
+            description: "Planning assumption with uncertainty".to_string(),
+            properties_schema: None,
+        });
         Ok(OntologySchema {
             version: "1.0.0".to_string(),
             last_updated: Utc::now(),

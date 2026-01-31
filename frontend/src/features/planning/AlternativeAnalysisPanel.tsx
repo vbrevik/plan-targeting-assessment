@@ -6,9 +6,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { Brain, Users, AlertCircle, HelpCircle, GitBranch, Plus } from 'lucide-react';
 import { SecurityBadge } from '@/components/SecurityBadge';
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
-import { AssumptionService } from '@/lib/smartops/services/AssumptionService';
-import type { Assumption, AssumptionStatus } from '@/lib/smartops/domain/assumption';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
+import { AssumptionService } from '@/lib/mshnctrl/services/AssumptionService';
+import type { Assumption, AssumptionStatus } from '@/lib/mshnctrl/domain/assumption';
 
 
 import { cn } from '@/lib/utils';
@@ -221,7 +221,7 @@ export function AlternativeAnalysisPanel() {
           {redTeam.map((rt) => (
             <div
               key={rt.analysisId}
-              onClick={() => navigate({ to: '/smartops/targeting' })}
+              onClick={() => navigate({ to: '/mshnctrl/targeting' })}
               className="p-3 bg-slate-900/50 border border-red-800 rounded hover:bg-slate-800/50 transition-colors cursor-pointer group"
             >
               <div className="mb-2">
@@ -300,7 +300,7 @@ export function AlternativeAnalysisPanel() {
                 <div className="text-sm font-bold text-cyan-400 mb-2">{question.question}</div>
                 <div className="text-xs text-slate-400">{question.context}</div>
                 <button
-                  onClick={() => navigate({ to: '/smartops/targeting/analysis' })}
+                  onClick={() => navigate({ to: '/mshnctrl/targeting/analysis' })}
                   className="mt-2 px-3 py-1 bg-cyan-900/30 hover:bg-cyan-900/50 border border-cyan-700 rounded text-xs font-bold text-cyan-300 uppercase transition-colors cursor-pointer"
                 >
                   Document Response
@@ -340,7 +340,7 @@ export function AlternativeAnalysisPanel() {
           </div>
 
           <button
-            onClick={() => navigate({ to: '/smartops/targeting/analysis' })}
+            onClick={() => navigate({ to: '/mshnctrl/targeting/analysis' })}
             className="mt-3 w-full px-3 py-2 bg-green-900/30 hover:bg-green-900/50 border border-green-700 rounded text-xs font-bold text-green-300 uppercase transition-colors cursor-pointer"
           >
             Access Full Scenario Library

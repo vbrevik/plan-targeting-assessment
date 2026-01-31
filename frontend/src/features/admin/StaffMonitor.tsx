@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { StaffMember, BiometricReading } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { StaffMember, BiometricReading } from '@/lib/mshnctrl/types';
 import { cn } from '@/lib/utils';
 import {
     Users,
@@ -23,8 +23,8 @@ export function StaffMonitor() {
         async function load() {
             setLoading(true);
             const [s, b] = await Promise.all([
-                SmartOpsService.getStaffMembers(),
-                SmartOpsService.getBiometrics()
+                MshnCtrlService.getStaffMembers(),
+                MshnCtrlService.getBiometrics()
             ]);
             setStaff(s);
             setBiometrics(b);

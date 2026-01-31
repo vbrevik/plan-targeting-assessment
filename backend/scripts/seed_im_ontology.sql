@@ -25,11 +25,11 @@ VALUES
 -- Create MenuItem entities
 INSERT OR IGNORE INTO entities (id, type, name, properties, source, status, operation_id, campaign_id, created_at, updated_at)
 VALUES 
-  ('mi-im-dashboard', 'MenuItem', 'IM Dashboard', '{"to": "/smartops/im-dashboard", "icon": "LayoutDashboard", "group": "Information Management", "order": 1}', 'seed', 'active', NULL, NULL, datetime('now'), datetime('now')),
-  ('mi-tor-manager', 'MenuItem', 'TOR Manager', '{"to": "/smartops/tor-manager", "icon": "FileText", "group": "Information Management", "order": 2, "permission": "tor.manage"}', 'seed', 'active', NULL, NULL, datetime('now'), datetime('now')),
-  ('mi-battle-rhythm', 'MenuItem', 'Battle Rhythm', '{"to": "/smartops/battle-rhythm", "icon": "CalendarClock", "group": "Information Management", "order": 3, "permission": "battle_rhythm.view"}', 'seed', 'active', NULL, NULL, datetime('now'), datetime('now')),
-  ('mi-menu-builder', 'MenuItem', 'Menu Builder', '{"to": "/smartops/menu-builder", "icon": "Settings", "group": "Administration", "order": 10, "permission": "menu.manage"}', 'seed', 'active', NULL, NULL, datetime('now'), datetime('now')),
-  ('mi-ontology', 'MenuItem', 'Ontology Manager', '{"to": "/smartops/ontology", "icon": "Layers", "group": "Administration", "order": 11, "permission": "ontology.view"}', 'seed', 'active', NULL, NULL, datetime('now'), datetime('now'));
+  ('mi-im-dashboard', 'MenuItem', 'IM Dashboard', '{"to": "/mshnctrl/im-dashboard", "icon": "LayoutDashboard", "group": "Information Management", "order": 1}', 'seed', 'active', NULL, NULL, datetime('now'), datetime('now')),
+  ('mi-tor-manager', 'MenuItem', 'TOR Manager', '{"to": "/mshnctrl/tor-manager", "icon": "FileText", "group": "Information Management", "order": 2, "permission": "tor.manage"}', 'seed', 'active', NULL, NULL, datetime('now'), datetime('now')),
+  ('mi-battle-rhythm', 'MenuItem', 'Battle Rhythm', '{"to": "/mshnctrl/battle-rhythm", "icon": "CalendarClock", "group": "Information Management", "order": 3, "permission": "battle_rhythm.view"}', 'seed', 'active', NULL, NULL, datetime('now'), datetime('now')),
+  ('mi-menu-builder', 'MenuItem', 'Menu Builder', '{"to": "/mshnctrl/menu-builder", "icon": "Settings", "group": "Administration", "order": 10, "permission": "menu.manage"}', 'seed', 'active', NULL, NULL, datetime('now'), datetime('now')),
+  ('mi-ontology', 'MenuItem', 'Ontology Manager', '{"to": "/mshnctrl/ontology", "icon": "Layers", "group": "Administration", "order": 11, "permission": "ontology.view"}', 'seed', 'active', NULL, NULL, datetime('now'), datetime('now'));
 
 -- Create relationships: MenuItem -> assigned_to -> Role
 INSERT OR IGNORE INTO relationships (id, type, source_id, target_id, metadata, status, operation_id, campaign_id, created_at, updated_at)

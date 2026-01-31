@@ -15,7 +15,7 @@ import {
   Activity
 } from 'lucide-react';
 import { SecurityBadge } from '@/components/SecurityBadge';
-import { targetingApi, type DtlEntry } from '@/lib/smartops/api/targeting.api';
+import { targetingApi, type DtlEntry } from '@/lib/mshnctrl/api/targeting.api';
 import { LoadingSkeleton, ListItemSkeleton } from '../shared/LoadingSkeleton';
 
 interface F3EADStage {

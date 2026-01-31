@@ -14,8 +14,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { BattleRhythmEvent, TermsOfReference, GovernanceSession } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { BattleRhythmEvent, TermsOfReference, GovernanceSession } from '@/lib/mshnctrl/types';
 
 export function IMDashboard() {
     const [events, setEvents] = useState<BattleRhythmEvent[]>([]);
@@ -27,9 +27,9 @@ export function IMDashboard() {
         async function loadData() {
             setLoading(true);
             const [eData, tData, sData] = await Promise.all([
-                SmartOpsService.getBattleRhythmEvents(),
-                SmartOpsService.getTORs(),
-                SmartOpsService.getGovernanceSessions()
+                MshnCtrlService.getBattleRhythmEvents(),
+                MshnCtrlService.getTORs(),
+                MshnCtrlService.getGovernanceSessions()
             ]);
             setEvents(eData);
             setTors(tData);

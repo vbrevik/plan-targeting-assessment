@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import { NaturalDisaster } from '@/lib/smartops/types';
-import { useOperationalContext } from '@/lib/smartops/hooks/useOperationalContext';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import { NaturalDisaster } from '@/lib/mshnctrl/types';
+import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
 import { AlertTriangle, MapPin, Activity, Package } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -16,7 +16,7 @@ export function NaturalDisasterView() {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const data = await SmartOpsService.getNaturalDisasters(context.operationId || undefined);
+                const data = await MshnCtrlService.getNaturalDisasters(context.operationId || undefined);
                 setDisasters(data);
             } catch (err) {
                 console.error('Failed to fetch disasters:', err);

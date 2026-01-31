@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Search, X, Clock, Target, Brain, Zap, BarChart3, AlertTriangle, Users, Shield, History } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 
 interface SearchResult {
   id: string;
@@ -26,15 +26,15 @@ export function QuickSearch() {
 
   // Searchable pages and items
   const searchableItems: SearchResult[] = [
-    { id: 'targets', type: 'page', label: 'Targets', description: 'F3EAD Pipeline, DTL, TST', path: '/smartops/targeting/targets', icon: <Target className="w-4 h-4" /> },
-    { id: 'intelligence', type: 'page', label: 'Intelligence', description: 'Intel Reports, ISR Platforms', path: '/smartops/targeting/intelligence', icon: <Brain className="w-4 h-4" /> },
-    { id: 'effects', type: 'page', label: 'Effects Assessment', description: 'BDA, Re-attack Recommendations', path: '/smartops/targeting/effects', icon: <BarChart3 className="w-4 h-4" /> },
-    { id: 'assets', type: 'page', label: 'Assets & Capabilities', description: 'Strike Platforms, Munitions', path: '/smartops/targeting/assets', icon: <Zap className="w-4 h-4" /> },
-    { id: 'risk', type: 'page', label: 'Risk & Constraints', description: 'High-Risk Targets, Legal Review', path: '/smartops/targeting/risk', icon: <AlertTriangle className="w-4 h-4" /> },
-    { id: 'analysis', type: 'page', label: 'Alternative Analysis', description: 'Assumptions, Bias Alerts', path: '/smartops/targeting/analysis', icon: <Brain className="w-4 h-4" /> },
-    { id: 'collaboration', type: 'page', label: 'Collaboration', description: 'Decision Log, Handovers', path: '/smartops/targeting/collaboration', icon: <Users className="w-4 h-4" /> },
-    { id: 'mission-command', type: 'page', label: 'Mission Command', description: 'Commander Intent, Guidance', path: '/smartops/targeting/mission-command', icon: <Shield className="w-4 h-4" /> },
-    { id: 'dashboard', type: 'page', label: 'Dashboard', description: 'Targeting Cell Operations Center', path: '/smartops/targeting-cell-dashboard', icon: <Target className="w-4 h-4" /> },
+    { id: 'targets', type: 'page', label: 'Targets', description: 'F3EAD Pipeline, DTL, TST', path: '/mshnctrl/targeting/targets', icon: <Target className="w-4 h-4" /> },
+    { id: 'intelligence', type: 'page', label: 'Intelligence', description: 'Intel Reports, ISR Platforms', path: '/mshnctrl/targeting/intelligence', icon: <Brain className="w-4 h-4" /> },
+    { id: 'effects', type: 'page', label: 'Effects Assessment', description: 'BDA, Re-attack Recommendations', path: '/mshnctrl/targeting/effects', icon: <BarChart3 className="w-4 h-4" /> },
+    { id: 'assets', type: 'page', label: 'Assets & Capabilities', description: 'Strike Platforms, Munitions', path: '/mshnctrl/targeting/assets', icon: <Zap className="w-4 h-4" /> },
+    { id: 'risk', type: 'page', label: 'Risk & Constraints', description: 'High-Risk Targets, Legal Review', path: '/mshnctrl/targeting/risk', icon: <AlertTriangle className="w-4 h-4" /> },
+    { id: 'analysis', type: 'page', label: 'Alternative Analysis', description: 'Assumptions, Bias Alerts', path: '/mshnctrl/targeting/analysis', icon: <Brain className="w-4 h-4" /> },
+    { id: 'collaboration', type: 'page', label: 'Collaboration', description: 'Decision Log, Handovers', path: '/mshnctrl/targeting/collaboration', icon: <Users className="w-4 h-4" /> },
+    { id: 'mission-command', type: 'page', label: 'Mission Command', description: 'Commander Intent, Guidance', path: '/mshnctrl/targeting/mission-command', icon: <Shield className="w-4 h-4" /> },
+    { id: 'dashboard', type: 'page', label: 'Dashboard', description: 'Targeting Cell Operations Center', path: '/mshnctrl/targeting-cell-dashboard', icon: <Target className="w-4 h-4" /> },
   ];
 
   // Filter results based on query
@@ -62,27 +62,27 @@ export function QuickSearch() {
           switch (result.type) {
             case 'target':
               icon = <Target className="w-4 h-4" />;
-              path = `/smartops/targeting/targets`; // Could navigate to specific target later
+              path = `/mshnctrl/targeting/targets`; // Could navigate to specific target later
               break;
             case 'bda':
               icon = <BarChart3 className="w-4 h-4" />;
-              path = `/smartops/targeting/effects`;
+              path = `/mshnctrl/targeting/effects`;
               break;
             case 'decision':
               icon = <Users className="w-4 h-4" />;
-              path = `/smartops/targeting/collaboration`;
+              path = `/mshnctrl/targeting/collaboration`;
               break;
             case 'isr_platform':
               icon = <Brain className="w-4 h-4" />;
-              path = `/smartops/targeting/intelligence`;
+              path = `/mshnctrl/targeting/intelligence`;
               break;
             case 'strike_platform':
               icon = <Zap className="w-4 h-4" />;
-              path = `/smartops/targeting/assets`;
+              path = `/mshnctrl/targeting/assets`;
               break;
             default:
               icon = <Target className="w-4 h-4" />;
-              path = '/smartops/targeting-cell-dashboard';
+              path = '/mshnctrl/targeting-cell-dashboard';
           }
 
           return {

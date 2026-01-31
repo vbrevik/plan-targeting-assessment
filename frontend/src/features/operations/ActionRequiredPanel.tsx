@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AlertTriangle, Clock, CheckCircle2, Target, FileEdit, Send, Eye } from 'lucide-react';
 import { SecurityBadge, type ClassificationLevel, type Caveat } from '@/components/SecurityBadge';
 import { Link } from '@tanstack/react-router';
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 
 /**
  * Action Item Types
@@ -93,21 +93,21 @@ export function ActionRequiredPanel() {
                         const actions: ActionButton[] = [];
                         if (item.type === 'cde' && item.target_id) {
                             actions.push(
-                                { label: 'Complete CDE', icon: FileEdit, to: `/smartops/targeting/${item.target_id}/cde`, variant: 'primary' },
-                                { label: 'View Target', icon: Eye, to: `/smartops/targeting/${item.target_id}`, variant: 'secondary' }
+                                { label: 'Complete CDE', icon: FileEdit, to: `/mshnctrl/targeting/${item.target_id}/cde`, variant: 'primary' },
+                                { label: 'View Target', icon: Eye, to: `/mshnctrl/targeting/${item.target_id}`, variant: 'secondary' }
                             );
                         } else if (item.type === 'approval') {
                             actions.push(
-                                { label: 'Review', icon: Eye, to: item.target_id ? `/smartops/targeting/${item.target_id}` : '/smartops/targeting', variant: 'primary' }
+                                { label: 'Review', icon: Eye, to: item.target_id ? `/mshnctrl/targeting/${item.target_id}` : '/mshnctrl/targeting', variant: 'primary' }
                             );
                         } else if (item.type === 'target' && item.target_id) {
                             actions.push(
-                                { label: 'View Target', icon: Eye, to: `/smartops/targeting/${item.target_id}`, variant: 'primary' }
+                                { label: 'View Target', icon: Eye, to: `/mshnctrl/targeting/${item.target_id}`, variant: 'primary' }
                             );
                         } else {
                             // Default actions
                             actions.push(
-                                { label: 'View Details', icon: Eye, to: '/smartops/targeting', variant: 'primary' }
+                                { label: 'View Details', icon: Eye, to: '/mshnctrl/targeting', variant: 'primary' }
                             );
                         }
                         return actions;
@@ -135,8 +135,8 @@ export function ActionRequiredPanel() {
                     assignedToCurrentUser: true,
                     blockers: ['CDE analysis pending'],
                     quickActions: [
-                        { label: 'Complete CDE', icon: FileEdit, to: '/smartops/targeting/cde-request', variant: 'primary' },
-                        { label: 'View Target', icon: Eye, to: '/smartops/targeting', variant: 'secondary' },
+                        { label: 'Complete CDE', icon: FileEdit, to: '/mshnctrl/targeting/cde-request', variant: 'primary' },
+                        { label: 'View Target', icon: Eye, to: '/mshnctrl/targeting', variant: 'secondary' },
                     ],
                     targetId: 'T-2398',
                 },
@@ -152,8 +152,8 @@ export function ActionRequiredPanel() {
                     assignedToCurrentUser: false,
                     blockers: [],
                     quickActions: [
-                        { label: 'Set TOT', icon: Clock, to: '/smartops/targeting', variant: 'primary' },
-                        { label: 'View Details', icon: Eye, to: '/smartops/targeting', variant: 'secondary' },
+                        { label: 'Set TOT', icon: Clock, to: '/mshnctrl/targeting', variant: 'primary' },
+                        { label: 'View Details', icon: Eye, to: '/mshnctrl/targeting', variant: 'secondary' },
                     ],
                     targetId: 'T-2401',
                 },
@@ -168,8 +168,8 @@ export function ActionRequiredPanel() {
                     assignedToCurrentUser: true,
                     blockers: [],
                     quickActions: [
-                        { label: 'Submit', icon: Send, to: '/smartops/targeting/my-targets', variant: 'primary' },
-                        { label: 'Edit', icon: FileEdit, to: '/smartops/targeting/my-targets', variant: 'secondary' },
+                        { label: 'Submit', icon: Send, to: '/mshnctrl/targeting/my-targets', variant: 'primary' },
+                        { label: 'Edit', icon: FileEdit, to: '/mshnctrl/targeting/my-targets', variant: 'secondary' },
                     ],
                 },
             ];

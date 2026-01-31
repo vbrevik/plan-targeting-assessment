@@ -13,8 +13,8 @@ import {
     ArrowRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { ProductReport, UUID } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { ProductReport, UUID } from '@/lib/mshnctrl/types';
 import { Button } from '@/components/ui/button';
 
 export function ProductCenter() {
@@ -30,7 +30,7 @@ export function ProductCenter() {
 
     async function loadReports() {
         setLoading(true);
-        const data = await SmartOpsService.getProductReports();
+        const data = await MshnCtrlService.getProductReports();
         setReports(data);
         setLoading(false);
     }
@@ -53,7 +53,7 @@ export function ProductCenter() {
             timestamp: new Date().toISOString(),
             status: "Aggregated"
         };
-        await SmartOpsService.generateProductReport('Auto-Generated INTELLIGENCE SUMMARY', 'INTREP', content, 'System Gen');
+        await MshnCtrlService.generateProductReport('Auto-Generated INTELLIGENCE SUMMARY', 'INTREP', content, 'System Gen');
         loadReports();
     };
 

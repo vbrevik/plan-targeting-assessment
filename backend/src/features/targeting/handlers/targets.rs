@@ -91,7 +91,8 @@ pub async fn update_target(
     Json(req): Json<UpdateTargetRequest>,
 ) -> Result<impl IntoResponse, StatusCode> {
     // Validate target exists
-    let target = TargetRepository::get_by_id(&pool, &id)
+    let _target = TargetRepository::get_by_id(&pool, &id)
+
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .ok_or(StatusCode::NOT_FOUND)?;

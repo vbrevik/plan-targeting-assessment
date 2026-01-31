@@ -15,8 +15,8 @@ import {
     ShieldCheck
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { RequestForInformation, UUID } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { RequestForInformation, UUID } from '@/lib/mshnctrl/types';
 import { Button } from '@/components/ui/button';
 
 export function RFIManagement() {
@@ -33,7 +33,7 @@ export function RFIManagement() {
 
     async function loadRFIs() {
         setLoading(true);
-        const data = await SmartOpsService.getRFIs();
+        const data = await MshnCtrlService.getRFIs();
         setRfis(data);
         setLoading(false);
     }
@@ -48,13 +48,13 @@ export function RFIManagement() {
 
     const handleSendResponse = async () => {
         if (!selectedRfiId || !responseText.trim()) return;
-        await SmartOpsService.addRFIResponse(selectedRfiId, responseText, 'J3 Ops Chief');
+        await MshnCtrlService.addRFIResponse(selectedRfiId, responseText, 'J3 Ops Chief');
         setResponseText('');
         loadRFIs();
     };
 
     const handleCloseRFI = async (id: UUID) => {
-        await SmartOpsService.updateRFIStatus(id, 'Closed');
+        await MshnCtrlService.updateRFIStatus(id, 'Closed');
         loadRFIs();
     };
 

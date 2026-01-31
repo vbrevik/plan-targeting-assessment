@@ -14,8 +14,8 @@ import {
     Search
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { PMESIIData } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { PMESIIData } from '@/lib/mshnctrl/types';
 
 export function SocialDomain() {
     const [pmesii, setPmesii] = useState<PMESIIData[]>([]);
@@ -25,8 +25,8 @@ export function SocialDomain() {
     useEffect(() => {
         async function loadData() {
             const [pmData] = await Promise.all([
-                SmartOpsService.getPMESIIData(),
-                SmartOpsService.getRecognisedPicture('Social')
+                MshnCtrlService.getPMESIIData(),
+                MshnCtrlService.getRecognisedPicture('Social')
             ]);
             setPmesii(pmData);
             setSelectedArea(pmData[0]?.area || null);

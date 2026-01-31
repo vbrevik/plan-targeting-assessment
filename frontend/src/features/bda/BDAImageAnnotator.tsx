@@ -16,7 +16,7 @@ import {
     ZoomOut,
     Move
 } from 'lucide-react';
-import { BdaApi, type BdaImagery } from '@/lib/smartops/api/bda';
+import { BdaApi, type BdaImagery } from '@/lib/mshnctrl/api/bda';
 import { cn } from '@/lib/utils';
 
 export type AnnotationType = 'rectangle' | 'circle' | 'line' | 'text';

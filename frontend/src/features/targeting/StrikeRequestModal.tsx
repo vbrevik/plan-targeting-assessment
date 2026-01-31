@@ -11,11 +11,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Crosshair, AlertCircle, ShieldAlert } from 'lucide-react';
-import { targetingApi, type Target as ApiTarget } from '@/lib/smartops/api/targeting.api';
+import { targetingApi } from '@/lib/targeting';
+import type { Target } from '@/lib/mshnctrl/types';
 import { useToast } from '@/components/ui/use-toast';
 
 interface StrikeRequestModalProps {
-    target: ApiTarget;
+    target: Target;
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onSuccess: () => void;

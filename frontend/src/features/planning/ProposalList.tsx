@@ -1,6 +1,6 @@
 import { useNavigate } from '@tanstack/react-router';
-import { WorkflowState } from '@/lib/smartops/types';
-import type { Proposal } from '@/lib/smartops/types';
+import { WorkflowState } from '@/lib/mshnctrl/types';
+import type { Proposal } from '@/lib/mshnctrl/types';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { FileText, Clock, CheckCircle2, AlertCircle, ArrowRight } from 'lucide-react';
@@ -36,7 +36,7 @@ export function ProposalList({ proposals }: ProposalListProps) {
             {proposals.map((proposal) => (
                 <div
                     key={proposal.id}
-                    onClick={() => navigate({ to: `/smartops/proposals/$proposalId`, params: { proposalId: proposal.id } })}
+                    onClick={() => navigate({ to: `/mshnctrl/proposals/$proposalId`, params: { proposalId: proposal.id } })}
                     className="group bg-slate-950 border border-slate-800 rounded-2xl p-6 cursor-pointer hover:border-blue-500/50 transition-all hover:shadow-2xl hover:shadow-blue-900/10 relative overflow-hidden"
                 >
                     {/* Decorative accent */}

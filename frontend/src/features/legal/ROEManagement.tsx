@@ -12,9 +12,9 @@ import {
     History,
     TrendingUp
 } from 'lucide-react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { cn } from '@/lib/utils';
-import type { ROE } from '@/lib/smartops/types';
+import type { ROE } from '@/lib/mshnctrl/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -57,7 +57,7 @@ export function ROEManagement() {
             try {
                 // Fetch real ROE data and extend it
                 const [rData] = await Promise.all([
-                    SmartOpsService.getROEs()
+                    MshnCtrlService.getROEs()
                 ]);
 
                 // Enhance data with mock fields for UI demo

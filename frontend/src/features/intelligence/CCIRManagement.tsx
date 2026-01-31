@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { CCIR, CCIRHit, RequirementType, LogicCondition, Unit, Target } from '@/lib/smartops/types';
-import { useOperationalContext } from '@/lib/smartops/hooks/useOperationalContext';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { CCIR, CCIRHit, RequirementType, LogicCondition, Unit, Target } from '@/lib/mshnctrl/types';
+import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
 import { cn } from '@/lib/utils';
 import {
     AlertTriangle,
@@ -52,10 +52,10 @@ export function CCIRManagement() {
     const loadData = async () => {
         setLoading(true);
         const [ccirData, hitsData, unitsData, targetsData] = await Promise.all([
-            SmartOpsService.getCCIRs(),
-            SmartOpsService.getCCIRHits(),
-            SmartOpsService.getOrbat() as Promise<Unit[]>,
-            SmartOpsService.getTargets()
+            MshnCtrlService.getCCIRs(),
+            MshnCtrlService.getCCIRHits(),
+            MshnCtrlService.getOrbat() as Promise<Unit[]>,
+            MshnCtrlService.getTargets()
         ]);
         setCcirs(ccirData);
         setHits(hitsData);
@@ -103,7 +103,7 @@ export function CCIRManagement() {
 
     const handleReqFeedback = async () => {
         if (!selectedCCIR || !feedbackInput.trim()) return;
-        await SmartOpsService.addCCIRFeedback(selectedCCIR.id, feedbackInput);
+        await MshnCtrlService.addCCIRFeedback(selectedCCIR.id, feedbackInput);
         await loadData(); // Reload to see comment
         setFeedbackInput('');
         // Re-select to update view (in real app, use better state sync)
@@ -112,12 +112,12 @@ export function CCIRManagement() {
     };
 
     const handleHitAction = async (hitId: string, action: 'Verified' | 'FalsePositive') => {
-        await SmartOpsService.updateCCIRHitStatus(hitId, action);
+        await MshnCtrlService.updateCCIRHitStatus(hitId, action);
         await loadData();
     };
 
     const handleHitFeedback = async (hitId: string, comment: string) => {
-        await SmartOpsService.addCCIRHitFeedback(hitId, comment);
+        await MshnCtrlService.addCCIRHitFeedback(hitId, comment);
         await loadData();
     };
 

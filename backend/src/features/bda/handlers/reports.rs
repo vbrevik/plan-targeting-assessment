@@ -185,3 +185,16 @@ pub async fn reject_report(
         }
     }
 }
+
+/// Get re-attack recommendations
+pub async fn get_reattack_recommendations(
+    Extension(repo): Extension<Arc<BdaRepository>>,
+) -> impl IntoResponse {
+    match repo.get_re_attack_recommendations().await {
+        Ok(recommendations) => Json(recommendations).into_response(),
+        Err(e) => {
+            tracing::error!("Failed to fetch re-attack recommendations: {:?}", e);
+            (StatusCode::INTERNAL_SERVER_ERROR, "Failed to fetch re-attack recommendations").into_response()
+        }
+    }
+}

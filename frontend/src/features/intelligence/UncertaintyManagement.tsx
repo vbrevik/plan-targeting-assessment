@@ -15,8 +15,8 @@ import {
     XCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { BaseEntity, Unit, Target } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { BaseEntity, Unit, Target } from '@/lib/mshnctrl/types';
 import { assumptionsApi, type Assumption } from '@/lib/assumptions';
 import { Link } from '@tanstack/react-router';
 
@@ -35,15 +35,15 @@ export function UncertaintyManagement() {
     useEffect(() => {
         async function loadData() {
             const [units, targets, assumptions] = await Promise.all([
-                SmartOpsService.getUnits(),
-                SmartOpsService.getTargets(),
+                MshnCtrlService.getUnits(),
+                MshnCtrlService.getTargets(),
                 assumptionsApi.getAll({ status: 'Broken' }).catch(() => [] as Assumption[])
             ]);
 
             const allEntities: (Unit | Target)[] = [...units, ...targets];
 
             const scored = allEntities.map(e => {
-                const report = SmartOpsService.validateEntity(e);
+                const report = MshnCtrlService.validateEntity(e);
                 return {
                     ...e,
                     confidenceScore: report.score,
@@ -153,7 +153,7 @@ export function UncertaintyManagement() {
                     <div className="pt-6 border-t border-slate-800/50 space-y-4">
                         <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest block">Related System</span>
                         <Link
-                            to="/smartops/assumptions"
+                            to="/mshnctrl/assumptions"
                             className="flex items-center justify-between p-3 bg-slate-900/40 border border-slate-800 rounded hover:border-blue-500/40 transition-all group"
                         >
                             <div className="flex items-center gap-2">
@@ -215,7 +215,7 @@ export function UncertaintyManagement() {
                                     <AlertCircle size={14} className="animate-pulse" /> 🚨 Broken Planning Assumptions ({brokenAssumptions.length})
                                 </h2>
                                 <Link
-                                    to="/smartops/assumptions"
+                                    to="/mshnctrl/assumptions"
                                     className="text-[10px] font-black uppercase text-blue-500 hover:text-blue-400 flex items-center gap-1 transition-colors"
                                 >
                                     View All Assumptions
@@ -249,7 +249,7 @@ export function UncertaintyManagement() {
                                     </div>
                                 </div>
                                 <Link
-                                    to="/smartops/assumptions"
+                                    to="/mshnctrl/assumptions"
                                     className="w-full py-2 bg-red-600 hover:bg-red-700 text-white text-[10px] font-black uppercase rounded transition-all shadow-[0_4px_12px_rgba(220,38,38,0.3)] flex items-center justify-center gap-2"
                                 >
                                     <Shield size={14} />

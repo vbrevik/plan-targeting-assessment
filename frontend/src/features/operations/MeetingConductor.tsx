@@ -16,20 +16,23 @@ import {
     ArrowLeft
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { GovernanceSession, TermsOfReference, MeetingRecord, Proposal, UUID } from '@/lib/smartops/types';
 import { useNavigate } from '@tanstack/react-router';
+import { OntologyService, type Entity } from '@/lib/mshnctrl/services/ontology.service';
+import { OntologyService, type Entity } from '@/lib/mshnctrl/services/ontology.service';
+import { toast } from '@/components/ui/use-toast';
+import { DecisionGraph } from './DecisionGraph';
 
 interface MeetingConductorProps {
-    sessionId: UUID;
+    sessionId: string;
 }
 
 export function MeetingConductor({ sessionId }: MeetingConductorProps) {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-    const [session, setSession] = useState<GovernanceSession | null>(null);
-    const [tor, setTor] = useState<TermsOfReference | null>(null);
-    const [proposals, setProposals] = useState<Proposal[]>([]);
+    const [session, setSession] = useState<Entity | null>(null);
+    const [tor, setTor] = useState<Entity | null>(null);
+    // mapped from AgendaPoint entities
+    const [agendaItems, setAgendaItems] = useState<Entity[]>([]);
     const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1);
 
     // Step 1: Logistics
@@ -48,8 +51,14 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
     ]);
 
     // Step 4: Agenda & Decisions
-    const [agendaProgress, setAgendaProgress] = useState<{ item: string; status: 'Covered' | 'Skipped' | 'Deferred'; notes: string }[]>([]);
-    const [decisions, setDecisions] = useState<{ proposalId: string; decision: 'Approved' | 'Rejected' | 'Deferred'; rationale: string; provisos: string }[]>([]);
+    const [agendaProgress, setAgendaProgress] = useState<{ itemId: string; item: string; status: 'Covered' | 'Skipped' | 'Deferred'; notes: string }[]>([]);
+    const [decisions, setDecisions] = useState<{
+        agendaPointId: string;
+        decision: 'Approved' | 'Rejected' | 'Deferred';
+        rationale: string;
+        provisos: string;
+        assumptions: { text: string; confidence: 'HIGH' | 'MEDIUM' | 'LOW' }[]
+    }[]>([]);
 
     // Step 5: Closing
     const [risks, setRisks] = useState<string[]>([]);
@@ -57,76 +66,145 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
     const [newRisk, setNewRisk] = useState('');
     const [newGuidance, setNewGuidance] = useState('');
     const [generalNotes, setGeneralNotes] = useState('');
+    const [generalNotes, setGeneralNotes] = useState('');
     const [publishFrago, setPublishFrago] = useState(false);
+    const [showGraph, setShowGraph] = useState(false);
 
     // Load Data
     useEffect(() => {
         async function loadData() {
             setLoading(true);
-            const s = await SmartOpsService.getGovernanceSession(sessionId);
-            if (!s) {
-                navigate({ to: '/smartops/battle-rhythm' });
-                return;
+            try {
+                // 1. Get Session (Meeting)
+                const s = await OntologyService.getEntity(sessionId);
+                setSession(s);
+
+                // 2. Find Linked TOR (Meeting GOVERNED_BY TOR)
+                // We need to look at outgoing relationships of the Meeting or incoming of TORs
+                // Let's assume we can traverse. For now, we might need to search for a relationship.
+                // Or maybe the Meeting has a property `tor_id`.
+                // If not, we search for relationships:
+                const sessionRelations = await OntologyService.getRelationships({ source_id: sessionId, relation_type: 'GOVERNED_BY' });
+                let foundTor: Entity | null = null;
+
+                if (sessionRelations.length > 0) {
+                    foundTor = await OntologyService.getEntity(sessionRelations[0].target_id);
+                    setTor(foundTor);
+                }
+
+                // 3. Fetch Agenda Points
+                // If we have a TOR, we can get its agenda points (TOR HAS_PART AgendaPoint)
+                // Also Meeting COVERS AgendaPoint might exist if they were added specifically to the meeting.
+                // For this MVP, let's load from TOR.
+                if (foundTor) {
+                    const torRelations = await OntologyService.getRelationships({ source_id: foundTor.id, relation_type: 'HAS_PART' });
+                    const points: Entity[] = [];
+                    for (const r of torRelations) {
+                        try {
+                            const p = await OntologyService.getEntity(r.target_id);
+                            if (p.type === 'AgendaPoint') {
+                                points.push(p);
+                            }
+                        } catch (e) { /* ignore */ }
+                    }
+                    setAgendaItems(points);
+
+                    // Initialize agenda progress
+                    setAgendaProgress(points.map(p => ({
+                        itemId: p.id,
+                        item: p.name,
+                        status: 'Covered',
+                        notes: ''
+                    })));
+                }
+
+                // Initialize Attendance (Mock from properties for now if not real entities)
+                // If TOR has generic 'participants' property
+                if (foundTor?.properties?.participants) {
+                    // assuming simple structure or we just mock it for now as we don't have Person entities fully linked yet
+                } else {
+                    // Default/Mock attendance for demo
+                    setAttendance([
+                        { attendeeName: 'J2 Chief', role: 'J2', status: 'Present' },
+                        { attendeeName: 'J3 Chief', role: 'J3', status: 'Present' },
+                        { attendeeName: 'J5 Chief', role: 'J5', status: 'Present' },
+                        { attendeeName: 'LEGAD', role: 'Legal', status: 'Present' }
+                    ]);
+                }
+
+            } catch (e) {
+                console.error('Failed to load session data', e);
+                toast({ title: 'Error', description: 'Failed to load meeting data', variant: 'destructive' });
+            } finally {
+                setLoading(false);
             }
-            setSession(s);
-
-            // Find TOR
-            const tors = await SmartOpsService.getTORs();
-            // Match by eventId if possible, or title
-            const foundTor = tors.find(t => t.eventId === s.id.replace('gs-', 'bre-')) || tors[0];
-            setTor(foundTor);
-
-            // Fetch Proposals if any
-            if (s.agendaItems && s.agendaItems.length > 0) {
-                const allProposals = await SmartOpsService.getProposals();
-                setProposals(allProposals.filter(p => s.agendaItems?.includes(p.id)));
-            }
-
-            // Initialize from TOR
-            if (foundTor) {
-                setAttendance(foundTor.participants.map(p => ({
-                    attendeeName: 'TBD',
-                    role: p.role,
-                    status: 'Present'
-                })));
-                setAgendaProgress(foundTor.agenda.map(item => ({
-                    item,
-                    status: 'Covered',
-                    notes: ''
-                })));
-            }
-
-            setLoading(false);
         }
         loadData();
     }, [sessionId, navigate]);
 
     const handleSave = async () => {
         if (!session) return;
-        const record: MeetingRecord = {
-            sessionId: session.id,
-            actualStartTime,
-            actualEndTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            rollCall: attendance,
-            readinessStatus: readiness,
-            outcomes: decisions.map(d => ({ ...d, proposalId: d.proposalId, decision: d.decision })),
-            agendaCoverage: agendaProgress,
-            riskAccepted: risks,
-            guidanceIssued: guidance,
-            notes: generalNotes
-        };
-        await SmartOpsService.saveMeetingRecord(record);
 
-        if (publishFrago) {
-            await SmartOpsService.generateProductReport(
-                `FRAGO - Derived from ${session.title}`,
-                'FRAGO',
-                record,
-                'COM JTF (Commander)'
-            );
+        try {
+            // 1. Update Meeting Entity with Logistics/Outcomes
+            await OntologyService.updateEntity(session.id, {
+                properties: {
+                    ...session.properties,
+                    actual_start_time: actualStartTime,
+                    actual_end_time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    roll_call: attendance,
+                    readiness_status: readiness,
+                    risks: risks,
+                    guidance: guidance,
+                    notes: generalNotes
+                }
+            });
+
+            // 2. Save Decisions & Assumptions
+            for (const dec of decisions) {
+                // Create Decision Entity
+                const decisionEntity = await OntologyService.createEntity({
+                    name: `Decision for ${dec.decision}`,
+                    type: 'Decision',
+                    description: dec.rationale,
+                    properties: {
+                        outcome: dec.decision,
+                        provisos: dec.provisos
+                    }
+                });
+
+                // Link AgendaPoint -> LEADS_TO -> Decision
+                await OntologyService.createRelationship({
+                    source_id: dec.agendaPointId,
+                    target_id: decisionEntity.id,
+                    relation_type: 'LEADS_TO'
+                });
+
+                // Create and Link Assumptions
+                for (const ass of dec.assumptions) {
+                    const assumptionEntity = await OntologyService.createEntity({
+                        name: 'Planning Assumption',
+                        type: 'Assumption',
+                        description: ass.text,
+                        properties: { confidence: ass.confidence }
+                    });
+
+                    // Link Decision -> BASED_ON -> Assumption
+                    await OntologyService.createRelationship({
+                        source_id: decisionEntity.id,
+                        target_id: assumptionEntity.id,
+                        relation_type: 'BASED_ON'
+                    });
+                }
+            }
+
+            toast({ title: 'Success', description: 'Meeting record and decisions saved' });
+            navigate({ to: '/mshnctrl/battle-rhythm' });
+
+        } catch (error) {
+            console.error('Failed to save meeting record', error);
+            toast({ title: 'Error', description: 'Failed to save record', variant: 'destructive' });
         }
-
-        navigate({ to: '/smartops/battle-rhythm' });
     };
 
     const renderStepContent = () => {
@@ -143,7 +221,8 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
                                 <div className="space-y-2">
                                     <label className="text-[10px] uppercase text-slate-500 font-black tracking-widest block">Scheduled Time</label>
                                     <div className="text-3xl font-black text-white font-mono tracking-tighter">
-                                        {new Date(session.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                                        {/* TODO: Add proper start_time property to meeting entity */}
+                                        {new Date(session.properties?.start_time || new Date()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
                                     </div>
                                     <p className="text-[10px] text-slate-500 font-bold uppercase">Correction not required for internal log</p>
                                 </div>
@@ -162,7 +241,7 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
                                         <div className="p-3 bg-blue-600/10 rounded-lg border border-blue-500/20">
                                             <MapPin size={24} className="text-blue-500" />
                                         </div>
-                                        {session.location}
+                                        {session.properties?.location || 'TBD'}
                                     </div>
                                 </div>
                             </div>
@@ -349,34 +428,41 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
                                 <p className="text-[10px] text-slate-500 font-bold uppercase">Processing formal proposals requiring commander's decision</p>
                             </div>
                             <div className="px-3 py-1 bg-blue-600/10 border border-blue-500/20 rounded-full">
-                                <span className="text-[10px] font-black text-blue-500 uppercase tracking-wider">{proposals.length} Items Pendìng</span>
+                                <span className="text-[10px] font-black text-blue-500 uppercase tracking-wider">{agendaItems.length} Items Pendìng</span>
                             </div>
                         </div>
 
                         <div className="flex-1 overflow-y-auto space-y-8 pr-4 custom-scrollbar">
                             {/* Decisions Section */}
                             <div className="grid grid-cols-1 gap-6">
-                                {proposals.length === 0 ? (
+                                {agendaItems.length === 0 ? (
                                     <div className="flex flex-col items-center justify-center p-20 border-2 border-dashed border-slate-800 rounded-2xl text-slate-700">
                                         <FileText size={48} className="mb-4 opacity-20" />
-                                        <p className="text-sm font-black uppercase tracking-widest text-center">No proposals awaiting<br />decision in this session</p>
+                                        <p className="text-sm font-black uppercase tracking-widest text-center">No agenda items waiting<br />for decision in this session</p>
                                     </div>
                                 ) : (
-                                    proposals.map(prop => {
-                                        const currentDecision = decisions.find(d => d.proposalId === prop.id);
+                                    agendaItems.map(item => {
+                                        const currentDecision = decisions.find(d => d.agendaPointId === item.id) || {
+                                            agendaPointId: item.id,
+                                            decision: 'Deferred' as const,
+                                            rationale: '',
+                                            provisos: '',
+                                            assumptions: []
+                                        };
+
                                         return (
-                                            <div key={prop.id} className="group relative overflow-hidden bg-slate-900/60 border-2 border-slate-800 rounded-2xl hover:border-blue-500/30 transition-all shadow-xl">
+                                            <div key={item.id} className="group relative overflow-hidden bg-slate-900/60 border-2 border-slate-800 rounded-2xl hover:border-blue-500/30 transition-all shadow-xl">
                                                 <div className="absolute top-0 left-0 w-1 h-full bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.5)]" />
 
                                                 <div className="p-8">
                                                     <div className="flex justify-between items-start gap-8 mb-8">
                                                         <div className="flex-1">
                                                             <div className="flex items-center gap-3 mb-3">
-                                                                <span className="px-2 py-0.5 bg-blue-500/10 text-blue-400 text-[9px] font-black uppercase rounded border border-blue-500/20 tracking-wider">Proposal ID: {prop.id}</span>
-                                                                <span className="px-2 py-0.5 bg-slate-800 text-slate-400 text-[9px] font-black uppercase rounded tracking-wider">{prop.type}</span>
+                                                                <span className="px-2 py-0.5 bg-blue-500/10 text-blue-400 text-[9px] font-black uppercase rounded border border-blue-500/20 tracking-wider">Agenda ID: {item.id.slice(0, 8)}</span>
+                                                                <span className="px-2 py-0.5 bg-slate-800 text-slate-400 text-[9px] font-black uppercase rounded tracking-wider">Item</span>
                                                             </div>
-                                                            <h4 className="text-2xl font-black text-white uppercase tracking-tight leading-tight group-hover:text-blue-400 transition-colors">{prop.title}</h4>
-                                                            <p className="text-xs text-slate-500 font-bold mt-2 uppercase tracking-wide">Origin: J2 Targeting Section | Priority: ALPHA</p>
+                                                            <h4 className="text-2xl font-black text-white uppercase tracking-tight leading-tight group-hover:text-blue-400 transition-colors">{item.name}</h4>
+                                                            <p className="text-xs text-slate-500 font-bold mt-2 uppercase tracking-wide">Description: {item.description || 'No details provided'}</p>
                                                         </div>
 
                                                         <div className="flex flex-col gap-2 shrink-0">
@@ -384,13 +470,21 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
                                                                 <button
                                                                     key={d}
                                                                     onClick={() => {
-                                                                        const newDecs = decisions.filter(x => x.proposalId !== prop.id);
-                                                                        newDecs.push({
-                                                                            proposalId: prop.id,
+                                                                        const existingIndex = decisions.findIndex(x => x.agendaPointId === item.id);
+                                                                        const newDecs = [...decisions];
+                                                                        const newDec = {
+                                                                            agendaPointId: item.id,
                                                                             decision: d as any,
-                                                                            rationale: currentDecision?.rationale || '',
-                                                                            provisos: currentDecision?.provisos || ''
-                                                                        });
+                                                                            rationale: currentDecision.rationale || '',
+                                                                            provisos: currentDecision.provisos || '',
+                                                                            assumptions: currentDecision.assumptions || []
+                                                                        };
+
+                                                                        if (existingIndex >= 0) {
+                                                                            newDecs[existingIndex] = newDec;
+                                                                        } else {
+                                                                            newDecs.push(newDec);
+                                                                        }
                                                                         setDecisions(newDecs);
                                                                     }}
                                                                     className={cn(
@@ -409,19 +503,106 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
 
                                                     <div className={cn(
                                                         "space-y-4 transition-all duration-300 overflow-hidden",
-                                                        currentDecision ? "max-h-96 opacity-100 mt-0" : "max-h-0 opacity-0"
+                                                        currentDecision.decision !== 'Deferred' ? "max-h-[800px] opacity-100 mt-0" : "max-h-0 opacity-0"
                                                     )}>
-                                                        <div className="relative">
-                                                            <label className="text-[10px] font-black text-blue-500 uppercase tracking-widest block mb-2">Commander's Rationale / Instructions</label>
-                                                            <textarea
-                                                                placeholder="Detail why this decision was reached or specify changes required..."
-                                                                value={currentDecision?.rationale || ''}
-                                                                onChange={(e) => {
-                                                                    const newDecs = decisions.map(x => x.proposalId === prop.id ? { ...x, rationale: e.target.value } : x);
-                                                                    setDecisions(newDecs);
-                                                                }}
-                                                                className="w-full h-32 bg-slate-950/50 border-2 border-slate-800 rounded-xl p-4 text-sm text-white focus:border-blue-500 outline-none shadow-inner resize-none transition-all"
-                                                            />
+                                                        <div className="grid grid-cols-2 gap-6">
+                                                            <div>
+                                                                <label className="text-[10px] font-black text-blue-500 uppercase tracking-widest block mb-2">Commander's Rationale</label>
+                                                                <textarea
+                                                                    placeholder="Detail why this decision was reached..."
+                                                                    value={currentDecision?.rationale || ''}
+                                                                    onChange={(e) => {
+                                                                        const existingIndex = decisions.findIndex(x => x.agendaPointId === item.id);
+                                                                        if (existingIndex === -1) return;
+                                                                        const newDecs = [...decisions];
+                                                                        newDecs[existingIndex].rationale = e.target.value;
+                                                                        setDecisions(newDecs);
+                                                                    }}
+                                                                    className="w-full h-32 bg-slate-950/50 border-2 border-slate-800 rounded-xl p-4 text-sm text-white focus:border-blue-500 outline-none shadow-inner resize-none transition-all"
+                                                                />
+                                                            </div>
+
+                                                            {/* Assumptions UI */}
+                                                            <div>
+                                                                <label className="text-[10px] font-black text-amber-500 uppercase tracking-widest block mb-2">Key Assumptions</label>
+                                                                <div className="space-y-2 mb-2">
+                                                                    {currentDecision.assumptions.map((ass, idx) => (
+                                                                        <div key={idx} className="flex items-center gap-2 bg-slate-950 p-2 rounded border border-slate-800">
+                                                                            <span className={cn(
+                                                                                "text-[9px] font-black px-1.5 py-0.5 rounded",
+                                                                                ass.confidence === 'HIGH' ? "bg-emerald-500/20 text-emerald-500" :
+                                                                                    ass.confidence === 'MEDIUM' ? "bg-amber-500/20 text-amber-500" : "bg-red-500/20 text-red-500"
+                                                                            )}>{ass.confidence}</span>
+                                                                            <span className="text-xs text-slate-300 flex-1 truncate">{ass.text}</span>
+                                                                            <button onClick={() => {
+                                                                                const existingIndex = decisions.findIndex(x => x.agendaPointId === item.id);
+                                                                                const newDecs = [...decisions];
+                                                                                newDecs[existingIndex].assumptions.splice(idx, 1);
+                                                                                setDecisions(newDecs);
+                                                                            }}>
+                                                                                <X size={12} className="text-slate-600 hover:text-white" />
+                                                                            </button>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                                <div className="flex gap-2">
+                                                                    <input
+                                                                        id={`asm-input-${item.id}`}
+                                                                        className="flex-1 bg-slate-950 border border-slate-800 rounded px-3 text-xs focus:border-blue-500 outline-none"
+                                                                        placeholder="Add assumption..."
+                                                                        onKeyDown={e => {
+                                                                            if (e.key === 'Enter') {
+                                                                                const val = e.currentTarget.value;
+                                                                                if (!val) return;
+                                                                                const existingIndex = decisions.findIndex(x => x.agendaPointId === item.id);
+                                                                                // If decision object doesn't exist in state yet (just default), we need to add it
+                                                                                let newDecs = [...decisions];
+                                                                                if (existingIndex === -1) {
+                                                                                    newDecs.push({ ...currentDecision, agendaPointId: item.id });
+                                                                                }
+                                                                                const targetIndex = existingIndex === -1 ? newDecs.length - 1 : existingIndex;
+
+                                                                                newDecs[targetIndex].assumptions.push({ text: val, confidence: 'MEDIUM' }); // Default medium
+                                                                                setDecisions(newDecs);
+                                                                                e.currentTarget.value = '';
+                                                                            }
+                                                                        }}
+                                                                    />
+                                                                    <select
+                                                                        id={`asm-conf-${item.id}`}
+                                                                        className="bg-slate-950 border border-slate-800 rounded px-2 text-[10px] font-bold text-slate-400 outline-none"
+                                                                        defaultValue="MEDIUM"
+                                                                    >
+                                                                        <option value="HIGH">HIGH</option>
+                                                                        <option value="MEDIUM">MED</option>
+                                                                        <option value="LOW">LOW</option>
+                                                                    </select>
+                                                                    <button
+                                                                        className="bg-slate-800 hover:bg-slate-700 text-white px-3 rounded text-[10px] font-black uppercase"
+                                                                        onClick={() => {
+                                                                            const input = document.getElementById(`asm-input-${item.id}`) as HTMLInputElement;
+                                                                            const conf = document.getElementById(`asm-conf-${item.id}`) as HTMLSelectElement;
+                                                                            if (!input.value) return;
+
+                                                                            const existingIndex = decisions.findIndex(x => x.agendaPointId === item.id);
+                                                                            let newDecs = [...decisions];
+                                                                            if (existingIndex === -1) {
+                                                                                newDecs.push({ ...currentDecision, agendaPointId: item.id });
+                                                                            }
+                                                                            const targetIndex = existingIndex === -1 ? newDecs.length - 1 : existingIndex;
+
+                                                                            newDecs[targetIndex].assumptions.push({
+                                                                                text: input.value,
+                                                                                confidence: conf.value as any
+                                                                            });
+                                                                            setDecisions(newDecs);
+                                                                            input.value = '';
+                                                                        }}
+                                                                    >
+                                                                        Add
+                                                                    </button>
+                                                                </div>
+                                                            </div>
                                                         </div>
 
                                                         {currentDecision?.decision === 'Approved' && (
@@ -432,7 +613,10 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
                                                                     placeholder="e.g. Only authorized during non-peak civilian hours..."
                                                                     value={currentDecision.provisos}
                                                                     onChange={(e) => {
-                                                                        const newDecs = decisions.map(x => x.proposalId === prop.id ? { ...x, provisos: e.target.value } : x);
+                                                                        const existingIndex = decisions.findIndex(x => x.agendaPointId === item.id);
+                                                                        if (existingIndex === -1) return;
+                                                                        const newDecs = [...decisions];
+                                                                        newDecs[existingIndex].provisos = e.target.value;
                                                                         setDecisions(newDecs);
                                                                     }}
                                                                     className="w-full bg-slate-950/50 border border-emerald-500/30 rounded-lg p-3 text-sm text-white focus:border-emerald-500 outline-none shadow-sm"
@@ -675,7 +859,7 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
             <div className="h-16 flex items-center px-8 border-b border-slate-900 bg-slate-950 shrink-0 justify-between">
                 <div className="flex items-center gap-6">
                     <button
-                        onClick={() => navigate({ to: '/smartops/battle-rhythm' })}
+                        onClick={() => navigate({ to: '/mshnctrl/battle-rhythm' })}
                         className="p-2 hover:bg-slate-900 rounded-lg text-slate-500 hover:text-white transition-all group"
                     >
                         <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
@@ -686,11 +870,11 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
                             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-500 animate-pulse">Session Active</span>
                             <div className="w-1.5 h-1.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
                         </div>
-                        <h1 className="text-xl font-black text-white uppercase tracking-tighter leading-none">{session.title}</h1>
+                        <h1 className="text-xl font-black text-white uppercase tracking-tighter leading-none">{session.name}</h1>
                         {tor && (
                             <div className="flex items-center gap-2 mt-1">
                                 <span className="text-[10px] text-slate-500 font-bold uppercase">Charter:</span>
-                                <span className="text-[10px] text-blue-400 font-black uppercase tracking-tight">{tor.title}</span>
+                                <span className="text-[10px] text-blue-400 font-black uppercase tracking-tight">{tor.name}</span>
                             </div>
                         )}
                     </div>
@@ -700,12 +884,17 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
                     <div className="flex flex-col items-end">
                         <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest mb-0.5">Decision Path</span>
                         <div className="flex items-center gap-3">
-                            <ShieldCheck size={14} className="text-blue-500" />
-                            <span className="text-[10px] font-black text-slate-300 uppercase tracking-tight">Authenticated Governance</span>
+                            <button
+                                onClick={() => setShowGraph(true)}
+                                className="flex items-center gap-2 hover:text-blue-400 transition-colors group"
+                            >
+                                <ShieldCheck size={14} className="text-blue-500 group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)] transition-all" />
+                                <span className="text-[10px] font-black text-slate-300 uppercase tracking-tight group-hover:underline decoration-blue-500/50 underline-offset-4">Trace Logic Graph</span>
+                            </button>
                         </div>
                     </div>
                     <button
-                        onClick={() => navigate({ to: '/smartops/battle-rhythm' })}
+                        onClick={() => navigate({ to: '/mshnctrl/battle-rhythm' })}
                         className="p-3 bg-red-950/20 hover:bg-red-600 hover:text-white text-red-500 rounded-xl border border-red-900/40 transition-all font-black uppercase text-[10px] tracking-widest flex items-center gap-2"
                     >
                         Abort Session <X size={16} />
@@ -763,6 +952,8 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
 
                 {/* Content Area */}
                 <div className="flex-1 flex flex-col bg-slate-950 h-full relative overflow-hidden">
+                    {showGraph && <DecisionGraph sessionId={sessionId} onClose={() => setShowGraph(false)} />}
+
                     {/* Background Gradients */}
                     <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-blue-500/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
                     <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-emerald-500/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2" />

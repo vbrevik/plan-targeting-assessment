@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
-import type { RadioNetwork, ComsecKey } from '@/lib/smartops/types';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { RadioNetwork, ComsecKey } from '@/lib/mshnctrl/types';
 import { cn } from '@/lib/utils';
 import {
     Radio,
@@ -25,8 +25,8 @@ export function CNRManagement() {
     const loadData = async () => {
         setLoading(true);
         const [n, k] = await Promise.all([
-            SmartOpsService.getRadioNetworks(),
-            SmartOpsService.getComsecKeys()
+            MshnCtrlService.getRadioNetworks(),
+            MshnCtrlService.getComsecKeys()
         ]);
         setNetworks(n);
         setKeys(k);
@@ -39,7 +39,7 @@ export function CNRManagement() {
 
     const handleRollover = async (netId: string) => {
         setRollovers({ ...rollovers, [netId]: true });
-        await SmartOpsService.cycleComsecKey(netId);
+        await MshnCtrlService.cycleComsecKey(netId);
         await loadData(); // Refresh after cycle
         setRollovers({ ...rollovers, [netId]: false });
     };

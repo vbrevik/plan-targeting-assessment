@@ -4,7 +4,8 @@ use axum::{
     response::{IntoResponse, Json},
 };
 use serde::Deserialize;
-use sqlx::{Pool, Sqlite, Row};
+use sqlx::{Pool, Sqlite};
+
 use crate::features::targeting::domain::*;
 use crate::features::targeting::repositories::*;
 use crate::features::auth::jwt::Claims;

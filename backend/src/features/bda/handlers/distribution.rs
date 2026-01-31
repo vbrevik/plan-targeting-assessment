@@ -85,7 +85,8 @@ pub async fn distribute_report(
     Json(payload): Json<DistributeReportRequest>,
 ) -> impl IntoResponse {
     // Verify report exists
-    let report = match bda_repo.get_by_id(&report_id).await {
+    let _report = match bda_repo.get_by_id(&report_id).await {
+
         Ok(Some(r)) => r,
         Ok(None) => {
             return (StatusCode::NOT_FOUND, "BDA report not found").into_response();

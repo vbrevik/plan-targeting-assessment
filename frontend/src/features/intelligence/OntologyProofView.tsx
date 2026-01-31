@@ -3,10 +3,11 @@
 // Supports Multi-Operation Context filtering.
 
 import { useState, useMemo, useEffect } from 'react';
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
-import type { Target, Domain, LevelOfWar, OntologySchema } from '@/lib/smartops/api/targeting.api';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
+import type { Target, Domain, LevelOfWar } from '@/lib/mshnctrl/api/targeting.api';
+import { OntologyManager } from '@/features/planning/OntologyManager';
 import { cn } from '@/lib/utils';
-import { Layers, Globe, Zap, Users, Brain, Activity, Filter, Eye } from 'lucide-react';
+import { Layers, Globe, Zap, Users, Brain, Activity, Filter, Network } from 'lucide-react';
 
 interface OntologyProofViewProps {
     mockData?: boolean;
@@ -14,10 +15,9 @@ interface OntologyProofViewProps {
 
 export function OntologyProofView({ mockData = true }: OntologyProofViewProps) {
     const [selectedOp, setSelectedOp] = useState<string>('ALL');
-    const [viewMode, setViewMode] = useState<'MATRIX' | 'LIST'>('MATRIX');
+    const [viewMode, setViewMode] = useState<'MATRIX' | 'LIST' | 'GRAPH'>('MATRIX');
 
     // Dynamic Schema State
-    const [schema, setSchema] = useState<OntologySchema | null>(null);
     const [domains, setDomains] = useState<string[]>(['LAND', 'AIR', 'MARITIME', 'CYBER', 'SPACE']); // Fallback defaults
     const [levels, setLevels] = useState<string[]>(['STRATEGIC', 'OPERATIONAL', 'TACTICAL']); // Fallback defaults
 
@@ -25,7 +25,6 @@ export function OntologyProofView({ mockData = true }: OntologyProofViewProps) {
         const fetchSchema = async () => {
             try {
                 const schemaData = await targetingApi.getOntologySchema();
-                setSchema(schemaData);
                 setDomains(schemaData.domains);
                 setLevels(schemaData.levels_of_war);
             } catch (error) {
@@ -95,6 +94,13 @@ export function OntologyProofView({ mockData = true }: OntologyProofViewProps) {
                             className={cn("px-3 py-1.5 rounded text-xs font-bold transition-all", viewMode === 'LIST' ? "bg-blue-600 text-white shadow" : "text-slate-400 hover:text-white")}
                         >
                             List View
+                        </button>
+                        <button
+                            onClick={() => setViewMode('GRAPH')}
+                            className={cn("px-3 py-1.5 rounded text-xs font-bold transition-all flex items-center gap-2", viewMode === 'GRAPH' ? "bg-blue-600 text-white shadow" : "text-slate-400 hover:text-white")}
+                        >
+                            <Network size={12} />
+                            Graph View
                         </button>
                     </div>
 
@@ -199,6 +205,13 @@ export function OntologyProofView({ mockData = true }: OntologyProofViewProps) {
                             ))}
                         </div>
                     </div>
+                </div>
+            )}
+
+            {/* Graph Visualization */}
+            {viewMode === 'GRAPH' && (
+                <div className="flex-1 overflow-hidden border border-slate-800 rounded-xl bg-slate-900/30 relative">
+                    <OntologyManager />
                 </div>
             )}
         </div>

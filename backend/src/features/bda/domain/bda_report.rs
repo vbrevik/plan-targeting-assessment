@@ -362,6 +362,20 @@ pub struct BdaPhysicalDamageCounts {
     pub d: i64,
 }
 
+/// Re-attack Recommendation View Model
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ReAttackRecommendation {
+    pub bda_report_id: String,
+    pub target_id: String,
+    pub recommendation: Recommendation,
+    pub re_attack_priority: Option<i32>,
+    pub re_attack_rationale: Option<String>,
+    pub physical_damage: Option<PhysicalDamage>,
+    pub functional_damage: Option<FunctionalDamage>,
+    pub confidence_level: f32,
+    pub assessment_date: String,
+}
+
 // ============================================================================
 // BUSINESS LOGIC: Validation and rules
 // ============================================================================

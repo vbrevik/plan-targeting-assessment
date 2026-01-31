@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { Crosshair, MapPin, AlertTriangle, ArrowLeft, Send } from 'lucide-react';
-import { targetingApi } from '@/lib/smartops/api/targeting.api';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 
 export function TargetNominationPage() {
     const navigate = useNavigate();
@@ -50,7 +50,7 @@ export function TargetNominationPage() {
             });
 
             // Navigate to target detail or list
-            navigate({ to: `/smartops/targeting/${result.id}` });
+            navigate({ to: `/mshnctrl/targeting/${result.id}` });
         } catch (err: any) {
             console.error('Failed to nominate target:', err);
             setError(err?.message || 'Failed to create target. Please try again.');
@@ -65,7 +65,7 @@ export function TargetNominationPage() {
             <div className="h-16 px-8 border-b border-slate-800 flex items-center justify-between bg-slate-900/30">
                 <div className="flex items-center gap-6">
                     <button
-                        onClick={() => navigate({ to: '/smartops/targeting' })}
+                        onClick={() => navigate({ to: '/mshnctrl/targeting' })}
                         className="p-2 hover:bg-slate-800 rounded-full transition-colors text-slate-400 hover:text-white"
                     >
                         <ArrowLeft size={20} />
@@ -231,7 +231,7 @@ export function TargetNominationPage() {
                         <div className="flex items-center justify-between pt-6 border-t border-slate-900">
                             <button
                                 type="button"
-                                onClick={() => navigate({ to: '/smartops/targeting' })}
+                                onClick={() => navigate({ to: '/mshnctrl/targeting' })}
                                 className="px-6 py-3 text-xs font-black uppercase text-slate-500 hover:text-white transition-colors tracking-widest"
                             >
                                 Cancel nomination

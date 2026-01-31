@@ -1,6 +1,6 @@
 import { Gavel, AlertTriangle, Clock, ChevronRight, Shield, ShieldAlert } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { Decision, ROEStatus } from '@/lib/smartops/types';
+import type { Decision, ROEStatus } from '@/lib/mshnctrl/types';
 
 interface DecisionCardProps {
     decision: Decision;

@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { Clock, AlertTriangle, MessageSquareWarning, ChevronRight } from 'lucide-react';
 import { DecisionCard } from '../decisions/DecisionCard';
-import type { Decision } from '@/lib/smartops/types';
+import type { Decision } from '@/lib/mshnctrl/types';
 
 
 interface CriticalAttentionZoneProps {
@@ -43,7 +43,7 @@ export function CriticalAttentionZone({
             {/* Campaign Drift Alert */}
             {driftingObjectives.length > 0 && (
                 <Link
-                    to="/smartops/campaign"
+                    to="/mshnctrl/campaign"
                     className="group block p-4 rounded-lg border-2 transition-all cursor-pointer bg-amber-950/20 border-amber-500/40 hover:bg-amber-950/40 hover:border-amber-400"
                 >
                     <div className="flex items-start justify-between mb-2">
@@ -70,7 +70,7 @@ export function CriticalAttentionZone({
             {/* Intel Insights Alert */}
             {newInsights.length > 0 && (
                 <Link
-                    to="/smartops/advisory"
+                    to="/mshnctrl/advisory"
                     className="group block p-4 rounded-lg border-2 transition-all cursor-pointer bg-amber-950/20 border-amber-500/40 hover:bg-amber-950/40 hover:border-amber-400"
                 >
                     <div className="flex items-start justify-between mb-2">

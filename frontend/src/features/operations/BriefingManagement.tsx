@@ -16,9 +16,9 @@ import {
     Check
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { SmartOpsService } from '@/lib/smartops/mock-service';
+import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { cn } from '@/lib/utils';
-import type { Brief } from '@/lib/smartops/types';
+import type { Brief } from '@/lib/mshnctrl/types';
 
 interface AdvisoryStatus {
     legad: 'PENDING' | 'CLEARED' | 'CAVEATED' | 'BLOCKED';
@@ -54,7 +54,7 @@ export function BriefingManagement() {
 
     useEffect(() => {
         async function loadData() {
-            const data = await SmartOpsService.getBriefs() as Brief[];
+            const data = await MshnCtrlService.getBriefs() as Brief[];
             setBriefs(data);
             if (data.length > 0) {
                 setSelectedBrief(data[0]);

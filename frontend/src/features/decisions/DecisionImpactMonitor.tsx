@@ -12,7 +12,7 @@ import {
     Lightbulb
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { DecisionImpactMonitor } from '@/lib/smartops/types';
+import type { DecisionImpactMonitor } from '@/lib/mshnctrl/types';
 
 interface DecisionImpactMonitorProps {
     impactMonitors: DecisionImpactMonitor[];
