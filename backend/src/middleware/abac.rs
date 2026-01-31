@@ -11,7 +11,7 @@ use crate::features::auth::jwt::Claims;
 /// Extractor that requires a specific permission for access
 /// 
 /// Usage:
-/// ```rust
+/// ```ignore
 /// async fn delete_project(
 ///     RequirePermission(user, _): RequirePermission,
 ///     Path(project_id): Path<String>,

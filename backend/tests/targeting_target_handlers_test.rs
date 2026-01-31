@@ -37,6 +37,29 @@ async fn create_test_pool() -> SqlitePool {
     .await
     .expect("Failed to create targets table");
     
+    // Create ontology view (matches production migration)
+    sqlx::query(
+        r#"
+        CREATE VIEW IF NOT EXISTS v_targets_ontology AS
+        SELECT
+            id,
+            name,
+            description,
+            target_type,
+            priority,
+            target_status,
+            coordinates,
+            f3ead_stage,
+            classification,
+            created_at,
+            updated_at
+        FROM targets
+        "#
+    )
+    .execute(&pool)
+    .await
+    .expect("Failed to create v_targets_ontology view");
+    
     pool
 }
 

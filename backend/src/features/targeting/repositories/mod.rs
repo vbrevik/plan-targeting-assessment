@@ -53,6 +53,9 @@ impl TargetRepository {
         } else if let Some(s) = status {
             format!("SELECT id, name, description, target_type, priority, target_status as status, coordinates, f3ead_stage 
                     FROM v_targets_ontology WHERE target_status = '{}' LIMIT {}", s, limit)
+        } else if let Some(p) = priority {
+            format!("SELECT id, name, description, target_type, priority, target_status as status, coordinates, f3ead_stage 
+                    FROM v_targets_ontology WHERE priority = '{}' LIMIT {}", p, limit)
         } else {
             format!("SELECT id, name, description, target_type, priority, target_status as status, coordinates, f3ead_stage 
                     FROM v_targets_ontology LIMIT {}", limit)
@@ -168,8 +171,8 @@ impl DtlRepository {
         
         let id = uuid::Uuid::new_v4().to_string();
         
-        // Calculate combined score using business logic
-        let combined_score = DtlScoring::calculate_combined_score(priority, feasibility);
+        // Note: combined_score is a GENERATED column in SQLite, calculated automatically
+        // from (priority_score + feasibility_score) / 2.0
         
         // Get target creation time to calculate aging
         let target_row = sqlx::query("SELECT created_at FROM targets WHERE id = ?")
@@ -184,12 +187,12 @@ impl DtlRepository {
             0
         };
         
-        sqlx::query("INSERT INTO dtl_entries (id, target_id, priority_score, feasibility_score, combined_score, aging_hours, is_tst) VALUES (?, ?, ?, ?, ?, ?, 0)")
+        // Don't insert combined_score - it's a generated column
+        sqlx::query("INSERT INTO dtl_entries (id, target_id, priority_score, feasibility_score, aging_hours, is_tst) VALUES (?, ?, ?, ?, ?, 0)")
             .bind(&id)
             .bind(target_id)
             .bind(priority)
             .bind(feasibility)
-            .bind(combined_score)
             .bind(aging_hours)
             .execute(pool)
             .await?;

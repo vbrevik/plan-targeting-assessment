@@ -29,7 +29,7 @@ async fn test_target_repository_crud() {
     let pool = create_test_pool().await;
     
     // Create target
-    sqlx::query("INSERT INTO targets (id, name, description, target_type, priority, target_status, classification) VALUES (?, ?, ?, ?, ?, ?, ?)")
+    sqlx::query("INSERT INTO targets (id, name, description, target_type, priority, target_status, classification, coordinates) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
         .bind("test-target-1")
         .bind("Test Target")
         .bind("Test description")
@@ -37,6 +37,7 @@ async fn test_target_repository_crud() {
         .bind("HIGH")
         .bind("Nominated")
         .bind("SECRET")
+        .bind("32.0,44.0")
         .execute(&pool)
         .await
         .expect("Failed to create target");
@@ -78,24 +79,26 @@ async fn test_target_repository_filtering() {
     let pool = create_test_pool().await;
     
     // Create multiple targets with different statuses
-    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification) VALUES (?, ?, ?, ?, ?, ?)")
+    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification, coordinates) VALUES (?, ?, ?, ?, ?, ?, ?)")
         .bind("target-1")
         .bind("Target 1")
         .bind("HPT")
         .bind("HIGH")
         .bind("Nominated")
         .bind("SECRET")
+        .bind("32.0,44.0")
         .execute(&pool)
         .await
         .unwrap();
     
-    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification) VALUES (?, ?, ?, ?, ?, ?)")
+    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification, coordinates) VALUES (?, ?, ?, ?, ?, ?, ?)")
         .bind("target-2")
         .bind("Target 2")
         .bind("HPT")
         .bind("MEDIUM")
         .bind("Approved")
         .bind("SECRET")
+        .bind("33.0,45.0")
         .execute(&pool)
         .await
         .unwrap();
@@ -125,13 +128,14 @@ async fn test_target_repository_pagination() {
     
     // Create multiple targets
     for i in 1..=15 {
-        sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification) VALUES (?, ?, ?, ?, ?, ?)")
+        sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification, coordinates) VALUES (?, ?, ?, ?, ?, ?, ?)")
             .bind(format!("target-{}", i))
             .bind(format!("Target {}", i))
             .bind("HPT")
             .bind("HIGH")
             .bind("Nominated")
             .bind("SECRET")
+            .bind("34.0,46.0")
             .execute(&pool)
             .await
             .unwrap();
@@ -155,24 +159,26 @@ async fn test_target_repository_summary() {
     let pool = create_test_pool().await;
     
     // Create targets with different statuses
-    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification) VALUES (?, ?, ?, ?, ?, ?)")
+    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification, coordinates) VALUES (?, ?, ?, ?, ?, ?, ?)")
         .bind("t1")
         .bind("Target 1")
         .bind("HPT")
         .bind("HIGH")
         .bind("Nominated")
         .bind("SECRET")
+        .bind("35.0,47.0")
         .execute(&pool)
         .await
         .unwrap();
     
-    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification) VALUES (?, ?, ?, ?, ?, ?)")
+    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification, coordinates) VALUES (?, ?, ?, ?, ?, ?, ?)")
         .bind("t2")
         .bind("Target 2")
         .bind("HPT")
         .bind("HIGH")
         .bind("Approved")
         .bind("SECRET")
+        .bind("36.0,48.0")
         .execute(&pool)
         .await
         .unwrap();
@@ -192,13 +198,14 @@ async fn test_dtl_repository_crud() {
     let pool = create_test_pool().await;
     
     // Create target first
-    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))")
+    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification, coordinates, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))")
         .bind("dtl-target-1")
         .bind("DTL Target")
         .bind("HPT")
         .bind("HIGH")
         .bind("Nominated")
         .bind("SECRET")
+        .bind("40.0,52.0")
         .execute(&pool)
         .await
         .unwrap();
@@ -230,13 +237,14 @@ async fn test_dtl_repository_ordering() {
     
     // Create targets
     for i in 1..=3 {
-        sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now', ? || ' hours'))")
+        sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification, coordinates, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now', ? || ' hours'))")
             .bind(format!("dtl-t{}", i))
             .bind(format!("Target {}", i))
             .bind("HPT")
             .bind("HIGH")
             .bind("Nominated")
             .bind("SECRET")
+            .bind("41.0,53.0")
             .bind(-(i as i64)) // Different creation times
             .execute(&pool)
             .await
@@ -276,7 +284,7 @@ async fn test_isr_repository_crud() {
         platform_name: "Test UAV".to_string(),
         callsign: Some("UAV-01".to_string()),
         current_position: Some("35.0,40.0".to_string()),
-        sensor_type: "EO/IR".to_string(),
+        sensor_type: "COMBINED".to_string(),
         sensor_range_km: Some(50.0),
         coverage_area: None,
         status: "ACTIVE".to_string(),
@@ -313,7 +321,7 @@ async fn test_strike_platform_repository_crud() {
     
     let platform = StrikePlatform {
         id: "".to_string(),
-        platform_type: "Fighter".to_string(),
+        platform_type: "FIGHTER".to_string(),
         platform_name: "Test Fighter".to_string(),
         callsign: Some("FIGHTER-01".to_string()),
         unit: Some("Squadron 1".to_string()),
@@ -347,13 +355,13 @@ async fn test_assumption_challenge_repository_filtering() {
     let pool = create_test_pool().await;
     
     // Create assumptions with different statuses
-    AssumptionChallengeRepository::create(&pool, "Assumption 1", 80, "VALIDATED")
+    AssumptionChallengeRepository::create(&pool, "Assumption 1", 80, "VALID")
         .await
         .unwrap();
-    AssumptionChallengeRepository::create(&pool, "Assumption 2", 60, "PENDING")
+    AssumptionChallengeRepository::create(&pool, "Assumption 2", 60, "MONITORING")
         .await
         .unwrap();
-    AssumptionChallengeRepository::create(&pool, "Assumption 3", 70, "VALIDATED")
+    AssumptionChallengeRepository::create(&pool, "Assumption 3", 70, "VALID")
         .await
         .unwrap();
     
@@ -364,10 +372,10 @@ async fn test_assumption_challenge_repository_filtering() {
     assert!(all.len() >= 3);
     
     // Filter by status
-    let validated = AssumptionChallengeRepository::list_all(&pool, Some("VALIDATED"))
+    let validated = AssumptionChallengeRepository::list_all(&pool, Some("VALID"))
         .await
         .expect("Failed to filter by status");
-    assert!(validated.iter().all(|a| a.validation_status == "VALIDATED"));
+    assert!(validated.iter().all(|a| a.validation_status == "VALID"));
     assert_eq!(validated.len(), 2);
 }
 
@@ -376,13 +384,14 @@ async fn test_annotation_repository_crud() {
     let pool = create_test_pool().await;
     
     // Create target first
-    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification) VALUES (?, ?, ?, ?, ?, ?)")
+    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification, coordinates) VALUES (?, ?, ?, ?, ?, ?, ?)")
         .bind("annot-target-1")
         .bind("Annotated Target")
         .bind("HPT")
         .bind("HIGH")
         .bind("Nominated")
         .bind("SECRET")
+        .bind("37.0,49.0")
         .execute(&pool)
         .await
         .unwrap();
@@ -392,7 +401,7 @@ async fn test_annotation_repository_crud() {
         &pool,
         Some("annot-target-1"),
         "Test annotation",
-        "NOTE",
+        "COMMENT",
         false,
         "SECRET",
         "user-1"
@@ -410,7 +419,7 @@ async fn test_annotation_repository_crud() {
     assert!(annotations.len() >= 1);
     let found = annotations.iter().find(|a| a.id == annot_id).unwrap();
     assert_eq!(found.annotation_text, "Test annotation");
-    assert_eq!(found.annotation_type, "NOTE");
+    assert_eq!(found.annotation_type, "COMMENT");
     assert_eq!(found.is_critical, false);
 }
 
@@ -422,13 +431,14 @@ async fn test_repository_transaction_rollback() {
     let mut tx = pool.begin().await.expect("Failed to begin transaction");
     
     // Insert in transaction
-    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification) VALUES (?, ?, ?, ?, ?, ?)")
+    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification, coordinates) VALUES (?, ?, ?, ?, ?, ?, ?)")
         .bind("tx-target-1")
         .bind("Transaction Target")
         .bind("HPT")
         .bind("HIGH")
         .bind("Nominated")
         .bind("SECRET")
+        .bind("38.0,50.0")
         .execute(&mut *tx)
         .await
         .unwrap();
@@ -451,13 +461,14 @@ async fn test_repository_transaction_commit() {
     let mut tx = pool.begin().await.expect("Failed to begin transaction");
     
     // Insert in transaction
-    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification) VALUES (?, ?, ?, ?, ?, ?)")
+    sqlx::query("INSERT INTO targets (id, name, target_type, priority, target_status, classification, coordinates) VALUES (?, ?, ?, ?, ?, ?, ?)")
         .bind("tx-target-2")
         .bind("Committed Target")
         .bind("HPT")
         .bind("HIGH")
         .bind("Nominated")
         .bind("SECRET")
+        .bind("39.0,51.0")
         .execute(&mut *tx)
         .await
         .unwrap();

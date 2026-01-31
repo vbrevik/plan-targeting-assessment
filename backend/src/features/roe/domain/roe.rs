@@ -133,6 +133,7 @@ pub struct CreateROERequestRequest {
 pub struct UpdateROERequestStatusRequest {
     pub status: String,
     pub approved_by: Option<String>,
+
     pub rejection_reason: Option<String>,
     pub roe_reference: Option<String>,
     pub expiration_date: Option<String>,
