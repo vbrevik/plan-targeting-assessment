@@ -1,0 +1,24 @@
+
+> frontend@0.1.1 test:e2e
+> playwright test frontend/tests/monitoring/bda-phase2-verification.spec.ts
+
+🚀 Starting E2E Test Global Setup
+📊 Setting up test database...
+✅ Backend API is accessible
+✅ Global setup complete
+
+Running 2 tests using 1 worker
+
+[1A[2K[1/2] [chromium] › tests/monitoring/bda-phase2-verification.spec.ts:11:5 › BDA Phase 2 Integration - Weaponeering Validation › Should link BDA report to strike and save weaponeering data
+[1A[2K[2/2] [chromium] › tests/monitoring/bda-phase2-verification.spec.ts:71:5 › BDA Phase 2 Integration - Weaponeering Validation › Weapon Performance Summary API should aggregate Phase 2 data
+🧹 Starting E2E Test Global Teardown
+📊 Cleaning up test database...
+📈 Test execution complete
+📊 Reports available in playwright-report/
+✅ Global teardown complete
+[1A[2K  2 passed (1.4s)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m

@@ -1,0 +1,404 @@
+use axum::{
+    extract::{Path, Query, State, Extension},
+    http::StatusCode,
+    response::{IntoResponse, Json},
+};
+use serde::Deserialize;
+use std::sync::Arc;
+use core_auth::jwt::Claims;
+use crate::features::targeting::domain::*;
+use crate::features::targeting::router::TargetingState;
+use core_ontology::OntologyService;
+use core_ontology::{EntityFilter, CreateEntityRequest, UpdateEntityRequest};
+use super::common::TargetQueryParams;
+
+// ============================================================================
+// CONVERTER FUNCTIONS: Entity ↔ Target
+// ============================================================================
+
+/// Convert Entity to Target for backward compatibility
+fn entity_to_target(entity: core_ontology::Entity) -> Result<Target, StatusCode> {
+    if entity.type_ != "TARGET" {
+        return Err(StatusCode::INTERNAL_SERVER_ERROR);
+    }
+    
+    let props = entity.properties.as_ref()
+        .ok_or(StatusCode::INTERNAL_SERVER_ERROR)?;
+    
+    Ok(Target {
+        id: entity.id,
+        name: entity.name,
+        description: entity.description,
+        target_type: props.get("target_type")
+            .and_then(|v| v.as_str())
+            .unwrap_or("TGT")
+            .to_string(),
+        priority: props.get("priority")
+            .and_then(|v| v.as_str())
+            .unwrap_or("MEDIUM")
+            .to_string(),
+        target_status: entity.status.unwrap_or_else(|| "Nominated".to_string()),
+        coordinates: props.get("coordinates")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_string(),
+        f3ead_stage: props.get("f3ead_stage")
+            .and_then(|v| v.as_str())
+            .map(|s| s.to_string()),
+    })
+}
+
+/// Convert TargetQueryParams to EntityFilter for ontology queries
+fn query_params_to_filter(params: &TargetQueryParams) -> EntityFilter {
+    EntityFilter {
+        type_: Some("TARGET".to_string()),
+        operation_id: None,
+        campaign_id: None,
+        urgent_only: None,
+        created_after: None,
+    }
+}
+
+pub async fn list_targets(
+    State(state): State<TargetingState>,
+    Query(params): Query<TargetQueryParams>,
+) -> Result<impl IntoResponse, StatusCode> {
+    // Query through ontology service instead of direct table access
+    let filter = EntityFilter {
+        type_: Some("TARGET".to_string()),
+        operation_id: None,
+        campaign_id: None,
+        urgent_only: None,
+        created_after: None,
+    };
+    
+    let entities = state.ontology_svc.get_entities(filter)
+        .await
+        .map_err(|e| {
+            tracing::error!("Failed to list targets via ontology: {:?}", e);
+            StatusCode::INTERNAL_SERVER_ERROR
+        })?;
+    
+    // Convert entities back to Target format for backward compatibility
+    let targets: Vec<Target> = entities.into_iter()
+        .filter_map(|e| entity_to_target(e).ok())
+        .collect();
+    
+    Ok(Json(targets))
+}
+
+pub async fn create_target(
+    State(ontology_svc): State<Arc<OntologyService>>,
+    Extension(_claims): Extension<Claims>,
+    Json(req): Json<CreateTargetRequest>,
+) -> Result<impl IntoResponse, StatusCode> {
+    // Validate required fields
+    if req.name.is_empty() || req.target_type.is_empty() || req.priority.is_empty() || req.coordinates.is_empty() {
+        return Err(StatusCode::BAD_REQUEST);
+    }
+    
+    // Validate target_type enum
+    let valid_types = ["HPT", "TST", "HVT", "TGT"];
+    if !valid_types.contains(&req.target_type.as_str()) {
+        return Err(StatusCode::BAD_REQUEST);
+    }
+    
+    // Validate priority enum
+    let valid_priorities = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
+    if !valid_priorities.contains(&req.priority.as_str()) {
+        return Err(StatusCode::BAD_REQUEST);
+    }
+    
+    // Default classification if not provided
+    let classification = if req.classification.is_empty() {
+        "SECRET"
+    } else {
+        &req.classification
+    };
+    
+    // Create entity via ontology service
+    let properties = serde_json::json!({
+        "target_type": req.target_type,
+        "priority": req.priority,
+        "coordinates": req.coordinates,
+        "f3ead_stage": "FIND"
+    });
+    
+    let entity_req = CreateEntityRequest {
+        id: None,
+        operation_id: None,
+        campaign_id: None,
+        name: req.name.clone(),
+        type_: "TARGET".to_string(),
+        description: req.description.clone(),
+        status: Some("Nominated".to_string()),
+        location_lat: None,
+        location_lng: None,
+        properties: Some(properties),
+        source: None,
+        classification: Some(classification.to_string()),
+        confidence: Some(1.0),
+    };
+    
+    let entity = ontology_svc.create_entity(entity_req)
+        .await
+        .map_err(|e| {
+            tracing::error!("Failed to create target via ontology: {:?}", e);
+            StatusCode::INTERNAL_SERVER_ERROR
+        })?;
+    
+    Ok((StatusCode::CREATED, Json(serde_json::json!({
+        "id": entity.id,
+        "message": "Target created successfully"
+    }))))
+}
+
+pub async fn get_target(
+    State(ontology_svc): State<Arc<OntologyService>>,
+    Path(id): Path<String>,
+) -> Result<impl IntoResponse, StatusCode> {
+    // Query entity via ontology service
+    let entity = ontology_svc.get_entity_only(&id)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    
+    // Verify it's a TARGET entity
+    if entity.type_ != "TARGET" {
+        return Err(StatusCode::NOT_FOUND);
+    }
+    
+    let target = entity_to_target(entity)?;
+    Ok(Json(target))
+}
+
+pub async fn update_target(
+    State(ontology_svc): State<Arc<OntologyService>>,
+    Path(id): Path<String>,
+    Json(req): Json<UpdateTargetRequest>,
+) -> Result<impl IntoResponse, StatusCode> {
+    // Verify target exists
+    let entity = ontology_svc.get_entity_only(&id)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    
+    if entity.type_ != "TARGET" {
+        return Err(StatusCode::NOT_FOUND);
+    }
+    
+    // Validate priority if provided
+    if let Some(ref p) = req.priority {
+        let valid_priorities = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
+        if !valid_priorities.contains(&p.as_str()) {
+            return Err(StatusCode::BAD_REQUEST);
+        }
+    }
+    
+    // Validate target_status if provided
+    if let Some(ref s) = req.target_status {
+        let valid_statuses = ["Nominated", "Validated", "Approved", "Engaged", "Assessed"];
+        if !valid_statuses.contains(&s.as_str()) {
+            return Err(StatusCode::BAD_REQUEST);
+        }
+    }
+    
+    // Update entity via ontology service
+    let mut updated_props = entity.properties.clone().unwrap_or(serde_json::json!({}));
+    
+    if let Some(name) = &req.name {
+        // Update name at entity level
+    }
+    if let Some(priority) = &req.priority {
+        updated_props["priority"] = serde_json::json!(priority);
+    }
+    
+    let update_req = UpdateEntityRequest {
+        name: req.name.clone(),
+        description: None,
+        status: req.target_status.clone(),
+        location_lat: None,
+        location_lng: None,
+        properties: Some(updated_props),
+        source: None,
+        classification: None,
+        confidence: None,
+    };
+    
+    let updated = ontology_svc.update_entity(&id, update_req)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    
+    let target = entity_to_target(updated)?;
+    Ok(Json(target))
+}
+
+pub async fn delete_target(
+    State(state): State<TargetingState>,
+    Path(id): Path<String>,
+) -> Result<impl IntoResponse, StatusCode> {
+    state.ontology_svc.delete_entity(&id)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    Ok(StatusCode::NO_CONTENT)
+}
+
+pub async fn get_target_timeline(
+    State(state): State<TargetingState>,
+    Path(id): Path<String>,
+) -> Result<impl IntoResponse, StatusCode> {
+    // ONTOLOGY-FIRST: Fetch target entity and its relationships from ontology
+    let entity = state.ontology_svc.get_entity_only(&id)
+        .await
+        .map_err(|_| StatusCode::NOT_FOUND)?;
+    
+    if entity.type_ != "TARGET" {
+        return Err(StatusCode::NOT_FOUND);
+    }
+
+    // Build timeline from entity metadata
+    // For now, return creation timestamp and basic timeline
+    let mut timeline: Vec<serde_json::Value> = Vec::new();
+    
+    if let Some(created_at) = entity.created_at {
+        timeline.push(serde_json::json!({
+            "timestamp": created_at.to_rfc3339(),
+            "type": "TARGET_CREATED",
+            "description": format!("Target {} created", entity.name),
+            "actor": "system",
+        }));
+    }
+    
+    // Get relationships involving this target (e.g., ASSESSES, MONITORS)
+    if let Ok(entity_with_rels) = state.ontology_svc.get_entity_with_relationships(&id).await {
+        // Include outgoing relationships
+        for rel in &entity_with_rels.outgoing_relationships {
+            timeline.push(serde_json::json!({
+                "timestamp": rel.created_at.map(|t| t.to_rfc3339()).unwrap_or_default(),
+                "type": format!("{}_OUTGOING", rel.relation_type),
+                "description": format!("Related via {}", rel.relation_type),
+                "actor": "system",
+            }));
+        }
+        
+        // Include incoming relationships
+        for rel in &entity_with_rels.incoming_relationships {
+            timeline.push(serde_json::json!({
+                "timestamp": rel.created_at.map(|t| t.to_rfc3339()).unwrap_or_default(),
+                "type": format!("{}_INCOMING", rel.relation_type),
+                "description": format!("Related via {}", rel.relation_type),
+                "actor": "system",
+            }));
+        }
+    }
+    
+    Ok(Json(timeline))
+}
+
+#[derive(Debug, Deserialize)]
+pub struct AdvanceStageRequest {
+    pub new_stage: String,
+}
+
+pub async fn advance_f3ead_stage(
+    State(state): State<TargetingState>,
+    Path(id): Path<String>,
+    Json(req): Json<AdvanceStageRequest>,
+) -> Result<impl IntoResponse, StatusCode> {
+    use crate::features::targeting::services::validate_f3ead_transition;
+    
+    // ONTOLOGY-FIRST: Get current target entity from ontology
+    let entity = state.ontology_svc.get_entity_only(&id)
+        .await
+        .map_err(|_| StatusCode::NOT_FOUND)?;
+    
+    if entity.type_ != "TARGET" {
+        return Err(StatusCode::NOT_FOUND);
+    }
+    
+    // Get current F3EAD stage from target properties (defaults to "FIND" if not set)
+    let current_stage = entity.properties
+        .as_ref()
+        .and_then(|p| p.get("f3ead_stage"))
+        .and_then(|v| v.as_str())
+        .unwrap_or("FIND");
+    
+    // Validate transition
+    validate_f3ead_transition(current_stage, &req.new_stage)
+        .map_err(|e| {
+            eprintln!("F3EAD transition validation failed: {}", e);
+            StatusCode::BAD_REQUEST
+        })?;
+    
+    // Update target's F3EAD stage through ontology service
+    let mut updated_props = entity.properties.clone().unwrap_or(serde_json::json!({}));
+    updated_props["f3ead_stage"] = serde_json::json!(req.new_stage.clone());
+    
+    state.ontology_svc.update_entity(&id, UpdateEntityRequest {
+        name: None,
+        description: None,
+        status: None,
+        location_lat: None,
+        location_lng: None,
+        source: None,
+        properties: Some(updated_props),
+        classification: None,
+        confidence: None,
+    })
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    
+    Ok((StatusCode::OK, Json(serde_json::json!({
+        "message": "F3EAD stage advanced",
+        "target_id": id,
+        "new_stage": req.new_stage
+    }))))
+}
+
+pub async fn get_targeting_summary(
+    State(state): State<TargetingState>,
+) -> Result<impl IntoResponse, StatusCode> {
+    // ONTOLOGY-FIRST: Query all TARGET entities from ontology
+    let filter = EntityFilter {
+        type_: Some("TARGET".to_string()),
+        operation_id: None,
+        campaign_id: None,
+        urgent_only: None,
+        created_after: None,
+    };
+    
+    let entities = state.ontology_svc.get_entities(filter)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    
+    let mut summary = serde_json::json!({
+        "total_targets": entities.len(),
+        "by_status": {},
+        "by_stage": {},
+    });
+    
+    // Aggregate targets by status and F3EAD stage
+    for entity in entities {
+        if let Some(status) = &entity.status {
+            *summary.get_mut("by_status").unwrap()
+                .as_object_mut().unwrap()
+                .entry(status.clone()).or_insert(serde_json::json!(0)) =
+                serde_json::json!(
+                    summary.get("by_status").unwrap().get(status)
+                        .and_then(|v| v.as_i64()).unwrap_or(0) + 1
+                );
+        }
+        
+        if let Some(props) = &entity.properties {
+            if let Some(stage) = props.get("f3ead_stage").and_then(|v| v.as_str()) {
+                *summary.get_mut("by_stage").unwrap()
+                    .as_object_mut().unwrap()
+                    .entry(stage.to_string()).or_insert(serde_json::json!(0)) =
+                    serde_json::json!(
+                        summary.get("by_stage").unwrap().get(stage)
+                            .and_then(|v| v.as_i64()).unwrap_or(0) + 1
+                    );
+            }
+        }
+    }
+    
+    Ok(Json(summary))
+}

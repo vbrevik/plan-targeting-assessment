@@ -1,8 +1,8 @@
 use axum::{routing::get, Json, Router, extract::State};
 use serde::Serialize;
 
-use crate::features::auth::service::AuthService;
-use crate::features::auth::service::AuthError;
+use core_auth::AuthService;
+use core_users::AuthError;
 
 pub fn dashboard_routes() -> Router<AuthService> {
     Router::new()

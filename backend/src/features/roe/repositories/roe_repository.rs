@@ -26,6 +26,8 @@ impl ROERepository {
         let id = Uuid::new_v4().to_string();
         let now = chrono::Utc::now().to_rfc3339();
 
+        // 1. Create the ROE Request (stored in separate table for now, or could be Entity)
+        // Keeping as separate table per architecture decision to minimize risk
         sqlx::query(
             r#"
             INSERT INTO roe_requests (
@@ -50,19 +52,13 @@ impl ROERepository {
         .execute(&self.pool)
         .await?;
 
-        // Update decision with roe_request_id
-        sqlx::query(
-            r#"
-            UPDATE decisions
-            SET roe_request_id = $1, roe_status = 'roe_pending_approval', updated_at = $2
-            WHERE id = $3
-            "#,
-        )
-        .bind(&id)
-        .bind(&now)
-        .bind(&req.decision_id)
-        .execute(&self.pool)
-        .await?;
+        // 2. Update the Decision Entity properties
+        self.update_decision_roe_status(
+            &req.decision_id,
+            Some("roe_pending_approval"),
+            None,
+            Some(&id)
+        ).await?;
 
         // Fetch and return the created request
         self.get_roe_request_by_id(&id).await
@@ -151,7 +147,7 @@ impl ROERepository {
         .execute(&self.pool)
         .await?;
 
-        // Update decision ROE status based on request status
+        // Determine new decision ROE status
         let decision_roe_status = match status {
             ROERequestStatus::Approved => "roe_approved",
             ROERequestStatus::Rejected => "roe_rejected",
@@ -165,32 +161,26 @@ impl ROERepository {
             .await?;
         let decision_id: String = decision_id_row.get("decision_id");
 
-        // Update decision
-        sqlx::query(
-            r#"
-            UPDATE decisions
-            SET roe_status = $1, updated_at = $2
-            WHERE id = $3
-            "#,
-        )
-        .bind(decision_roe_status)
-        .bind(&now)
-        .bind(&decision_id)
-        .execute(&self.pool)
-        .await?;
+        // Update decision entity
+        self.update_decision_roe_status(
+            &decision_id,
+            Some(decision_roe_status),
+            None,
+            None
+        ).await?;
 
         self.get_roe_request_by_id(id).await
     }
 
-    /// Get decision ROE status
+    /// Get decision ROE status from Entity properties
     pub async fn get_decision_roe_status(
         &self,
         decision_id: &str,
     ) -> Result<(Option<String>, Option<String>, Option<String>), sqlx::Error> {
         let row = sqlx::query(
             r#"
-            SELECT roe_status, roe_notes, roe_request_id
-            FROM decisions
+            SELECT properties
+            FROM entities
             WHERE id = $1
             "#,
         )
@@ -199,16 +189,22 @@ impl ROERepository {
         .await?;
 
         match row {
-            Some(r) => Ok((
-                r.get("roe_status"),
-                r.get("roe_notes"),
-                r.get("roe_request_id"),
-            )),
+            Some(r) => {
+                let props_str: String = r.get("properties");
+                let props: serde_json::Value = serde_json::from_str(&props_str)
+                    .map_err(|e| sqlx::Error::ColumnDecode { index: "properties".to_string(), source: Box::new(e) })?;
+                
+                let roe_status = props.get("roe_status").and_then(|v| v.as_str()).map(String::from);
+                let roe_notes = props.get("roe_notes").and_then(|v| v.as_str()).map(String::from);
+                let roe_request_id = props.get("roe_request_id").and_then(|v| v.as_str()).map(String::from);
+                
+                Ok((roe_status, roe_notes, roe_request_id))
+            },
             None => Ok((None, None, None)),
         }
     }
 
-    /// Update decision ROE status
+    /// Update decision ROE status via JSON modification in SQLite
     pub async fn update_decision_roe_status(
         &self,
         decision_id: &str,
@@ -216,26 +212,39 @@ impl ROERepository {
         roe_notes: Option<&str>,
         roe_request_id: Option<&str>,
     ) -> Result<(), sqlx::Error> {
-        let now = chrono::Utc::now().to_rfc3339();
-
-        sqlx::query(
-            r#"
-            UPDATE decisions
-            SET roe_status = COALESCE($1, roe_status),
-                roe_notes = COALESCE($2, roe_notes),
-                roe_request_id = COALESCE($3, roe_request_id),
-                updated_at = $4
-            WHERE id = $5
-            "#,
-        )
-        .bind(roe_status)
-        .bind(roe_notes)
-        .bind(roe_request_id)
-        .bind(&now)
-        .bind(decision_id)
-        .execute(&self.pool)
-        .await?;
-
+        let mut tx = self.pool.begin().await?;
+        
+        // 1. Fetch current properties
+        let row = sqlx::query("SELECT properties FROM entities WHERE id = $1")
+            .bind(decision_id)
+            .fetch_optional(&mut *tx)
+            .await?;
+            
+        if let Some(r) = row {
+            let props_str: String = r.get("properties");
+            let mut props: serde_json::Value = serde_json::from_str(&props_str)
+                .unwrap_or(serde_json::json!({}));
+                
+            // 2. Modify properties
+            if let Some(s) = roe_status {
+                props["roe_status"] = serde_json::json!(s);
+            }
+            if let Some(n) = roe_notes {
+                props["roe_notes"] = serde_json::json!(n);
+            }
+            if let Some(rid) = roe_request_id {
+                props["roe_request_id"] = serde_json::json!(rid);
+            }
+            
+            // 3. Update properties
+            sqlx::query("UPDATE entities SET properties = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2")
+                .bind(props.to_string())
+                .bind(decision_id)
+                .execute(&mut *tx)
+                .await?;
+        }
+        
+        tx.commit().await?;
         Ok(())
     }
 
@@ -277,27 +286,45 @@ impl ROERepository {
         Ok(rows.iter().map(|r| self.row_to_roe_request(r)).collect())
     }
 
-    /// Get decision info for ROE determination
+    /// Get decision info from Entity for ROE determination
     pub async fn get_decision_info(
         &self,
         decision_id: &str,
     ) -> Result<Option<DecisionInfo>, sqlx::Error> {
+        tracing::info!("Looking for decision entity with ID: {}", decision_id);
+        
         let row = sqlx::query(
             r#"
-            SELECT id, title, description, category
-            FROM decisions
+            SELECT id, name, description, properties
+            FROM entities
             WHERE id = $1
             "#,
         )
         .bind(decision_id)
         .fetch_optional(&self.pool)
         .await?;
+        
+        if row.is_none() {
+            tracing::warn!("Decision entity not found for ID: {}", decision_id);
+        } else {
+            tracing::debug!("Found decision entity for ID: {}", decision_id);
+        }
 
-        Ok(row.map(|r| DecisionInfo {
-            id: r.get("id"),
-            title: r.get("title"),
-            description: r.get::<Option<String>, _>("description").unwrap_or_default(),
-            category: r.get("category"),
+        Ok(row.map(|r| {
+            let props_str: String = r.get("properties");
+            let props: serde_json::Value = serde_json::from_str(&props_str).unwrap_or(serde_json::json!({}));
+            
+            let category = props.get("category")
+                .and_then(|v| v.as_str())
+                .unwrap_or("general")
+                .to_string();
+                
+            DecisionInfo {
+                id: r.get("id"),
+                title: r.get("name"),
+                description: r.get::<Option<String>, _>("description").unwrap_or_default(),
+                category,
+            }
         }))
     }
 

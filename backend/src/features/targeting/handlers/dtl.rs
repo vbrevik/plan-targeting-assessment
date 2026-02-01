@@ -4,26 +4,27 @@ use axum::{
     response::{IntoResponse, Json},
 };
 use serde::Deserialize;
+use crate::features::targeting::router::TargetingState;
 use sqlx::{Pool, Sqlite};
 use crate::features::targeting::domain::*;
 use crate::features::targeting::repositories::*;
 use super::common::TargetQueryParams;
 
 pub async fn list_dtl(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Query(params): Query<TargetQueryParams>,
 ) -> Result<impl IntoResponse, StatusCode> {
-    let entries = DtlRepository::list_all(&pool, params.limit)
+    let entries = DtlRepository::list_all(&state.pool, params.limit)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     Ok(Json(entries))
 }
 
 pub async fn create_dtl_entry(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Json(req): Json<CreateDtlEntryRequest>,
 ) -> Result<impl IntoResponse, StatusCode> {
-    let id = DtlRepository::create(&pool, &req.target_id, req.priority_score, req.feasibility_score)
+    let id = DtlRepository::create(&state.pool, &req.target_id, req.priority_score, req.feasibility_score)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     Ok((StatusCode::CREATED, Json(serde_json::json!({"id": id}))))
@@ -36,7 +37,7 @@ pub struct UpdatePriorityRequest {
 }
 
 pub async fn update_dtl_priority(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Path(id): Path<String>,
     Json(req): Json<UpdatePriorityRequest>,
 ) -> Result<impl IntoResponse, StatusCode> {
@@ -66,7 +67,7 @@ pub async fn update_dtl_priority(
     .bind(req.feasibility_score)
     .bind(combined_score)
     .bind(&id)
-    .execute(&pool)
+    .execute(&state.pool)
     .await
     .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     
@@ -74,9 +75,9 @@ pub async fn update_dtl_priority(
 }
 
 pub async fn get_active_tsts(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
 ) -> Result<impl IntoResponse, StatusCode> {
-    let tsts = DtlRepository::get_active_tsts(&pool)
+    let tsts = DtlRepository::get_active_tsts(&state.pool)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     Ok(Json(tsts))

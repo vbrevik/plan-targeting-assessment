@@ -34,6 +34,17 @@ tower_governor = "0.4.2"
 governor = "0.6.3"
 sysinfo = "0.37.2"
 printpdf = "0.8"
+async-recursion = "1.0"
+c2-server = { path = "../modules/c2-ctrl/crates/c2-server" }
+admn-server = { path = "../modules/admn-ctrl/crates/admn-server" }
+core-auth = { path = "../modules/bcknd-ctrl/crates/core-auth" }
+core-users = { path = "../modules/bcknd-ctrl/crates/core-users" }
+core-abac = { path = "../modules/bcknd-ctrl/crates/core-abac" }
+core-ontology = { path = "../modules/bcknd-ctrl/crates/core-ontology" }
+core-system = { path = "../modules/bcknd-ctrl/crates/core-system" }
+core-discovery = { path = "../modules/bcknd-ctrl/crates/core-discovery" }
+core-rate-limit = { path = "../modules/bcknd-ctrl/crates/core-rate-limit" }
+core-common-types = { path = "../modules/bcknd-ctrl/crates/core-common-types" }
 
 [dev-dependencies]
 reqwest = "0.11"

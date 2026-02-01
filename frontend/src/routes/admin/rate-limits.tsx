@@ -43,7 +43,7 @@ function RateLimitsPage() {
 
     const loadRules = async () => {
         try {
-            const res = await fetch('/api/rate-limits/rules', { credentials: 'include' })
+            const res = await fetch('/api/admin/rate-limits/rules', { credentials: 'include' })
             if (res.ok) {
                 setRules(await res.json())
             }
@@ -54,7 +54,7 @@ function RateLimitsPage() {
 
     const loadTokens = async () => {
         try {
-            const res = await fetch('/api/rate-limits/bypass-tokens', { credentials: 'include' })
+            const res = await fetch('/api/admin/rate-limits/bypass-tokens', { credentials: 'include' })
             if (res.ok) {
                 setTokens(await res.json())
             }
@@ -80,7 +80,7 @@ function RateLimitsPage() {
 
     const saveRule = async (ruleId: string) => {
         try {
-            const res = await fetch(`/api/rate-limits/rules/${ruleId}`, {
+            const res = await fetch(`/api/admin/rate-limits/rules/${ruleId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
@@ -101,7 +101,7 @@ function RateLimitsPage() {
 
     const toggleRule = async (ruleId: string, enabled: boolean) => {
         try {
-            const res = await fetch(`/api/rate-limits/rules/${ruleId}`, {
+            const res = await fetch(`/api/admin/rate-limits/rules/${ruleId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
@@ -119,7 +119,7 @@ function RateLimitsPage() {
 
     const resetCounters = async (ruleId: string) => {
         try {
-            const res = await fetch(`/api/rate-limits/rules/${ruleId}/reset`, {
+            const res = await fetch(`/api/admin/rate-limits/rules/${ruleId}/reset`, {
                 method: 'POST',
                 credentials: 'include',
             })
@@ -134,7 +134,7 @@ function RateLimitsPage() {
 
     const createToken = async () => {
         try {
-            const res = await fetch('/api/rate-limits/bypass-tokens', {
+            const res = await fetch('/api/admin/rate-limits/bypass-tokens', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',

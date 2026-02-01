@@ -1,6 +1,15 @@
 import { api } from '@/lib/api';
-import type { UUID } from '../types';
+import type {
+    UUID,
+    OntologyEntity,
+    TargetEntity,
+    BdaReportEntity,
+} from '../types';
 
+/**
+ * @deprecated Use OntologyEntity from types.ts instead
+ * Legacy interface for backward compatibility
+ */
 export interface Entity {
     id: UUID;
     operation_id?: string;
@@ -76,8 +85,13 @@ export const OntologyService = {
         return api.get<EntityWithRelationships>(`/ontology/entities/${id}`);
     },
 
-    getRelationships: async (): Promise<EntityRelationship[]> => {
-        return api.get<EntityRelationship[]>('/ontology/relationships');
+    getRelationships: async (filter?: { source_id?: string; target_id?: string; relation_type?: string }): Promise<EntityRelationship[]> => {
+        const params: Record<string, string> = {};
+        if (filter?.source_id) params.source_id = filter.source_id;
+        if (filter?.target_id) params.target_id = filter.target_id;
+        if (filter?.relation_type) params.relation_type = filter.relation_type;
+
+        return api.get<EntityRelationship[]>('/ontology/relationships', params);
     },
 
     getNeighbors: async (id: UUID): Promise<Entity[]> => {
@@ -102,5 +116,57 @@ export const OntologyService = {
 
     acknowledgeEntity: async (id: UUID, acknowledged_by: string): Promise<Entity> => {
         return api.post<Entity>(`/ontology/entities/${id}/acknowledge`, { acknowledged_by });
-    }
+    },
+
+    // ========================================================================
+    // PHASE 3: Type-safe entity methods
+    // ========================================================================
+
+    /**
+     * Get targets as strongly-typed TargetEntity objects
+     * @param filter - Entity filter with type automatically set to 'TARGET'
+     * @returns Array of TargetEntity with type-safe properties
+     */
+    getTargets: async (filter?: Omit<EntityFilter, 'type'>): Promise<TargetEntity[]> => {
+        const params: Record<string, string> = { type_: 'TARGET' };
+        if (filter?.operation_id) params.operation_id = filter.operation_id;
+        if (filter?.campaign_id) params.campaign_id = filter.campaign_id;
+        if (filter?.urgent_only) params.urgent_only = 'true';
+        if (filter?.created_after) params.created_after = filter.created_after;
+
+        return api.get<TargetEntity[]>('/ontology/entities', params);
+    },
+
+    /**
+     * Get BDA reports as strongly-typed BdaReportEntity objects
+     * @param filter - Entity filter with type automatically set to 'BDA_REPORT'
+     * @returns Array of BdaReportEntity with type-safe properties
+     */
+    getBdaReports: async (filter?: Omit<EntityFilter, 'type'>): Promise<BdaReportEntity[]> => {
+        const params: Record<string, string> = { type_: 'BDA_REPORT' };
+        if (filter?.operation_id) params.operation_id = filter.operation_id;
+        if (filter?.campaign_id) params.campaign_id = filter.campaign_id;
+        if (filter?.urgent_only) params.urgent_only = 'true';
+        if (filter?.created_after) params.created_after = filter.created_after;
+
+        return api.get<BdaReportEntity[]>('/ontology/entities', params);
+    },
+
+    /**
+     * Get single target by ID as strongly-typed TargetEntity
+     * @param id - Target entity ID
+     * @returns TargetEntity with type-safe properties
+     */
+    getTarget: async (id: UUID): Promise<TargetEntity> => {
+        return api.get<TargetEntity>(`/ontology/entities/${id}`);
+    },
+
+    /**
+     * Get single BDA report by ID as strongly-typed BdaReportEntity
+     * @param id - BDA report entity ID
+     * @returns BdaReportEntity with type-safe properties
+     */
+    getBdaReport: async (id: UUID): Promise<BdaReportEntity> => {
+        return api.get<BdaReportEntity>(`/ontology/entities/${id}`);
+    },
 };

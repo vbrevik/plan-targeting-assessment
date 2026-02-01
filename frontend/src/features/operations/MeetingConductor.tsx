@@ -18,9 +18,10 @@ import {
 import { cn } from '@/lib/utils';
 import { useNavigate } from '@tanstack/react-router';
 import { OntologyService, type Entity } from '@/lib/mshnctrl/services/ontology.service';
-import { OntologyService, type Entity } from '@/lib/mshnctrl/services/ontology.service';
 import { toast } from '@/components/ui/use-toast';
 import { DecisionGraph } from './DecisionGraph';
+import { MeetingsApi } from '@/lib/mshnctrl/api/meetings.api';
+import { decisionsApi } from '@/lib/mshnctrl/api/decisions.api';
 
 interface MeetingConductorProps {
     sessionId: string;
@@ -66,7 +67,6 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
     const [newRisk, setNewRisk] = useState('');
     const [newGuidance, setNewGuidance] = useState('');
     const [generalNotes, setGeneralNotes] = useState('');
-    const [generalNotes, setGeneralNotes] = useState('');
     const [publishFrago, setPublishFrago] = useState(false);
     const [showGraph, setShowGraph] = useState(false);
 
@@ -75,41 +75,56 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
         async function loadData() {
             setLoading(true);
             try {
-                // 1. Get Session (Meeting)
-                const s = await OntologyService.getEntity(sessionId);
-                setSession(s);
+                const details = await MeetingsApi.getMeetingDetails(sessionId);
 
-                // 2. Find Linked TOR (Meeting GOVERNED_BY TOR)
-                // We need to look at outgoing relationships of the Meeting or incoming of TORs
-                // Let's assume we can traverse. For now, we might need to search for a relationship.
-                // Or maybe the Meeting has a property `tor_id`.
-                // If not, we search for relationships:
-                const sessionRelations = await OntologyService.getRelationships({ source_id: sessionId, relation_type: 'GOVERNED_BY' });
-                let foundTor: Entity | null = null;
+                // Map Meeting to Entity-like structure for local state compatibility
+                const sessionEntity: Entity = {
+                    id: details.meeting.id,
+                    name: details.meeting.title,
+                    type: 'Event',
+                    description: details.meeting.description,
+                    properties: {
+                        ...details.meeting.properties,
+                        start_time: details.meeting.start_time,
+                        end_time: details.meeting.end_time,
+                        location: details.meeting.location,
+                        status: details.meeting.status,
+                        chair: (details.meeting.properties as any)?.chair || 'J3' // Ensure chair property is preserved
+                    }
+                } as any; // Cast as any if strictly checking Entity type vs our partial shape
 
-                if (sessionRelations.length > 0) {
-                    foundTor = await OntologyService.getEntity(sessionRelations[0].target_id);
-                    setTor(foundTor);
+                setSession(sessionEntity);
+
+                // Map TOR
+                if (details.tor) {
+                    const torEntity: Entity = {
+                        id: details.tor.id,
+                        name: details.tor.title,
+                        type: 'TOR',
+                        description: details.tor.text,
+                        properties: details.tor.properties
+                    } as any;
+                    setTor(torEntity);
                 }
 
-                // 3. Fetch Agenda Points
-                // If we have a TOR, we can get its agenda points (TOR HAS_PART AgendaPoint)
-                // Also Meeting COVERS AgendaPoint might exist if they were added specifically to the meeting.
-                // For this MVP, let's load from TOR.
-                if (foundTor) {
-                    const torRelations = await OntologyService.getRelationships({ source_id: foundTor.id, relation_type: 'HAS_PART' });
-                    const points: Entity[] = [];
-                    for (const r of torRelations) {
-                        try {
-                            const p = await OntologyService.getEntity(r.target_id);
-                            if (p.type === 'AgendaPoint') {
-                                points.push(p);
-                            }
-                        } catch (e) { /* ignore */ }
+                // Map Agenda Points
+                const points: Entity[] = details.agenda_points.map(ap => ({
+                    id: ap.id,
+                    name: ap.title,
+                    type: 'AgendaPoint',
+                    description: '', // Desc not explicitly returned in overview list?
+                    properties: {
+                        ...ap.properties,
+                        presenter: ap.presenter,
+                        duration: ap.duration_minutes,
+                        order: ap.order
                     }
-                    setAgendaItems(points);
+                } as any));
 
-                    // Initialize agenda progress
+                setAgendaItems(points);
+
+                // Initialize agenda progress
+                if (points.length > 0) {
                     setAgendaProgress(points.map(p => ({
                         itemId: p.id,
                         item: p.name,
@@ -118,19 +133,26 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
                     })));
                 }
 
-                // Initialize Attendance (Mock from properties for now if not real entities)
-                // If TOR has generic 'participants' property
-                if (foundTor?.properties?.participants) {
-                    // assuming simple structure or we just mock it for now as we don't have Person entities fully linked yet
-                } else {
-                    // Default/Mock attendance for demo
-                    setAttendance([
-                        { attendeeName: 'J2 Chief', role: 'J2', status: 'Present' },
-                        { attendeeName: 'J3 Chief', role: 'J3', status: 'Present' },
-                        { attendeeName: 'J5 Chief', role: 'J5', status: 'Present' },
-                        { attendeeName: 'LEGAD', role: 'Legal', status: 'Present' }
-                    ]);
+                // Map Decisions
+                if (details.decisions && details.decisions.length > 0) {
+                    const mappedDecisions = details.decisions.map((d: any) => ({
+                        agendaPointId: d.source_id,
+                        decision: (d.status.charAt(0).toUpperCase() + d.status.slice(1)) as any,
+                        rationale: d.description || '',
+                        provisos: d.properties?.provisos || '',
+                        assumptions: [] // Assumptions fetch logic can be added later
+                    }));
+                    setDecisions(mappedDecisions);
                 }
+
+                // Initialize Attendance from TOR participants if available
+                // For MVP we still mock if not populated
+                setAttendance([
+                    { attendeeName: 'J2 Chief', role: 'J2', status: 'Present' },
+                    { attendeeName: 'J3 Chief', role: 'J3', status: 'Present' },
+                    { attendeeName: 'J5 Chief', role: 'J5', status: 'Present' },
+                    { attendeeName: 'LEGAD', role: 'Legal', status: 'Present' }
+                ]);
 
             } catch (e) {
                 console.error('Failed to load session data', e);
@@ -160,27 +182,20 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
                 }
             });
 
-            // 2. Save Decisions & Assumptions
+            // 2. Save Decisions & Link Assumptions
             for (const dec of decisions) {
-                // Create Decision Entity
-                const decisionEntity = await OntologyService.createEntity({
+                // Create Decision via Dedicated API
+                const decisionResult = await decisionsApi.createDecision({
                     name: `Decision for ${dec.decision}`,
-                    type: 'Decision',
                     description: dec.rationale,
+                    source_id: dec.agendaPointId,
                     properties: {
                         outcome: dec.decision,
                         provisos: dec.provisos
                     }
                 });
 
-                // Link AgendaPoint -> LEADS_TO -> Decision
-                await OntologyService.createRelationship({
-                    source_id: dec.agendaPointId,
-                    target_id: decisionEntity.id,
-                    relation_type: 'LEADS_TO'
-                });
-
-                // Create and Link Assumptions
+                // Create and Link Assumptions (Still using OntologyService for now as specific API is not yet built)
                 for (const ass of dec.assumptions) {
                     const assumptionEntity = await OntologyService.createEntity({
                         name: 'Planning Assumption',
@@ -191,7 +206,7 @@ export function MeetingConductor({ sessionId }: MeetingConductorProps) {
 
                     // Link Decision -> BASED_ON -> Assumption
                     await OntologyService.createRelationship({
-                        source_id: decisionEntity.id,
+                        source_id: decisionResult.id,
                         target_id: assumptionEntity.id,
                         relation_type: 'BASED_ON'
                     });

@@ -3,23 +3,24 @@ use axum::{
     http::StatusCode,
     response::{IntoResponse, Json},
 };
+use crate::features::targeting::router::TargetingState;
 use sqlx::{Pool, Sqlite};
 use crate::features::targeting::domain::*;
 use crate::features::targeting::repositories::*;
 use super::common::PlatformQueryParams;
 
 pub async fn list_isr_platforms(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Query(params): Query<PlatformQueryParams>,
 ) -> Result<impl IntoResponse, StatusCode> {
-    let platforms = IsrRepository::list_all(&pool, params.status.as_deref())
+    let platforms = IsrRepository::list_all(&state.pool, params.status.as_deref())
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     Ok(Json(platforms))
 }
 
 pub async fn create_isr_platform(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Json(req): Json<CreateIsrPlatformRequest>,
 ) -> Result<impl IntoResponse, StatusCode> {
     let platform = IsrPlatform {
@@ -42,19 +43,19 @@ pub async fn create_isr_platform(
         updated_at: String::new(),
     };
     
-    let id = IsrRepository::create(&pool, &platform)
+    let id = IsrRepository::create(&state.pool, &platform)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     Ok((StatusCode::CREATED, Json(serde_json::json!({"id": id}))))
 }
 
 pub async fn get_isr_coverage(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
 ) -> Result<impl IntoResponse, StatusCode> {
     // Get active ISR platforms and their coverage areas
     // For now, return basic coverage summary (full spatial analysis requires geographic library)
     
-    let platforms = IsrRepository::list_all(&pool, Some("ACTIVE"))
+    let platforms = IsrRepository::list_all(&state.pool, Some("ACTIVE"))
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     
@@ -90,9 +91,9 @@ pub async fn get_isr_coverage(
 }
 
 pub async fn get_pattern_of_life(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
 ) -> Result<impl IntoResponse, StatusCode> {
-    let reports = IsrRepository::get_pattern_of_life(&pool)
+    let reports = IsrRepository::get_pattern_of_life(&state.pool)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     Ok(Json(reports))

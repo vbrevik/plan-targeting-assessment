@@ -5,8 +5,8 @@ use axum::{
     response::{IntoResponse, Response},
     Json,
 };
-use crate::features::abac::AbacService;
-use crate::features::auth::jwt::Claims;
+use core_abac::AbacService;
+use core_auth::jwt::Claims;
 
 /// Extractor that requires a specific permission for access
 /// 

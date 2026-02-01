@@ -10,6 +10,7 @@ pub struct Entity {
     pub campaign_id: Option<String>,
     pub name: String,
     #[sqlx(rename = "type")]
+    #[serde(rename = "type")]
     pub type_: String,
     pub description: Option<String>,
     pub status: Option<String>,
@@ -122,4 +123,94 @@ pub struct RelationshipTypeDefinition {
     pub description: String,
     pub valid_sources: Vec<String>,
     pub valid_targets: Vec<String>,
+}
+
+// ============================================================================
+// PHASE 4: GRAPH TRAVERSAL MODELS
+// ============================================================================
+
+/// Traversal algorithm type
+#[derive(Debug, Deserialize, Clone)]
+#[serde(rename_all = "lowercase")]
+pub enum TraversalAlgorithm {
+    Bfs,  // Breadth-first search
+    Dfs,  // Depth-first search
+}
+
+/// Direction for graph traversal
+#[derive(Debug, Deserialize, Clone)]
+#[serde(rename_all = "lowercase")]
+pub enum TraversalDirection {
+    Outgoing,  // Follow edges from source
+    Incoming,  // Follow edges to target
+    Both,      // Follow both directions
+}
+
+/// Request for graph traversal
+#[derive(Debug, Deserialize)]
+pub struct TraverseRequest {
+    pub start_entity_id: String,
+    pub algorithm: TraversalAlgorithm,
+    #[serde(default = "default_max_hops")]
+    pub max_hops: usize,
+    pub relationship_types: Option<Vec<String>>,
+    #[serde(default = "default_direction")]
+    pub direction: TraversalDirection,
+}
+
+fn default_max_hops() -> usize {
+    3
+}
+
+fn default_direction() -> TraversalDirection {
+    TraversalDirection::Both
+}
+
+/// Response from graph traversal
+#[derive(Debug, Serialize)]
+pub struct TraverseResponse {
+    pub start_entity_id: String,
+    pub paths: Vec<TraversalPath>,
+    pub total_entities_visited: usize,
+    pub total_relationships_traversed: usize,
+}
+
+/// A path through the graph
+#[derive(Debug, Serialize, Clone)]
+pub struct TraversalPath {
+    pub entities: Vec<Entity>,
+    pub relationships: Vec<EntityRelationship>,
+    pub depth: usize,
+}
+
+/// Request for impact analysis
+#[derive(Debug, Deserialize)]
+pub struct ImpactAnalysisRequest {
+    pub entity_id: String,
+    #[serde(default = "default_impact_hops")]
+    pub upstream_hops: usize,
+    #[serde(default = "default_impact_hops")]
+    pub downstream_hops: usize,
+    pub relationship_types: Option<Vec<String>>,
+}
+
+fn default_impact_hops() -> usize {
+    2
+}
+
+/// Response from impact analysis
+#[derive(Debug, Serialize)]
+pub struct ImpactAnalysisResponse {
+    pub entity_id: String,
+    pub upstream_dependencies: Vec<EntityImpact>,
+    pub downstream_dependencies: Vec<EntityImpact>,
+    pub total_affected_entities: usize,
+}
+
+/// Impact of an entity in the dependency graph
+#[derive(Debug, Serialize, Clone)]
+pub struct EntityImpact {
+    pub entity: Entity,
+    pub hop_distance: usize,
+    pub relationship_path: Vec<String>,
 }

@@ -5,11 +5,11 @@ use axum::{
     http::StatusCode,
     response::Json,
 };
-use crate::features::auth::jwt::Claims;
+use core_auth::jwt::Claims;
 use axum::Extension;
 use serde::Serialize;
-use crate::features::ontology::OntologyService;
-use crate::features::abac::AbacService;
+use core_ontology::OntologyService;
+use core_abac::AbacService;
 
 #[derive(Debug, Serialize, Clone)]
 pub struct ActionItem {
@@ -89,7 +89,7 @@ async fn build_navigation_for_roles(
 ) -> Result<Json<Vec<SidebarGroup>>, StatusCode> {
     
     // 1. Query ontology for all MenuItem entities
-    let menu_filter = crate::features::ontology::models::EntityFilter {
+    let menu_filter = core_ontology::EntityFilter {
         type_: Some("MenuItem".to_string()),
         operation_id: None,
         campaign_id: None,
@@ -126,7 +126,7 @@ async fn build_navigation_for_roles(
     }
 
     // 2. Query all Action entities for caching
-    let action_filter = crate::features::ontology::models::EntityFilter {
+    let action_filter = core_ontology::EntityFilter {
         type_: Some("Action".to_string()),
         operation_id: None,
         campaign_id: None,
@@ -137,7 +137,7 @@ async fn build_navigation_for_roles(
         .unwrap_or_default();
 
     // 3. Query all Dataset entities for caching
-    let dataset_filter = crate::features::ontology::models::EntityFilter {
+    let dataset_filter = core_ontology::EntityFilter {
         type_: Some("Dataset".to_string()),
         operation_id: None,
         campaign_id: None,

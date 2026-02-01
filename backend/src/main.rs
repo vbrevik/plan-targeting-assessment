@@ -1,7 +1,7 @@
 use std::net::SocketAddr;
 use std::sync::Arc;
 use axum::{Router, routing::get};
-use crate::features::auth::service::AuthService;
+use core_auth::AuthService;
 use tower_http::cors::{CorsLayer, Any};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use sqlx::sqlite::SqlitePoolOptions;
@@ -25,13 +25,21 @@ async fn main() {
     config::init();
     // Load config into a mutable variable so we can inject generated key material if needed.
     // If loading fails, dump the runtime `config/default.toml` (if present) to help debugging.
-    let mut config = match config::Config::from_env() {
-        Ok(cfg) => cfg,
-        Err(e) => {
-            eprintln!("Failed to load config: {}", e);
+    let mut config = match std::env::var("DATABASE_URL") {
+        Ok(database_url) => {
+            config::Config {
+                database_url,
+                jwt_secret: std::env::var("JWT_SECRET").unwrap_or_else(|_| "default_secret".to_string()),
+                jwt_expiry: std::env::var("JWT_EXPIRY").ok().and_then(|v| v.parse().ok()).unwrap_or(3600),
+                refresh_token_expiry: std::env::var("REFRESH_TOKEN_EXPIRY").ok().and_then(|v| v.parse().ok()).unwrap_or(604800),
+                jwt_private_key: String::new(), // Will be loaded from file later
+                jwt_public_key: String::new(),  // Will be loaded from file later
+            }
+        },
+        Err(_) => {
+            // Try to parse the default TOML manually as a fallback
             if let Ok(s) = std::fs::read_to_string("config/default.toml") {
-                eprintln!("Contents of config/default.toml:\n{}", s);
-                // Try to parse the default TOML manually as a fallback
+                eprintln!("DATABASE_URL not found in environment, loading from config/default.toml");
                 match toml::from_str::<config::Config>(&s) {
                     Ok(cfg) => {
                         eprintln!("Parsed config/default.toml successfully via toml::from_str, continuing with fallback config");
@@ -39,12 +47,12 @@ async fn main() {
                     }
                     Err(parse_err) => {
                         eprintln!("Failed to parse config/default.toml with toml::from_str: {}", parse_err);
-                        panic!("Failed to load config: {}", e);
+                        panic!("Failed to load config: DATABASE_URL not set and config/default.toml failed to parse");
                     }
                 }
             } else {
                 eprintln!("Could not read config/default.toml from working directory");
-                panic!("Failed to load config: {}", e);
+                panic!("Failed to load config: DATABASE_URL not set and config/default.toml not found");
             }
         }
     };
@@ -110,25 +118,25 @@ async fn main() {
     let config_arc = Arc::new(config.clone());
 
     // Create services (clonable for router state)
-    let abac_service = features::abac::AbacService::new(pool.clone());
-    let user_service = features::users::service::UserService::new(pool.clone());
-    let ontology_service = features::ontology::OntologyService::new(pool.clone());
-    let auth_service = features::auth::service::AuthService::new(pool.clone(), config.clone(), abac_service.clone(), user_service.clone(), ontology_service.clone());
-    let system_service = features::system::service::SystemService::new();
-    let discovery_service = features::discovery::service::DiscoveryService::new();
-    let rate_limit_service = Arc::new(features::rate_limit::RateLimitService::new(pool.clone(), false));
-    let strategy_service = features::strategy::service::StrategyService::new();
+    let abac_service = core_abac::AbacService::new(pool.clone());
+    let user_service = core_users::UserService::new(pool.clone());
+    let ontology_service = Arc::new(core_ontology::OntologyService::new(pool.clone()));
+    let auth_service = core_auth::AuthService::new(pool.clone(), config.clone(), abac_service.clone(), user_service.clone(), (*ontology_service).clone());
+    let system_service = core_system::SystemService::new();
+    let discovery_service = core_discovery::DiscoveryService::new();
+    let rate_limit_service = Arc::new(core_rate_limit::RateLimitService::new(pool.clone(), false));
+    let strategy_service = crate::features::strategy::service::StrategyService::new();
 
     // Create router and attach state
     // API router contains feature routes and an API-scoped health check
     let api_router = Router::new()
         .route("/health", get(health_check))
         .nest("/discovery", 
-            features::discovery::routes::discovery_routes()
+            core_discovery::discovery_routes()
                 .with_state(discovery_service.clone())
         )
         .nest("/rate-limits",
-            features::rate_limit::routes::public_rate_limit_routes()
+            core_rate_limit::public_rate_limit_routes()
                 .with_state(rate_limit_service.clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
@@ -136,77 +144,90 @@ async fn main() {
         .nest("/auth", 
             Router::new()
                 .merge(
-                    features::auth::routes::public_auth_routes()
+                    core_auth::public_auth_routes()
                 )
                 .merge(
-                    features::auth::routes::protected_auth_routes()
+                    core_auth::protected_auth_routes()
                         .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                         .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
                 )
         )
         .merge(
-            features::dashboard::routes::dashboard_routes()
+            crate::features::dashboard::routes::dashboard_routes()
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/users", 
-            features::users::routes::users_routes()
+            core_users::users_routes()
                 .with_state(user_service)
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/system",
-            features::system::routes::system_routes()
+            core_system::system_routes()
                 .with_state(system_service)
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/abac", 
-            features::abac::routes::abac_routes()
+            core_abac::abac_routes()
                 .with_state(abac_service.clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/operations",
-            features::operations::router(pool.clone())
+            crate::features::operations::router(pool.clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/assumptions",
-            features::assumptions::router::router(pool.clone())
+            crate::features::assumptions::router::router(pool.clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/targeting",
             {
-                let realtime_service = std::sync::Arc::new(features::targeting::services::realtime::RealtimeService::new());
-                features::targeting::create_router(pool.clone(), realtime_service)
+                let realtime_service = std::sync::Arc::new(crate::features::targeting::services::realtime::RealtimeService::new());
+                crate::features::targeting::create_router(pool.clone(), realtime_service, ontology_service.clone())
                     .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                     .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
             }
         )
         .nest("/bda",
-            features::bda::router(pool.clone())
+            crate::features::bda::router(pool.clone(), ontology_service.clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/roe",
-            features::roe::router(pool.clone())
+            crate::features::roe::router(pool.clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/ontology",
-            features::ontology::ontology_router(ontology_service.clone())
+            core_ontology::ontology_router((*ontology_service).clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/navigation",
-            features::navigation::navigation_router::<AuthService>(ontology_service, abac_service)
+            crate::features::navigation::navigation_router::<AuthService>((*ontology_service).clone(), abac_service)
+                .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
+                .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
+        ).nest("/intelligence",
+            crate::features::intelligence::router(pool.clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         ).nest("/strategy",
-            features::strategy::routes::strategy_routes()
+            crate::features::strategy::routes::strategy_routes()
                 .with_state(strategy_service)
+                .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
+                .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
+        )
+.nest("/c2",
+            c2_server::c2_routes(pool.clone())
+                .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
+                .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
+        ).nest("/admin",
+            admn_server::admn_routes(pool.clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         );

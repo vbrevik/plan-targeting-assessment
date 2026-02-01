@@ -15,7 +15,7 @@ use axum::{
 
     Json,
 };
-use crate::features::auth::jwt::Claims;
+use core_auth::jwt::Claims;
 use serde::Deserialize;
 use sqlx::{Pool, Row};
 use sqlx::sqlite::Sqlite;
@@ -224,9 +224,9 @@ pub async fn route_decision(
 ) -> Result<impl IntoResponse, StatusCode> {
     use crate::features::roe::services::DecisionRoutingService;
     
-    // Fetch decision urgency and deadline from database
+    // Fetch decision urgency and deadline from entities table
     let row = sqlx::query(
-        "SELECT urgency, deadline FROM decisions WHERE id = $1"
+        "SELECT properties FROM entities WHERE id = $1"
     )
     .bind(&decision_id)
     .fetch_optional(&pool)
@@ -234,8 +234,11 @@ pub async fn route_decision(
     
     let (urgency, deadline) = match row {
         Ok(Some(row)) => {
-            let db_urgency: Option<String> = row.try_get("urgency").ok();
-            let db_deadline: Option<String> = row.try_get("deadline").ok();
+            let props_str: String = row.get("properties");
+            let props: serde_json::Value = serde_json::from_str(&props_str).unwrap_or(serde_json::json!({}));
+            
+            let db_urgency = props.get("urgency").and_then(|v| v.as_str()).map(String::from);
+            let db_deadline = props.get("deadline").and_then(|v| v.as_str()).map(String::from);
             (db_urgency, db_deadline)
         }
         Ok(None) => {

@@ -1,5 +1,8 @@
 // NATO COPD Targeting Cell - Router
 // API route definitions for all targeting endpoints
+// ============================================================================
+// ONTOLOGY-FIRST: Routes now use OntologyService for entity queries
+// ============================================================================
 
 use axum::{
     routing::{get, post, put, delete},
@@ -10,12 +13,32 @@ use std::sync::Arc;
 
 use crate::features::targeting::handlers;
 use crate::features::targeting::services::realtime::RealtimeService;
+use core_ontology::OntologyService;
+
+/// Shared state for targeting router  
+/// Contains both legacy pool and ontology-first service
+#[derive(Clone)]
+pub struct TargetingState {
+    pub pool: Pool<Sqlite>,
+    pub ontology_svc: Arc<OntologyService>,
+    pub realtime_svc: Arc<RealtimeService>,
+}
 
 /// Create targeting router with all routes
-pub fn create_router<S>(pool: Pool<Sqlite>, realtime_service: Arc<RealtimeService>) -> Router<S>
-where
-    S: Clone + Send + Sync + 'static,
+/// Now accepts OntologyService for ontology-first queries
+pub fn create_router<S>(
+    pool: Pool<Sqlite>,
+    realtime_service: Arc<RealtimeService>,
+    ontology_service: Arc<OntologyService>,
+) -> Router<S>
+where S: Clone + Send + Sync + 'static
 {
+    let state = TargetingState {
+        pool: pool.clone(),
+        ontology_svc: ontology_service,
+        realtime_svc: realtime_service.clone(),
+    };
+    
     Router::new()
         // ====================================================================
         // DECISION GATES (Dashboard operational status)
@@ -24,7 +47,7 @@ where
         .route("/action-required", get(handlers::get_action_required))
         
         // ====================================================================
-        // TARGET MANAGEMENT ROUTES
+        // TARGET MANAGEMENT ROUTES (Now using OntologyService)
         // ====================================================================
         .route("/targets", get(handlers::list_targets))
         .route("/targets", post(handlers::create_target))
@@ -125,9 +148,8 @@ where
         .route("/mission/authority-matrix", get(handlers::get_authority_matrix))
         .route("/mission/tempo", get(handlers::get_operational_tempo))
         
-        // Add shared state (database pool) and realtime service
-        .with_state(pool)
-        .layer(axum::Extension(realtime_service.clone()))
+        // Add shared state (database pool, ontology service) and realtime service
+        .with_state(state)
 }
 
 // Route summary for documentation:

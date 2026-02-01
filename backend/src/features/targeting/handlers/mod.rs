@@ -14,9 +14,6 @@ pub use jtb::*;
 pub mod dtl;
 pub use dtl::*;
 
-pub mod bda;
-pub use bda::*;
-
 pub mod isr;
 pub use isr::*;
 

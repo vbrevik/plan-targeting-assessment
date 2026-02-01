@@ -4,6 +4,7 @@
 
 import { api } from '@/lib/api';
 import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import type { TargetEntity } from '@/lib/mshnctrl/types';
 
 // ============================================================================
 // CORE ONTOLOGY & TYPES
@@ -57,7 +58,10 @@ export interface OntologySchema {
     bda_statuses: string[];
 }
 
-// Targeted Entities (Ontology-Driven)
+/**
+ * @deprecated Use TargetEntity from types.ts instead
+ * Legacy interface for backward compatibility
+ */
 export interface Target {
     id: string;
     name: string;
@@ -191,8 +195,8 @@ export const targetingApi = {
     },
 
 
-    // Targets
-    async getTargets(params?: { status?: string; priority?: string; limit?: number; domain?: Domain; level?: LevelOfWar; operationId?: string }): Promise<Target[]> {
+    // Targets (Phase 3: Using unified TargetEntity types)
+    async getTargets(params?: { status?: string; priority?: string; limit?: number; domain?: Domain; level?: LevelOfWar; operationId?: string }): Promise<TargetEntity[]> {
         const query: Record<string, string> = {};
         if (params?.status) query.status = params.status;
         if (params?.priority) query.priority = params.priority;
@@ -200,16 +204,16 @@ export const targetingApi = {
         if (params?.domain) query.domain = params.domain;
         if (params?.level) query.level = params.level;
         if (params?.operationId) query.operationId = params.operationId;
-        return api.get<Target[]>('/targeting/targets', query);
+        return api.get<TargetEntity[]>('/targeting/targets', query);
     },
 
-    async getTarget(id: string): Promise<Target> {
-        return api.get<Target>(`/targeting/targets/${id}`)
+    async getTarget(id: string): Promise<TargetEntity> {
+        return api.get<TargetEntity>(`/targeting/targets/${id}`)
             .catch(async () => {
                 console.warn(`[targetingApi] Failed to fetch target ${id} from API, falling back to mock.`);
                 const mockTarget = await MshnCtrlService.getTarget(id);
                 if (!mockTarget) throw new Error('Target not found in mock');
-                return mockTarget;
+                return mockTarget as TargetEntity;
             });
     },
 

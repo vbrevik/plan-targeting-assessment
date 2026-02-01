@@ -3,19 +3,20 @@ use axum::{
     http::StatusCode,
     response::{IntoResponse, Json},
 };
+use crate::features::targeting::router::TargetingState;
 use sqlx::{Pool, Sqlite};
-use crate::features::auth::jwt::Claims;
+use core_auth::jwt::Claims;
 use crate::features::targeting::domain::*;
 use crate::features::targeting::repositories::*;
 
 pub async fn list_intel_reports(
-    State(_pool): State<Pool<Sqlite>>,
+    State(_state): State<TargetingState>,
 ) -> Result<impl IntoResponse, StatusCode> {
     Ok(Json(Vec::<IntelligenceReport>::new()))
 }
 
 pub async fn create_intel_report(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Extension(claims): Extension<Claims>,
     Json(req): Json<CreateIntelReportRequest>,
 ) -> Result<impl IntoResponse, StatusCode> {
@@ -39,17 +40,17 @@ pub async fn create_intel_report(
         updated_at: String::new(),
     };
     
-    let id = IntelRepository::create(&pool, &report, user_id)
+    let id = IntelRepository::create(&state.pool, &report, user_id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     Ok((StatusCode::CREATED, Json(serde_json::json!({"id": id}))))
 }
 
 pub async fn get_intel_fusion(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Path(target_id): Path<String>,
 ) -> Result<impl IntoResponse, StatusCode> {
-    let reports = IntelRepository::get_by_target_id(&pool, &target_id)
+    let reports = IntelRepository::get_by_target_id(&state.pool, &target_id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     Ok(Json(reports))

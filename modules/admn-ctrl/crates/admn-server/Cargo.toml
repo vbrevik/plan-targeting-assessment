@@ -1,0 +1,19 @@
+[package]
+name = "admn-server"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+axum.workspace = true
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+sqlx.workspace = true
+
+# Management crates
+admn-users = { path = "../admn-users" }
+admn-abac = { path = "../admn-abac" }
+admn-system = { path = "../admn-system" }
+admn-rate-limit = { path = "../admn-rate-limit" }

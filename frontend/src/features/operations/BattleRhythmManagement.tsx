@@ -15,11 +15,12 @@ import {
     CheckCircle2,
     XCircle
 } from 'lucide-react';
-import { OntologyService, type Entity } from '@/lib/mshnctrl/services/ontology.service';
+
 import { cn } from '@/lib/utils';
 import type { GovernanceSession, BattleRhythmEvent, TermsOfReference } from '@/lib/mshnctrl/types';
 import { BattleRhythmType } from '@/lib/mshnctrl/types';
 import { useNavigate } from '@tanstack/react-router';
+import { MeetingsApi, type Meeting } from '@/lib/mshnctrl/api/meetings.api';
 
 type ViewMode = 'Week' | 'Month';
 
@@ -40,36 +41,28 @@ export function BattleRhythmManagement() {
         async function loadData() {
             setLoading(true);
             try {
-                // Fetch all Events from Ontology
-                const eventsRaw = await OntologyService.getEntities({ type: 'Event' });
-                // We also need TORs? Maybe fetch all 'TOR' entities
-                // const torsRaw = await OntologyService.getEntities({ type: 'TOR' }); 
-                // For MVP, lets assume Events contain enough info or we map them.
+                // Fetch all Meetings using the dedicated API
+                const meetings = await MeetingsApi.listMeetings();
 
-                // Map Entity -> BattleRhythmEvent / GovernanceSession
-                // Assumption: 'Event' entities represent specific scheduled sessions.
-                const mappedSessions: GovernanceSession[] = eventsRaw.map((e: Entity) => ({
-                    id: e.id,
-                    title: e.name,
-                    type: (Object.values(BattleRhythmType).includes(e.properties?.type) ? e.properties.type : BattleRhythmType.CoordinationMeeting),
-                    startTime: e.properties?.start_time || new Date().toISOString(),
-                    endTime: e.properties?.end_time || new Date(new Date(e.properties?.start_time || Date.now()).getTime() + 60 * 60 * 1000).toISOString(),
-                    duration: e.properties?.duration || 60,
-                    location: e.properties?.location || 'Virtual',
-                    chair: e.properties?.chair || 'J3',
-                    attendees: [], // Fetch if needed or map from properties
+                const mappedSessions: GovernanceSession[] = meetings.map((m: Meeting) => ({
+                    id: m.id,
+                    title: m.title || m.properties?.title || 'Untitled Meeting', // Fallback for title
+                    type: (Object.values(BattleRhythmType).includes(m.meeting_type as any) ? m.meeting_type as BattleRhythmType : BattleRhythmType.CoordinationMeeting),
+                    startTime: m.start_time || new Date().toISOString(),
+                    endTime: m.end_time || new Date(new Date(m.start_time || Date.now()).getTime() + 60 * 60 * 1000).toISOString(),
+                    duration: 60, // Calculate if needed
+                    location: m.location || 'Virtual',
+                    chair: (m.properties as any)?.chair || 'J3',
+                    attendees: [],
                     agenda: [],
-                    status: e.properties?.status || 'Scheduled',
-                    meetingRecord: e.properties?.meetingRecord,
+                    status: (m.status === 'scheduled' ? 'Scheduled' : m.status === 'concluded' ? 'Concluded' : 'Scheduled') as any, // Simple mapping
                     inputs: [],
                     outputs: []
                 }));
 
                 setSessions(mappedSessions);
-                // For 'events' (recurring definitions), we might not have them in Ontology as separate types yet. 
-                // We'll just use sessions for the calendar for now.
-                setEvents([]);
-                setTors([]); // TODO: Fetch TORs if linked
+                setEvents([]); // Events are distinct from sessions in this model for now
+                setTors([]); // TOR loading to be added if needed via API
 
             } catch (err) {
                 console.error("Failed to load battle rhythm", err);

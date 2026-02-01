@@ -1,33 +1,16 @@
 use axum::{
     extract::{Path, State, Json},
-    routing::{get, post, put, delete},
+    routing::get,
     Router,
 };
 use crate::features::users::service::UserService;
 use crate::features::auth::models::User;
 use crate::features::auth::service::AuthError;
-use serde::Deserialize;
 
 pub fn users_routes() -> Router<UserService> {
     Router::new()
         .route("/", get(list_users))
-        .route("/", post(create_user))
         .route("/:id", get(get_user))
-        .route("/:id", put(update_user))
-        .route("/:id", delete(delete_user))
-}
-
-#[derive(Deserialize)]
-pub struct CreateUserRequest {
-    pub username: String,
-    pub email: String,
-    pub password: String,
-}
-
-#[derive(Deserialize)]
-pub struct UpdateUserRequest {
-    pub username: Option<String>,
-    pub email: Option<String>,
 }
 
 async fn list_users(
@@ -43,29 +26,4 @@ async fn get_user(
 ) -> Result<Json<User>, AuthError> {
     let user = service.find_by_id(&id).await?;
     Ok(Json(user))
-}
-
-async fn create_user(
-    State(service): State<UserService>,
-    Json(req): Json<CreateUserRequest>,
-) -> Result<Json<User>, AuthError> {
-    let user = service.create(&req.username, &req.email, &req.password).await?;
-    Ok(Json(user))
-}
-
-async fn update_user(
-    State(service): State<UserService>,
-    Path(id): Path<String>,
-    Json(req): Json<UpdateUserRequest>,
-) -> Result<Json<User>, AuthError> {
-    let user = service.update(&id, req.username, req.email).await?;
-    Ok(Json(user))
-}
-
-async fn delete_user(
-    State(service): State<UserService>,
-    Path(id): Path<String>,
-) -> Result<Json<serde_json::Value>, AuthError> {
-    service.delete(&id).await?;
-    Ok(Json(serde_json::json!({ "success": true })))
 }

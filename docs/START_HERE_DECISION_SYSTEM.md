@@ -75,10 +75,11 @@ cd frontend && npm run dev
 
 ## 🎯 Current Focus
 
-1. Complete BDA Phase 2 (Weaponeering)
-2. Fix ROE backend integration
-3. Polish Targeting Cell
+1. **Complete BDA Phase 2** (Weaponeering)
+2. **Fix ROE backend integration**
+3. **Polish Targeting Cell**
 
 ---
 
 _Last Updated: 2026-01-31_
+_Docs Status: ✅ Cleanup Complete_

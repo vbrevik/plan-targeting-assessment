@@ -51,17 +51,6 @@ impl AbacService {
             .ok_or_else(|| AbacError::NotFound(format!("Role '{}' not found", name)))
     }
 
-    pub async fn create_role(&self, name: &str, description: Option<&str>) -> Result<Role, AbacError> {
-        let role = sqlx::query_as::<_, Role>(
-            "INSERT INTO roles (name, description) VALUES ($1, $2) RETURNING id, name, description, created_at::text"
-        )
-            .bind(name)
-            .bind(description)
-            .fetch_one(&self.pool)
-            .await?;
-        Ok(role)
-    }
-
     // ==================== RESOURCES ====================
 
     pub async fn list_resources(&self) -> Result<Vec<Resource>, AbacError> {
@@ -69,17 +58,6 @@ impl AbacService {
             .fetch_all(&self.pool)
             .await?;
         Ok(resources)
-    }
-
-    pub async fn create_resource(&self, input: CreateResourceInput) -> Result<Resource, AbacError> {
-        let resource = sqlx::query_as::<_, Resource>(
-            "INSERT INTO resources (name, resource_type) VALUES ($1, $2) RETURNING id, name, resource_type, created_at::text"
-        )
-            .bind(&input.name)
-            .bind(&input.resource_type)
-            .fetch_one(&self.pool)
-            .await?;
-        Ok(resource)
     }
 
     // ==================== USER ROLES ====================
@@ -106,38 +84,6 @@ impl AbacService {
         Ok(assignments)
     }
 
-    pub async fn assign_role(&self, input: AssignRoleInput) -> Result<UserRole, AbacError> {
-        // First, get the role by name
-        let role = self.get_role_by_name(&input.role_name).await?;
-
-        let user_role = sqlx::query_as::<_, UserRole>(
-            r#"
-            INSERT INTO user_roles (user_id, role_id, resource_id)
-            VALUES ($1, $2, $3)
-            ON CONFLICT (user_id, role_id, resource_id) DO UPDATE SET user_id = EXCLUDED.user_id
-            RETURNING id, user_id, role_id, resource_id, created_at::text
-            "#
-        )
-            .bind(&input.user_id)
-            .bind(&role.id)
-            .bind(&input.resource_id)
-            .fetch_one(&self.pool)
-            .await?;
-        Ok(user_role)
-    }
-
-    pub async fn remove_role(&self, user_role_id: &str) -> Result<(), AbacError> {
-        let result = sqlx::query("DELETE FROM user_roles WHERE id = $1")
-            .bind(user_role_id)
-            .execute(&self.pool)
-            .await?;
-        
-        if result.rows_affected() == 0 {
-            return Err(AbacError::NotFound("User role assignment not found".to_string()));
-        }
-        Ok(())
-    }
-
     // ==================== PERMISSIONS ====================
 
     pub async fn get_role_permissions(&self, role_id: &str) -> Result<Vec<Permission>, AbacError> {
@@ -148,29 +94,6 @@ impl AbacService {
             .fetch_all(&self.pool)
             .await?;
         Ok(permissions)
-    }
-
-    pub async fn add_permission(&self, role_id: &str, action: &str) -> Result<Permission, AbacError> {
-        let permission = sqlx::query_as::<_, Permission>(
-            "INSERT INTO permissions (role_id, action) VALUES ($1, $2) RETURNING id, role_id, action, created_at::text"
-        )
-            .bind(role_id)
-            .bind(action)
-            .fetch_one(&self.pool)
-            .await?;
-        Ok(permission)
-    }
-
-    pub async fn remove_permission(&self, permission_id: &str) -> Result<(), AbacError> {
-        let result = sqlx::query("DELETE FROM permissions WHERE id = $1")
-            .bind(permission_id)
-            .execute(&self.pool)
-            .await?;
-
-        if result.rows_affected() == 0 {
-            return Err(AbacError::NotFound("Permission not found".to_string()));
-        }
-        Ok(())
     }
 
     /// Check if a user has a specific permission for a resource

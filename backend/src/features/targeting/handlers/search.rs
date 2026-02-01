@@ -7,6 +7,7 @@ use axum::{
     response::{IntoResponse, Json},
 };
 use serde::{Deserialize, Serialize};
+use crate::features::targeting::router::TargetingState;
 use sqlx::{Pool, Sqlite, Row};
 
 #[derive(Debug, Deserialize)]
@@ -37,7 +38,7 @@ pub struct SearchResponse {
 /// Unified search endpoint
 /// Searches across targets, BDA reports, decisions, ISR platforms, and strike platforms
 pub async fn search(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Query(params): Query<SearchQueryParams>,
 ) -> Result<impl IntoResponse, StatusCode> {
     let query = params.q.trim();
@@ -57,35 +58,35 @@ pub async fn search(
 
     // Search Targets
     if types_vec.is_empty() || types_vec.contains(&"targets") {
-        let targets = search_targets(&pool, query, limit).await
+        let targets = search_targets(&state.pool, query, limit).await
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
         all_results.extend(targets);
     }
 
     // Search BDA Reports
     if types_vec.is_empty() || types_vec.contains(&"bda") {
-        let bda = search_bda(&pool, query, limit).await
+        let bda = search_bda(&state.pool, query, limit).await
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
         all_results.extend(bda);
     }
 
     // Search Decisions
     if types_vec.is_empty() || types_vec.contains(&"decisions") {
-        let decisions = search_decisions(&pool, query, limit).await
+        let decisions = search_decisions(&state.pool, query, limit).await
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
         all_results.extend(decisions);
     }
 
     // Search ISR Platforms
     if types_vec.is_empty() || types_vec.contains(&"isr_platforms") {
-        let isr = search_isr_platforms(&pool, query, limit).await
+        let isr = search_isr_platforms(&state.pool, query, limit).await
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
         all_results.extend(isr);
     }
 
     // Search Strike Platforms
     if types_vec.is_empty() || types_vec.contains(&"strike_platforms") {
-        let strike = search_strike_platforms(&pool, query, limit).await
+        let strike = search_strike_platforms(&state.pool, query, limit).await
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
         all_results.extend(strike);
     }

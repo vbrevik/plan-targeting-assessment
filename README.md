@@ -1,136 +1,75 @@
 # MshnCtrl - Military C2 Dashboard
 
-> **Formerly**: SmartOps, Plan-Target-Assessment  
-> **Status**: Active Development  
-> **Last Updated**: 2026-01-31
+> **MshnCtrl** is a modern Command & Control (C2) dashboard system designed for high-stakes military operations, focusing on Targeting Cell workflows, Battle Damage Assessment (BDA), and Ontology-driven Information Management.
 
-## Quick Start
+## 🏗️ The Honest Reality (Project Status)
 
+This project contains a mix of production-ready features, substantial proofs-of-concept, and exploratory mock-ups. We prioritize transparency over marketing.
+
+### 🟢 Production Ready (Functional & Integrated)
+These features have functional backend APIs, frontend UI, and have passed integration testing.
+- **Auth & Access**: JWT-based authentication with refresh tokens, ABAC permission system (Action/Subject/Attribute), and rate limiting.
+- **User Management**: Full CRUD for users with administrative controls.
+- **BDA Workbench**: Report lifecycle management, component assessments, and image annotation.
+- **Ontology/IM**: Graph-based entity/relationship management for Information Management (RFI/Tasks).
+
+### 🟡 Substantial (Code Exists, Needs Refinement)
+- **Targeting Cell**: Extensive frontend components (JTB, CDE, Nominations) with substantial backend handlers. Some endpoints still utilize mock data while integration stabilizes.
+- **ROE Management**: Fully designed frontend with a comprehensive backend module; final wiring/integration is currently in progress.
+
+### 🔴 High-Fidelity Mocks (Frontend Only)
+These modules provide a visual implementation of the workflow but **do not have a backend implementation**.
+- **Decision System**: Visual dashboard and components for decision tracking and battle rhythm.
+- **Planning Modules**: Scaffolding for CONOPS builders, COA wargaming, and Campaign planning.
+- **Logistics**: Visual tracking for supply, convoys, and readiness.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- **Rust**: 1.75+ for backend
+- **Node.js**: 20+ (with npm) for frontend
+
+### Run the System
 ```bash
-# Backend (Rust/Axum on port 3000)
+# 1. Start Backend (Port 3000)
 cd backend && cargo run
 
-# Frontend (React/Vite on port 5173)
+# 2. Start Frontend (Port 5173)
 cd frontend && npm run dev
 ```
 
-**Access**: http://localhost:5173/mshnctrl/
+**Access**: [http://localhost:5173/mshnctrl/](http://localhost:5173/mshnctrl/)
 
 ---
 
-## 🎯 Production-Ready Features
+## 📂 Documentation Structure
 
-| Feature | Backend | Frontend | Status |
-|---------|---------|----------|--------|
-| **Authentication** | ✅ JWT | ✅ Login | ✅ Production |
-| **User Management** | ✅ CRUD | ✅ Admin Panel | ✅ Production |
-| **ABAC Permissions** | ✅ Full | ✅ Role-based nav | ✅ Production |
-| **Rate Limiting** | ✅ Tower | N/A | ✅ Production |
-| **BDA Reports** | ✅ Full CRUD | ✅ Forms, Lists | ✅ Ready |
-| **BDA Annotations** | ✅ API | ✅ Image Annotator | ⚠️ Testing |
-| **Targeting Cell** | ✅ Substantial | ✅ 12 components | ⚠️ Testing |
-| **Ontology/IM** | ✅ CRUD | ✅ Dashboard | ⚠️ MVP |
-
-## ⚠️ Development Features (Mock Data)
-
-| Feature | Backend | Frontend | Notes |
-|---------|---------|----------|-------|
-| Decision System | ❌ | ✅ Mock | Backend not started |
-| Battle Rhythm | ❌ | ❌ | Docs exist, no code |
-| Meeting Agendas | ❌ | ❌ | Not started |
-| Planning Modules | ⚠️ Scaffold | ✅ Mock | CONOPS, COA |
-| Logistics | ⚠️ Scaffold | ✅ Mock | Supply, Convoy |
-| ROE Management | ⚠️ Partial | ✅ Complete | Integration needed |
+| Directory | Purpose |
+|-----------|---------|
+| `docs/` | Current system documentation and architecture |
+| `docs/bda/` | Consolidated guides for the BDA Workbench |
+| `docs/scenarios/` | Realistic military usage scenarios |
+| `docs/ARCHIVE/` | History of the project and legacy designs |
 
 ---
 
-## Project Structure
+## 🌍 Technology Stack
 
-```
-mshnctrl/
-├── backend/                 # Rust (Axum, SQLx, SQLite)
-│   └── src/features/
-│       ├── auth/           # JWT authentication
-│       ├── abac/           # Permission system
-│       ├── targeting/      # NATO COPD targeting (27 files)
-│       ├── bda/            # Battle Damage Assessment (35 files)
-│       ├── roe/            # Rules of Engagement (14 files)
-│       ├── ontology/       # Entity/relationship management
-│       └── ...
-├── frontend/               # React 19 + TypeScript + Vite
-│   └── src/
-│       ├── features/       # Feature components
-│       │   ├── targeting/  # 12 targeting components
-│       │   ├── bda/        # 14 BDA components
-│       │   ├── decisions/  # 9 decision components (mock)
-│       │   └── ...
-│       ├── routes/         # TanStack Router (102+ routes)
-│       └── lib/            # Shared services, types
-└── docs/                   # Documentation (80+ files)
-```
+- **Backend**: Rust (Axum, SQLx, SQLite, JWT)
+- **Frontend**: React 19 (TypeScript, Vite, TanStack Router, Tailwind)
+- **Security**: Attribute-Based Access Control (ABAC), Rate Limiting (Tower)
+- **Testing**: Playwright (E2E Integration), Vitest/Cargo (Unit)
 
 ---
 
-## Key Routes
-
-| Route | Purpose |
-|-------|---------|
-| `/mshnctrl/` | Main dashboard |
-| `/mshnctrl/targeting-cell-dashboard` | NATO COPD targeting |
-| `/mshnctrl/bda` | Battle Damage Assessment |
-| `/mshnctrl/information-management` | IM ontology dashboard |
-| `/mshnctrl/ontology` | Ontology manager |
-| `/admin/` | Admin panels (ABAC, Users) |
-
-> **Note**: Routes changed from `/smartops/` to `/mshnctrl/`
+## 🎯 Current Roadmap
+1. **BDA Phase 2 Integration**: Finalizing weaponeering performance validation.
+2. **ROE Stabilization**: Completing the bridge between frontend and backend handler.
+3. **Targeting Maturity**: Transitioning mock endpoints to live ontology-backed data.
 
 ---
 
-## Technology Stack
-
-**Backend**: Rust, Axum, SQLx, SQLite, JWT  
-**Frontend**: React 19, TypeScript, Vite, TanStack Router, Tailwind  
-**Testing**: Playwright (E2E), Vitest (unit)
-
----
-
-## Development
-
-See [CLAUDE.md](CLAUDE.md) for detailed development guide.
-
-```bash
-# Run backend with debug logging
-cd backend && RUST_LOG=debug cargo run
-
-# Run frontend
-cd frontend && npm run dev
-
-# Run E2E tests
-cd frontend && npx playwright test
-```
-
----
-
-## Documentation
-
-| Document | Purpose |
-|----------|---------|
-| `docs/START_HERE_DECISION_SYSTEM.md` | Entry point |
-| `docs/bda/BDA_MASTER_GUIDE.md` | BDA workbench guide |
-| `docs/BACKLOG.md` | Feature backlog (Agile) |
-| `docs/REALITY_CHECK.md` | Honest feature assessment |
-| `docs/ports.md` | Port configuration |
-
-**Archived**: 53+ legacy docs in `docs/ARCHIVE/legacy/`
-
----
-
-## Current Focus
-
-1. **BDA Phase 2**: Weaponeering integration
-2. **ROE Backend**: Complete integration
-3. **Targeting Polish**: Testing and refinement
-
----
-
-_Version 3.0 - 2026-01-31_
+_Project Version: 3.0.0-dev_  
+_Last Honest Update: 2026-01-31_

@@ -1,0 +1,61 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/admn-users",
+    "crates/admn-abac",
+    "crates/admn-system",
+    "crates/admn-rate-limit",
+    "crates/admn-server",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["MSHNCTRL Team"]
+license = "MIT"
+
+[workspace.dependencies]
+# Web framework
+axum = { version = "0.7", features = ["macros", "multipart"] }
+tokio = { version = "1.0", features = ["full"] }
+tower-http = { version = "0.5", features = ["cors"] }
+tower-cookies = "0.10"
+tower_governor = "0.4.2"
+governor = "0.6.3"
+hyper = "1.0"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.5"
+
+# Database
+sqlx = { version = "0.7", features = ["sqlite", "runtime-tokio", "chrono"] }
+
+# Auth & Security
+jsonwebtoken = "9.2"
+argon2 = "0.5.3"
+rsa = "0.9"
+pem = "3.0"
+base64 = "0.13"
+
+# Utilities
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.0", features = ["v4", "serde"] }
+anyhow = "1.0"
+thiserror = "1.0"
+validator = { version = "0.16", features = ["derive"] }
+rand = "0.8"
+
+# Async
+futures = "0.3"
+tokio-stream = { version = "0.1", features = ["sync"] }
+
+# Config & Logging
+config = "0.13"
+dotenv = "0.15"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# System
+sysinfo = "0.37.2"

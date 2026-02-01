@@ -41,13 +41,13 @@ export const BDADisplay: React.FC<BDADisplayProps> = ({ targetId, onStatusChange
             setLoading(true);
             setError(null);
             try {
-                const [reportsData, imageryData] = await Promise.all([
+                const [reportsData] = await Promise.all([
                     BdaApi.getReports({ target_id: targetId }),
                     // Get imagery for the latest report if available
                     Promise.resolve([]) // Will be loaded when we have a report
                 ]);
                 setReports(reportsData);
-                
+
                 // Load imagery for the latest report
                 if (reportsData.length > 0) {
                     const latestReport = reportsData[0];
@@ -101,7 +101,7 @@ export const BDADisplay: React.FC<BDADisplayProps> = ({ targetId, onStatusChange
     }
 
     const latestReport = reports[0];
-    
+
     // Map physical damage codes to display names
     const physicalDamageNames: Record<string, string> = {
         'ND': 'No Damage',
@@ -130,7 +130,7 @@ export const BDADisplay: React.FC<BDADisplayProps> = ({ targetId, onStatusChange
         return 're_attack';
     };
 
-    const recommendation = isAssessing 
+    const recommendation = isAssessing
         ? calculateRecommendation(evalPhysical, evalFunctional)
         : latestReport.recommendation;
 
@@ -185,9 +185,9 @@ export const BDADisplay: React.FC<BDADisplayProps> = ({ targetId, onStatusChange
                         {preStrikeImagery.length > 0 ? (
                             <div className="flex-1 bg-slate-950 flex flex-col items-center justify-center border-r border-slate-800 relative group overflow-hidden">
                                 <span className="absolute top-2 left-2 text-[8px] font-black text-slate-600 uppercase bg-slate-950/80 px-1.5 py-0.5 rounded z-10">PRE-STRIKE [T-24H]</span>
-                                <img 
-                                    src={preStrikeImagery[0].image_url} 
-                                    alt="Pre-strike" 
+                                <img
+                                    src={preStrikeImagery[0].image_url}
+                                    alt="Pre-strike"
                                     className="w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
                                 <div className="absolute inset-0 border border-emerald-500/20 pointer-events-none" />
@@ -202,9 +202,9 @@ export const BDADisplay: React.FC<BDADisplayProps> = ({ targetId, onStatusChange
                         {postStrikeImagery.length > 0 ? (
                             <div className="flex-1 bg-slate-950 flex flex-col items-center justify-center relative group overflow-hidden">
                                 <span className="absolute top-2 left-2 text-[8px] font-black text-red-500 uppercase bg-slate-950/80 px-1.5 py-0.5 rounded z-10">POST-STRIKE [T+2H]</span>
-                                <img 
-                                    src={postStrikeImagery[0].image_url} 
-                                    alt="Post-strike" 
+                                <img
+                                    src={postStrikeImagery[0].image_url}
+                                    alt="Post-strike"
                                     className="w-full h-full object-cover opacity-60 contrast-125 sepia group-hover:sepia-0 transition-all duration-500"
                                 />
                                 <div className="absolute inset-0 flex items-center justify-center">
@@ -265,7 +265,7 @@ export const BDADisplay: React.FC<BDADisplayProps> = ({ targetId, onStatusChange
                                                             "bg-slate-700"
                                         )}
                                         style={{
-                                            width: latestReport.physical_damage_percentage 
+                                            width: latestReport.physical_damage_percentage
                                                 ? `${latestReport.physical_damage_percentage}%`
                                                 : (isAssessing ? evalPhysical : latestReport.physical_damage) === 'D' ? '100%' :
                                                     (isAssessing ? evalPhysical : latestReport.physical_damage) === 'SVD' ? '75%' :
@@ -346,6 +346,51 @@ export const BDADisplay: React.FC<BDADisplayProps> = ({ targetId, onStatusChange
                         </CardContent>
                     </Card>
 
+                    {/* Weaponeering Validation (Phase 2) */}
+                    {(latestReport.weapon_performance_vs_predicted || latestReport.circular_error_probable_meters) && (
+                        <Card className="bg-slate-900/40 border-slate-800 border-l-2 border-l-blue-500/50">
+                            <CardHeader className="border-b border-slate-800/50 pb-2">
+                                <CardTitle className="text-[9px] font-black uppercase tracking-widest text-blue-400 flex items-center gap-2">
+                                    <Activity size={12} /> Weaponeering Validation
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-4 space-y-3">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1">
+                                        <span className="text-[8px] font-black text-slate-500 uppercase">Performance</span>
+                                        <div className={cn(
+                                            "text-[10px] font-mono font-bold uppercase",
+                                            latestReport.weapon_performance_vs_predicted === 'exceeded' ? "text-emerald-400" :
+                                                latestReport.weapon_performance_vs_predicted === 'met' ? "text-blue-400" :
+                                                    latestReport.weapon_performance_vs_predicted === 'below' ? "text-amber-400" :
+                                                        latestReport.weapon_performance_vs_predicted === 'failed' ? "text-red-500" : "text-slate-400"
+                                        )}>
+                                            {latestReport.weapon_performance_vs_predicted || 'NOT ASSESSED'}
+                                        </div>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <span className="text-[8px] font-black text-slate-500 uppercase">CEP (Actual)</span>
+                                        <div className="text-[10px] font-mono text-white">
+                                            {latestReport.circular_error_probable_meters ? `${latestReport.circular_error_probable_meters}m` : 'N/A'}
+                                        </div>
+                                    </div>
+                                </div>
+                                {latestReport.munition_reliability && (
+                                    <div className="space-y-1">
+                                        <span className="text-[8px] font-black text-slate-500 uppercase">Munition Reliability</span>
+                                        <div className="text-[9px] text-slate-300 italic">{latestReport.munition_reliability}</div>
+                                    </div>
+                                )}
+                                {latestReport.penetration_depth_meters !== undefined && (
+                                    <div className="space-y-1">
+                                        <span className="text-[8px] font-black text-slate-500 uppercase">Penetration Depth</span>
+                                        <div className="text-[10px] font-mono text-white">{latestReport.penetration_depth_meters}m</div>
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
+                    )}
+
                     <Card className="bg-slate-900/40 border-slate-800">
                         <CardContent className="p-4">
                             <div className="flex items-center gap-2 mb-2">
@@ -353,8 +398,8 @@ export const BDADisplay: React.FC<BDADisplayProps> = ({ targetId, onStatusChange
                                 <span className="text-[9px] font-black text-slate-500 uppercase">Collateral Assessment</span>
                             </div>
                             <p className="text-[10px] text-slate-300 font-mono italic">
-                                {latestReport.collateral_damage_detected 
-                                    ? "COLLATERAL DAMAGE DETECTED. IMMEDIATE REVIEW REQUIRED." 
+                                {latestReport.collateral_damage_detected
+                                    ? "COLLATERAL DAMAGE DETECTED. IMMEDIATE REVIEW REQUIRED."
                                     : "No collateral damage detected within 200m radius of impact site."}
                             </p>
                         </CardContent>

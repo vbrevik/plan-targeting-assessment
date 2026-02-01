@@ -3,23 +3,24 @@ use axum::{
     http::StatusCode,
     response::{IntoResponse, Json},
 };
+use crate::features::targeting::router::TargetingState;
 use sqlx::{Pool, Sqlite, Row}; // Added Row import
 use crate::features::targeting::domain::*;
 use crate::features::targeting::repositories::*;
 use super::common::PlatformQueryParams;
 
 pub async fn list_strike_platforms(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Query(params): Query<PlatformQueryParams>,
 ) -> Result<impl IntoResponse, StatusCode> {
-    let platforms = StrikePlatformRepository::list_all(&pool, params.status.as_deref())
+    let platforms = StrikePlatformRepository::list_all(&state.pool, params.status.as_deref())
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     Ok(Json(platforms))
 }
 
 pub async fn create_strike_platform(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Json(req): Json<CreateStrikePlatformRequest>,
 ) -> Result<impl IntoResponse, StatusCode> {
     let platform = StrikePlatform {
@@ -36,14 +37,14 @@ pub async fn create_strike_platform(
         updated_at: String::new(),
     };
     
-    let id = StrikePlatformRepository::create(&pool, &platform)
+    let id = StrikePlatformRepository::create(&state.pool, &platform)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     Ok((StatusCode::CREATED, Json(serde_json::json!({"id": id}))))
 }
 
 pub async fn get_munitions_inventory(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
 ) -> Result<impl IntoResponse, StatusCode> {
     // Query munitions table
     let rows = sqlx::query(
@@ -54,7 +55,7 @@ pub async fn get_munitions_inventory(
          FROM munitions
          ORDER BY available_count DESC, munition_type"
     )
-    .fetch_all(&pool)
+    .fetch_all(&state.pool)
     .await
     .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     
@@ -110,11 +111,11 @@ pub struct MunitionsPairingRequest {
 }
 
 pub async fn get_munitions_pairing(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Json(req): Json<MunitionsPairingRequest>,
 ) -> Result<impl IntoResponse, StatusCode> {
     // Get target information
-    let target = TargetRepository::get_by_id(&pool, &req.target_id)
+    let target = TargetRepository::get_by_id(&state.pool, &req.target_id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .ok_or(StatusCode::NOT_FOUND)?;
@@ -128,7 +129,7 @@ pub async fn get_munitions_pairing(
          WHERE available_count > 0
          ORDER BY available_count DESC"
     )
-    .fetch_all(&pool)
+    .fetch_all(&state.pool)
     .await
     .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     

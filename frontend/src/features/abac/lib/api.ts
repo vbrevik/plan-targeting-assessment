@@ -39,7 +39,7 @@ export const abacApi = {
     },
 
     createRole: async (name: string, description?: string): Promise<Role> => {
-        const response = await fetch('/api/abac/roles', {
+        const response = await fetch('/api/admin/abac/roles', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, description }),
@@ -57,7 +57,7 @@ export const abacApi = {
     },
 
     createResource: async (name: string, resource_type: string): Promise<Resource> => {
-        const response = await fetch('/api/abac/resources', {
+        const response = await fetch('/api/admin/abac/resources', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, resource_type }),
@@ -75,7 +75,7 @@ export const abacApi = {
     },
 
     addPermission: async (roleId: string, action: string): Promise<Permission> => {
-        const response = await fetch(`/api/abac/permissions/${roleId}`, {
+        const response = await fetch(`/api/admin/abac/permissions/${roleId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action }),
@@ -86,7 +86,7 @@ export const abacApi = {
     },
 
     removePermission: async (permissionId: string): Promise<void> => {
-        const response = await fetch(`/api/abac/permissions/${permissionId}`, {
+        const response = await fetch(`/api/admin/abac/permissions/${permissionId}`, {
             method: 'DELETE',
             credentials: 'include'
         });
@@ -101,7 +101,7 @@ export const abacApi = {
     },
 
     assignRole: async (userId: string, roleName: string, resourceId?: string | null): Promise<UserRoleAssignment> => {
-        const response = await fetch(`/api/abac/users/${userId}/roles`, {
+        const response = await fetch(`/api/admin/abac/users/${userId}/roles`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ role_name: roleName, resource_id: resourceId }),
@@ -112,7 +112,7 @@ export const abacApi = {
     },
 
     removeRole: async (assignmentId: string): Promise<void> => {
-        const response = await fetch(`/api/abac/users/roles/${assignmentId}`, {
+        const response = await fetch(`/api/admin/abac/users/roles/${assignmentId}`, {
             method: 'DELETE',
             credentials: 'include'
         });

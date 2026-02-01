@@ -1,59 +1,8 @@
-<testsuites id="" name="" tests="12" failures="1" skipped="0" errors="0" time="8.063953">
-<testsuite name="roe-e2e.spec.ts" timestamp="2026-01-31T14:23:25.121Z" hostname="chromium" tests="12" failures="1" skipped="0" time="6.526" errors="0">
-<testcase name="ROE Feature - E2E Tests › ROE Status Display › DecisionCard should display ROE status badge" classname="roe-e2e.spec.ts" time="0.826">
+<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="0" time="1.371299">
+<testsuite name="monitoring/bda-phase3-verification.spec.ts" timestamp="2026-01-31T18:02:38.302Z" hostname="chromium" tests="2" failures="0" skipped="0" time="0.645" errors="0">
+<testcase name="BDA Phase 3 Integration - Intelligence &amp; Ontology › Should create intelligence feed and verify ontology projection" classname="monitoring/bda-phase3-verification.spec.ts" time="0.344">
 </testcase>
-<testcase name="ROE Feature - E2E Tests › ROE Status Display › DecisionCard should show correct ROE status colors" classname="roe-e2e.spec.ts" time="0.819">
-</testcase>
-<testcase name="ROE Feature - E2E Tests › ROE Status Display › DecisionAnalysisPanel should show detailed ROE information" classname="roe-e2e.spec.ts" time="0.801">
-</testcase>
-<testcase name="ROE Feature - E2E Tests › ROE API Integration › ROE status API should return valid data" classname="roe-e2e.spec.ts" time="0.311">
-</testcase>
-<testcase name="ROE Feature - E2E Tests › ROE API Integration › Auto-determine ROE API should work" classname="roe-e2e.spec.ts" time="0.304">
-</testcase>
-<testcase name="ROE Feature - E2E Tests › ROE API Integration › ROE blocking check API should return blocking status" classname="roe-e2e.spec.ts" time="0.307">
-</testcase>
-<testcase name="ROE Feature - E2E Tests › ROE API Integration › Decision routing API should check ROE blocking" classname="roe-e2e.spec.ts" time="0.304">
-</testcase>
-<testcase name="ROE Feature - E2E Tests › ROE Request Workflow › ROE request creation API should work" classname="roe-e2e.spec.ts" time="0.307">
-<failure message="roe-e2e.spec.ts:130:5 ROE request creation API should work" type="FAILURE">
-<![CDATA[  [chromium] › roe-e2e.spec.ts:130:5 › ROE Feature - E2E Tests › ROE Request Workflow › ROE request creation API should work 
-
-    Error: expect(received).toContain(expected) // indexOf
-
-    Expected value: 500
-    Received array: [200, 201, 400, 404]
-
-      145 |
-      146 |       // Should return 200 (created) or 404 (decision doesn't exist) or 400 (validation error)
-    > 147 |       expect([200, 201, 400, 404]).toContain(response.status());
-          |                                    ^
-      148 |
-      149 |       if (response.ok()) {
-      150 |         const data = await response.json();
-        at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/roe-e2e.spec.ts:147:36
-
-    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
-    ../test-results/roe-e2e-ROE-Feature---E2E--e209c-st-creation-API-should-work-chromium/trace.zip
-    Usage:
-
-        npx playwright show-trace ../test-results/roe-e2e-ROE-Feature---E2E--e209c-st-creation-API-should-work-chromium/trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results/roe-e2e-ROE-Feature---E2E--e209c-st-creation-API-should-work-chromium/trace.zip]]
-]]>
-</system-out>
-</testcase>
-<testcase name="ROE Feature - E2E Tests › ROE Request Workflow › ROE request list API should return requests" classname="roe-e2e.spec.ts" time="0.333">
-</testcase>
-<testcase name="ROE Feature - E2E Tests › ROE Blocking Display › Blocked decisions should show blocking message" classname="roe-e2e.spec.ts" time="0.809">
-</testcase>
-<testcase name="ROE Feature - E2E Tests › ROE Blocking Display › Routing blocked decisions should show ROE coordination venue" classname="roe-e2e.spec.ts" time="0.308">
-</testcase>
-<testcase name="ROE Feature - E2E Tests › Complete ROE Workflow › End-to-end ROE workflow should work" classname="roe-e2e.spec.ts" time="1.097">
+<testcase name="BDA Phase 3 Integration - Intelligence &amp; Ontology › Intelligence Panel should be accessible for a target" classname="monitoring/bda-phase3-verification.spec.ts" time="0.301">
 </testcase>
 </testsuite>
 </testsuites>

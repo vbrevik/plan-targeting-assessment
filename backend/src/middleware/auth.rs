@@ -6,7 +6,8 @@ use axum::{
     Json,
 };
 use axum::http::header::AUTHORIZATION;
-use crate::features::auth::jwt::validate_jwt;
+use core_auth::jwt::validate_jwt;
+use core_common_types::UserRoleClaim;
 use crate::config::Config;
 use std::sync::Arc;
 
@@ -15,7 +16,7 @@ pub struct User {
     pub id: String,
     pub username: String,
     pub email: String,
-    pub roles: Vec<crate::features::auth::jwt::UserRoleClaim>,
+    pub roles: Vec<UserRoleClaim>,
     pub permissions: Vec<String>,
 }
 
@@ -55,7 +56,8 @@ where
         let claims = validate_jwt(&token, &config)
             .map_err(|_| AuthError::InvalidToken)?;
 
-        // Store claims in extensions for later use
+        // Store claims and user_id in extensions for later use
+        parts.extensions.insert(claims.sub.clone());
         parts.extensions.insert(claims);
 
         Ok(AuthMiddleware)
@@ -93,7 +95,8 @@ pub async fn auth_middleware(
     let claims = validate_jwt(&token, &config)
         .map_err(|_| AuthError::InvalidToken)?;
 
-    // Store claims in extensions for later use
+    // Store claims and user_id in extensions for later use
+    parts.extensions.insert(claims.sub.clone());
     parts.extensions.insert(claims);
 
     // Reconstruct request
@@ -141,7 +144,7 @@ impl IntoResponse for AuthError {
 // Extract user from request extensions
 #[allow(dead_code)]
 pub fn get_user_from_request(parts: &Parts) -> Result<User, AuthError> {
-    let claims = parts.extensions.get::<crate::features::auth::jwt::Claims>()
+    let claims = parts.extensions.get::<core_auth::jwt::Claims>()
         .ok_or(AuthError::MissingConfig)?
         .clone();
 

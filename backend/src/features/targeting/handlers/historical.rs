@@ -8,6 +8,7 @@ use axum::{
     Json,
 };
 use serde::{Deserialize, Serialize};
+use crate::features::targeting::router::TargetingState;
 use sqlx::{Pool, Sqlite, Row};
 use chrono::{DateTime, Utc};
 
@@ -48,7 +49,7 @@ pub struct HistoricalBDA {
 /// Get historical target status distribution
 /// GET /api/targeting/historical/status
 pub async fn get_historical_status(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Query(params): Query<HistoricalQueryParams>,
 ) -> Result<impl IntoResponse, StatusCode> {
     let default_to = Utc::now().to_rfc3339();
@@ -84,7 +85,7 @@ pub async fn get_historical_status(
         .bind(&from_str)
         .bind(&to_str)
         .bind(limit)
-        .fetch_all(&pool)
+        .fetch_all(&state.pool)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
@@ -115,7 +116,7 @@ pub async fn get_historical_status(
 /// Get historical F3EAD pipeline distribution
 /// GET /api/targeting/historical/f3ead
 pub async fn get_historical_f3ead(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Query(params): Query<HistoricalQueryParams>,
 ) -> Result<impl IntoResponse, StatusCode> {
     let default_to = Utc::now().to_rfc3339();
@@ -149,7 +150,7 @@ pub async fn get_historical_f3ead(
         .bind(&from_str)
         .bind(&to_str)
         .bind(limit)
-        .fetch_all(&pool)
+        .fetch_all(&state.pool)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
@@ -188,7 +189,7 @@ pub async fn get_historical_f3ead(
 /// Get historical BDA assessment distribution
 /// GET /api/targeting/historical/bda
 pub async fn get_historical_bda(
-    State(pool): State<Pool<Sqlite>>,
+    State(state): State<TargetingState>,
     Query(params): Query<HistoricalQueryParams>,
 ) -> Result<impl IntoResponse, StatusCode> {
     let default_to = Utc::now().to_rfc3339();
@@ -223,7 +224,7 @@ pub async fn get_historical_bda(
         .bind(&from_str)
         .bind(&to_str)
         .bind(limit)
-        .fetch_all(&pool)
+        .fetch_all(&state.pool)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 

@@ -72,496 +72,85 @@
   },
   "suites": [
     {
-      "title": "roe-e2e.spec.ts",
-      "file": "roe-e2e.spec.ts",
+      "title": "monitoring/bda-phase3-verification.spec.ts",
+      "file": "monitoring/bda-phase3-verification.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "ROE Feature - E2E Tests",
-          "file": "roe-e2e.spec.ts",
-          "line": 8,
+          "title": "BDA Phase 3 Integration - Intelligence & Ontology",
+          "file": "monitoring/bda-phase3-verification.spec.ts",
+          "line": 10,
           "column": 6,
-          "specs": [],
-          "suites": [
+          "specs": [
             {
-              "title": "ROE Status Display",
-              "file": "roe-e2e.spec.ts",
-              "line": 10,
-              "column": 8,
-              "specs": [
+              "title": "Should create intelligence feed and verify ontology projection",
+              "ok": true,
+              "tags": [],
+              "tests": [
                 {
-                  "title": "DecisionCard should display ROE status badge",
-                  "ok": true,
-                  "tags": [],
-                  "tests": [
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
                     {
-                      "timeout": 60000,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 344,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-31T18:02:38.714Z",
                       "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "chromium",
-                      "projectName": "chromium",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 826,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-31T14:23:25.498Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
+                      "attachments": []
                     }
                   ],
-                  "id": "e0d4752eec2f296a7220-04b17b84b74e797f85b5",
-                  "file": "roe-e2e.spec.ts",
-                  "line": 11,
-                  "column": 5
-                },
-                {
-                  "title": "DecisionCard should show correct ROE status colors",
-                  "ok": true,
-                  "tags": [],
-                  "tests": [
-                    {
-                      "timeout": 60000,
-                      "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "chromium",
-                      "projectName": "chromium",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 819,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-31T14:23:26.453Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
-                    }
-                  ],
-                  "id": "e0d4752eec2f296a7220-9a00cee5b40ab55f8000",
-                  "file": "roe-e2e.spec.ts",
-                  "line": 28,
-                  "column": 5
-                },
-                {
-                  "title": "DecisionAnalysisPanel should show detailed ROE information",
-                  "ok": true,
-                  "tags": [],
-                  "tests": [
-                    {
-                      "timeout": 60000,
-                      "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "chromium",
-                      "projectName": "chromium",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 801,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-31T14:23:27.280Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
-                    }
-                  ],
-                  "id": "e0d4752eec2f296a7220-0cfe6ec28b7ff22ad70f",
-                  "file": "roe-e2e.spec.ts",
-                  "line": 46,
-                  "column": 5
+                  "status": "expected"
                 }
-              ]
+              ],
+              "id": "70c159339ff1e34fe999-7181ca2518432afd11e3",
+              "file": "monitoring/bda-phase3-verification.spec.ts",
+              "line": 12,
+              "column": 5
             },
             {
-              "title": "ROE API Integration",
-              "file": "roe-e2e.spec.ts",
-              "line": 66,
-              "column": 8,
-              "specs": [
+              "title": "Intelligence Panel should be accessible for a target",
+              "ok": true,
+              "tags": [],
+              "tests": [
                 {
-                  "title": "ROE status API should return valid data",
-                  "ok": true,
-                  "tags": [],
-                  "tests": [
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
                     {
-                      "timeout": 60000,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 301,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-31T18:02:39.070Z",
                       "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "chromium",
-                      "projectName": "chromium",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 311,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-31T14:23:28.087Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
+                      "attachments": []
                     }
                   ],
-                  "id": "e0d4752eec2f296a7220-3953934d21353f34c40e",
-                  "file": "roe-e2e.spec.ts",
-                  "line": 67,
-                  "column": 5
-                },
-                {
-                  "title": "Auto-determine ROE API should work",
-                  "ok": true,
-                  "tags": [],
-                  "tests": [
-                    {
-                      "timeout": 60000,
-                      "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "chromium",
-                      "projectName": "chromium",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 304,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-31T14:23:28.402Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
-                    }
-                  ],
-                  "id": "e0d4752eec2f296a7220-14290c14fa0ad42ae4c2",
-                  "file": "roe-e2e.spec.ts",
-                  "line": 82,
-                  "column": 5
-                },
-                {
-                  "title": "ROE blocking check API should return blocking status",
-                  "ok": true,
-                  "tags": [],
-                  "tests": [
-                    {
-                      "timeout": 60000,
-                      "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "chromium",
-                      "projectName": "chromium",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 307,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-31T14:23:28.710Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
-                    }
-                  ],
-                  "id": "e0d4752eec2f296a7220-6db2e4f29c87739c64aa",
-                  "file": "roe-e2e.spec.ts",
-                  "line": 98,
-                  "column": 5
-                },
-                {
-                  "title": "Decision routing API should check ROE blocking",
-                  "ok": true,
-                  "tags": [],
-                  "tests": [
-                    {
-                      "timeout": 60000,
-                      "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "chromium",
-                      "projectName": "chromium",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 304,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-31T14:23:29.021Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
-                    }
-                  ],
-                  "id": "e0d4752eec2f296a7220-957c255e6d2041447f21",
-                  "file": "roe-e2e.spec.ts",
-                  "line": 113,
-                  "column": 5
+                  "status": "expected"
                 }
-              ]
-            },
-            {
-              "title": "ROE Request Workflow",
-              "file": "roe-e2e.spec.ts",
-              "line": 129,
-              "column": 8,
-              "specs": [
-                {
-                  "title": "ROE request creation API should work",
-                  "ok": false,
-                  "tags": [],
-                  "tests": [
-                    {
-                      "timeout": 60000,
-                      "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "chromium",
-                      "projectName": "chromium",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "failed",
-                          "duration": 307,
-                          "error": {
-                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m500\u001b[39m\nReceived array: \u001b[31m[200, 201, 400, 404]\u001b[39m",
-                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m500\u001b[39m\nReceived array: \u001b[31m[200, 201, 400, 404]\u001b[39m\n    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/roe-e2e.spec.ts:147:36",
-                            "location": {
-                              "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/roe-e2e.spec.ts",
-                              "column": 36,
-                              "line": 147
-                            },
-                            "snippet": "\u001b[0m \u001b[90m 145 |\u001b[39m\n \u001b[90m 146 |\u001b[39m       \u001b[90m// Should return 200 (created) or 404 (decision doesn't exist) or 400 (validation error)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 147 |\u001b[39m       expect([\u001b[35m200\u001b[39m\u001b[33m,\u001b[39m \u001b[35m201\u001b[39m\u001b[33m,\u001b[39m \u001b[35m400\u001b[39m\u001b[33m,\u001b[39m \u001b[35m404\u001b[39m])\u001b[33m.\u001b[39mtoContain(response\u001b[33m.\u001b[39mstatus())\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 148 |\u001b[39m\n \u001b[90m 149 |\u001b[39m       \u001b[36mif\u001b[39m (response\u001b[33m.\u001b[39mok()) {\n \u001b[90m 150 |\u001b[39m         \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
-                          },
-                          "errors": [
-                            {
-                              "location": {
-                                "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/roe-e2e.spec.ts",
-                                "column": 36,
-                                "line": 147
-                              },
-                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m500\u001b[39m\nReceived array: \u001b[31m[200, 201, 400, 404]\u001b[39m\n\n\u001b[0m \u001b[90m 145 |\u001b[39m\n \u001b[90m 146 |\u001b[39m       \u001b[90m// Should return 200 (created) or 404 (decision doesn't exist) or 400 (validation error)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 147 |\u001b[39m       expect([\u001b[35m200\u001b[39m\u001b[33m,\u001b[39m \u001b[35m201\u001b[39m\u001b[33m,\u001b[39m \u001b[35m400\u001b[39m\u001b[33m,\u001b[39m \u001b[35m404\u001b[39m])\u001b[33m.\u001b[39mtoContain(response\u001b[33m.\u001b[39mstatus())\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 148 |\u001b[39m\n \u001b[90m 149 |\u001b[39m       \u001b[36mif\u001b[39m (response\u001b[33m.\u001b[39mok()) {\n \u001b[90m 150 |\u001b[39m         \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/roe-e2e.spec.ts:147:36\u001b[22m"
-                            }
-                          ],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-31T14:23:29.329Z",
-                          "annotations": [],
-                          "attachments": [
-                            {
-                              "name": "trace",
-                              "contentType": "application/zip",
-                              "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/roe-e2e-ROE-Feature---E2E--e209c-st-creation-API-should-work-chromium/trace.zip"
-                            }
-                          ],
-                          "errorLocation": {
-                            "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/roe-e2e.spec.ts",
-                            "column": 36,
-                            "line": 147
-                          }
-                        }
-                      ],
-                      "status": "unexpected"
-                    }
-                  ],
-                  "id": "e0d4752eec2f296a7220-6ed4588c2d67ac491166",
-                  "file": "roe-e2e.spec.ts",
-                  "line": 130,
-                  "column": 5
-                },
-                {
-                  "title": "ROE request list API should return requests",
-                  "ok": true,
-                  "tags": [],
-                  "tests": [
-                    {
-                      "timeout": 60000,
-                      "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "chromium",
-                      "projectName": "chromium",
-                      "results": [
-                        {
-                          "workerIndex": 1,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 333,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-31T14:23:30.085Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
-                    }
-                  ],
-                  "id": "e0d4752eec2f296a7220-3a621e038c33370e1065",
-                  "file": "roe-e2e.spec.ts",
-                  "line": 158,
-                  "column": 5
-                }
-              ]
-            },
-            {
-              "title": "ROE Blocking Display",
-              "file": "roe-e2e.spec.ts",
-              "line": 177,
-              "column": 8,
-              "specs": [
-                {
-                  "title": "Blocked decisions should show blocking message",
-                  "ok": true,
-                  "tags": [],
-                  "tests": [
-                    {
-                      "timeout": 60000,
-                      "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "chromium",
-                      "projectName": "chromium",
-                      "results": [
-                        {
-                          "workerIndex": 1,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 809,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-31T14:23:30.428Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
-                    }
-                  ],
-                  "id": "e0d4752eec2f296a7220-d93a794dcf6b5eb170b9",
-                  "file": "roe-e2e.spec.ts",
-                  "line": 178,
-                  "column": 5
-                },
-                {
-                  "title": "Routing blocked decisions should show ROE coordination venue",
-                  "ok": true,
-                  "tags": [],
-                  "tests": [
-                    {
-                      "timeout": 60000,
-                      "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "chromium",
-                      "projectName": "chromium",
-                      "results": [
-                        {
-                          "workerIndex": 1,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 308,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-31T14:23:31.364Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
-                    }
-                  ],
-                  "id": "e0d4752eec2f296a7220-2eee88a5a3dc41cd32a5",
-                  "file": "roe-e2e.spec.ts",
-                  "line": 195,
-                  "column": 5
-                }
-              ]
-            },
-            {
-              "title": "Complete ROE Workflow",
-              "file": "roe-e2e.spec.ts",
-              "line": 211,
-              "column": 8,
-              "specs": [
-                {
-                  "title": "End-to-end ROE workflow should work",
-                  "ok": true,
-                  "tags": [],
-                  "tests": [
-                    {
-                      "timeout": 60000,
-                      "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "chromium",
-                      "projectName": "chromium",
-                      "results": [
-                        {
-                          "workerIndex": 1,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 1097,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-31T14:23:31.676Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
-                    }
-                  ],
-                  "id": "e0d4752eec2f296a7220-294ae4c2c9d9e984def6",
-                  "file": "roe-e2e.spec.ts",
-                  "line": 212,
-                  "column": 5
-                }
-              ]
+              ],
+              "id": "70c159339ff1e34fe999-6c287b7821b2c1fbde13",
+              "file": "monitoring/bda-phase3-verification.spec.ts",
+              "line": 58,
+              "column": 5
             }
           ]
         }
@@ -570,11 +159,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-01-31T14:23:24.744Z",
-    "duration": 8063.9529999999995,
-    "expected": 11,
+    "startTime": "2026-01-31T18:02:38.018Z",
+    "duration": 1371.299,
+    "expected": 2,
     "skipped": 0,
-    "unexpected": 1,
+    "unexpected": 0,
     "flaky": 0
   }
 }

@@ -1,0 +1,186 @@
+warning: unused imports: `AssignRoleInput`, `CreateResourceInput`, and `UserRole`
+ --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-abac/src/service.rs:2:37
+  |
+2 | ...e, UserRole, Permission, UserRoleAssignment, AssignRoleInput, CreateResourceInput};
+  |       ^^^^^^^^                                  ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `core-abac` (lib) generated 1 warning (run `cargo fix --lib -p core-abac` to apply 1 suggestion)
+warning: unused import: `uuid::Uuid`
+ --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-ontology/src/models.rs:4:5
+  |
+4 | use uuid::Uuid;
+  |     ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `delete` and `patch`
+ --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-ontology/src/routes.rs:5:26
+  |
+5 |     routing::{get, post, patch, delete},
+  |                          ^^^^^  ^^^^^^
+
+warning: `core-ontology` (lib) generated 2 warnings (run `cargo fix --lib -p core-ontology` to apply 2 suggestions)
+    Checking core-auth v0.1.0 (/Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth)
+error: unknown start of token: `
+   --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/service.rs:369:1
+    |
+369 | ```
+    | ^^^
+    |
+    = note: character appears 2 more times
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+369 - ```
+369 + '''
+    |
+
+error[E0433]: failed to resolve: unresolved import
+ --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/cookies.rs:3:12
+  |
+3 | use crate::middleware::csrf::{set_csrf_cookie, CSRF_COOKIE_NAME};
+  |            ^^^^^^^^^^
+  |            |
+  |            unresolved import
+  |            help: a similar path exists: `axum::middleware`
+
+error[E0603]: struct import `UserRoleClaim` is private
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/service.rs:14:52
+   |
+14 | use crate::jwt::{create_jwt, create_refresh_token, UserRoleClaim};
+   |                                                    ^^^^^^^^^^^^^ private struct import
+   |
+note: the struct import `UserRoleClaim` is defined here...
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/jwt.rs:7:5
+   |
+ 7 | use core_common_types::UserRoleClaim;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: ...and refers to the struct `UserRoleClaim` which is defined here
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-common-types/src/lib.rs:69:1
+   |
+69 | pub struct UserRoleClaim {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^ you could import this directly
+help: import `UserRoleClaim` directly
+   |
+14 | use crate::jwt::{create_jwt, create_refresh_token, core_common_types::UserRoleClaim};
+   |                                                    +++++++++++++++++++
+
+error[E0603]: type alias import `AuthError` is private
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/handlers/session.rs:6:21
+   |
+ 6 | use crate::service::AuthError;
+   |                     ^^^^^^^^^ private type alias import
+   |
+note: the type alias import `AuthError` is defined here...
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/service.rs:33:5
+   |
+33 | use core_users::AuthError;
+   |     ^^^^^^^^^^^^^^^^^^^^^
+note: ...and refers to the type alias `AuthError` which is defined here
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-users/src/lib.rs:55:1
+   |
+55 | pub type AuthError = CoreAuthError;
+   | ^^^^^^^^^^^^^^^^^^ you could import this directly
+help: import `AuthError` directly
+   |
+ 6 - use crate::service::AuthError;
+ 6 + use core_users::AuthError;
+   |
+
+error[E0603]: type alias import `AuthError` is private
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/handlers/user.rs:7:21
+   |
+ 7 | use crate::service::AuthError;
+   |                     ^^^^^^^^^ private type alias import
+   |
+note: the type alias import `AuthError` is defined here...
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/service.rs:33:5
+   |
+33 | use core_users::AuthError;
+   |     ^^^^^^^^^^^^^^^^^^^^^
+note: ...and refers to the type alias `AuthError` which is defined here
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-users/src/lib.rs:55:1
+   |
+55 | pub type AuthError = CoreAuthError;
+   | ^^^^^^^^^^^^^^^^^^ you could import this directly
+help: import `AuthError` directly
+   |
+ 7 - use crate::service::AuthError;
+ 7 + use core_users::AuthError;
+   |
+
+error[E0603]: type alias import `AuthError` is private
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/handlers/notification.rs:7:21
+   |
+ 7 | use crate::service::AuthError;
+   |                     ^^^^^^^^^ private type alias import
+   |
+note: the type alias import `AuthError` is defined here...
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/service.rs:33:5
+   |
+33 | use core_users::AuthError;
+   |     ^^^^^^^^^^^^^^^^^^^^^
+note: ...and refers to the type alias `AuthError` which is defined here
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-users/src/lib.rs:55:1
+   |
+55 | pub type AuthError = CoreAuthError;
+   | ^^^^^^^^^^^^^^^^^^ you could import this directly
+help: import `AuthError` directly
+   |
+ 7 - use crate::service::AuthError;
+ 7 + use core_users::AuthError;
+   |
+
+error[E0603]: type alias import `AuthError` is private
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/handlers/admin.rs:6:21
+   |
+ 6 | use crate::service::AuthError;
+   |                     ^^^^^^^^^ private type alias import
+   |
+note: the type alias import `AuthError` is defined here...
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/service.rs:33:5
+   |
+33 | use core_users::AuthError;
+   |     ^^^^^^^^^^^^^^^^^^^^^
+note: ...and refers to the type alias `AuthError` which is defined here
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-users/src/lib.rs:55:1
+   |
+55 | pub type AuthError = CoreAuthError;
+   | ^^^^^^^^^^^^^^^^^^ you could import this directly
+help: import `AuthError` directly
+   |
+ 6 - use crate::service::AuthError;
+ 6 + use core_users::AuthError;
+   |
+
+warning: unused import: `thiserror::Error`
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/service.rs:18:5
+   |
+18 | use thiserror::Error;
+   |     ^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `axum::response::IntoResponse`
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/service.rs:19:5
+   |
+19 | use axum::response::IntoResponse;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `axum::http::StatusCode`
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/service.rs:20:5
+   |
+20 | use axum::http::StatusCode;
+   |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `tokio_stream::StreamExt`
+ --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/handlers/notification.rs:4:5
+  |
+4 | use tokio_stream::StreamExt as _;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+Some errors have detailed explanations: E0433, E0603.
+For more information about an error, try `rustc --explain E0433`.
+warning: `core-auth` (lib) generated 4 warnings
+error: could not compile `core-auth` (lib) due to 7 previous errors; 4 warnings emitted

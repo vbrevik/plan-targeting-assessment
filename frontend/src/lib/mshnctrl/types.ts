@@ -1,5 +1,133 @@
 export type UUID = string;
 
+// ============================================================================
+// ONTOLOGY-FIRST TYPE SYSTEM (Phase 3)
+// Backend-compatible entity types matching core-ontology module
+// ============================================================================
+
+/**
+ * Generic ontology entity base interface
+ * Matches backend Entity structure with snake_case fields
+ * @template TType - Entity type discriminator (e.g., 'TARGET', 'BDA_REPORT')
+ */
+export interface OntologyEntity<TType extends string = string> {
+    id: UUID;
+    operation_id?: string;
+    campaign_id?: string;
+    name: string;
+    type_: TType;  // Type discriminator
+    description?: string;
+    status?: string;
+    location_lat?: number;
+    location_lng?: number;
+    properties?: Record<string, any>;
+    source?: string;
+    classification?: string;
+    confidence?: number;
+    created_at: string;
+    updated_at: string;
+}
+
+/**
+ * Type-safe entity with strongly-typed properties
+ * Use this for domain-specific entities like targets, reports, etc.
+ * @template TType - Entity type discriminator
+ * @template TProperties - Strongly-typed properties object
+ */
+export interface TypedOntologyEntity<TType extends string, TProperties extends Record<string, any>> extends Omit<OntologyEntity<TType>, 'properties'> {
+    properties: TProperties;
+}
+
+/**
+ * Target-specific properties
+ * Extracted from properties JSON for type safety
+ */
+export interface TargetProperties {
+    designator: string;
+    be_number?: string;
+    category: string;
+    cat_code: string;
+    priority: 'High' | 'Medium' | 'Low';
+    desired_effect: string;
+    collateral_damage_estimate: 'Low' | 'Medium' | 'High';
+    target_status: string; // 'Identified' | 'Nominated' | 'Validated', etc.
+    nominated_by_id: string;
+    validated_by_id?: string;
+    approved_by_id?: string;
+    kill_chain_phase: string;
+    domain?: string;
+    functional_type?: string;
+    required_roe_id?: string;
+    bda_status?: string;
+}
+
+/**
+ * Target as ontology entity (Phase 3 unified type)
+ * Replaces legacy Target interface for ontology-first APIs
+ */
+export type TargetEntity = TypedOntologyEntity<'TARGET', TargetProperties>;
+
+/**
+ * BDA Report-specific properties
+ * Extracted from properties JSON for type safety
+ */
+export interface BdaReportProperties {
+    target_id: UUID;
+    strike_id?: UUID;
+    assessment_type: 'initial' | 'interim' | 'final';
+    assessment_date: string;
+    analyst_id: string;
+
+    // Damage assessment
+    physical_damage: 'ND' | 'SD' | 'MD' | 'SVD' | 'D';
+    physical_damage_percentage?: number;
+    damage_description?: string;
+    functional_damage: 'FMC' | 'PMC' | 'NMC';
+    estimated_repair_time_hours?: number;
+
+    // Effects
+    desired_effect: string;
+    achieved_effect: string;
+    effect_level?: 'first_order' | 'second_order' | 'third_order';
+    unintended_effects?: string;
+
+    // Confidence
+    confidence_level: number;
+    assessment_quality?: 'high' | 'medium' | 'low';
+    limiting_factors?: string;
+
+    // Recommendation
+    recommendation: 'effect_achieved' | 'monitor' | 're_attack' | 're_weaponeer';
+    re_attack_priority?: number;
+    re_attack_rationale?: string;
+
+    // Collateral damage
+    collateral_damage_detected: boolean;
+    civcas_credibility?: 'no_credibility' | 'possible' | 'credible' | 'confirmed';
+    civilian_casualties_estimate?: number;
+
+    // Weaponeering
+    weapon_performance_vs_predicted?: 'exceeded' | 'met' | 'below' | 'failed';
+    circular_error_probable_meters?: number;
+    penetration_depth_meters?: number;
+
+    // Status workflow
+    bda_status: 'draft' | 'submitted' | 'reviewed' | 'approved' | 'rejected';
+    submitted_at?: string;
+    reviewed_at?: string;
+    approved_at?: string;
+
+    classification_level: string;
+    notes?: string;
+}
+
+/**
+ * BDA Report as ontology entity (Phase 3 unified type)
+ * Replaces legacy BdaReport interface for ontology-first APIs
+ */
+export type BdaReportEntity = TypedOntologyEntity<'BDA_REPORT', BdaReportProperties>;
+
+
 // HQ Workflow Types
 export enum WorkflowState {
     Draft = 'Draft',

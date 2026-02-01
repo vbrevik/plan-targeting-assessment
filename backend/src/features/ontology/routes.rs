@@ -18,8 +18,12 @@ where
         .route("/entities", get(list_entities).post(create_entity))
         .route("/entities/:id", get(get_entity).patch(update_entity).delete(delete_entity))
         .route("/entities/:id/acknowledge", post(acknowledge_entity))
+        .route("/entities/:id/neighbors", get(get_neighbors))
         .route("/relationships", get(list_relationships).post(create_relationship))
         .route("/schema", get(get_schema))
+        // Phase 4: Graph Traversal
+        .route("/graph/traverse", post(traverse_graph))
+        .route("/graph/impact", post(analyze_impact))
         .with_state(Arc::new(service))
 }
 
@@ -114,6 +118,40 @@ async fn acknowledge_entity(
 ) -> impl IntoResponse {
     match service.acknowledge_entity(&id, req).await {
         Ok(entity) => (StatusCode::OK, Json(entity)).into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, Json(json!({ "error": e.to_string() }))).into_response(),
+    }
+}
+
+async fn get_neighbors(
+    Path(id): Path<String>,
+    State(service): State<Arc<OntologyService>>,
+) -> impl IntoResponse {
+    match service.get_neighbors(&id).await {
+        Ok(neighbors) => (StatusCode::OK, Json(neighbors)).into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, Json(json!({ "error": e.to_string() }))).into_response(),
+    }
+}
+
+// ============================================================================
+// PHASE 4: GRAPH TRAVERSAL HANDLERS
+// ============================================================================
+
+async fn traverse_graph(
+    State(service): State<Arc<OntologyService>>,
+    Json(req): Json<TraverseRequest>,
+) -> impl IntoResponse {
+    match service.traverse_graph(req).await {
+        Ok(response) => (StatusCode::OK, Json(response)).into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, Json(json!({ "error": e.to_string() }))).into_response(),
+    }
+}
+
+async fn analyze_impact(
+    State(service): State<Arc<OntologyService>>,
+    Json(req): Json<ImpactAnalysisRequest>,
+) -> impl IntoResponse {
+    match service.analyze_impact(req).await {
+        Ok(response) => (StatusCode::OK, Json(response)).into_response(),
         Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, Json(json!({ "error": e.to_string() }))).into_response(),
     }
 }

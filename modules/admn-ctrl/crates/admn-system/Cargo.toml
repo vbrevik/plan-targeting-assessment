@@ -1,0 +1,18 @@
+[package]
+name = "admn-system"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+axum.workspace = true
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+sqlx.workspace = true
+sysinfo.workspace = true
+
+# Internal dependencies
+core-auth = { path = "../../../bcknd-ctrl/crates/core-auth" }

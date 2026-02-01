@@ -75,7 +75,7 @@ export default function UserManagement() {
         }
 
         try {
-            const res = await fetch(`/api/users/${id}`, {
+            const res = await fetch(`/api/admin/users/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-Token': token,
@@ -143,7 +143,7 @@ export default function UserManagement() {
         if (!userEdit) return
 
         try {
-            const res = await fetch(`/api/users/${userId}`, {
+            const res = await fetch(`/api/admin/users/${userId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

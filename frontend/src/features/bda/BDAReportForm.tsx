@@ -4,8 +4,8 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BdaApi, type CreateBdaReportRequest, type BdaReport, type PhysicalDamage, type FunctionalDamage, type AssessmentType, type Recommendation, type EffectLevel } from '@/lib/mshnctrl/api/bda';
-import { Save, X, AlertCircle } from 'lucide-react';
+import { BdaApi, type CreateBdaReportRequest, type BdaReport, type PhysicalDamage, type FunctionalDamage, type AssessmentType, type Recommendation, type EffectLevel, type StrikeCorrelation, type WeaponPerformance, type CivcasCredibility, type AssessmentQuality } from '@/lib/mshnctrl/api/bda';
+import { Save, X, AlertCircle, Crosshair } from 'lucide-react';
 
 interface BDAReportFormProps {
     targetId: string;
@@ -24,8 +24,10 @@ export const BDAReportForm: React.FC<BDAReportFormProps> = ({
 }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    
+    const [strikes, setStrikes] = useState<StrikeCorrelation[]>([]);
+
     // Form state
+    const [selectedStrikeId, setSelectedStrikeId] = useState<string | undefined>(strikeId || initialData?.strike_id);
     const [assessmentType, setAssessmentType] = useState<AssessmentType>(initialData?.assessment_type || 'initial');
     const [physicalDamage, setPhysicalDamage] = useState<PhysicalDamage>(initialData?.physical_damage || 'ND');
     const [physicalDamagePercentage, setPhysicalDamagePercentage] = useState<number | undefined>(initialData?.physical_damage_percentage);
@@ -38,14 +40,33 @@ export const BDAReportForm: React.FC<BDAReportFormProps> = ({
     const [effectLevel, setEffectLevel] = useState<EffectLevel | undefined>(initialData?.effect_level);
     const [unintendedEffects, setUnintendedEffects] = useState<string>(initialData?.unintended_effects || '');
     const [confidenceLevel, setConfidenceLevel] = useState<number>(initialData?.confidence_level || 0.8);
+    const [assessmentQuality, setAssessmentQuality] = useState<AssessmentQuality | undefined>(initialData?.assessment_quality);
     const [limitingFactors, setLimitingFactors] = useState<string>(initialData?.limiting_factors || '');
     const [recommendation, setRecommendation] = useState<Recommendation>(initialData?.recommendation || 'monitor');
     const [reAttackPriority, setReAttackPriority] = useState<number | undefined>(initialData?.re_attack_priority);
     const [reAttackRationale, setReAttackRationale] = useState<string>(initialData?.re_attack_rationale || '');
     const [alternativeMunitions, setAlternativeMunitions] = useState<string>(initialData?.alternative_munitions || '');
     const [collateralDamageDetected, setCollateralDamageDetected] = useState<boolean>(initialData?.collateral_damage_detected || false);
+    const [civcasCredibility, setCivcasCredibility] = useState<CivcasCredibility | undefined>(initialData?.civcas_credibility);
+    const [civilianCasualties, setCivilianCasualties] = useState<number | undefined>(initialData?.civilian_casualties_estimate);
+    const [cdeVsActual, setCdeVsActual] = useState<string>(initialData?.cde_vs_actual_comparison || '');
+
+    // Weaponeering Validation (Phase 2)
+    const [weaponPerformance, setWeaponPerformance] = useState<WeaponPerformance | undefined>(initialData?.weapon_performance_vs_predicted);
+    const [munitionReliability, setMunitionReliability] = useState<string>(initialData?.munition_reliability || '');
+    const [cepMeters, setCepMeters] = useState<number | undefined>(initialData?.circular_error_probable_meters);
+    const [penetrationDepth, setPenetrationDepth] = useState<number | undefined>(initialData?.penetration_depth_meters);
+
     const [notes, setNotes] = useState<string>(initialData?.notes || '');
     const [classificationLevel, setClassificationLevel] = useState<string>(initialData?.classification_level || 'SECRET');
+
+    React.useEffect(() => {
+        if (targetId) {
+            BdaApi.getStrikesByTarget(targetId)
+                .then((data) => setStrikes(data))
+                .catch((err) => console.error('Failed to fetch strikes:', err));
+        }
+    }, [targetId]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -55,7 +76,7 @@ export const BDAReportForm: React.FC<BDAReportFormProps> = ({
         try {
             const request: CreateBdaReportRequest = {
                 target_id: targetId,
-                strike_id: strikeId,
+                strike_id: selectedStrikeId,
                 assessment_type: assessmentType,
                 physical_damage: physicalDamage,
                 physical_damage_percentage: physicalDamagePercentage,
@@ -68,12 +89,20 @@ export const BDAReportForm: React.FC<BDAReportFormProps> = ({
                 effect_level: effectLevel,
                 unintended_effects: unintendedEffects || undefined,
                 confidence_level: confidenceLevel,
+                assessment_quality: assessmentQuality,
                 limiting_factors: limitingFactors || undefined,
                 recommendation: recommendation,
                 re_attack_priority: reAttackPriority,
                 re_attack_rationale: reAttackRationale || undefined,
                 alternative_munitions: alternativeMunitions || undefined,
                 collateral_damage_detected: collateralDamageDetected,
+                civcas_credibility: civcasCredibility,
+                civilian_casualties_estimate: civilianCasualties,
+                cde_vs_actual_comparison: cdeVsActual || undefined,
+                weapon_performance_vs_predicted: weaponPerformance,
+                munition_reliability: munitionReliability || undefined,
+                circular_error_probable_meters: cepMeters,
+                penetration_depth_meters: penetrationDepth,
                 classification_level: classificationLevel,
                 notes: notes || undefined,
             };
@@ -102,6 +131,47 @@ export const BDAReportForm: React.FC<BDAReportFormProps> = ({
                             <span>{error}</span>
                         </div>
                     )}
+
+                    {/* Strike Selection */}
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-slate-500 uppercase flex items-center gap-2">
+                            <Crosshair size={12} className="text-blue-500" /> Strike Association
+                        </label>
+                        <select
+                            value={selectedStrikeId || ''}
+                            onChange={(e) => {
+                                const id = e.target.value;
+                                setSelectedStrikeId(id || undefined);
+                                if (id) {
+                                    const strike = strikes.find(s => s.id === id);
+                                    if (strike) {
+                                        // Auto-populate weapon system and munition type if not already set
+                                        if (!munitionReliability) setMunitionReliability('Nominal');
+                                        if (strike.circular_error_probable_meters && !cepMeters) {
+                                            setCepMeters(strike.circular_error_probable_meters);
+                                        }
+                                    }
+                                }
+                            }}
+                            className="w-full bg-slate-950 text-[10px] font-mono text-white border border-slate-800 rounded p-2 focus:outline-none focus:border-blue-500"
+                        >
+                            <option value="">-- SELECT STRIKE MISSION --</option>
+                            {strikes.map((s) => (
+                                <option key={s.id} value={s.id}>
+                                    {s.weapon_system} - {s.munition_type} ({new Date(s.time_on_target).toLocaleTimeString()} - {new Date(s.time_on_target).toLocaleDateString()})
+                                </option>
+                            ))}
+                        </select>
+                        {!strikes.length && (
+                            <p className="text-[8px] text-slate-600 italic">No historical strikes found for this target ID.</p>
+                        )}
+                        {selectedStrikeId && strikes.find(s => s.id === selectedStrikeId) && (
+                            <div className="p-2 bg-blue-500/5 border border-blue-500/20 rounded text-[9px] text-blue-300 font-mono">
+                                <div>Weapon: {strikes.find(s => s.id === selectedStrikeId)?.weapon_system}</div>
+                                <div>Munition: {strikes.find(s => s.id === selectedStrikeId)?.munition_type}</div>
+                            </div>
+                        )}
+                    </div>
 
                     {/* Assessment Type */}
                     <div className="space-y-2">
@@ -214,21 +284,97 @@ export const BDAReportForm: React.FC<BDAReportFormProps> = ({
                     </div>
 
                     {/* Confidence & Quality */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <label className="text-[9px] font-black text-slate-500 uppercase">
+                                Confidence Level: {(confidenceLevel * 100).toFixed(0)}%
+                            </label>
+                            <input
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.01"
+                                value={confidenceLevel}
+                                onChange={(e) => setConfidenceLevel(parseFloat(e.target.value))}
+                                className="w-full"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[9px] font-black text-slate-500 uppercase">Assessment Quality</label>
+                            <select
+                                value={assessmentQuality || ''}
+                                onChange={(e) => setAssessmentQuality(e.target.value ? e.target.value as AssessmentQuality : undefined)}
+                                className="w-full bg-slate-950 text-[10px] font-mono text-white border border-slate-800 rounded p-2 focus:outline-none focus:border-blue-500"
+                            >
+                                <option value="high">High (Multi-source imagery)</option>
+                                <option value="medium">Medium (Single-source imagery)</option>
+                                <option value="low">Low (SIGINT/HUMINT only)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="space-y-4 p-4 bg-blue-500/5 border border-blue-500/10 rounded-lg">
+                        <h4 className="text-[9px] font-black text-blue-400 uppercase flex items-center gap-2">
+                            <Crosshair size={12} /> Weaponeering Validation (Phase 2)
+                        </h4>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <label className="text-[9px] font-black text-slate-500 uppercase">Weapon Performance</label>
+                                <select
+                                    value={weaponPerformance || ''}
+                                    onChange={(e) => setWeaponPerformance(e.target.value ? e.target.value as WeaponPerformance : undefined)}
+                                    className="w-full bg-slate-950 text-[10px] font-mono text-white border border-slate-800 rounded p-2 focus:outline-none focus:border-blue-500"
+                                >
+                                    <option value="">Select performance...</option>
+                                    <option value="exceeded">Exceeded Predicted</option>
+                                    <option value="met">Met Predicted</option>
+                                    <option value="below">Below Predicted</option>
+                                    <option value="failed">Weapon System Failure</option>
+                                </select>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[9px] font-black text-slate-500 uppercase">Munition Reliability</label>
+                                <input
+                                    type="text"
+                                    placeholder="e.g. Nominal, Fuzing Error..."
+                                    value={munitionReliability}
+                                    onChange={(e) => setMunitionReliability(e.target.value)}
+                                    className="w-full bg-slate-950 text-[10px] font-mono text-white border border-slate-800 rounded p-2 focus:outline-none focus:border-blue-500"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <label className="text-[9px] font-black text-slate-500 uppercase">Actual CEP (Meters)</label>
+                                <input
+                                    type="number"
+                                    step="0.1"
+                                    placeholder="Distance from DMPI"
+                                    value={cepMeters || ''}
+                                    onChange={(e) => setCepMeters(e.target.value ? parseFloat(e.target.value) : undefined)}
+                                    className="w-full bg-slate-950 text-[10px] font-mono text-white border border-slate-800 rounded p-2 focus:outline-none focus:border-blue-500"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[9px] font-black text-slate-500 uppercase">Penetration (Meters)</label>
+                                <input
+                                    type="number"
+                                    step="0.1"
+                                    placeholder="Actual depth"
+                                    value={penetrationDepth || ''}
+                                    onChange={(e) => setPenetrationDepth(e.target.value ? parseFloat(e.target.value) : undefined)}
+                                    className="w-full bg-slate-950 text-[10px] font-mono text-white border border-slate-800 rounded p-2 focus:outline-none focus:border-blue-500"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="space-y-2">
-                        <label className="text-[9px] font-black text-slate-500 uppercase">
-                            Confidence Level: {(confidenceLevel * 100).toFixed(0)}%
-                        </label>
-                        <input
-                            type="range"
-                            min="0"
-                            max="1"
-                            step="0.01"
-                            value={confidenceLevel}
-                            onChange={(e) => setConfidenceLevel(parseFloat(e.target.value))}
-                            className="w-full"
-                        />
+                        <label className="text-[9px] font-black text-slate-500 uppercase">Limiting Factors</label>
                         <textarea
-                            placeholder="Limiting factors (weather, resolution, etc.)"
+                            placeholder="Weather, resolution, masking, etc."
                             value={limitingFactors}
                             onChange={(e) => setLimitingFactors(e.target.value)}
                             className="w-full bg-slate-950 text-[10px] font-mono text-white border border-slate-800 rounded p-2 focus:outline-none focus:border-blue-500 min-h-[60px]"
@@ -277,7 +423,7 @@ export const BDAReportForm: React.FC<BDAReportFormProps> = ({
                     </div>
 
                     {/* Collateral Damage */}
-                    <div className="space-y-2">
+                    <div className="space-y-4 p-4 bg-orange-500/5 border border-orange-500/10 rounded-lg">
                         <label className="flex items-center gap-2 text-[9px] font-black text-slate-500 uppercase">
                             <input
                                 type="checkbox"
@@ -287,6 +433,45 @@ export const BDAReportForm: React.FC<BDAReportFormProps> = ({
                             />
                             Collateral Damage Detected
                         </label>
+
+                        {collateralDamageDetected && (
+                            <div className="grid grid-cols-2 gap-4 mt-2">
+                                <div className="space-y-2">
+                                    <label className="text-[9px] font-black text-slate-500 uppercase">CIVCAS Credibility</label>
+                                    <select
+                                        value={civcasCredibility || ''}
+                                        onChange={(e) => setCivcasCredibility(e.target.value ? e.target.value as CivcasCredibility : undefined)}
+                                        className="w-full bg-slate-950 text-[10px] font-mono text-white border border-slate-800 rounded p-2 focus:outline-none focus:border-blue-500"
+                                    >
+                                        <option value="">Select credibility...</option>
+                                        <option value="no_credibility">No Credibility</option>
+                                        <option value="possible">Possible</option>
+                                        <option value="credible">Credible</option>
+                                        <option value="confirmed">Confirmed</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[9px] font-black text-slate-500 uppercase">Casualty Estimate</label>
+                                    <input
+                                        type="number"
+                                        placeholder="Est. CIVCAS"
+                                        value={civilianCasualties || ''}
+                                        onChange={(e) => setCivilianCasualties(e.target.value ? parseInt(e.target.value) : undefined)}
+                                        className="w-full bg-slate-950 text-[10px] font-mono text-white border border-slate-800 rounded p-2 focus:outline-none focus:border-blue-500"
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="space-y-2">
+                            <label className="text-[9px] font-black text-slate-500 uppercase">CDE vs Actual Comparison</label>
+                            <textarea
+                                placeholder="Explain variance from pre-strike CDE predictions..."
+                                value={cdeVsActual}
+                                onChange={(e) => setCdeVsActual(e.target.value)}
+                                className="w-full bg-slate-950 text-[10px] font-mono text-white border border-slate-800 rounded p-2 focus:outline-none focus:border-blue-500 min-h-[60px]"
+                            />
+                        </div>
                     </div>
 
                     {/* Classification */}
