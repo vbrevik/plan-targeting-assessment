@@ -1,22 +1,28 @@
 use axum::{
-    extract::{Path, Query, State},
+    extract::{State, Query, Path},
     http::StatusCode,
     response::{IntoResponse, Json},
 };
-use serde::Deserialize;
 use crate::features::targeting::router::TargetingState;
-use sqlx::{Pool, Sqlite};
+
 use crate::features::targeting::domain::*;
-use crate::features::targeting::repositories::*;
+// use crate::features::targeting::repositories::*;
+use crate::features::targeting::services::dtl_service::DtlService;
 use super::common::TargetQueryParams;
 
 pub async fn list_dtl(
     State(state): State<TargetingState>,
     Query(params): Query<TargetQueryParams>,
 ) -> Result<impl IntoResponse, StatusCode> {
-    let entries = DtlRepository::list_all(&state.pool, params.limit)
+    let service = DtlService::new(state.ontology_svc.clone());
+    
+    let entries = service.list_entries(params.limit)
         .await
-        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+        .map_err(|e| {
+            eprintln!("Error listing DTL: {}", e);
+            StatusCode::INTERNAL_SERVER_ERROR
+        })?;
+        
     Ok(Json(entries))
 }
 
@@ -24,61 +30,52 @@ pub async fn create_dtl_entry(
     State(state): State<TargetingState>,
     Json(req): Json<CreateDtlEntryRequest>,
 ) -> Result<impl IntoResponse, StatusCode> {
-    let id = DtlRepository::create(&state.pool, &req.target_id, req.priority_score, req.feasibility_score)
+    let service = DtlService::new(state.ontology_svc.clone());
+    
+    let id = service.create_entry(&req)
         .await
-        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+        .map_err(|e| {
+             eprintln!("Error creating DTL entry: {}", e);
+             StatusCode::INTERNAL_SERVER_ERROR
+        })?;
+        
     Ok((StatusCode::CREATED, Json(serde_json::json!({"id": id}))))
-}
-
-#[derive(Debug, Deserialize)]
-pub struct UpdatePriorityRequest {
-    pub priority_score: f64,
-    pub feasibility_score: f64,
 }
 
 pub async fn update_dtl_priority(
     State(state): State<TargetingState>,
-    Path(id): Path<String>,
-    Json(req): Json<UpdatePriorityRequest>,
+    Path(target_id): Path<String>, // Rename from entry_id since we use target_id as key
+    Json(req): Json<serde_json::Value>,
 ) -> Result<impl IntoResponse, StatusCode> {
-    use crate::features::targeting::services::DtlScoring;
+    let priority_score = req.get("priority_score")
+        .and_then(|v| v.as_f64())
+        .ok_or(StatusCode::BAD_REQUEST)?;
+        
+    let feasibility_score = req.get("feasibility_score")
+        .and_then(|v| v.as_f64())
+        .ok_or(StatusCode::BAD_REQUEST)?;
     
-    // Validate scores are in range [0.0, 1.0]
-    if req.priority_score < 0.0 || req.priority_score > 1.0 {
-        return Err(StatusCode::BAD_REQUEST);
-    }
-    if req.feasibility_score < 0.0 || req.feasibility_score > 1.0 {
-        return Err(StatusCode::BAD_REQUEST);
-    }
+    let service = DtlService::new(state.ontology_svc.clone());
     
-    // Calculate new combined score using business logic
-    let combined_score = DtlScoring::calculate_combined_score(
-        req.priority_score,
-        req.feasibility_score
-    );
+    // Note: older API might have passed entry_id, but new service expects target_id.
+    // DtlEntry ID = Target ID in new system.
     
-    // Update DTL entry with new scores
-    sqlx::query(
-        "UPDATE dtl_entries 
-         SET priority_score = ?, feasibility_score = ?, combined_score = ?, updated_at = datetime('now')
-         WHERE id = ?"
-    )
-    .bind(req.priority_score)
-    .bind(req.feasibility_score)
-    .bind(combined_score)
-    .bind(&id)
-    .execute(&state.pool)
-    .await
-    .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
-    
+    service.update_priority(&target_id, priority_score, feasibility_score)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+        
     Ok(StatusCode::OK)
 }
 
 pub async fn get_active_tsts(
     State(state): State<TargetingState>,
 ) -> Result<impl IntoResponse, StatusCode> {
-    let tsts = DtlRepository::get_active_tsts(&state.pool)
+    let service = DtlService::new(state.ontology_svc.clone());
+    
+    let entries = service.get_active_tsts()
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
-    Ok(Json(tsts))
+        
+    Ok(Json(entries))
 }
+

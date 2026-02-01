@@ -160,8 +160,8 @@ pub async fn update_target(
     // Update entity via ontology service
     let mut updated_props = entity.properties.clone().unwrap_or(serde_json::json!({}));
     
-    if let Some(name) = &req.name {
-        // Update name at entity level
+    if req.name.is_some() {
+        // Name will be updated via UpdateEntityRequest below
     }
     if let Some(priority) = &req.priority {
         updated_props["priority"] = serde_json::json!(priority);

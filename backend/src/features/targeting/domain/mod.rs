@@ -88,9 +88,11 @@ pub struct UpdateTargetRequest {
 // ============================================================================
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct DtlEntry {
     pub id: String,
     pub target_id: String,
+    pub target_name: String,
     pub priority_score: f64,
     pub feasibility_score: f64,
     pub combined_score: Option<f64>,
@@ -105,6 +107,7 @@ pub struct DtlEntry {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CreateDtlEntryRequest {
     pub target_id: String,
     pub priority_score: f64,
@@ -118,6 +121,7 @@ pub struct CreateDtlEntryRequest {
 // ============================================================================
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct BdaAssessment {
     pub id: String,
     pub target_id: String,
@@ -128,6 +132,7 @@ pub struct BdaAssessment {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CreateBdaRequest {
     pub target_id: String,
     pub physical_damage: String,
@@ -141,6 +146,7 @@ pub struct CreateBdaRequest {
 // ============================================================================
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct IsrPlatform {
     pub id: String,
     pub platform_type: String,
@@ -162,6 +168,7 @@ pub struct IsrPlatform {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CreateIsrPlatformRequest {
     pub platform_type: String,
     pub platform_name: String,
@@ -175,6 +182,7 @@ pub struct CreateIsrPlatformRequest {
 // ============================================================================
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct IntelligenceReport {
     pub id: String,
     pub target_id: Option<String>,
@@ -195,6 +203,7 @@ pub struct IntelligenceReport {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CreateIntelReportRequest {
     pub target_id: Option<String>,
     pub int_type: String,
@@ -211,6 +220,7 @@ pub struct CreateIntelReportRequest {
 // ============================================================================
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct StrikePlatform {
     pub id: String,
     pub platform_type: String,
@@ -226,6 +236,7 @@ pub struct StrikePlatform {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CreateStrikePlatformRequest {
     pub platform_type: String,
     pub platform_name: String,
@@ -238,6 +249,7 @@ pub struct CreateStrikePlatformRequest {
 // ============================================================================
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct RiskAssessment {
     pub id: String,
     pub target_id: String,
@@ -257,6 +269,7 @@ pub struct RiskAssessment {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CreateRiskAssessmentRequest {
     pub target_id: String,
     pub fratricide_risk: String,
@@ -270,6 +283,7 @@ pub struct CreateRiskAssessmentRequest {
 // ============================================================================
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct AssumptionChallenge {
     pub id: String,
     pub assumption_text: String,
@@ -283,6 +297,7 @@ pub struct AssumptionChallenge {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CreateAssumptionChallengeRequest {
     pub assumption_text: String,
     pub confidence_level: i32,
@@ -294,6 +309,7 @@ pub struct CreateAssumptionChallengeRequest {
 // ============================================================================
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct DecisionLogEntry {
     pub id: String,
     pub decision_type: String,
@@ -308,6 +324,7 @@ pub struct DecisionLogEntry {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CreateDecisionLogRequest {
     pub decision_type: String,
     pub decision_text: String,
@@ -322,6 +339,7 @@ pub struct CreateDecisionLogRequest {
 // ============================================================================
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct ShiftHandover {
     pub id: String,
     pub shift_date: String,
@@ -339,6 +357,7 @@ pub struct ShiftHandover {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CreateShiftHandoverRequest {
     pub shift_date: String,
     pub shift_type: String,
@@ -353,6 +372,7 @@ pub struct CreateShiftHandoverRequest {
 // ============================================================================
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct JtbSession {
     pub id: String,
     pub session_name: String,
@@ -376,6 +396,7 @@ pub struct JtbSession {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CreateJtbSessionRequest {
     pub session_name: String,
     pub session_date: String,
@@ -389,10 +410,12 @@ pub struct CreateJtbSessionRequest {
 }
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct JtbTarget {
     pub id: String,
     pub session_id: String,
     pub target_id: String,
+    pub target_name: String,
     pub presentation_order: i32,
     pub decision: Option<String>,
     pub decision_rationale: Option<String>,
@@ -409,12 +432,14 @@ pub struct JtbTarget {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct AddTargetToSessionRequest {
     pub target_id: String,
     pub presentation_order: Option<i32>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RecordJtbDecisionRequest {
     pub decision: String, // APPROVED, REJECTED, DEFERRED, PENDING
     pub decision_rationale: String,
@@ -431,6 +456,7 @@ pub struct RecordJtbDecisionRequest {
 // ============================================================================
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct TargetingAnnotation {
     pub id: String,
     pub target_id: Option<String>,
@@ -444,6 +470,7 @@ pub struct TargetingAnnotation {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CreateAnnotationRequest {
     pub target_id: Option<String>,
     pub annotation_text: String,
@@ -457,6 +484,7 @@ pub struct CreateAnnotationRequest {
 // ============================================================================
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct TargetingSummary {
     pub total_targets: i64,
     pub active_targets: i64,

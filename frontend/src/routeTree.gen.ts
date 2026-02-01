@@ -94,6 +94,7 @@ import { Route as MshnctrlTargetingJtbRouteImport } from './routes/mshnctrl.targ
 import { Route as MshnctrlTargetingIntelligenceRouteImport } from './routes/mshnctrl.targeting.intelligence'
 import { Route as MshnctrlTargetingEmergencyRouteImport } from './routes/mshnctrl.targeting.emergency'
 import { Route as MshnctrlTargetingEffectsRouteImport } from './routes/mshnctrl.targeting.effects'
+import { Route as MshnctrlTargetingDtlRouteImport } from './routes/mshnctrl.targeting.dtl'
 import { Route as MshnctrlTargetingCollaborationRouteImport } from './routes/mshnctrl.targeting.collaboration'
 import { Route as MshnctrlTargetingAssetsRouteImport } from './routes/mshnctrl.targeting.assets'
 import { Route as MshnctrlTargetingAnalyticsRouteImport } from './routes/mshnctrl.targeting.analytics'
@@ -104,6 +105,7 @@ import { Route as MshnctrlConductSessionIdRouteImport } from './routes/mshnctrl.
 import { Route as MshnctrlBdaCreateRouteImport } from './routes/mshnctrl.bda.create'
 import { Route as MshnctrlBdaReportIdRouteImport } from './routes/mshnctrl.bda.$reportId'
 import { Route as AdminDiscoveryServiceIdRouteImport } from './routes/admin/discovery/$serviceId'
+import { Route as MshnctrlTargetingJtbSessionIdRouteImport } from './routes/mshnctrl.targeting.jtb.$sessionId'
 
 const MshnctrlOplanLazyRouteImport = createFileRoute('/mshnctrl/oplan')()
 
@@ -549,6 +551,11 @@ const MshnctrlTargetingEffectsRoute =
     path: '/targeting/effects',
     getParentRoute: () => MshnctrlRoute,
   } as any)
+const MshnctrlTargetingDtlRoute = MshnctrlTargetingDtlRouteImport.update({
+  id: '/targeting/dtl',
+  path: '/targeting/dtl',
+  getParentRoute: () => MshnctrlRoute,
+} as any)
 const MshnctrlTargetingCollaborationRoute =
   MshnctrlTargetingCollaborationRouteImport.update({
     id: '/targeting/collaboration',
@@ -607,6 +614,12 @@ const AdminDiscoveryServiceIdRoute = AdminDiscoveryServiceIdRouteImport.update({
   path: '/$serviceId',
   getParentRoute: () => AdminDiscoveryRoute,
 } as any)
+const MshnctrlTargetingJtbSessionIdRoute =
+  MshnctrlTargetingJtbSessionIdRouteImport.update({
+    id: '/$sessionId',
+    path: '/$sessionId',
+    getParentRoute: () => MshnctrlTargetingJtbRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -692,10 +705,11 @@ export interface FileRoutesByFullPath {
   '/mshnctrl/targeting/analytics': typeof MshnctrlTargetingAnalyticsRoute
   '/mshnctrl/targeting/assets': typeof MshnctrlTargetingAssetsRoute
   '/mshnctrl/targeting/collaboration': typeof MshnctrlTargetingCollaborationRoute
+  '/mshnctrl/targeting/dtl': typeof MshnctrlTargetingDtlRoute
   '/mshnctrl/targeting/effects': typeof MshnctrlTargetingEffectsRoute
   '/mshnctrl/targeting/emergency': typeof MshnctrlTargetingEmergencyRoute
   '/mshnctrl/targeting/intelligence': typeof MshnctrlTargetingIntelligenceRoute
-  '/mshnctrl/targeting/jtb': typeof MshnctrlTargetingJtbRoute
+  '/mshnctrl/targeting/jtb': typeof MshnctrlTargetingJtbRouteWithChildren
   '/mshnctrl/targeting/mission-command': typeof MshnctrlTargetingMissionCommandRoute
   '/mshnctrl/targeting/nominate': typeof MshnctrlTargetingNominateRoute
   '/mshnctrl/targeting/risk': typeof MshnctrlTargetingRiskRoute
@@ -703,6 +717,7 @@ export interface FileRoutesByFullPath {
   '/admin/discovery/': typeof AdminDiscoveryIndexRoute
   '/mshnctrl/proposals': typeof MshnctrlProposalsIndexRoute
   '/mshnctrl/targeting': typeof MshnctrlTargetingIndexRoute
+  '/mshnctrl/targeting/jtb/$sessionId': typeof MshnctrlTargetingJtbSessionIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -785,10 +800,11 @@ export interface FileRoutesByTo {
   '/mshnctrl/targeting/analytics': typeof MshnctrlTargetingAnalyticsRoute
   '/mshnctrl/targeting/assets': typeof MshnctrlTargetingAssetsRoute
   '/mshnctrl/targeting/collaboration': typeof MshnctrlTargetingCollaborationRoute
+  '/mshnctrl/targeting/dtl': typeof MshnctrlTargetingDtlRoute
   '/mshnctrl/targeting/effects': typeof MshnctrlTargetingEffectsRoute
   '/mshnctrl/targeting/emergency': typeof MshnctrlTargetingEmergencyRoute
   '/mshnctrl/targeting/intelligence': typeof MshnctrlTargetingIntelligenceRoute
-  '/mshnctrl/targeting/jtb': typeof MshnctrlTargetingJtbRoute
+  '/mshnctrl/targeting/jtb': typeof MshnctrlTargetingJtbRouteWithChildren
   '/mshnctrl/targeting/mission-command': typeof MshnctrlTargetingMissionCommandRoute
   '/mshnctrl/targeting/nominate': typeof MshnctrlTargetingNominateRoute
   '/mshnctrl/targeting/risk': typeof MshnctrlTargetingRiskRoute
@@ -796,6 +812,7 @@ export interface FileRoutesByTo {
   '/admin/discovery': typeof AdminDiscoveryIndexRoute
   '/mshnctrl/proposals': typeof MshnctrlProposalsIndexRoute
   '/mshnctrl/targeting': typeof MshnctrlTargetingIndexRoute
+  '/mshnctrl/targeting/jtb/$sessionId': typeof MshnctrlTargetingJtbSessionIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -882,10 +899,11 @@ export interface FileRoutesById {
   '/mshnctrl/targeting/analytics': typeof MshnctrlTargetingAnalyticsRoute
   '/mshnctrl/targeting/assets': typeof MshnctrlTargetingAssetsRoute
   '/mshnctrl/targeting/collaboration': typeof MshnctrlTargetingCollaborationRoute
+  '/mshnctrl/targeting/dtl': typeof MshnctrlTargetingDtlRoute
   '/mshnctrl/targeting/effects': typeof MshnctrlTargetingEffectsRoute
   '/mshnctrl/targeting/emergency': typeof MshnctrlTargetingEmergencyRoute
   '/mshnctrl/targeting/intelligence': typeof MshnctrlTargetingIntelligenceRoute
-  '/mshnctrl/targeting/jtb': typeof MshnctrlTargetingJtbRoute
+  '/mshnctrl/targeting/jtb': typeof MshnctrlTargetingJtbRouteWithChildren
   '/mshnctrl/targeting/mission-command': typeof MshnctrlTargetingMissionCommandRoute
   '/mshnctrl/targeting/nominate': typeof MshnctrlTargetingNominateRoute
   '/mshnctrl/targeting/risk': typeof MshnctrlTargetingRiskRoute
@@ -893,6 +911,7 @@ export interface FileRoutesById {
   '/admin/discovery/': typeof AdminDiscoveryIndexRoute
   '/mshnctrl/proposals/': typeof MshnctrlProposalsIndexRoute
   '/mshnctrl/targeting/': typeof MshnctrlTargetingIndexRoute
+  '/mshnctrl/targeting/jtb/$sessionId': typeof MshnctrlTargetingJtbSessionIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -980,6 +999,7 @@ export interface FileRouteTypes {
     | '/mshnctrl/targeting/analytics'
     | '/mshnctrl/targeting/assets'
     | '/mshnctrl/targeting/collaboration'
+    | '/mshnctrl/targeting/dtl'
     | '/mshnctrl/targeting/effects'
     | '/mshnctrl/targeting/emergency'
     | '/mshnctrl/targeting/intelligence'
@@ -991,6 +1011,7 @@ export interface FileRouteTypes {
     | '/admin/discovery/'
     | '/mshnctrl/proposals'
     | '/mshnctrl/targeting'
+    | '/mshnctrl/targeting/jtb/$sessionId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -1073,6 +1094,7 @@ export interface FileRouteTypes {
     | '/mshnctrl/targeting/analytics'
     | '/mshnctrl/targeting/assets'
     | '/mshnctrl/targeting/collaboration'
+    | '/mshnctrl/targeting/dtl'
     | '/mshnctrl/targeting/effects'
     | '/mshnctrl/targeting/emergency'
     | '/mshnctrl/targeting/intelligence'
@@ -1084,6 +1106,7 @@ export interface FileRouteTypes {
     | '/admin/discovery'
     | '/mshnctrl/proposals'
     | '/mshnctrl/targeting'
+    | '/mshnctrl/targeting/jtb/$sessionId'
   id:
     | '__root__'
     | '/'
@@ -1169,6 +1192,7 @@ export interface FileRouteTypes {
     | '/mshnctrl/targeting/analytics'
     | '/mshnctrl/targeting/assets'
     | '/mshnctrl/targeting/collaboration'
+    | '/mshnctrl/targeting/dtl'
     | '/mshnctrl/targeting/effects'
     | '/mshnctrl/targeting/emergency'
     | '/mshnctrl/targeting/intelligence'
@@ -1180,6 +1204,7 @@ export interface FileRouteTypes {
     | '/admin/discovery/'
     | '/mshnctrl/proposals/'
     | '/mshnctrl/targeting/'
+    | '/mshnctrl/targeting/jtb/$sessionId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1788,6 +1813,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MshnctrlTargetingEffectsRouteImport
       parentRoute: typeof MshnctrlRoute
     }
+    '/mshnctrl/targeting/dtl': {
+      id: '/mshnctrl/targeting/dtl'
+      path: '/targeting/dtl'
+      fullPath: '/mshnctrl/targeting/dtl'
+      preLoaderRoute: typeof MshnctrlTargetingDtlRouteImport
+      parentRoute: typeof MshnctrlRoute
+    }
     '/mshnctrl/targeting/collaboration': {
       id: '/mshnctrl/targeting/collaboration'
       path: '/targeting/collaboration'
@@ -1858,6 +1890,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDiscoveryServiceIdRouteImport
       parentRoute: typeof AdminDiscoveryRoute
     }
+    '/mshnctrl/targeting/jtb/$sessionId': {
+      id: '/mshnctrl/targeting/jtb/$sessionId'
+      path: '/$sessionId'
+      fullPath: '/mshnctrl/targeting/jtb/$sessionId'
+      preLoaderRoute: typeof MshnctrlTargetingJtbSessionIdRouteImport
+      parentRoute: typeof MshnctrlTargetingJtbRoute
+    }
   }
 }
 
@@ -1908,6 +1947,17 @@ const MshnctrlBdaRouteChildren: MshnctrlBdaRouteChildren = {
 const MshnctrlBdaRouteWithChildren = MshnctrlBdaRoute._addFileChildren(
   MshnctrlBdaRouteChildren,
 )
+
+interface MshnctrlTargetingJtbRouteChildren {
+  MshnctrlTargetingJtbSessionIdRoute: typeof MshnctrlTargetingJtbSessionIdRoute
+}
+
+const MshnctrlTargetingJtbRouteChildren: MshnctrlTargetingJtbRouteChildren = {
+  MshnctrlTargetingJtbSessionIdRoute: MshnctrlTargetingJtbSessionIdRoute,
+}
+
+const MshnctrlTargetingJtbRouteWithChildren =
+  MshnctrlTargetingJtbRoute._addFileChildren(MshnctrlTargetingJtbRouteChildren)
 
 interface MshnctrlRouteChildren {
   MshnctrlA2adRoute: typeof MshnctrlA2adRoute
@@ -1971,10 +2021,11 @@ interface MshnctrlRouteChildren {
   MshnctrlTargetingAnalyticsRoute: typeof MshnctrlTargetingAnalyticsRoute
   MshnctrlTargetingAssetsRoute: typeof MshnctrlTargetingAssetsRoute
   MshnctrlTargetingCollaborationRoute: typeof MshnctrlTargetingCollaborationRoute
+  MshnctrlTargetingDtlRoute: typeof MshnctrlTargetingDtlRoute
   MshnctrlTargetingEffectsRoute: typeof MshnctrlTargetingEffectsRoute
   MshnctrlTargetingEmergencyRoute: typeof MshnctrlTargetingEmergencyRoute
   MshnctrlTargetingIntelligenceRoute: typeof MshnctrlTargetingIntelligenceRoute
-  MshnctrlTargetingJtbRoute: typeof MshnctrlTargetingJtbRoute
+  MshnctrlTargetingJtbRoute: typeof MshnctrlTargetingJtbRouteWithChildren
   MshnctrlTargetingMissionCommandRoute: typeof MshnctrlTargetingMissionCommandRoute
   MshnctrlTargetingNominateRoute: typeof MshnctrlTargetingNominateRoute
   MshnctrlTargetingRiskRoute: typeof MshnctrlTargetingRiskRoute
@@ -2045,10 +2096,11 @@ const MshnctrlRouteChildren: MshnctrlRouteChildren = {
   MshnctrlTargetingAnalyticsRoute: MshnctrlTargetingAnalyticsRoute,
   MshnctrlTargetingAssetsRoute: MshnctrlTargetingAssetsRoute,
   MshnctrlTargetingCollaborationRoute: MshnctrlTargetingCollaborationRoute,
+  MshnctrlTargetingDtlRoute: MshnctrlTargetingDtlRoute,
   MshnctrlTargetingEffectsRoute: MshnctrlTargetingEffectsRoute,
   MshnctrlTargetingEmergencyRoute: MshnctrlTargetingEmergencyRoute,
   MshnctrlTargetingIntelligenceRoute: MshnctrlTargetingIntelligenceRoute,
-  MshnctrlTargetingJtbRoute: MshnctrlTargetingJtbRoute,
+  MshnctrlTargetingJtbRoute: MshnctrlTargetingJtbRouteWithChildren,
   MshnctrlTargetingMissionCommandRoute: MshnctrlTargetingMissionCommandRoute,
   MshnctrlTargetingNominateRoute: MshnctrlTargetingNominateRoute,
   MshnctrlTargetingRiskRoute: MshnctrlTargetingRiskRoute,

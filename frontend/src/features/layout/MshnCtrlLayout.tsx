@@ -45,7 +45,18 @@ function MshnCtrlContent() {
             } catch (err) {
                 console.error('Failed to fetch navigation:', err);
                 // On error, fallback to hardcoded config
+                // The following items are added as part of the fallback navigation.
+                // Note: This is a placeholder for demonstration and might need proper integration
+                // with the getFilteredNavGroups function or a separate fallback mechanism.
+                const fallbackNavItems = [
+                    { label: 'Target Nomination', to: '/mshnctrl/targeting/nominate', icon: 'Crosshair' },
+                    { label: 'Joint Targeting Board', to: '/mshnctrl/targeting/jtb', icon: 'Gavel' },
+                    { label: 'Dynamic Target List', to: '/mshnctrl/targeting/dtl', icon: 'Target' },
+                    { label: 'Weaponeering', to: '/mshnctrl/targeting/weaponeering', icon: 'Zap' },
+                ];
                 const { getFilteredNavGroups } = await import('./config/navigation.config');
+                // For a complete solution, you might want to merge or replace the result of getFilteredNavGroups
+                // with fallbackNavItems, depending on the desired behavior.
                 setNavGroups(getFilteredNavGroups(currentRole));
             }
             */

@@ -799,6 +799,57 @@ export interface InformationRequirement {
     assignedCell: string;
 }
 
+// Module 13: Joint Targeting Board (JTB) & Dynamic Target List (DTL)
+
+export interface JtbSession {
+    id: UUID;
+    sessionName: string;
+    sessionDate: string; // YYYY-MM-DD
+    sessionTime: string; // HH:MM
+    sessionDatetime?: string; // ISO
+    chair: string;
+    chairRank?: string;
+    requiredAttendees?: string[];
+    classification: string;
+    status: 'Scheduled' | 'In Progress' | 'Concluded' | 'Cancelled';
+    caveats?: string[];
+    createdBy: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface JtbTarget {
+    id: UUID;
+    sessionId: UUID;
+    targetId: UUID;
+    targetName: string;
+    presentationOrder: number;
+    decision: 'Pending' | 'Approved' | 'Rejected' | 'Rework';
+    decisionRationale?: string;
+    decidedBy?: string;
+    votesFor?: number;
+    votesAgainst?: number;
+    votesAbstain?: number;
+    approvalConditions?: string;
+    mitigationRequirements?: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface DtlEntry {
+    id: UUID;
+    targetId: UUID;
+    targetName: string;
+    priorityScore: number;
+    feasibilityScore: number;
+    combinedScore: number;
+    agingHours: number;
+    isTst: boolean;
+    tstDeadline?: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
 export interface InformationFlow {
     id: UUID;
     source: string;

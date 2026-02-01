@@ -3,11 +3,15 @@
 #[cfg(test)]
 mod tests {
     use crate::features::targeting::handlers::historical::{get_historical_status, get_historical_f3ead, get_historical_bda, HistoricalQueryParams};
+    use crate::features::targeting::router::TargetingState;
+    use crate::features::targeting::services::realtime::RealtimeService;
+    use core_ontology::OntologyService;
     use sqlx::sqlite::SqlitePoolOptions;
     use chrono::Utc;
     use axum::extract::{State, Query};
+    use std::sync::Arc;
 
-    async fn setup_test_db() -> sqlx::Pool<sqlx::Sqlite> {
+    async fn setup_test_db() -> TargetingState {
         let pool = SqlitePoolOptions::new()
             .connect(":memory:")
             .await
@@ -23,7 +27,7 @@ mod tests {
                 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             )
         "#)
-        .execute(&state.pool)
+        .execute(&pool)
         .await
         .unwrap();
         
@@ -35,16 +39,23 @@ mod tests {
                 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             )
         "#)
-        .execute(&state.pool)
+        .execute(&pool)
         .await
         .unwrap();
         
-        pool
+        let ontology_svc = Arc::new(OntologyService::new(pool.clone()));
+        let realtime_svc = Arc::new(RealtimeService::new());
+
+        TargetingState {
+            pool,
+            ontology_svc,
+            realtime_svc,
+        }
     }
 
     #[tokio::test]
     async fn test_historical_status_query() {
-        let pool = setup_test_db().await;
+        let state = setup_test_db().await;
         
         // Insert test data
         let now = Utc::now();
@@ -80,13 +91,13 @@ mod tests {
             limit: Some(30),
         };
         
-        let result = get_historical_status(axum::extract::State(pool), axum::extract::Query(params)).await;
+        let result = get_historical_status(axum::extract::State(state), axum::extract::Query(params)).await;
         assert!(result.is_ok());
     }
 
     #[tokio::test]
     async fn test_historical_f3ead_query() {
-        let pool = setup_test_db().await;
+        let state = setup_test_db().await;
         
         let now = Utc::now();
         
@@ -109,13 +120,13 @@ mod tests {
             limit: Some(30),
         };
         
-        let result = get_historical_f3ead(axum::extract::State(pool), axum::extract::Query(params)).await;
+        let result = get_historical_f3ead(axum::extract::State(state), axum::extract::Query(params)).await;
         assert!(result.is_ok());
     }
 
     #[tokio::test]
     async fn test_historical_bda_query() {
-        let pool = setup_test_db().await;
+        let state = setup_test_db().await;
         
         let now = Utc::now();
         
@@ -137,7 +148,7 @@ mod tests {
             limit: Some(30),
         };
         
-        let result = get_historical_bda(axum::extract::State(pool), axum::extract::Query(params)).await;
+        let result = get_historical_bda(axum::extract::State(state), axum::extract::Query(params)).await;
         assert!(result.is_ok());
     }
 }

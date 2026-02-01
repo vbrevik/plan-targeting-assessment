@@ -1,10 +1,12 @@
+
 import { Link, useLocation, useNavigate } from '@tanstack/react-router';
 import {
     Menu,
     ChevronLeft,
     Shield,
     LogOut,
-    Settings
+    Settings,
+    Gavel
 } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { cn } from '@/lib/utils';

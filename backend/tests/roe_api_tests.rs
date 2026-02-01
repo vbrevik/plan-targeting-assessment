@@ -68,12 +68,60 @@ async fn create_test_pool() -> SqlitePool {
     .execute(&pool)
     .await
     .expect("Failed to create roe_requests table");
+
+    sqlx::query(
+        r#"
+        CREATE TABLE IF NOT EXISTS entities (
+            id TEXT PRIMARY KEY,
+            type TEXT NOT NULL,
+            name TEXT,
+            description TEXT,
+            status TEXT,
+            properties TEXT,
+            location_lat REAL,
+            location_lng REAL,
+            source TEXT,
+            confidence REAL,
+            classification TEXT,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+        "#
+    )
+    .execute(&pool)
+    .await
+    .expect("Failed to create entities table");
+
+    sqlx::query(
+        r#"
+        CREATE TABLE IF NOT EXISTS relationships (
+            id TEXT PRIMARY KEY,
+            source_id TEXT NOT NULL,
+            target_id TEXT NOT NULL,
+            type TEXT NOT NULL,
+            status TEXT NOT NULL,
+            properties TEXT,
+            confidence REAL,
+            classification TEXT,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(source_id) REFERENCES entities(id),
+            FOREIGN KEY(target_id) REFERENCES entities(id)
+        )
+        "#
+    )
+    .execute(&pool)
+    .await
+    .expect("Failed to create relationships table");
     
     pool
 }
 
 // Helper to create a test decision
 async fn create_test_decision(pool: &SqlitePool, decision_id: &str, title: &str, description: &str, category: &str) {
+    let now = chrono::Utc::now().to_rfc3339();
+    
+    // Legacy table
     sqlx::query(
         "INSERT INTO decisions (id, title, description, category, urgency, complexity, status, created_at, updated_at)
          VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))"
@@ -87,7 +135,28 @@ async fn create_test_decision(pool: &SqlitePool, decision_id: &str, title: &str,
     .bind("pending")
     .execute(pool)
     .await
-    .expect("Failed to create test decision");
+    .expect("Failed to create test decision in legacy table");
+
+    // Ontology entity
+    let props = serde_json::json!({
+        "category": category,
+        "urgency": "high",
+        "complexity": "medium"
+    });
+
+    sqlx::query(
+        "INSERT INTO entities (id, type, name, description, status, properties, created_at, updated_at)
+         VALUES (?, 'DECISION', ?, ?, 'pending', ?, ?, ?)"
+    )
+    .bind(decision_id)
+    .bind(title)
+    .bind(description)
+    .bind(props.to_string())
+    .bind(&now)
+    .bind(&now)
+    .execute(pool)
+    .await
+    .expect("Failed to create test decision entity");
 }
 
 #[tokio::test]

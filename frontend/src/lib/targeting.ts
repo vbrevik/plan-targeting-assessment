@@ -74,5 +74,51 @@ export const targetingApi = {
         // Placeholder as backend logic for strike requests isn't fully exposed yet
         console.log('Strike Request created:', data);
         return Promise.resolve();
+    },
+
+    // JTB Sessions
+    listJtbSessions: async (status?: string): Promise<any[]> => {
+        const query = status ? `?status=${status}` : '';
+        return api.get<any[]>(`/targeting/jtb/sessions${query}`);
+    },
+
+    createJtbSession: async (data: any): Promise<string> => {
+        const res = await api.post<{ id: string }>('/targeting/jtb/sessions', data);
+        return res.id;
+    },
+
+    getJtbSession: async (sessionId: string): Promise<any> => {
+        return api.get<any>(`/targeting/jtb/sessions/${sessionId}`);
+    },
+
+    updateJtbSessionStatus: async (sessionId: string, status: string): Promise<void> => {
+        await api.put<void>(`/targeting/jtb/sessions/${sessionId}/status`, { status });
+    },
+
+    addTargetToSession: async (sessionId: string, targetId: string, presentationOrder?: number): Promise<void> => {
+        await api.post<void>(`/targeting/jtb/sessions/${sessionId}/targets`, {
+            targetId: targetId,
+            presentationOrder: presentationOrder
+        });
+    },
+
+    recordJtbDecision: async (jtbTargetId: string, data: any): Promise<void> => {
+        await api.put<void>(`/targeting/jtb/targets/${jtbTargetId}/decision`, data);
+    },
+
+    // Dynamic Target List (DTL)
+    listDtlEntries: async (limit: number = 20): Promise<any[]> => {
+        return api.get<any[]>(`/targeting/dtl?limit=${limit}`);
+    },
+
+    updateDtlPriority: async (dtlId: string, priorityScore: number, feasibilityScore: number): Promise<void> => {
+        await api.put<void>(`/targeting/dtl/${dtlId}`, {
+            priorityScore: priorityScore,
+            feasibilityScore: feasibilityScore
+        });
+    },
+
+    getActiveTsts: async (): Promise<any[]> => {
+        return api.get<any[]>('/targeting/dtl/tst');
     }
 };

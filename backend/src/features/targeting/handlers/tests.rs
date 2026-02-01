@@ -4,7 +4,8 @@
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::features::auth::jwt::{Claims, UserRoleClaim};
+    use core_auth::jwt::Claims;
+    use core_common_types::UserRoleClaim;
     use axum::extract::Extension;
     use sqlx::SqlitePool;
     

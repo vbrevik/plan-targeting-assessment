@@ -207,6 +207,16 @@ impl OntologyService {
         Ok(())
     }
 
+    pub async fn delete_relationship(&self, source_id: &str, target_id: &str, relation_type: &str) -> Result<()> {
+        sqlx::query("DELETE FROM entity_relationships WHERE source_id = ? AND target_id = ? AND relation_type = ?")
+            .bind(source_id)
+            .bind(target_id)
+            .bind(relation_type)
+            .execute(&self.pool)
+            .await?;
+        Ok(())
+    }
+
     pub async fn create_relationship(&self, req: CreateRelationshipRequest) -> Result<EntityRelationship> {
         // Phase 5: Validate relationship types before creation
         let source = self.get_entity_only(&req.source_id).await?;
