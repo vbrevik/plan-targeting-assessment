@@ -34,7 +34,8 @@ pub async fn create_decision(
         &req.decision_maker_role,
         &req.authority_level,
         &req.classification,
-        user_id
+        user_id,
+        req.assumption_ids
     )
     .await
     .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;

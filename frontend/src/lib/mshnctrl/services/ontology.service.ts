@@ -1,7 +1,6 @@
 import { api } from '@/lib/api';
 import type {
     UUID,
-    OntologyEntity,
     TargetEntity,
     BdaReportEntity,
 } from '../types';
@@ -169,4 +168,70 @@ export const OntologyService = {
     getBdaReport: async (id: UUID): Promise<BdaReportEntity> => {
         return api.get<BdaReportEntity>(`/ontology/entities/${id}`);
     },
+
+    /**
+     * Fetch navigation structure for the current user's role
+     * @param roleId - Role ID
+     * @returns Array of navigation groups with items
+     */
+    fetchNavigation: async (roleId: string): Promise<any[]> => {
+        // 1. Get User's Role Entity and its outgoing relationships to UI_NAV_GROUP
+        // Since we don't have a direct "traverse" endpoint for arbitrary depth yet, we do it in steps or use a future "graph query" endpoint.
+        // For now, we'll fetch all UI_NAV_GROUP entities and filter by relationship (client-side join for MVP)
+        // OR better: fetch groups linked to role.
+
+        // MVP: Fetch ALL UI_NAV_GROUPs and items, then filter? Or fetch specific.
+        // Let's rely on the backend's generic relationship fetcher.
+
+        // A. Get relations from Role -> UI_NAV_GROUP
+        const roleRelations = await OntologyService.getRelationships({ source_id: roleId, relation_type: 'CAN_VIEW' });
+        // Deduplicate group IDs in case of duplicate relationships
+        const groupIds = Array.from(new Set(roleRelations.map(r => r.target_id)));
+
+        if (groupIds.length === 0) return [];
+
+        // B. Fetch the Group Entities
+        // We need a bulk fetch or loop. Loop for MVP.
+        const groups: any[] = [];
+        for (const groupId of groupIds) {
+            const groupEntity = await OntologyService.getEntity(groupId);
+            if (groupEntity.type !== 'UI_NAV_GROUP') continue;
+
+            // C. Get relations Group -> UI_NAV_ITEM
+            const itemRelations = await OntologyService.getRelationships({ source_id: groupId, relation_type: 'CONTAINS' });
+
+            // Deduplicate item IDs
+            const itemIds = Array.from(new Set(itemRelations.map(r => r.target_id)));
+
+            // D. Fetch Items
+            const items: any[] = [];
+            for (const itemId of itemIds) {
+                const itemEntity = await OntologyService.getEntity(itemId);
+                if (itemEntity.type === 'UI_NAV_ITEM') {
+                    // Map ontology properties to UI format
+                    items.push({
+                        // @ts-ignore
+                        label: itemEntity.properties?.label || itemEntity.name,
+                        // @ts-ignore
+                        to: itemEntity.properties?.to || '#',
+                        // @ts-ignore
+                        icon: itemEntity.properties?.icon || 'Circle',
+                        // @ts-ignore
+                        permission: itemEntity.properties?.permission // Optional
+                    });
+                }
+            }
+
+            groups.push({
+                // @ts-ignore
+                label: groupEntity.properties?.label || groupEntity.name,
+                // @ts-ignore
+                order: groupEntity.properties?.order || 99,
+                items: items
+            });
+        }
+
+        // Sort groups
+        return groups.sort((a, b) => a.order - b.order);
+    }
 };

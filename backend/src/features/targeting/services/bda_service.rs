@@ -40,7 +40,7 @@ impl BdaService {
             operation_id: None,
             campaign_id: None,
             name: format!("BDA-{}", Utc::now().timestamp()),
-            type_: "Assessment".to_string(),
+            type_: "ASSESSMENT".to_string(),
             description: None,
             status: None,
             location_lat: None,
@@ -95,7 +95,7 @@ impl BdaService {
         let mut assessments = Vec::new();
         for neighbor in neighbors {
              // Neighbor is the Entity itself
-             if neighbor.type_ == "Assessment" {
+             if neighbor.type_ == "ASSESSMENT" {
                  assessments.push(self.map_entity_to_assessment(&neighbor, target_id));
              }
         }

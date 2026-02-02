@@ -11,7 +11,7 @@ interface DecisionGraphProps {
 
 interface GraphNode {
     id: string;
-    type: 'AgendaPoint' | 'Decision' | 'Assumption';
+    type: 'AgendaPoint' | 'DECISION' | 'ASSUMPTION';
     data: Entity;
     x: number;
     y: number;
@@ -37,8 +37,8 @@ export function DecisionGraph({ sessionId, onClose }: DecisionGraphProps) {
                 // 1. Fetch relevant data
                 // Optimisation: Backend filtering. Here we fetch generic types.
 
-                const decisions = await OntologyService.getEntities({ type: 'Decision' });
-                const assumptions = await OntologyService.getEntities({ type: 'Assumption' });
+                const decisions = await OntologyService.getEntities({ type: 'DECISION' });
+                const assumptions = await OntologyService.getEntities({ type: 'ASSUMPTION' });
                 const agendaPoints = await OntologyService.getEntities({ type: 'AgendaPoint' });
 
                 // Fetch relationships
@@ -77,7 +77,7 @@ export function DecisionGraph({ sessionId, onClose }: DecisionGraphProps) {
                 for (const dec of decisions) {
                     graphNodes.push({
                         id: dec.id,
-                        type: 'Decision',
+                        type: 'DECISION',
                         data: dec,
                         x: X_START + X_GAP,
                         y: yDecision
@@ -118,7 +118,7 @@ export function DecisionGraph({ sessionId, onClose }: DecisionGraphProps) {
                 assumptions.forEach((ass: Entity) => {
                     graphNodes.push({
                         id: ass.id,
-                        type: 'Assumption',
+                        type: 'ASSUMPTION',
                         data: ass,
                         x: X_START + (X_GAP * 2),
                         y: yAssumption
@@ -141,11 +141,11 @@ export function DecisionGraph({ sessionId, onClose }: DecisionGraphProps) {
     const getNodeColor = (type: string, data: Entity) => {
         switch (type) {
             case 'AgendaPoint': return 'border-blue-500 bg-blue-950/20 text-blue-400';
-            case 'Decision':
+            case 'DECISION':
                 if (data.properties?.outcome === 'Approved') return 'border-emerald-500 bg-emerald-950/20 text-emerald-400';
                 if (data.properties?.outcome === 'Rejected') return 'border-red-500 bg-red-950/20 text-red-400';
                 return 'border-amber-500 bg-amber-950/20 text-amber-400';
-            case 'Assumption':
+            case 'ASSUMPTION':
                 const conf = data.properties?.confidence;
                 if (conf === 'HIGH') return 'border-emerald-400/50 bg-emerald-950/30 text-emerald-300';
                 if (conf === 'MEDIUM') return 'border-amber-400/50 bg-amber-950/30 text-amber-300';
@@ -157,8 +157,8 @@ export function DecisionGraph({ sessionId, onClose }: DecisionGraphProps) {
     const getNodeIcon = (type: string) => {
         switch (type) {
             case 'AgendaPoint': return <FileText size={16} />;
-            case 'Decision': return <Gavel size={16} />;
-            case 'Assumption': return <HelpCircle size={16} />;
+            case 'DECISION': return <Gavel size={16} />;
+            case 'ASSUMPTION': return <HelpCircle size={16} />;
             default: return <div />;
         }
     };
@@ -239,7 +239,7 @@ export function DecisionGraph({ sessionId, onClose }: DecisionGraphProps) {
                                         {getNodeIcon(node.type)}
                                         <span className="text-[10px] font-black uppercase tracking-wider opacity-70">{node.type}</span>
                                     </div>
-                                    {node.type === 'Assumption' && (
+                                    {node.type === 'ASSUMPTION' && (
                                         <span className={cn("text-[9px] font-black px-1.5 py-0.5 rounded bg-black/30",
                                             node.data.properties?.confidence === 'HIGH' ? "text-emerald-400" :
                                                 node.data.properties?.confidence === 'MEDIUM' ? "text-amber-400" : "text-red-400"

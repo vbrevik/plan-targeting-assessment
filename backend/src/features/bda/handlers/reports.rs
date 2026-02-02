@@ -42,7 +42,7 @@ pub async fn create_report(
         operation_id: None,
         campaign_id: None,
         name: format!("BDA Report - {}", Utc::now().format("%Y%m%d-%H%M%S")),
-        type_: "BDA_REPORT".to_string(),
+        type_: "ASSESSMENT".to_string(),
         description: payload.get("damage_description").and_then(|v| v.as_str()).map(|s| s.to_string()),
         status: Some("draft".to_string()),
         location_lat: None,
@@ -86,7 +86,7 @@ pub async fn get_reports(
 ) -> impl IntoResponse {
     // Query entities via ontology service
     let filter = EntityFilter {
-        type_: Some("BDA_REPORT".to_string()),
+        type_: Some("ASSESSMENT".to_string()),
         operation_id: None,
         campaign_id: None,
         urgent_only: None,
@@ -149,7 +149,7 @@ pub async fn get_report(
     match state.ontology_svc.get_entity_only(&id).await {
         Ok(entity) => {
             // Verify it's a BDA_REPORT entity
-            if entity.type_ != "BDA_REPORT" {
+            if entity.type_ != "ASSESSMENT" {
                 return (StatusCode::NOT_FOUND, "BDA report not found").into_response();
             }
             Json(entity).into_response()
@@ -166,7 +166,7 @@ pub async fn update_report(
 ) -> impl IntoResponse {
     // Verify entity exists and is BDA_REPORT
     match state.ontology_svc.get_entity_only(&id).await {
-        Ok(entity) if entity.type_ == "BDA_REPORT" => {
+        Ok(entity) if entity.type_ == "ASSESSMENT" => {
             let mut updated_props = entity.properties.unwrap_or(serde_json::json!({}));
             
             // Merge properties
@@ -222,7 +222,7 @@ pub async fn get_queue(
 ) -> impl IntoResponse {
     // Query entities with BDA_REPORT type (queue = not yet approved/rejected)
     let filter = EntityFilter {
-        type_: Some("BDA_REPORT".to_string()),
+        type_: Some("ASSESSMENT".to_string()),
         operation_id: None,
         campaign_id: None,
         urgent_only: None,
@@ -297,7 +297,7 @@ pub async fn get_statistics(
     
     // Query all BDA_REPORT entities
     let filter = EntityFilter {
-        type_: Some("BDA_REPORT".to_string()),
+        type_: Some("ASSESSMENT".to_string()),
         operation_id: None,
         campaign_id: None,
         urgent_only: None,
@@ -400,7 +400,7 @@ pub async fn submit_report(
     Path(id): Path<String>,
 ) -> impl IntoResponse {
     match state.ontology_svc.get_entity_only(&id).await {
-        Ok(entity) if entity.type_ == "BDA_REPORT" => {
+        Ok(entity) if entity.type_ == "ASSESSMENT" => {
             let mut props = entity.properties.unwrap_or(serde_json::json!({}));
             props["status"] = serde_json::json!("submitted");
             props["submitted_at"] = serde_json::json!(Utc::now().to_rfc3339());
@@ -442,7 +442,7 @@ pub async fn approve_report(
     Json(payload): Json<ApprovalRequest>,
 ) -> impl IntoResponse {
     match state.ontology_svc.get_entity_only(&id).await {
-        Ok(entity) if entity.type_ == "BDA_REPORT" => {
+        Ok(entity) if entity.type_ == "ASSESSMENT" => {
             let mut props = entity.properties.unwrap_or(serde_json::json!({}));
             props["status"] = serde_json::json!("approved");
             props["approved_at"] = serde_json::json!(Utc::now().to_rfc3339());
@@ -488,7 +488,7 @@ pub async fn reject_report(
     Json(payload): Json<RejectionRequest>,
 ) -> impl IntoResponse {
     match state.ontology_svc.get_entity_only(&id).await {
-        Ok(entity) if entity.type_ == "BDA_REPORT" => {
+        Ok(entity) if entity.type_ == "ASSESSMENT" => {
             let mut props = entity.properties.unwrap_or(serde_json::json!({}));
             props["status"] = serde_json::json!("rejected");
             props["reviewed_at"] = serde_json::json!(Utc::now().to_rfc3339());
@@ -525,7 +525,7 @@ pub async fn get_reattack_recommendations(
 ) -> impl IntoResponse {
     // Query all BDA_REPORT entities
     let filter = EntityFilter {
-        type_: Some("BDA_REPORT".to_string()),
+        type_: Some("ASSESSMENT".to_string()),
         operation_id: None,
         campaign_id: None,
         urgent_only: None,

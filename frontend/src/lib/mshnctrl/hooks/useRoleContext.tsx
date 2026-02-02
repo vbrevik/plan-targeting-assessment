@@ -293,7 +293,8 @@ export const AVAILABLE_ROLES: Role[] = [
             'documents.view',
             'menu.manage',
             'tor.manage',
-            'battle_rhythm.view'
+            'battle_rhythm.view',
+            'im.dashboard.view'
         ],
         color: 'teal',
         capabilities: {
@@ -342,9 +343,18 @@ export function RoleProvider({ children }: { children: ReactNode }) {
 
     // Derive current role implies merging Auth state when available
     // We construct a Role object from the authenticated user profile if available
+    const roleName = user?.roles?.[0]?.role_name || 'Authenticated User';
+
+    // Helper to map role names to system IDs
+    const getRoleId = (name: string): string => {
+        const normalized = name.toLowerCase();
+        if (normalized === 'information manager') return 'im';
+        return normalized.replace(/\s+/g, '-');
+    };
+
     const authenticatedRole: Role | null = isAuthenticated && user ? {
-        id: user.roles?.[0]?.role_name?.toLowerCase().replace(/\s+/g, '-') || 'unknown-role',
-        name: user.roles?.[0]?.role_name || 'Authenticated User',
+        id: getRoleId(roleName),
+        name: roleName,
         shortName: user.username?.substring(0, 3).toUpperCase() || 'USR',
         description: 'Authenticated User Role',
         permissions: user.permissions || [],

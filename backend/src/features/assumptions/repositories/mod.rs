@@ -15,15 +15,13 @@ impl AssumptionRepository {
         let id = Uuid::new_v4().to_string();
         let created_at = chrono::Utc::now();
         
-        let assumption = sqlx::query_as::<_, Assumption>(
+        sqlx::query(
             r#"
-            INSERT INTO assumptions (
-                id, operation_id, campaign_id, title, description, category, 
-                status, risk_level, confidence_score, stated_by, dependencies,
-                created_at, updated_at
+            INSERT INTO entities (
+                id, operation_id, campaign_id, name, type, description, status, 
+                confidence, properties, created_at, updated_at
             )
-            VALUES ($1, $2, $3, $4, $5, $6, 'Valid', 'Low', $7, $8, $9, $10, $10)
-            RETURNING *
+            VALUES ($1, $2, $3, $4, 'ASSUMPTION', $5, 'Valid', $6, $7, $8, $8)
             "#
         )
         .bind(&id)
@@ -31,25 +29,30 @@ impl AssumptionRepository {
         .bind(&req.campaign_id)
         .bind(&req.title)
         .bind(&req.description)
-        .bind(&req.category)
-        .bind(req.confidence_score)
-        .bind(&req.stated_by)
-        .bind(req.dependencies.as_ref().map(|v| sqlx::types::Json(v.clone())))
+        .bind(req.confidence_score.map(|s| s / 100.0).unwrap_or(0.5))
+        .bind(sqlx::types::Json(serde_json::json!({
+            "category": req.category,
+            "stated_by": req.stated_by,
+            "dependencies": req.dependencies.unwrap_or(serde_json::json!([])),
+            "risk_level": "Low"
+        })))
         .bind(created_at)
-        .fetch_one(&self.pool)
+        .execute(&self.pool)
         .await?;
 
-        Ok(assumption)
+        // Return via ontology view
+        self.get_assumption_by_id(&id).await?
+            .ok_or(sqlx::Error::RowNotFound)
     }
 
     pub async fn get_all_assumptions(&self) -> Result<Vec<Assumption>, sqlx::Error> {
-        sqlx::query_as::<_, Assumption>("SELECT * FROM assumptions ORDER BY created_at DESC")
+        sqlx::query_as::<_, Assumption>("SELECT * FROM v_assumptions_ontology ORDER BY created_at DESC")
             .fetch_all(&self.pool)
             .await
     }
 
     pub async fn get_assumption_by_id(&self, id: &str) -> Result<Option<Assumption>, sqlx::Error> {
-        sqlx::query_as::<_, Assumption>("SELECT * FROM assumptions WHERE id = $1")
+        sqlx::query_as::<_, Assumption>("SELECT * FROM v_assumptions_ontology WHERE id = $1")
             .bind(id)
             .fetch_optional(&self.pool)
             .await
@@ -57,7 +60,7 @@ impl AssumptionRepository {
 
     pub async fn get_assumptions_by_status(&self, status: &str) -> Result<Vec<Assumption>, sqlx::Error> {
         sqlx::query_as::<_, Assumption>(
-            "SELECT * FROM assumptions WHERE status = $1 ORDER BY updated_at DESC"
+            "SELECT * FROM v_assumptions_ontology WHERE status = $1 ORDER BY updated_at DESC"
         )
         .bind(status)
         .fetch_all(&self.pool)
@@ -66,7 +69,7 @@ impl AssumptionRepository {
 
     pub async fn get_assumptions_by_campaign(&self, campaign_id: &str) -> Result<Vec<Assumption>, sqlx::Error> {
         sqlx::query_as::<_, Assumption>(
-            "SELECT * FROM assumptions WHERE campaign_id = $1 ORDER BY created_at DESC"
+            "SELECT * FROM v_assumptions_ontology WHERE campaign_id = $1 ORDER BY created_at DESC"
         )
         .bind(campaign_id)
         .fetch_all(&self.pool)
@@ -75,7 +78,7 @@ impl AssumptionRepository {
 
     pub async fn get_assumptions_by_operation(&self, operation_id: &str) -> Result<Vec<Assumption>, sqlx::Error> {
         sqlx::query_as::<_, Assumption>(
-            "SELECT * FROM assumptions WHERE operation_id = $1 ORDER BY created_at DESC"
+            "SELECT * FROM v_assumptions_ontology WHERE operation_id = $1 ORDER BY created_at DESC"
         )
         .bind(operation_id)
         .fetch_all(&self.pool)
@@ -89,48 +92,52 @@ impl AssumptionRepository {
     ) -> Result<Assumption, sqlx::Error> {
         let updated_at = chrono::Utc::now();
 
-        // Verify assumption exists
-        let _existing = self.get_assumption_by_id(id).await?
+        // Verify assumption exists in ontology
+        let existing = self.get_assumption_by_id(id).await?
             .ok_or(sqlx::Error::RowNotFound)?;
 
-        // Build update query dynamically
-        let assumption = sqlx::query_as::<_, Assumption>(
+        // Build updated properties
+        let mut props = serde_json::from_value::<serde_json::Value>(
+            sqlx::query_scalar::<_, sqlx::types::JsonValue>("SELECT properties FROM entities WHERE id = $1")
+                .bind(id)
+                .fetch_one(&self.pool)
+                .await?
+        ).unwrap_or(serde_json::json!({}));
+
+        if let Some(cat) = req.category { props["category"] = serde_json::json!(cat); }
+        if let Some(risk) = req.risk_level { props["risk_level"] = serde_json::json!(risk); }
+        if let Some(stated) = req.validated_by.clone() { props["validated_by"] = serde_json::json!(stated); props["last_validated_at"] = serde_json::json!(updated_at); }
+        if let Some(deps) = req.dependencies { props["dependencies"] = deps; }
+        if let Some(notes) = req.impact_notes { props["impact_notes"] = serde_json::json!(notes); }
+
+        sqlx::query(
             r#"
-            UPDATE assumptions
-            SET title = COALESCE($1, title),
+            UPDATE entities
+            SET name = COALESCE($1, name),
                 description = COALESCE($2, description),
-                category = COALESCE($3, category),
-                status = COALESCE($4, status),
-                risk_level = COALESCE($5, risk_level),
-                confidence_score = COALESCE($6, confidence_score),
-                validated_by = COALESCE($7, validated_by),
-                last_validated_at = CASE WHEN $7 IS NOT NULL THEN $8 ELSE last_validated_at END,
-                dependencies = COALESCE($9, dependencies),
-                impact_notes = COALESCE($10, impact_notes),
-                updated_at = $8
-            WHERE id = $11
-            RETURNING *
+                status = COALESCE($3, status),
+                confidence = COALESCE($4, confidence),
+                properties = $5,
+                updated_at = $6
+            WHERE id = $7 AND type = 'ASSUMPTION'
             "#
         )
         .bind(req.title)
         .bind(req.description)
-        .bind(req.category)
         .bind(req.status)
-        .bind(req.risk_level)
-        .bind(req.confidence_score)
-        .bind(&req.validated_by)
+        .bind(req.confidence_score.map(|s| s / 100.0))
+        .bind(sqlx::types::Json(props))
         .bind(updated_at)
-        .bind(req.dependencies.as_ref().map(|v| sqlx::types::Json(v.clone())))
-        .bind(req.impact_notes)
         .bind(id)
-        .fetch_one(&self.pool)
+        .execute(&self.pool)
         .await?;
 
-        Ok(assumption)
+        self.get_assumption_by_id(id).await?
+            .ok_or(sqlx::Error::RowNotFound)
     }
 
     pub async fn delete_assumption(&self, id: &str) -> Result<(), sqlx::Error> {
-        sqlx::query("DELETE FROM assumptions WHERE id = $1")
+        sqlx::query("DELETE FROM entities WHERE id = $1 AND type = 'ASSUMPTION'")
             .bind(id)
             .execute(&self.pool)
             .await?;
@@ -138,7 +145,7 @@ impl AssumptionRepository {
     }
 
     pub async fn get_summary(&self) -> Result<AssumptionSummary, sqlx::Error> {
-        let summary = sqlx::query_as::<_, AssumptionSummary>(
+        sqlx::query_as::<_, AssumptionSummary>(
             r#"
             SELECT 
                 COUNT(*) as total,
@@ -146,14 +153,13 @@ impl AssumptionRepository {
                 SUM(CASE WHEN status = 'Monitoring' THEN 1 ELSE 0 END) as monitoring,
                 SUM(CASE WHEN status = 'Challenged' THEN 1 ELSE 0 END) as challenged,
                 SUM(CASE WHEN status = 'Broken' THEN 1 ELSE 0 END) as broken,
-                SUM(CASE WHEN risk_level = 'High' THEN 1 ELSE 0 END) as high_risk,
-                SUM(CASE WHEN risk_level = 'Critical' THEN 1 ELSE 0 END) as critical_risk
-            FROM assumptions
+                SUM(CASE WHEN json_extract(properties, '$.risk_level') = 'High' THEN 1 ELSE 0 END) as high_risk,
+                SUM(CASE WHEN json_extract(properties, '$.risk_level') = 'Critical' THEN 1 ELSE 0 END) as critical_risk
+            FROM entities
+            WHERE type = 'ASSUMPTION'
             "#
         )
         .fetch_one(&self.pool)
-        .await?;
-
-        Ok(summary)
+        .await
     }
 }

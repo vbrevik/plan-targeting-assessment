@@ -303,13 +303,13 @@ export const getRoleSpecificNav = (role: Role): NavGroup[] => {
                     { icon: LayoutDashboard, label: 'IM Dashboard', to: '/mshnctrl/information-management', permission: 'cop.view' },
                     { icon: Settings, label: 'Menu Builder', to: '/mshnctrl/menu-builder', permission: 'menu.manage' },
                     { icon: Inbox, label: 'RFI Manager', to: '/mshnctrl/rfis', permission: 'rfis.view' },
+                    { icon: ScrollText, label: 'TOR Manager', to: '/mshnctrl/tor-manager', permission: 'tor.manage' },
                 ]
             },
             {
                 label: 'Knowledge Base',
                 items: [
                     { icon: Layers, label: 'Ontology Manager', to: '/mshnctrl/ontology', permission: 'ontology.view' },
-                    { icon: ScrollText, label: 'TOR Manager', to: '/mshnctrl/tor-manager', permission: 'tor.manage' },
                     { icon: Zap, label: 'Digital Twin', to: '/mshnctrl/digital-twin', permission: 'digital_twin.view' },
                     { icon: Files, label: 'Document Library', to: '/mshnctrl/documents', permission: 'documents.view' },
                     { icon: Globe, label: 'RXP Overview', to: '/mshnctrl/rxp', permission: 'rxp.view' },

@@ -958,7 +958,7 @@ class MockDataStore {
         }
     ];
 
-    tork: TermsOfReference[] = [
+    tors: TermsOfReference[] = [
         {
             id: 'tor-01',
             eventId: 'bre-01',
@@ -1201,7 +1201,6 @@ class MockDataStore {
 
     // --- MISSING MOCK DATA ---
     supplyWeb: SupplyNode[] = [];
-    tors: TermsOfReference[] = [];
 
     // --- EXTERNAL CONTEXT & PMESII ---
     politicalStatements: PoliticalStatement[] = [

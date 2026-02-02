@@ -312,6 +312,8 @@ pub struct DecisionLogEntry {
     pub classification: String,
     pub decision_time: String,
     pub created_at: String,
+    #[sqlx(default)]
+    pub assumption_ids: Vec<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -323,6 +325,7 @@ pub struct CreateDecisionLogRequest {
     pub decision_maker_role: String,
     pub authority_level: String,
     pub classification: String,
+    pub assumption_ids: Option<Vec<String>>,
 }
 
 // ============================================================================

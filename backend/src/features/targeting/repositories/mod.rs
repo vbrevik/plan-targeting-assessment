@@ -648,20 +648,55 @@ impl AssumptionChallengeRepository {
 pub struct DecisionLogRepository;
 
 impl DecisionLogRepository {
-    pub async fn create(pool: &Pool<Sqlite>, decision_type: &str, text: &str, rationale: &str, role: &str, authority: &str, classification: &str, user_id: &str) -> Result<String, SqlxError> {
+    pub async fn create(
+        pool: &Pool<Sqlite>, 
+        decision_type: &str, 
+        text: &str, 
+        rationale: &str, 
+        role: &str, 
+        authority: &str, 
+        classification: &str, 
+        user_id: &str,
+        assumption_ids: Option<Vec<String>>
+    ) -> Result<String, SqlxError> {
         let id = uuid::Uuid::new_v4().to_string();
         
-        sqlx::query("INSERT INTO decision_log (id, decision_type, decision_text, decision_rationale, decision_maker, decision_maker_role, authority_level, classification) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
-            .bind(&id)
-            .bind(decision_type)
-            .bind(text)
-            .bind(rationale)
-            .bind(user_id)
-            .bind(role)
-            .bind(authority)
-            .bind(classification)
-            .execute(pool)
-            .await?;
+        // Write to entities directly (Decision)
+        sqlx::query(
+            r#"
+            INSERT INTO entities (
+                id, name, type, description, classification, properties, created_at, updated_at
+            ) VALUES ($1, $2, 'DECISION', $3, $4, $5, datetime('now'), datetime('now'))
+            "#
+        )
+        .bind(&id)
+        .bind(text)
+        .bind(rationale)
+        .bind(classification)
+        .bind(sqlx::types::Json(serde_json::json!({
+            "decision_type": decision_type,
+            "decision_maker": user_id,
+            "decision_maker_role": role,
+            "authority_level": authority
+        })))
+        .execute(pool)
+        .await?;
+        
+        // Link to assumptions if provided
+        if let Some(ids) = assumption_ids {
+            for assumption_id in ids {
+                sqlx::query(
+                    r#"
+                    INSERT INTO entity_relationships (source_id, target_id, relation_type, created_at)
+                    VALUES ($1, $2, 'DEPENDS_ON', datetime('now'))
+                    "#
+                )
+                .bind(&id)
+                .bind(assumption_id)
+                .execute(pool)
+                .await?;
+            }
+        }
         
         Ok(id)
     }
@@ -669,12 +704,21 @@ impl DecisionLogRepository {
     pub async fn list_recent(pool: &Pool<Sqlite>, limit: Option<i64>) -> Result<Vec<DecisionLogEntry>, SqlxError> {
         let limit = limit.unwrap_or(50);
         
-        let rows = sqlx::query(&format!("SELECT * FROM decision_log ORDER BY decision_time DESC LIMIT {}", limit))
-            .fetch_all(pool)
-            .await?;
+        let rows = sqlx::query(&format!(
+            "SELECT d.*, 
+            (SELECT json_group_array(target_id) FROM entity_relationships WHERE source_id = d.id AND relation_type = 'DEPENDS_ON') as assumption_ids
+            FROM v_decisions_ontology d 
+            ORDER BY decision_time DESC 
+            LIMIT {}", limit
+        ))
+        .fetch_all(pool)
+        .await?;
         
         let mut decisions = Vec::new();
         for row in rows {
+            let assumption_ids_json: String = row.get("assumption_ids");
+            let assumption_ids: Vec<String> = serde_json::from_str(&assumption_ids_json).unwrap_or_default();
+
             decisions.push(DecisionLogEntry {
                 id: row.get("id"),
                 decision_type: row.get("decision_type"),
@@ -686,6 +730,7 @@ impl DecisionLogRepository {
                 decision_time: row.get("decision_time"),
                 classification: row.get("classification"),
                 created_at: row.get("created_at"),
+                assumption_ids,
             });
         }
         

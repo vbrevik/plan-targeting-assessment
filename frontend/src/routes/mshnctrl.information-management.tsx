@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { InformationManagement } from '@/features/intelligence/InformationManagement';
+import { IMDashboard } from '@/features/dashboard/IMDashboard';
 
 export const Route = createFileRoute('/mshnctrl/information-management')({
-    component: InformationManagement,
+    component: IMDashboard,
 });

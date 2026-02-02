@@ -106,7 +106,7 @@ export class TargetHelper {
 
     // Fill in target form
     await page.fill('[data-testid="target-name"]', targetData.name || 'TEST-TARGET-001');
-    await page.selectOption('[data-testid="target-type"]', targetData.type || 'STANDARD');
+    await page.selectOption('[data-testid="target-type"]', targetData.type || 'TGT');
     await page.selectOption('[data-testid="target-priority"]', targetData.priority || 'MEDIUM');
     await page.fill('[data-testid="target-coordinates"]', targetData.coordinates || '31.7683N, 35.2137E');
     await page.fill('[data-testid="target-description"]', targetData.description || 'Test target for E2E testing');

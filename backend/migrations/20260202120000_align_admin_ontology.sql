@@ -260,7 +260,6 @@ WHERE type = 'PERMISSION';
 DROP VIEW IF EXISTS v_user_roles_ontology;
 CREATE VIEW v_user_roles_ontology AS
 SELECT 
-    id,
     source_id as user_id,
     target_id as role_id,
     json_extract(properties, '$.resource_id') as resource_id,

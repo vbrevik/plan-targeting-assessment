@@ -191,7 +191,7 @@ export interface DecisionRecord {
 // Information Management (CCIR/PIR/FFIR)
 // Information Management (CCIR/PIR/FFIR)
 export interface LogicCondition {
-    subjectType: 'Unit' | 'Target' | 'SupplyNode' | 'CivilAgency' | 'BioSensor';
+    subjectType: 'UNIT' | 'TARGET' | 'SupplyNode' | 'CivilAgency' | 'BioSensor';
     subjectId?: string; // Optional: Specific entity
     property: 'location' | 'status' | 'affiliation' | 'uncertainty';
     operator: 'equals' | 'contains' | 'greaterThan' | 'lessThan' | 'inRegion';
@@ -237,7 +237,7 @@ export interface CCIRHit {
 // CORE ONTOLOGY (Sprint 2 Standard)
 // ==========================================
 
-export type EntityType = 'Unit' | 'Target' | 'Facility' | 'Event' | 'Track' | 'Sensor';
+export type EntityType = 'UNIT' | 'TARGET' | 'FACILITY' | 'EVENT' | 'TRACK' | 'SENSOR' | 'DECISION' | 'ASSUMPTION' | 'ASSESSMENT';
 export type Affiliation = 'Blue' | 'Red' | 'Green' | 'Grey' | 'White';
 export type OperationalStatus = 'Active' | 'Degraded' | 'Destroyed' | 'Inactive' | 'Unknown';
 
@@ -573,7 +573,7 @@ export type Domain = 'LAND' | 'AIR' | 'MARITIME' | 'CYBER' | 'SPACE' | 'INFO' | 
 export type TargetStatus = 'Identified' | 'Nominated' | 'Validated' | 'Approved' | 'Engaged' | 'Neutralized';
 
 export interface Target extends BaseEntity {
-    type: 'Target';
+    type: 'TARGET';
     domain?: Domain; // Added optional for backward compatibility, but should be populated
     designator: string; // e.g. "T-1001"
     targetId: string; // Deprecated, use designator
@@ -926,7 +926,7 @@ export enum Capability {
 }
 
 export interface Unit extends BaseEntity {
-    type: 'Unit'; // Discriminator
+    type: 'UNIT'; // Discriminator
     unitType: UnitType; // Specific domain type
     designator: string; // e.g. "1-7 AR"
     echelon: UnitEchelon;
@@ -1152,7 +1152,7 @@ export interface OPLAN {
 export type TrackDomain = 'Air' | 'Maritime' | 'Ground' | 'Cyber' | 'Social' | 'Space';
 
 export interface Track extends BaseEntity {
-    type: 'Track';
+    type: 'TRACK';
     callsign: string; // Maps to BaseEntity.name usually, but can keep specific alias
     domain: TrackDomain;
     // side Maps to Affiliation

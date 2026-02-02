@@ -61,7 +61,7 @@ impl DtlService {
         // we might need to fetch all Targets and filter in memory for now.
         
         let mut filter = EntityFilter::default();
-        filter.type_ = Some("Target".to_string());
+        filter.type_ = Some("TARGET".to_string());
         
         let entities = self.ontology.get_entities(filter).await?;
         
@@ -113,7 +113,7 @@ impl DtlService {
     
     pub async fn get_active_tsts(&self) -> Result<Vec<DtlEntry>> {
          let mut filter = EntityFilter::default();
-        filter.type_ = Some("Target".to_string());
+        filter.type_ = Some("TARGET".to_string());
         filter.urgent_only = Some(true); // This filters by priority=critical/high in SQL
         
         // We need to filter by is_tst=true

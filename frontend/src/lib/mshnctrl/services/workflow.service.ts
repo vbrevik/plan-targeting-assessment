@@ -87,11 +87,11 @@ export const WorkflowService = {
     },
 
     getTORs: async (): Promise<TermsOfReference[]> => {
-        return new Promise(resolve => setTimeout(() => resolve([...store.tork]), LATENCY));
+        return new Promise(resolve => setTimeout(() => resolve([...store.tors]), LATENCY));
     },
 
     getTOR: async (id: UUID): Promise<TermsOfReference | undefined> => {
-        return new Promise(resolve => setTimeout(() => resolve(store.tork.find(t => t.id === id)), LATENCY));
+        return new Promise(resolve => setTimeout(() => resolve(store.tors.find(t => t.id === id)), LATENCY));
     },
 
     saveMeetingRecord: async (record: MeetingRecord): Promise<void> => {

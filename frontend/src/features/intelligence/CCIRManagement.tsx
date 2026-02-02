@@ -70,11 +70,11 @@ export function CCIRManagement() {
 
     // --- Entity Resolver Helper ---
     const resolveEntity = (id: string, type: string) => {
-        if (type === 'Unit') {
+        if (type === 'UNIT') {
             const u = units.find(x => x.id === id);
             return u ? { name: u.designator, subtext: 'ORBAT Unit' } : { name: 'Unknown Unit', subtext: id };
         }
-        if (type === 'Target') {
+        if (type === 'TARGET') {
             const t = targets.find(x => x.id === id || x.designator === id); // handle both cases
             return t ? { name: t.designator, subtext: t.name || 'Joint Target' } : { name: 'Unknown Target', subtext: id };
         }

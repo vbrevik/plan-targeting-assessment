@@ -49,7 +49,7 @@ pub struct UserRoleAssignment {
 }
 
 /// Input for assigning a role to a user
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct AssignRoleInput {
     pub user_id: String,
     pub role_name: String,
@@ -57,7 +57,7 @@ pub struct AssignRoleInput {
 }
 
 /// Input for creating a new resource
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct CreateResourceInput {
     pub name: String,
     pub resource_type: String,

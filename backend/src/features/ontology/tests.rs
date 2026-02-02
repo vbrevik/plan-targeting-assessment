@@ -41,7 +41,7 @@ async fn test_relationship_creation(pool: SqlitePool) {
     let service = OntologyService::new(pool);
     
     let e1 = service.create_entity(mock_create_entity_request("Source", "node")).await.unwrap();
-    let e2 = service.create_entity(mock_create_entity_request("Target", "node")).await.unwrap();
+    let e2 = service.create_entity(mock_create_entity_request("TARGET", "node")).await.unwrap();
 
     let rel_req = CreateRelationshipRequest {
         source_id: e1.id.clone(),
@@ -91,8 +91,8 @@ async fn test_get_schema(pool: SqlitePool) {
     
     assert!(!schema.domains.is_empty());
     assert!(schema.domains.contains(&"CYBER".to_string()));
-    assert!(schema.entity_types.iter().any(|t| t.name == "Target"));
-    assert!(schema.entity_types.iter().any(|t| t.name == "Unit"));
+    assert!(schema.entity_types.iter().any(|t| t.name == "TARGET"));
+    assert!(schema.entity_types.iter().any(|t| t.name == "UNIT"));
     assert!(!schema.relationship_types.is_empty());
 }
 

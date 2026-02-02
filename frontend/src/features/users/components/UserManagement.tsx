@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getCsrfToken } from '@/features/auth/lib/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Trash2, Save, X, Edit2, AlertCircle, CheckCircle2, Eye, Calendar, Terminal, Shield, Key, RefreshCw } from 'lucide-react'
+import { Trash2, Save, X, Edit2, AlertCircle, CheckCircle2, Eye, Calendar, Terminal, Shield, Key, RefreshCw, UserPlus } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { UserRolesPanel } from './UserRolesPanel'
 
@@ -41,6 +41,9 @@ export default function UserManagement() {
     // Form state
     const [userPasswords, setUserPasswords] = useState<Record<string, { password: string, forceChange: boolean }>>({})
     const [userEdits, setUserEdits] = useState<Record<string, { username: string, email: string }>>({})
+    // Create User form state
+    const [showCreateForm, setShowCreateForm] = useState(false)
+    const [createForm, setCreateForm] = useState({ username: '', email: '', password: '' })
 
     const fetchUsers = async () => {
         try {
@@ -180,12 +183,52 @@ export default function UserManagement() {
         }))
     }
 
+    const handleCreateUser = async (e: React.FormEvent) => {
+        e.preventDefault()
+        clearMessages()
+
+        try {
+            const res = await fetch('/api/admin/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': getCsrfToken() || '',
+                },
+                body: JSON.stringify(createForm),
+                credentials: 'include',
+            })
+
+            if (!res.ok) {
+                const text = await res.text()
+                throw new Error(text || 'Failed to create user')
+            }
+
+            setSuccessMessage('User created successfully')
+            setCreateForm({ username: '', email: '', password: '' })
+            setShowCreateForm(false)
+            fetchUsers()
+        } catch (err: any) {
+            setError(err.message)
+        }
+    }
+
     if (loading) return <div className="p-6">Loading users...</div>
 
     return (
         <div className="p-6 max-w-6xl mx-auto">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">User Management</h1>
+                <Button
+                    onClick={() => {
+                        clearMessages()
+                        setShowCreateForm(!showCreateForm)
+                    }}
+                    variant={showCreateForm ? "outline" : "default"}
+                    className="gap-2"
+                >
+                    {showCreateForm ? <X size={16} /> : <UserPlus size={16} />}
+                    {showCreateForm ? "Cancel" : "Create New User"}
+                </Button>
             </div>
 
             {error && (
@@ -202,6 +245,62 @@ export default function UserManagement() {
                     <AlertTitle className="text-xs uppercase font-bold">Success</AlertTitle>
                     <AlertDescription className="text-xs">{successMessage}</AlertDescription>
                 </Alert>
+            )}
+
+            {showCreateForm && (
+                <div className="mb-8 p-6 bg-slate-50 border-2 border-primary/20 rounded-xl shadow-sm animate-in slide-in-from-top-4 duration-300">
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2 bg-primary/10 rounded-lg">
+                            <UserPlus className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                            <h2 className="text-lg font-bold">Register New User</h2>
+                            <p className="text-xs text-muted-foreground tracking-wide uppercase font-medium">Core System Access Creation</p>
+                        </div>
+                    </div>
+
+                    <form onSubmit={handleCreateUser} className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="space-y-1.5">
+                                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Username</label>
+                                <Input
+                                    className="h-10 border-slate-200"
+                                    placeholder="j.doe"
+                                    value={createForm.username}
+                                    onChange={e => setCreateForm({ ...createForm, username: e.target.value })}
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-1.5">
+                                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Email Address</label>
+                                <Input
+                                    className="h-10 border-slate-200"
+                                    type="email"
+                                    placeholder="doe@mission-control.mil"
+                                    value={createForm.email}
+                                    onChange={e => setCreateForm({ ...createForm, email: e.target.value })}
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-1.5">
+                                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Initial Password</label>
+                                <Input
+                                    className="h-10 border-slate-200"
+                                    type="password"
+                                    placeholder="••••••••"
+                                    value={createForm.password}
+                                    onChange={e => setCreateForm({ ...createForm, password: e.target.value })}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="flex justify-end pt-2">
+                            <Button type="submit" className="gap-2 px-8 h-10 shadow-md">
+                                <Save size={16} /> Create User Account
+                            </Button>
+                        </div>
+                    </form>
+                </div>
             )}
 
 

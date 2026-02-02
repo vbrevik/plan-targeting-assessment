@@ -1,9 +1,9 @@
 import { Outlet } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
+import { OntologyService } from '@/lib/mshnctrl/services/ontology.service';
 import { Toaster } from '@/components/ui/toaster';
 import { OperationalContextProvider } from '@/lib/mshnctrl/hooks/useOperationalContext';
 import { RoleProvider, useRoleContext } from '@/lib/mshnctrl/hooks/useRoleContext';
-import { api } from '@/lib/api';
 import { MshnCtrlSidebar } from './MshnCtrlSidebar';
 import { MshnCtrlHeader } from './MshnCtrlHeader';
 
@@ -23,45 +23,37 @@ function MshnCtrlContent() {
     }, []);
 
     useEffect(() => {
-        const fetchNav = async () => {
-            // Force use of local config for permission-based navigation
-            // The API return is Role-ID based (Ontology) which conflicts with our 
-            // permission-based requirement for derived roles like Assistant-IM.
-            const { getFilteredNavGroups } = await import('./config/navigation.config');
-            setNavGroups(getFilteredNavGroups(currentRole));
+        let mounted = true;
 
-            /* 
-            // Legacy Ontology-based navigation fetch
+        const fetchNav = async () => {
             try {
-                const data = await api.get<any[]>('/navigation');
-                // If API returns empty, use hardcoded config as fallback
-                if (data && data.length > 0) {
-                    setNavGroups(data);
-                } else {
-                    // Fallback to hardcoded config
-                    const { getFilteredNavGroups } = await import('./config/navigation.config');
-                    setNavGroups(getFilteredNavGroups(currentRole));
+                // 1. Try fetching from Ontology Service
+                // This performs a client-side join of entities for now
+                const ontologyNav = await OntologyService.fetchNavigation(currentRole.id);
+
+                if (mounted && ontologyNav && ontologyNav.length > 0) {
+                    setNavGroups(ontologyNav);
+                    return;
                 }
             } catch (err) {
-                console.error('Failed to fetch navigation:', err);
-                // On error, fallback to hardcoded config
-                // The following items are added as part of the fallback navigation.
-                // Note: This is a placeholder for demonstration and might need proper integration
-                // with the getFilteredNavGroups function or a separate fallback mechanism.
-                const fallbackNavItems = [
-                    { label: 'Target Nomination', to: '/mshnctrl/targeting/nominate', icon: 'Crosshair' },
-                    { label: 'Joint Targeting Board', to: '/mshnctrl/targeting/jtb', icon: 'Gavel' },
-                    { label: 'Dynamic Target List', to: '/mshnctrl/targeting/dtl', icon: 'Target' },
-                    { label: 'Weaponeering', to: '/mshnctrl/targeting/weaponeering', icon: 'Zap' },
-                ];
-                const { getFilteredNavGroups } = await import('./config/navigation.config');
-                // For a complete solution, you might want to merge or replace the result of getFilteredNavGroups
-                // with fallbackNavItems, depending on the desired behavior.
-                setNavGroups(getFilteredNavGroups(currentRole));
+                console.warn('Ontology navigation fetch failed, check backend services.', err);
             }
-            */
+
+            // 2. Fallback to hardcoded config if Ontology returns nothing or fails
+            // This ensures other roles (Commander, J2, etc.) still work until they are seeded.
+            if (mounted) {
+                try {
+                    const { getFilteredNavGroups } = await import('./config/navigation.config');
+                    setNavGroups(getFilteredNavGroups(currentRole));
+                } catch (configErr) {
+                    console.error('Failed to load fallback navigation config', configErr);
+                }
+            }
         };
+
         fetchNav();
+
+        return () => { mounted = false; };
     }, [currentRole.id, currentRole]);
 
     const toggleTheme = () => {

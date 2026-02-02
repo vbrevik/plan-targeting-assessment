@@ -49,7 +49,7 @@ export function TimelineView({ entities, onEntityClick }: TimelineViewProps) {
                                 >
                                     {/* Icon on the line */}
                                     <div className="flex items-center justify-center w-10 h-10 rounded-full border border-slate-700 bg-slate-900 group-hover:bg-purple-500/10 group-hover:border-purple-500/50 transition-all shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 shadow-xl">
-                                        {entity.type === 'Decision' ? <CheckCircle2 size={18} className="text-emerald-500" /> :
+                                        {entity.type === 'DECISION' ? <CheckCircle2 size={18} className="text-emerald-500" /> :
                                             entity.type === 'Meeting' ? <Calendar size={18} className="text-blue-500" /> :
                                                 entity.properties?.priority === 'critical' ? <AlertCircle size={18} className="text-red-500" /> :
                                                     <Clock size={18} className="text-slate-500" />}
