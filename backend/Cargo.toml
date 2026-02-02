@@ -1,5 +1,5 @@
 [package]
-name = "template-repo-backend"
+name = "bcknd-mssn-ctrl"
 version = "0.1.1"
 edition = "2021"
 
@@ -50,26 +50,3 @@ core-common-types = { path = "../modules/bcknd-ctrl/crates/core-common-types" }
 reqwest = "0.11"
 tokio-test = "0.4"
 
-[[bin]]
-name = "create_test_user"
-path = "scripts/create_test_user.rs"
-
-[[bin]]
-name = "reset_user_password"
-path = "scripts/reset_user_password.rs"
-
-[[bin]]
-name = "reset_im_password"
-path = "scripts/reset_im_password.rs"
-
-[[bin]]
-name = "clean_im_roles"
-path = "scripts/clean_im_roles.rs"
-
-[[bin]]
-name = "setup_verification_users"
-path = "scripts/setup_verification_users.rs"
-
-[[bin]]
-name = "setup_assistant_im"
-path = "scripts/setup_assistant_im.rs"

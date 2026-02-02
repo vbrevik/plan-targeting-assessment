@@ -1,8 +1,418 @@
-<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="0" time="1.371299">
-<testsuite name="monitoring/bda-phase3-verification.spec.ts" timestamp="2026-01-31T18:02:38.302Z" hostname="chromium" tests="2" failures="0" skipped="0" time="0.645" errors="0">
-<testcase name="BDA Phase 3 Integration - Intelligence &amp; Ontology › Should create intelligence feed and verify ontology projection" classname="monitoring/bda-phase3-verification.spec.ts" time="0.344">
+<testsuites id="" name="" tests="12" failures="8" skipped="0" errors="0" time="30.990926">
+<testsuite name="03-security-authorization/rbac.spec.ts" timestamp="2026-02-02T10:22:15.979Z" hostname="chromium" tests="10" failures="8" skipped="0" time="26.076" errors="0">
+<testcase name="Security &amp; Authorization - Role-Based Access Control › should restrict target creation to authorized roles only" classname="03-security-authorization/rbac.spec.ts" time="1.161">
+<system-out>
+<![CDATA[👥 Testing: Target creation role restriction
+]]>
+</system-out>
 </testcase>
-<testcase name="BDA Phase 3 Integration - Intelligence &amp; Ontology › Intelligence Panel should be accessible for a target" classname="monitoring/bda-phase3-verification.spec.ts" time="0.301">
+<testcase name="Security &amp; Authorization - Role-Based Access Control › should allow target creation for authorized roles" classname="03-security-authorization/rbac.spec.ts" time="11.36">
+<failure message="rbac.spec.ts:89:3 should allow target creation for authorized roles" type="FAILURE">
+<![CDATA[  [chromium] › 03-security-authorization/rbac.spec.ts:89:3 › Security & Authorization - Role-Based Access Control › should allow target creation for authorized roles 
+
+    TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="target-nomination-form"]') to be visible
+
+
+       at helpers/testHelpers.ts:80
+
+      78 |     await page.goto('/mshnctrl/targeting/nominate');
+      79 |     await page.waitForLoadState('networkidle');
+    > 80 |     await page.waitForSelector('[data-testid="target-nomination-form"]', { timeout: 10000 });
+         |                ^
+      81 |   }
+      82 |
+      83 |   static async goToJTBSession(page: Page) {
+        at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:80:16)
+        at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:5)
+        at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:101:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--011c8-eation-for-authorized-roles-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--011c8-eation-for-authorized-roles-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/03-security-authorization--011c8-eation-for-authorized-roles-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--011c8-eation-for-authorized-roles-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/03-security-authorization--011c8-eation-for-authorized-roles-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[✅ Testing: Target creation authorized role
+
+[[ATTACHMENT|test-results/03-security-authorization--011c8-eation-for-authorized-roles-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/03-security-authorization--011c8-eation-for-authorized-roles-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/03-security-authorization--011c8-eation-for-authorized-roles-chromium/error-context.md]]
+
+[[ATTACHMENT|test-results/03-security-authorization--011c8-eation-for-authorized-roles-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Security &amp; Authorization - Role-Based Access Control › should restrict JTB session creation to JTB_CHAIR only" classname="03-security-authorization/rbac.spec.ts" time="1.154">
+<system-out>
+<![CDATA[🏛️ Testing: JTB session creation role restriction
+]]>
+</system-out>
+</testcase>
+<testcase name="Security &amp; Authorization - Role-Based Access Control › should allow JTB session creation for JTB_CHAIR role" classname="03-security-authorization/rbac.spec.ts" time="11.186">
+<failure message="rbac.spec.ts:138:3 should allow JTB session creation for JTB_CHAIR role" type="FAILURE">
+<![CDATA[  [chromium] › 03-security-authorization/rbac.spec.ts:138:3 › Security & Authorization - Role-Based Access Control › should allow JTB session creation for JTB_CHAIR role 
+
+    TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="jtb-session-board"]') to be visible
+
+
+       at helpers/testHelpers.ts:86
+
+      84 |     await page.goto('/mshnctrl/targeting/jtb');
+      85 |     await page.waitForLoadState('networkidle');
+    > 86 |     await page.waitForSelector('[data-testid="jtb-session-board"]', { timeout: 10000 });
+         |                ^
+      87 |   }
+      88 |
+      89 |   static async goToBDAWorkbench(page: Page) {
+        at Function.goToJTBSession (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:86:16)
+        at Function.createJTBSession (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:177:5)
+        at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:150:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--d70bc-creation-for-JTB-CHAIR-role-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--d70bc-creation-for-JTB-CHAIR-role-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--d70bc-creation-for-JTB-CHAIR-role-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/03-security-authorization--d70bc-creation-for-JTB-CHAIR-role-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[✅ Testing: JTB session creation authorized role
+
+[[ATTACHMENT|test-results/03-security-authorization--d70bc-creation-for-JTB-CHAIR-role-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/03-security-authorization--d70bc-creation-for-JTB-CHAIR-role-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/03-security-authorization--d70bc-creation-for-JTB-CHAIR-role-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Security &amp; Authorization - Role-Based Access Control › should restrict target approval to JTB_CHAIR and COMMANDER only" classname="03-security-authorization/rbac.spec.ts" time="0.229">
+<failure message="rbac.spec.ts:161:3 should restrict target approval to JTB_CHAIR and COMMANDER only" type="FAILURE">
+<![CDATA[  [chromium] › 03-security-authorization/rbac.spec.ts:161:3 › Security & Authorization - Role-Based Access Control › should restrict target approval to JTB_CHAIR and COMMANDER only 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate
+    Call log:
+      - navigating to "http://localhost:5173/mshnctrl/targeting/nominate", waiting until "load"
+
+
+       at helpers/testHelpers.ts:78
+
+      76 |
+      77 |   static async goToTargetNomination(page: Page) {
+    > 78 |     await page.goto('/mshnctrl/targeting/nominate');
+         |                ^
+      79 |     await page.waitForLoadState('networkidle');
+      80 |     await page.waitForSelector('[data-testid="target-nomination-form"]', { timeout: 10000 });
+      81 |   }
+        at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:78:16)
+        at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:28)
+        at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:173:41
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--8f061-TB-CHAIR-and-COMMANDER-only-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--8f061-TB-CHAIR-and-COMMANDER-only-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--8f061-TB-CHAIR-and-COMMANDER-only-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/03-security-authorization--8f061-TB-CHAIR-and-COMMANDER-only-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🚫 Testing: Target approval role restriction
+
+[[ATTACHMENT|test-results/03-security-authorization--8f061-TB-CHAIR-and-COMMANDER-only-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/03-security-authorization--8f061-TB-CHAIR-and-COMMANDER-only-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/03-security-authorization--8f061-TB-CHAIR-and-COMMANDER-only-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Security &amp; Authorization - Role-Based Access Control › should allow target approval for JTB_CHAIR role" classname="03-security-authorization/rbac.spec.ts" time="0.189">
+<failure message="rbac.spec.ts:189:3 should allow target approval for JTB_CHAIR role" type="FAILURE">
+<![CDATA[  [chromium] › 03-security-authorization/rbac.spec.ts:189:3 › Security & Authorization - Role-Based Access Control › should allow target approval for JTB_CHAIR role 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate
+    Call log:
+      - navigating to "http://localhost:5173/mshnctrl/targeting/nominate", waiting until "load"
+
+
+       at helpers/testHelpers.ts:78
+
+      76 |
+      77 |   static async goToTargetNomination(page: Page) {
+    > 78 |     await page.goto('/mshnctrl/targeting/nominate');
+         |                ^
+      79 |     await page.waitForLoadState('networkidle');
+      80 |     await page.waitForSelector('[data-testid="target-nomination-form"]', { timeout: 10000 });
+      81 |   }
+        at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:78:16)
+        at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:28)
+        at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:201:41
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--44c56-approval-for-JTB-CHAIR-role-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--44c56-approval-for-JTB-CHAIR-role-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--44c56-approval-for-JTB-CHAIR-role-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/03-security-authorization--44c56-approval-for-JTB-CHAIR-role-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[✅ Testing: Target approval authorized role
+
+[[ATTACHMENT|test-results/03-security-authorization--44c56-approval-for-JTB-CHAIR-role-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/03-security-authorization--44c56-approval-for-JTB-CHAIR-role-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/03-security-authorization--44c56-approval-for-JTB-CHAIR-role-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Security &amp; Authorization - Role-Based Access Control › should prevent role escalation via direct URL access" classname="03-security-authorization/rbac.spec.ts" time="0.191">
+<failure message="rbac.spec.ts:218:3 should prevent role escalation via direct URL access" type="FAILURE">
+<![CDATA[  [chromium] › 03-security-authorization/rbac.spec.ts:218:3 › Security & Authorization - Role-Based Access Control › should prevent role escalation via direct URL access 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/admin/users
+    Call log:
+      - navigating to "http://localhost:5173/admin/users", waiting until "load"
+
+
+      228 |
+      229 |     // Try to access admin pages directly via URL
+    > 230 |     await page.goto('/admin/users');
+          |                ^
+      231 |
+      232 |     // Verify access denied
+      233 |     // await expect(page.locator('[data-testid="permission-denied-message"]')).toBeVisible();
+        at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:230:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--23e7b-ation-via-direct-URL-access-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--23e7b-ation-via-direct-URL-access-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--23e7b-ation-via-direct-URL-access-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/03-security-authorization--23e7b-ation-via-direct-URL-access-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🛡️ Testing: Role escalation prevention
+
+[[ATTACHMENT|test-results/03-security-authorization--23e7b-ation-via-direct-URL-access-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/03-security-authorization--23e7b-ation-via-direct-URL-access-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/03-security-authorization--23e7b-ation-via-direct-URL-access-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Security &amp; Authorization - Role-Based Access Control › should enforce role-specific action restrictions" classname="03-security-authorization/rbac.spec.ts" time="0.207">
+<failure message="rbac.spec.ts:245:3 should enforce role-specific action restrictions" type="FAILURE">
+<![CDATA[  [chromium] › 03-security-authorization/rbac.spec.ts:245:3 › Security & Authorization - Role-Based Access Control › should enforce role-specific action restrictions 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate
+    Call log:
+      - navigating to "http://localhost:5173/mshnctrl/targeting/nominate", waiting until "load"
+
+
+       at helpers/testHelpers.ts:78
+
+      76 |
+      77 |   static async goToTargetNomination(page: Page) {
+    > 78 |     await page.goto('/mshnctrl/targeting/nominate');
+         |                ^
+      79 |     await page.waitForLoadState('networkidle');
+      80 |     await page.waitForSelector('[data-testid="target-nomination-form"]', { timeout: 10000 });
+      81 |   }
+        at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:78:16)
+        at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:28)
+        at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:256:41
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--e0ad9-pecific-action-restrictions-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--e0ad9-pecific-action-restrictions-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--e0ad9-pecific-action-restrictions-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/03-security-authorization--e0ad9-pecific-action-restrictions-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🎯 Testing: Role-specific action restrictions
+
+[[ATTACHMENT|test-results/03-security-authorization--e0ad9-pecific-action-restrictions-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/03-security-authorization--e0ad9-pecific-action-restrictions-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/03-security-authorization--e0ad9-pecific-action-restrictions-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Security &amp; Authorization - Role-Based Access Control › should log unauthorized access attempts for RBAC violations" classname="03-security-authorization/rbac.spec.ts" time="0.189">
+<failure message="rbac.spec.ts:271:3 should log unauthorized access attempts for RBAC violations" type="FAILURE">
+<![CDATA[  [chromium] › 03-security-authorization/rbac.spec.ts:271:3 › Security & Authorization - Role-Based Access Control › should log unauthorized access attempts for RBAC violations 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/smartops/jtb/create-session
+    Call log:
+      - navigating to "http://localhost:5173/smartops/jtb/create-session", waiting until "load"
+
+
+      281 |
+      282 |     // Attempt to access JTB sessions (should be denied)
+    > 283 |     await page.goto('/smartops/jtb/create-session');
+          |                ^
+      284 |
+      285 |     // Verify access denied (implicit by redirection or error message, though not strictly asserted here to focus on logging)
+      286 |
+        at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:283:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--3441e-ttempts-for-RBAC-violations-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--3441e-ttempts-for-RBAC-violations-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--3441e-ttempts-for-RBAC-violations-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/03-security-authorization--3441e-ttempts-for-RBAC-violations-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[📝 Testing: RBAC violation audit logging
+
+[[ATTACHMENT|test-results/03-security-authorization--3441e-ttempts-for-RBAC-violations-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/03-security-authorization--3441e-ttempts-for-RBAC-violations-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/03-security-authorization--3441e-ttempts-for-RBAC-violations-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Security &amp; Authorization - Role-Based Access Control › should handle concurrent role changes gracefully" classname="03-security-authorization/rbac.spec.ts" time="0.21">
+<failure message="rbac.spec.ts:321:3 should handle concurrent role changes gracefully" type="FAILURE">
+<![CDATA[  [chromium] › 03-security-authorization/rbac.spec.ts:321:3 › Security & Authorization - Role-Based Access Control › should handle concurrent role changes gracefully 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate
+    Call log:
+      - navigating to "http://localhost:5173/mshnctrl/targeting/nominate", waiting until "load"
+
+
+       at helpers/testHelpers.ts:78
+
+      76 |
+      77 |   static async goToTargetNomination(page: Page) {
+    > 78 |     await page.goto('/mshnctrl/targeting/nominate');
+         |                ^
+      79 |     await page.waitForLoadState('networkidle');
+      80 |     await page.waitForSelector('[data-testid="target-nomination-form"]', { timeout: 10000 });
+      81 |   }
+        at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:78:16)
+        at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:28)
+        at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:332:41
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--ac304-ent-role-changes-gracefully-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--ac304-ent-role-changes-gracefully-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/03-security-authorization--ac304-ent-role-changes-gracefully-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/03-security-authorization--ac304-ent-role-changes-gracefully-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🔄 Testing: Concurrent role changes
+
+[[ATTACHMENT|test-results/03-security-authorization--ac304-ent-role-changes-gracefully-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/03-security-authorization--ac304-ent-role-changes-gracefully-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/03-security-authorization--ac304-ent-role-changes-gracefully-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="target-management-e2e.spec.ts" timestamp="2026-02-02T10:22:15.979Z" hostname="chromium" tests="2" failures="0" skipped="0" time="4.006" errors="0">
+<testcase name="Target Management (Ontology-Aligned) › should nominate a new target successfully" classname="target-management-e2e.spec.ts" time="2.432">
+</testcase>
+<testcase name="Target Management (Ontology-Aligned) › should verify target detail functionality" classname="target-management-e2e.spec.ts" time="1.574">
 </testcase>
 </testsuite>
 </testsuites>

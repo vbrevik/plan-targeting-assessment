@@ -131,6 +131,64 @@ export interface TargetAnnotation {
   is_critical: boolean;
 }
 
+export interface JtbSession {
+  id: string;
+  session_name: string;
+  session_date: string;
+  session_time: string;
+  session_datetime: string;
+  chair: string;
+  chair_rank?: string;
+  status: string;
+  required_attendees?: string;
+  actual_attendees?: string;
+  classification: string;
+  created_at: string;
+}
+
+export interface JtbTarget {
+  id: string;
+  session_id: string;
+  target_id: string;
+  target_name: string;
+  presentation_order: number;
+  decision?: string;
+  decision_rationale?: string;
+  decided_by?: string;
+  decided_at?: string;
+  votes_for: number;
+  votes_against: number;
+  votes_abstain: number;
+  added_to_session_at: string;
+}
+
+export interface CreateJtbSessionRequest {
+  session_name: string;
+  session_date: string;
+  session_time: string;
+  session_datetime: string;
+  chair: string;
+  chair_rank?: string;
+  required_attendees?: string[];
+  classification: string;
+  caveats?: string[];
+}
+
+export interface AddTargetToSessionRequest {
+  target_id: string;
+  presentation_order?: number;
+}
+
+export interface RecordJtbDecisionRequest {
+  decision: string;
+  decision_rationale: string;
+  decided_by: string;
+  votes_for?: number;
+  votes_against?: number;
+  votes_abstain?: number;
+  approval_conditions?: string;
+}
+
 // ============================================================================
 // API SERVICE
 // ============================================================================

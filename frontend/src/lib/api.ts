@@ -62,6 +62,10 @@ class ApiClient {
     delete<T>(endpoint: string) {
         return this.request<T>(endpoint, { method: 'DELETE' });
     }
+
+    patch<T>(endpoint: string, body: any) {
+        return this.request<T>(endpoint, { method: 'PATCH', body: JSON.stringify(body) });
+    }
 }
 
 export const api = new ApiClient();

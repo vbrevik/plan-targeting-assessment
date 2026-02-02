@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 1
+      "actualWorkers": 2
     },
     "preserveOutput": "always",
     "reporter": [
@@ -45,7 +45,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 2
         },
         "id": "chromium",
         "name": "chromium",
@@ -72,20 +72,20 @@
   },
   "suites": [
     {
-      "title": "monitoring/bda-phase3-verification.spec.ts",
-      "file": "monitoring/bda-phase3-verification.spec.ts",
+      "title": "03-security-authorization/rbac.spec.ts",
+      "file": "03-security-authorization/rbac.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "BDA Phase 3 Integration - Intelligence & Ontology",
-          "file": "monitoring/bda-phase3-verification.spec.ts",
-          "line": 10,
+          "title": "Security & Authorization - Role-Based Access Control",
+          "file": "03-security-authorization/rbac.spec.ts",
+          "line": 15,
           "column": 6,
           "specs": [
             {
-              "title": "Should create intelligence feed and verify ontology projection",
+              "title": "should restrict target creation to authorized roles only",
               "ok": true,
               "tags": [],
               "tests": [
@@ -100,12 +100,16 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 344,
+                      "duration": 1161,
                       "errors": [],
-                      "stdout": [],
+                      "stdout": [
+                        {
+                          "text": "👥 Testing: Target creation role restriction\n"
+                        }
+                      ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-31T18:02:38.714Z",
+                      "startTime": "2026-02-02T10:22:16.412Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -113,13 +117,731 @@
                   "status": "expected"
                 }
               ],
-              "id": "70c159339ff1e34fe999-7181ca2518432afd11e3",
-              "file": "monitoring/bda-phase3-verification.spec.ts",
-              "line": 12,
+              "id": "d58d0fae6b56d4092318-3d25bb05ae9cee9de7ad",
+              "file": "03-security-authorization/rbac.spec.ts",
+              "line": 63,
+              "column": 3
+            },
+            {
+              "title": "should allow target creation for authorized roles",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 11360,
+                      "error": {
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"target-nomination-form\"]') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"target-nomination-form\"]') to be visible\u001b[22m\n\n    at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:80:16)\n    at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:5)\n    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:101:22",
+                        "location": {
+                          "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                          "column": 16,
+                          "line": 80
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers/testHelpers.ts:80\n\n\u001b[0m \u001b[90m 78 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/mshnctrl/targeting/nominate'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 79 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 80 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-testid=\"target-nomination-form\"]'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 81 |\u001b[39m   }\n \u001b[90m 82 |\u001b[39m\n \u001b[90m 83 |\u001b[39m   \u001b[36mstatic\u001b[39m \u001b[36masync\u001b[39m goToJTBSession(page\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m) {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                            "column": 16,
+                            "line": 80
+                          },
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"target-nomination-form\"]') to be visible\u001b[22m\n\n\n\u001b[90m   at \u001b[39mhelpers/testHelpers.ts:80\n\n\u001b[0m \u001b[90m 78 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/mshnctrl/targeting/nominate'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 79 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 80 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-testid=\"target-nomination-form\"]'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 81 |\u001b[39m   }\n \u001b[90m 82 |\u001b[39m\n \u001b[90m 83 |\u001b[39m   \u001b[36mstatic\u001b[39m \u001b[36masync\u001b[39m goToJTBSession(page\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m) {\u001b[0m\n\u001b[2m    at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:80:16)\u001b[22m\n\u001b[2m    at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:5)\u001b[22m\n\u001b[2m    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:101:22\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "✅ Testing: Target creation authorized role\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-02T10:22:17.742Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--011c8-eation-for-authorized-roles-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--011c8-eation-for-authorized-roles-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--011c8-eation-for-authorized-roles-chromium/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--011c8-eation-for-authorized-roles-chromium/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                        "column": 16,
+                        "line": 80
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d58d0fae6b56d4092318-9cabea46f0b66e3215c3",
+              "file": "03-security-authorization/rbac.spec.ts",
+              "line": 89,
+              "column": 3
+            },
+            {
+              "title": "should restrict JTB session creation to JTB_CHAIR only",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1154,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🏛️ Testing: JTB session creation role restriction\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-02T10:22:29.629Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d58d0fae6b56d4092318-ed3e548e89cfd8b8a445",
+              "file": "03-security-authorization/rbac.spec.ts",
+              "line": 112,
+              "column": 3
+            },
+            {
+              "title": "should allow JTB session creation for JTB_CHAIR role",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 11186,
+                      "error": {
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"jtb-session-board\"]') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"jtb-session-board\"]') to be visible\u001b[22m\n\n    at Function.goToJTBSession (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:86:16)\n    at Function.createJTBSession (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:177:5)\n    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:150:23",
+                        "location": {
+                          "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                          "column": 16,
+                          "line": 86
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers/testHelpers.ts:86\n\n\u001b[0m \u001b[90m 84 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/mshnctrl/targeting/jtb'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 85 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 86 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-testid=\"jtb-session-board\"]'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 87 |\u001b[39m   }\n \u001b[90m 88 |\u001b[39m\n \u001b[90m 89 |\u001b[39m   \u001b[36mstatic\u001b[39m \u001b[36masync\u001b[39m goToBDAWorkbench(page\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m) {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                            "column": 16,
+                            "line": 86
+                          },
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"jtb-session-board\"]') to be visible\u001b[22m\n\n\n\u001b[90m   at \u001b[39mhelpers/testHelpers.ts:86\n\n\u001b[0m \u001b[90m 84 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/mshnctrl/targeting/jtb'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 85 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 86 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-testid=\"jtb-session-board\"]'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 87 |\u001b[39m   }\n \u001b[90m 88 |\u001b[39m\n \u001b[90m 89 |\u001b[39m   \u001b[36mstatic\u001b[39m \u001b[36masync\u001b[39m goToBDAWorkbench(page\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m) {\u001b[0m\n\u001b[2m    at Function.goToJTBSession (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:86:16)\u001b[22m\n\u001b[2m    at Function.createJTBSession (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:177:5)\u001b[22m\n\u001b[2m    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:150:23\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "✅ Testing: JTB session creation authorized role\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-02T10:22:30.931Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--d70bc-creation-for-JTB-CHAIR-role-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--d70bc-creation-for-JTB-CHAIR-role-chromium/video.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--d70bc-creation-for-JTB-CHAIR-role-chromium/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                        "column": 16,
+                        "line": 86
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d58d0fae6b56d4092318-bac850bb74d749fb36b2",
+              "file": "03-security-authorization/rbac.spec.ts",
+              "line": 138,
+              "column": 3
+            },
+            {
+              "title": "should restrict target approval to JTB_CHAIR and COMMANDER only",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 229,
+                      "error": {
+                        "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/mshnctrl/targeting/nominate\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/mshnctrl/targeting/nominate\", waiting until \"load\"\u001b[22m\n\n    at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:78:16)\n    at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:28)\n    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:173:41",
+                        "location": {
+                          "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                          "column": 16,
+                          "line": 78
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers/testHelpers.ts:78\n\n\u001b[0m \u001b[90m 76 |\u001b[39m\n \u001b[90m 77 |\u001b[39m   \u001b[36mstatic\u001b[39m \u001b[36masync\u001b[39m goToTargetNomination(page\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 78 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/mshnctrl/targeting/nominate'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 79 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 80 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-testid=\"target-nomination-form\"]'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 81 |\u001b[39m   }\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                            "column": 16,
+                            "line": 78
+                          },
+                          "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/mshnctrl/targeting/nominate\", waiting until \"load\"\u001b[22m\n\n\n\u001b[90m   at \u001b[39mhelpers/testHelpers.ts:78\n\n\u001b[0m \u001b[90m 76 |\u001b[39m\n \u001b[90m 77 |\u001b[39m   \u001b[36mstatic\u001b[39m \u001b[36masync\u001b[39m goToTargetNomination(page\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 78 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/mshnctrl/targeting/nominate'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 79 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 80 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-testid=\"target-nomination-form\"]'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 81 |\u001b[39m   }\u001b[0m\n\u001b[2m    at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:78:16)\u001b[22m\n\u001b[2m    at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:28)\u001b[22m\n\u001b[2m    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:173:41\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🚫 Testing: Target approval role restriction\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-02T10:22:42.572Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--8f061-TB-CHAIR-and-COMMANDER-only-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--8f061-TB-CHAIR-and-COMMANDER-only-chromium/video.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--8f061-TB-CHAIR-and-COMMANDER-only-chromium/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                        "column": 16,
+                        "line": 78
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d58d0fae6b56d4092318-417be00d13ab24697d22",
+              "file": "03-security-authorization/rbac.spec.ts",
+              "line": 161,
+              "column": 3
+            },
+            {
+              "title": "should allow target approval for JTB_CHAIR role",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 189,
+                      "error": {
+                        "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/mshnctrl/targeting/nominate\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/mshnctrl/targeting/nominate\", waiting until \"load\"\u001b[22m\n\n    at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:78:16)\n    at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:28)\n    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:201:41",
+                        "location": {
+                          "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                          "column": 16,
+                          "line": 78
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers/testHelpers.ts:78\n\n\u001b[0m \u001b[90m 76 |\u001b[39m\n \u001b[90m 77 |\u001b[39m   \u001b[36mstatic\u001b[39m \u001b[36masync\u001b[39m goToTargetNomination(page\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 78 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/mshnctrl/targeting/nominate'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 79 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 80 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-testid=\"target-nomination-form\"]'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 81 |\u001b[39m   }\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                            "column": 16,
+                            "line": 78
+                          },
+                          "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/mshnctrl/targeting/nominate\", waiting until \"load\"\u001b[22m\n\n\n\u001b[90m   at \u001b[39mhelpers/testHelpers.ts:78\n\n\u001b[0m \u001b[90m 76 |\u001b[39m\n \u001b[90m 77 |\u001b[39m   \u001b[36mstatic\u001b[39m \u001b[36masync\u001b[39m goToTargetNomination(page\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 78 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/mshnctrl/targeting/nominate'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 79 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 80 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-testid=\"target-nomination-form\"]'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 81 |\u001b[39m   }\u001b[0m\n\u001b[2m    at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:78:16)\u001b[22m\n\u001b[2m    at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:28)\u001b[22m\n\u001b[2m    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:201:41\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "✅ Testing: Target approval authorized role\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-02T10:22:43.365Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--44c56-approval-for-JTB-CHAIR-role-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--44c56-approval-for-JTB-CHAIR-role-chromium/video.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--44c56-approval-for-JTB-CHAIR-role-chromium/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                        "column": 16,
+                        "line": 78
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d58d0fae6b56d4092318-a9027e35d48614b5634f",
+              "file": "03-security-authorization/rbac.spec.ts",
+              "line": 189,
+              "column": 3
+            },
+            {
+              "title": "should prevent role escalation via direct URL access",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 191,
+                      "error": {
+                        "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/admin/users\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/admin/users\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/admin/users\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/admin/users\", waiting until \"load\"\u001b[22m\n\n    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:230:16",
+                        "location": {
+                          "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts",
+                          "column": 16,
+                          "line": 230
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 228 |\u001b[39m\n \u001b[90m 229 |\u001b[39m     \u001b[90m// Try to access admin pages directly via URL\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 230 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/admin/users'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 231 |\u001b[39m\n \u001b[90m 232 |\u001b[39m     \u001b[90m// Verify access denied\u001b[39m\n \u001b[90m 233 |\u001b[39m     \u001b[90m// await expect(page.locator('[data-testid=\"permission-denied-message\"]')).toBeVisible();\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts",
+                            "column": 16,
+                            "line": 230
+                          },
+                          "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/admin/users\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/admin/users\", waiting until \"load\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 228 |\u001b[39m\n \u001b[90m 229 |\u001b[39m     \u001b[90m// Try to access admin pages directly via URL\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 230 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/admin/users'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 231 |\u001b[39m\n \u001b[90m 232 |\u001b[39m     \u001b[90m// Verify access denied\u001b[39m\n \u001b[90m 233 |\u001b[39m     \u001b[90m// await expect(page.locator('[data-testid=\"permission-denied-message\"]')).toBeVisible();\u001b[39m\u001b[0m\n\u001b[2m    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:230:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🛡️ Testing: Role escalation prevention\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-02T10:22:44.053Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--23e7b-ation-via-direct-URL-access-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--23e7b-ation-via-direct-URL-access-chromium/video.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--23e7b-ation-via-direct-URL-access-chromium/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts",
+                        "column": 16,
+                        "line": 230
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d58d0fae6b56d4092318-734e521edc28a49cfb09",
+              "file": "03-security-authorization/rbac.spec.ts",
+              "line": 218,
+              "column": 3
+            },
+            {
+              "title": "should enforce role-specific action restrictions",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 207,
+                      "error": {
+                        "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/mshnctrl/targeting/nominate\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/mshnctrl/targeting/nominate\", waiting until \"load\"\u001b[22m\n\n    at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:78:16)\n    at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:28)\n    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:256:41",
+                        "location": {
+                          "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                          "column": 16,
+                          "line": 78
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers/testHelpers.ts:78\n\n\u001b[0m \u001b[90m 76 |\u001b[39m\n \u001b[90m 77 |\u001b[39m   \u001b[36mstatic\u001b[39m \u001b[36masync\u001b[39m goToTargetNomination(page\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 78 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/mshnctrl/targeting/nominate'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 79 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 80 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-testid=\"target-nomination-form\"]'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 81 |\u001b[39m   }\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                            "column": 16,
+                            "line": 78
+                          },
+                          "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/mshnctrl/targeting/nominate\", waiting until \"load\"\u001b[22m\n\n\n\u001b[90m   at \u001b[39mhelpers/testHelpers.ts:78\n\n\u001b[0m \u001b[90m 76 |\u001b[39m\n \u001b[90m 77 |\u001b[39m   \u001b[36mstatic\u001b[39m \u001b[36masync\u001b[39m goToTargetNomination(page\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 78 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/mshnctrl/targeting/nominate'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 79 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 80 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-testid=\"target-nomination-form\"]'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 81 |\u001b[39m   }\u001b[0m\n\u001b[2m    at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:78:16)\u001b[22m\n\u001b[2m    at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:28)\u001b[22m\n\u001b[2m    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:256:41\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎯 Testing: Role-specific action restrictions\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-02T10:22:44.787Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--e0ad9-pecific-action-restrictions-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--e0ad9-pecific-action-restrictions-chromium/video.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--e0ad9-pecific-action-restrictions-chromium/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                        "column": 16,
+                        "line": 78
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d58d0fae6b56d4092318-2331fd8d1b3671c5f64d",
+              "file": "03-security-authorization/rbac.spec.ts",
+              "line": 245,
+              "column": 3
+            },
+            {
+              "title": "should log unauthorized access attempts for RBAC violations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 189,
+                      "error": {
+                        "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/smartops/jtb/create-session\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/smartops/jtb/create-session\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/smartops/jtb/create-session\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/smartops/jtb/create-session\", waiting until \"load\"\u001b[22m\n\n    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:283:16",
+                        "location": {
+                          "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts",
+                          "column": 16,
+                          "line": 283
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 281 |\u001b[39m\n \u001b[90m 282 |\u001b[39m     \u001b[90m// Attempt to access JTB sessions (should be denied)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 283 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/smartops/jtb/create-session'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 284 |\u001b[39m\n \u001b[90m 285 |\u001b[39m     \u001b[90m// Verify access denied (implicit by redirection or error message, though not strictly asserted here to focus on logging)\u001b[39m\n \u001b[90m 286 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts",
+                            "column": 16,
+                            "line": 283
+                          },
+                          "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/smartops/jtb/create-session\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/smartops/jtb/create-session\", waiting until \"load\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 281 |\u001b[39m\n \u001b[90m 282 |\u001b[39m     \u001b[90m// Attempt to access JTB sessions (should be denied)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 283 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/smartops/jtb/create-session'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 284 |\u001b[39m\n \u001b[90m 285 |\u001b[39m     \u001b[90m// Verify access denied (implicit by redirection or error message, though not strictly asserted here to focus on logging)\u001b[39m\n \u001b[90m 286 |\u001b[39m\u001b[0m\n\u001b[2m    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:283:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "📝 Testing: RBAC violation audit logging\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-02T10:22:45.510Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--3441e-ttempts-for-RBAC-violations-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--3441e-ttempts-for-RBAC-violations-chromium/video.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--3441e-ttempts-for-RBAC-violations-chromium/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts",
+                        "column": 16,
+                        "line": 283
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d58d0fae6b56d4092318-f0b7adb361e4d20b4924",
+              "file": "03-security-authorization/rbac.spec.ts",
+              "line": 271,
+              "column": 3
+            },
+            {
+              "title": "should handle concurrent role changes gracefully",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 210,
+                      "error": {
+                        "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/mshnctrl/targeting/nominate\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/mshnctrl/targeting/nominate\", waiting until \"load\"\u001b[22m\n\n    at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:78:16)\n    at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:28)\n    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:332:41",
+                        "location": {
+                          "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                          "column": 16,
+                          "line": 78
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers/testHelpers.ts:78\n\n\u001b[0m \u001b[90m 76 |\u001b[39m\n \u001b[90m 77 |\u001b[39m   \u001b[36mstatic\u001b[39m \u001b[36masync\u001b[39m goToTargetNomination(page\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 78 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/mshnctrl/targeting/nominate'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 79 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 80 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-testid=\"target-nomination-form\"]'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 81 |\u001b[39m   }\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                            "column": 16,
+                            "line": 78
+                          },
+                          "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/mshnctrl/targeting/nominate\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/mshnctrl/targeting/nominate\", waiting until \"load\"\u001b[22m\n\n\n\u001b[90m   at \u001b[39mhelpers/testHelpers.ts:78\n\n\u001b[0m \u001b[90m 76 |\u001b[39m\n \u001b[90m 77 |\u001b[39m   \u001b[36mstatic\u001b[39m \u001b[36masync\u001b[39m goToTargetNomination(page\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 78 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/mshnctrl/targeting/nominate'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 79 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 80 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-testid=\"target-nomination-form\"]'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 81 |\u001b[39m   }\u001b[0m\n\u001b[2m    at Function.goToTargetNomination (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:78:16)\u001b[22m\n\u001b[2m    at Function.createTarget (/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts:105:28)\u001b[22m\n\u001b[2m    at /Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/03-security-authorization/rbac.spec.ts:332:41\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔄 Testing: Concurrent role changes\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-02T10:22:46.203Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--ac304-ent-role-changes-gracefully-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--ac304-ent-role-changes-gracefully-chromium/video.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/test-results/03-security-authorization--ac304-ent-role-changes-gracefully-chromium/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/vidarbrevik/projects/plan-target-assessment/frontend/tests/helpers/testHelpers.ts",
+                        "column": 16,
+                        "line": 78
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d58d0fae6b56d4092318-3af64e3ea87dbc28b21e",
+              "file": "03-security-authorization/rbac.spec.ts",
+              "line": 321,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "target-management-e2e.spec.ts",
+      "file": "target-management-e2e.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Target Management (Ontology-Aligned)",
+          "file": "target-management-e2e.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should nominate a new target successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2432,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-02T10:22:16.406Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b3193842ea391f836a9b-4dcb1d92698bd70689d8",
+              "file": "target-management-e2e.spec.ts",
+              "line": 8,
               "column": 5
             },
             {
-              "title": "Intelligence Panel should be accessible for a target",
+              "title": "should verify target detail functionality",
               "ok": true,
               "tags": [],
               "tests": [
@@ -131,15 +853,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 301,
+                      "duration": 1574,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-31T18:02:39.070Z",
+                      "startTime": "2026-02-02T10:22:19.014Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -147,9 +869,9 @@
                   "status": "expected"
                 }
               ],
-              "id": "70c159339ff1e34fe999-6c287b7821b2c1fbde13",
-              "file": "monitoring/bda-phase3-verification.spec.ts",
-              "line": 58,
+              "id": "b3193842ea391f836a9b-a4c787a1878300398592",
+              "file": "target-management-e2e.spec.ts",
+              "line": 50,
               "column": 5
             }
           ]
@@ -159,11 +881,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-01-31T18:02:38.018Z",
-    "duration": 1371.299,
-    "expected": 2,
+    "startTime": "2026-02-02T10:22:15.589Z",
+    "duration": 30990.926000000003,
+    "expected": 4,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 8,
     "flaky": 0
   }
 }

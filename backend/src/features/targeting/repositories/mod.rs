@@ -230,6 +230,7 @@ impl DtlRepository {
             entries.push(DtlEntry {
                 id: row.get("id"),
                 target_id: row.get("target_id"),
+                target_name: "TODO: Fetch Name".to_string(), // Placeholder until join is implemented
                 priority_score,
                 feasibility_score,
                 combined_score: Some(combined_score),
@@ -259,6 +260,7 @@ impl DtlRepository {
             entries.push(DtlEntry {
                 id: row.get("id"),
                 target_id: row.get("target_id"),
+                target_name: "TODO: Fetch Name".to_string(), // Placeholder
                 priority_score: row.get("priority_score"),
                 feasibility_score: row.get("feasibility_score"),
                 combined_score: row.get("combined_score"),
@@ -799,31 +801,19 @@ impl AnnotationRepository {
 // BDA REPOSITORY (uses existing bda_reports table)
 // ============================================================================
 
-pub struct BdaRepository;
+// ============================================================================
+// BDA REPOSITORY (LEGACY/DEPRECATED)
+// Use BdaService (Ontology-Backed) instead.
+// ============================================================================
 
-impl BdaRepository {
-    pub async fn get_by_id(pool: &Pool<Sqlite>, id: &str) -> Result<Option<BdaAssessment>, SqlxError> {
-        let result = sqlx::query(
-            "SELECT id, target_id, physical_damage, functional_damage, recommendation, confidence_level as confidence 
-             FROM v_bda_reports_ontology WHERE id = ?"
-        )
-        .bind(id)
-        .fetch_optional(pool)
-        .await?;
-        
-        match result {
-            Some(row) => Ok(Some(BdaAssessment {
-                id: row.get("id"),
-                target_id: row.get("target_id"),
-                physical_damage: row.get("physical_damage"),
-                functional_damage: row.get("functional_damage"),
-                recommendation: row.get("recommendation"),
-                confidence: row.get("confidence"),
-            })),
-            None => Ok(None)
-        }
-    }
-}
+// pub struct BdaRepository;
+// 
+// impl BdaRepository {
+//     pub async fn get_by_id(pool: &Pool<Sqlite>, id: &str) -> Result<Option<BdaAssessment>, SqlxError> {
+//         // ... legacy code commented out ...
+//         Ok(None)
+//     }
+// }
 
 // ============================================================================
 // JTB REPOSITORY
@@ -987,6 +977,7 @@ impl JtbRepository {
                 id: row.get("id"),
                 session_id: row.get("session_id"),
                 target_id: row.get("target_id"),
+                target_name: "TODO: Fetch Name".to_string(), // Placeholder
                 presentation_order: row.get("presentation_order"),
                 decision: row.get("decision"),
                 decision_rationale: row.get("decision_rationale"),

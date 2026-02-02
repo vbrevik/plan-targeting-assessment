@@ -89,6 +89,16 @@ where S: Clone + Send + Sync + 'static
         .route("/dtl/:id/priority", put(handlers::update_dtl_priority))
         .route("/dtl/tst", get(handlers::get_active_tsts))
 
+        // ====================================================================
+        // BDA ROUTING (Ontology-Backed)
+        // ====================================================================
+        .route("/bda", post(handlers::create_bda_assessment))
+        .route("/bda/:target_id", get(handlers::get_bda_assessments))
+
+        // ROE Routes
+        .route("/roe", post(handlers::roe::create_roe_rule).get(handlers::roe::get_active_roes))
+        .route("/roe/check", post(handlers::roe::check_compliance))
+
         // BDA Routes have been moved to features::bda::router (/api/bda)
         // Legacy redundant routes removed.
         

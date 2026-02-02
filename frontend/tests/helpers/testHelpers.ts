@@ -68,32 +68,32 @@ export const authenticatedTest = test.extend<{
 // Page navigation helpers
 export class NavigationHelper {
   static async goToTargetingDashboard(page: Page) {
-    await page.goto('/smartops/targeting-cell-dashboard');
+    await page.goto('/mshnctrl/targeting-cell-dashboard');
     await page.waitForLoadState('networkidle');
     // Wait for key components to load
     await page.waitForSelector('[data-testid="decision-gates-bar"]', { timeout: 10000 });
   }
 
   static async goToTargetNomination(page: Page) {
-    await page.goto('/smartops/target-nomination');
+    await page.goto('/mshnctrl/targeting/nominate');
     await page.waitForLoadState('networkidle');
     await page.waitForSelector('[data-testid="target-nomination-form"]', { timeout: 10000 });
   }
 
   static async goToJTBSession(page: Page) {
-    await page.goto('/smartops/jtb-session');
+    await page.goto('/mshnctrl/targeting/jtb');
     await page.waitForLoadState('networkidle');
     await page.waitForSelector('[data-testid="jtb-session-board"]', { timeout: 10000 });
   }
 
   static async goToBDAWorkbench(page: Page) {
-    await page.goto('/smartops/bda-workbench');
+    await page.goto('/mshnctrl/bda');
     await page.waitForLoadState('networkidle');
     await page.waitForSelector('[data-testid="bda-workbench"]', { timeout: 10000 });
   }
 
   static async goToMissionCommand(page: Page) {
-    await page.goto('/smartops/mission-command');
+    await page.goto('/mshnctrl/targeting/mission-command');
     await page.waitForLoadState('networkidle');
     await page.waitForSelector('[data-testid="mission-command-overview"]', { timeout: 10000 });
   }
@@ -124,7 +124,7 @@ export class TargetHelper {
   }
 
   static async advanceTargetStage(page: Page, targetId: string, stage: string) {
-    await page.goto(`/smartops/target/${targetId}`);
+    await page.goto(`/mshnctrl/target/${targetId}`);
     await page.waitForLoadState('networkidle');
 
     // Click advance stage button
@@ -141,7 +141,7 @@ export class TargetHelper {
   }
 
   static async updateTargetStatus(page: Page, targetId: string, status: string) {
-    await page.goto(`/smartops/target/${targetId}`);
+    await page.goto(`/mshnctrl/target/${targetId}`);
     await page.waitForLoadState('networkidle');
 
     // Find and click status transition button
@@ -158,7 +158,7 @@ export class TargetHelper {
   }
 
   static async getTargetDetails(page: Page, targetId: string) {
-    await page.goto(`/smartops/target/${targetId}`);
+    await page.goto(`/mshnctrl/target/${targetId}`);
     await page.waitForLoadState('networkidle');
 
     return {
@@ -197,7 +197,7 @@ export class JTBHelper {
   }
 
   static async addTargetToSession(page: Page, sessionId: string, targetId: string) {
-    await page.goto(`/smartops/jtb-session/${sessionId}`);
+    await page.goto(`/mshnctrl/jtb-session/${sessionId}`);
     await page.waitForLoadState('networkidle');
 
     // Add target to session
@@ -211,7 +211,7 @@ export class JTBHelper {
   }
 
   static async approveTarget(page: Page, sessionId: string, targetId: string) {
-    await page.goto(`/smartops/jtb-session/${sessionId}`);
+    await page.goto(`/mshnctrl/jtb-session/${sessionId}`);
     await page.waitForLoadState('networkidle');
 
     // Find target and click approve
@@ -266,7 +266,7 @@ export class BDAHelper {
   }
 
   static async uploadBDAImage(page: Page, bdaId: string, imagePath: string) {
-    await page.goto(`/smartops/bda/${bdaId}`);
+    await page.goto(`/mshnctrl/bda/${bdaId}`);
     await page.waitForLoadState('networkidle');
 
     // Upload image
@@ -326,7 +326,7 @@ export class PerformanceHelper {
 
     page.on('response', response => {
       if (response.url().includes(apiPattern)) {
-        responseTime = Date.now() - response.request().timestamp();
+        responseTime = Date.now() - response.request().timing().startTime;
       }
     });
 

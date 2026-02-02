@@ -17,14 +17,14 @@ impl UserService {
     }
 
     pub async fn find_all(&self) -> Result<Vec<User>, AuthError> {
-        let users = sqlx::query_as::<_, User>("SELECT * FROM users")
+        let users = sqlx::query_as::<_, User>("SELECT * FROM v_users_ontology")
             .fetch_all(&self.pool)
             .await?;
         Ok(users)
     }
 
     pub async fn find_by_id(&self, id: &str) -> Result<User, AuthError> {
-        let user = sqlx::query_as::<_, User>("SELECT * FROM users WHERE id = ?")
+        let user = sqlx::query_as::<_, User>("SELECT * FROM v_users_ontology WHERE id = ?")
             .bind(id)
             .fetch_optional(&self.pool)
             .await?
@@ -40,11 +40,21 @@ impl UserService {
             .map_err(|e| AuthError::PasswordHashError(e.to_string()))?
             .to_string();
 
-        sqlx::query("INSERT INTO users (id, username, email, password_hash) VALUES (?, ?, ?, ?)")
+        let now = chrono::Utc::now().to_rfc3339();
+        let props = serde_json::json!({
+            "email": email,
+            "password_hash": password_hash
+        });
+
+        sqlx::query(r#"
+            INSERT INTO entities (id, name, type, description, status, classification, created_at, updated_at, properties) 
+            VALUES (?, ?, 'USER', 'System User', 'ACTIVE', 'UNCLASSIFIED', ?, ?, ?)
+        "#)
             .bind(&id)
             .bind(username)
-            .bind(email)
-            .bind(password_hash)
+            .bind(&now)
+            .bind(&now)
+            .bind(props.to_string())
             .execute(&self.pool)
             .await?;
 
@@ -56,17 +66,30 @@ impl UserService {
             return self.find_by_id(id).await;
         }
 
-        let mut query_builder: sqlx::QueryBuilder<sqlx::Sqlite> = sqlx::QueryBuilder::new("UPDATE users SET ");
+        let mut query_builder: sqlx::QueryBuilder<sqlx::Sqlite> = sqlx::QueryBuilder::new("UPDATE entities SET ");
         let mut separated = query_builder.separated(", ");
 
+        // Update name (username) and properties (email)
+        // Note: For properties, we need careful JSON patching or simple replacement if we have full state.
+        // Here we do partial. Sqlite json_patch is good. 
+        // But json_patch takes the whole object.
+        
         if let Some(ref u) = username {
-            separated.push("username = ");
+            separated.push("name = ");
             separated.push_bind_unseparated(u);
         }
+
+        // Handle email update via properties
         if let Some(ref e) = email {
-            separated.push("email = ");
-            separated.push_bind_unseparated(e);
+             // We need to update just the email field in properties.
+             // SQLite: json_set(properties, '$.email', value)
+             separated.push("properties = json_set(properties, '$.email', ");
+             separated.push_bind_unseparated(e);
+             separated.push_unseparated(")");
         }
+
+        separated.push("updated_at = ");
+        separated.push_bind_unseparated(chrono::Utc::now().to_rfc3339());
 
         query_builder.push(" WHERE id = ");
         query_builder.push_bind(id);
@@ -80,7 +103,7 @@ impl UserService {
     }
 
     pub async fn delete(&self, id: &str) -> Result<(), AuthError> {
-        sqlx::query("DELETE FROM users WHERE id = ?")
+        sqlx::query("DELETE FROM entities WHERE id = ?")
             .bind(id)
             .execute(&self.pool)
             .await?;

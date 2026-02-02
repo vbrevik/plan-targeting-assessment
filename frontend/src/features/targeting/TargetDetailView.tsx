@@ -78,25 +78,46 @@ export function TargetDetailView({ targetId: propTargetId, isEmbedded, onClose }
             if (apiTarget) {
                 setTarget(apiTarget);
                 // Map API target to component Target type for compatibility
+                const props = apiTarget.properties || {};
                 const mappedTarget: Target = {
                     id: apiTarget.id,
                     name: apiTarget.name,
-                    type: 'Target', // Fixed type
-                    target_type: apiTarget.target_type, // Keep original
+                    description: apiTarget.description,
+                    domain: (props.domain as Domain) || 'LAND',
+                    type: 'Target',
+                    target_type: props.functional_type || 'Unknown',
                     targetId: apiTarget.id,
-                    designator: apiTarget.id.substring(0, 8).toUpperCase(),
-                    category: apiTarget.target_type,
-                    catCode: apiTarget.target_type,
-                    priority: apiTarget.priority as any || 'Medium',
-                    status: 'Active', // Default OperationalStatus
-                    targetStatus: apiTarget.target_status as any,
-                    location: { lat: 0, lng: 0 }, // Placeholder, handled in displayTarget
+                    designator: props.designator || apiTarget.id.substring(0, 8).toUpperCase(),
+                    category: props.category || 'Unknown',
+                    catCode: props.cat_code || '00000',
+                    priority: (props.priority as any) || 'Medium',
+                    status: 'Active',
+                    targetStatus: (props.target_status as any) || 'Identified',
+                    location: apiTarget.location_lat && apiTarget.location_lng
+                        ? { lat: apiTarget.location_lat, lng: apiTarget.location_lng }
+                        : { lat: 0, lng: 0 },
+                    // Coordinate string for display if needed
+                    coordinates: apiTarget.location_lat && apiTarget.location_lng
+                        ? `${apiTarget.location_lat}, ${apiTarget.location_lng}`
+                        : (apiTarget.location as any)?.mgrs || 'Unknown Location',
+
                     classification: apiTarget.classification || 'SECRET',
-                    desiredEffect: 'Neutralize',
-                    collateralDamageEstimate: 'Low',
-                    affiliation: 'Red',
-                    description: apiTarget.description
-                } as any; // Cast to avoid missing props for now
+                    desiredEffect: props.desired_effect || 'Neutralize',
+                    collateralDamageEstimate: (props.collateral_damage_estimate as any) || 'Low',
+                    affiliation: apiTarget.affiliation || 'Red',
+
+                    functional_type: props.functional_type,
+                    f3ead_stage: props.kill_chain_phase || 'Find',
+                    be_number: props.be_number,
+
+                    // Fields not in OntologyEntity but needed by UI
+                    cyber_attributes: undefined,
+                    cognitive_attributes: undefined,
+
+                    // Required by Target interface (legacy) but can be undefined/optional
+                    operation_ids: [apiTarget.operation_id || ''],
+                    level_of_war: 'TACTICAL'
+                } as any;
 
                 // Try to find system for mapped target
                 const system = systems.find(s => s.components.includes(mappedTarget.id));
@@ -172,7 +193,7 @@ export function TargetDetailView({ targetId: propTargetId, isEmbedded, onClose }
         return null;
     };
 
-    const coordObj = parseCoordinates(target.coordinates);
+    const coordObj = target.coordinates ? parseCoordinates(target.coordinates) : null;
 
     const displayTarget: Target = {
         id: target.id,

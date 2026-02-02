@@ -182,8 +182,9 @@ export const BdaApi = {
     return api.get<BdaStatistics>('/bda/statistics');
   },
 
-  getReports: async (params?: { status?: string; target_id?: string }): Promise<BdaReportEntity[]> => {
-    return api.get<BdaReportEntity[]>('/bda/reports', params);
+  getReports: async (params?: { target_id?: string }): Promise<BdaReportEntity[]> => {
+    if (!params?.target_id) throw new Error("target_id is required to fetch BDA reports");
+    return api.get<BdaReportEntity[]>(`/bda/${params.target_id}`);
   },
 
   getReport: async (id: string): Promise<BdaReportEntity> => {
@@ -191,7 +192,7 @@ export const BdaApi = {
   },
 
   createReport: async (report: Partial<BdaReportEntity>): Promise<BdaReportEntity> => {
-    return api.post<BdaReportEntity>('/bda/reports', report);
+    return api.post<BdaReportEntity>('/bda', report);
   },
 
   updateReport: async (id: string, report: Partial<BdaReportEntity>): Promise<BdaReportEntity> => {

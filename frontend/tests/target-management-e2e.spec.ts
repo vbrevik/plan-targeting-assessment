@@ -1,171 +1,88 @@
-// E2E tests for target management features
-// Tests target nomination, detail view, and status transitions
-// Made resilient: accepts various responses gracefully, uses correct routes
-
 import { expect } from '@playwright/test';
-import { authenticatedTest as test } from './helpers/testHelpers';
+import { authenticatedTest as test } from './fixtures/auth';
 
-const BASE_URL = process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:5173';
-const API_BASE_URL = process.env.PLAYWRIGHT_API_BASE_URL || 'http://localhost:3000';
+test.describe('Target Management (Ontology-Aligned)', () => {
 
-test.describe('Target Management E2E', () => {
-    test.beforeEach(async ({ authenticatedPage: page }) => {
-        await page.goto(`${BASE_URL}/mshnctrl/targeting`);
-        await page.waitForLoadState('networkidle').catch(() => { });
+    // Cleanup/Setup if needed, but we'll rely on unique names for now
+
+    test('should nominate a new target successfully', async ({ authenticatedPage: page }) => {
+        // 1. Navigate to Nomination Page
+        await page.goto('/mshnctrl/targeting/nominate');
+        await expect(page).toHaveURL(/.*\/nominate/);
+
+        // 2. Fill out the form
+        // Using placeholders/labels as pseudo-selectors since explicit test-ids are missing
+        await page.getByPlaceholder('e.g. RADAR SITE ALPHA').fill('ONTOLOGY TARGET ' + Date.now());
+        await page.getByPlaceholder('32U PK 1234 5678').fill('32U PK 1234 5678');
+
+        // Select Category (e.g., "C2 Node")
+        const categorySelect = page.locator('select').first(); // Assumption: first select is category
+        await categorySelect.selectOption('C2 Node');
+
+        // Select Priority
+        const prioritySelect = page.locator('select').nth(1); // Assumption: second select is priority
+        await prioritySelect.selectOption('HIGH');
+
+        // Select Effect (Button click)
+        await page.getByRole('button', { name: 'Neutralize' }).click();
+
+        // Description
+        await page.getByPlaceholder('Provide detailed intelligence justifying', { exact: false })
+            .fill('Automated E2E Test Target Nomination');
+
+        // 3. Submit
+        const submitBtn = page.getByRole('button', { name: 'Submit Nomination' });
+        await expect(submitBtn).toBeEnabled();
+        await submitBtn.click();
+
+        // 4. Verify Redirect to Detail Page
+        await expect(page).toHaveURL(/\/mshnctrl\/targeting\/[a-zA-Z0-9-]+/);
+
+        // 5. Verify Detail Content
+        await expect(page.getByText('ONTOLOGY TARGET')).toBeVisible();
+        await expect(page.getByText('Target Intelligence Summary')).toBeVisible();
+        await expect(page.getByText('PENDING REVIEW')).toBeVisible(); // Advisory status checks
+
+        // Coordinates might be "Unknown Location" if backend didn't parse MGRS
+        await expect(page.getByText('Unknown Location').or(page.getByText('32U PK 1234 5678'))).toBeVisible();
     });
 
-    test('should display target nomination form', async ({ authenticatedPage: page }) => {
-        await page.goto(`${BASE_URL}/mshnctrl/targeting/nominate`);
-
-        try {
-            await page.waitForSelector('input, form', { timeout: 5000 });
-            const inputs = await page.locator('input, select, textarea').count();
-            expect(inputs).toBeGreaterThanOrEqual(0);
-        } catch {
-            // Form may not exist
-            expect(true).toBe(true);
-        }
-    });
-
-    test('should create target via nomination form', async ({ authenticatedPage: page }) => {
-        await page.goto(`${BASE_URL}/mshnctrl/targeting/nominate`);
-
-        try {
-            await page.waitForSelector('input, form', { timeout: 3000 });
-            // Try to fill and submit form
-            const nameInput = page.locator('input').first();
-            if (await nameInput.isVisible()) {
-                await nameInput.fill('E2E TEST TARGET');
-            }
-        } catch {
-            // Form may not exist or be different structure
-        }
-
-        expect(true).toBe(true);
-    });
-
-    test('should display target detail view', async ({ authenticatedPage: page }) => {
-        await page.goto(`${BASE_URL}/mshnctrl/targeting/test-target-id`);
-
-        try {
-            await page.waitForSelector('body', { timeout: 3000 });
-        } catch {
-            // Page loaded
-        }
-
-        const pageContent = await page.content();
-        expect(pageContent.length).toBeGreaterThan(0);
-    });
-
-    test('should display status transition buttons', async ({ authenticatedPage: page }) => {
-        await page.goto(`${BASE_URL}/mshnctrl/targeting/test-target-id`);
-        await page.waitForLoadState('networkidle').catch(() => { });
-
-        // Check if page loads
-        const pageContent = await page.content();
-        expect(pageContent.length).toBeGreaterThan(0);
-    });
-
-    test('should show error message on invalid form submission', async ({ authenticatedPage: page }) => {
-        await page.goto(`${BASE_URL}/mshnctrl/targeting/nominate`);
-
-        try {
-            await page.waitForSelector('button', { timeout: 3000 });
-            const submitButton = page.locator('button:has-text("Submit")').first();
-            if (await submitButton.isVisible()) {
-                await submitButton.click();
-            }
-        } catch {
-            // Form may not exist
-        }
-
-        expect(true).toBe(true);
-    });
-
-    test('should navigate back from detail view', async ({ authenticatedPage: page }) => {
-        await page.goto(`${BASE_URL}/mshnctrl/targeting/test-target-id`);
-
-        const backButton = page.getByRole('button').filter({ hasText: /back|arrow/i }).first();
-
-        if (await backButton.isVisible({ timeout: 2000 }).catch(() => false)) {
-            await backButton.click();
-            await page.waitForLoadState('networkidle').catch(() => { });
-        }
-
-        expect(true).toBe(true);
-    });
-
-    test('should display target timeline', async ({ authenticatedPage: page }) => {
-        await page.goto(`${BASE_URL}/mshnctrl/targeting/test-target-id`);
-        await page.waitForLoadState('networkidle').catch(() => { });
-
-        const pageContent = await page.content();
-        expect(pageContent.length).toBeGreaterThan(0);
-    });
-
-    test('should filter targets by status', async ({ authenticatedPage: page }) => {
-        await page.goto(`${BASE_URL}/mshnctrl/targeting`);
-        await page.waitForLoadState('networkidle').catch(() => { });
-
-        const pageContent = await page.content();
-        expect(pageContent.length).toBeGreaterThan(0);
-    });
-});
-
-test.describe('Target API Integration', () => {
-    test('should create target via API', async ({ authenticatedRequest: request }) => {
-        const response = await request.post(`${API_BASE_URL}/api/targeting/targets`, {
+    test('should verify target detail functionality', async ({ authenticatedPage: page, authenticatedRequest: request }) => {
+        // Prerequisite: Create a target via API to ensure one exists for testing
+        const targetName = 'DETAIL-VIEW-TEST-' + Date.now();
+        const createRes = await request.post('/api/targeting/targets', {
             data: {
-                name: 'API TEST TARGET ' + Date.now(),
+                name: targetName,
                 target_type: 'HPT',
                 priority: 'HIGH',
-                coordinates: '32.1234,44.5678',
+                coordinates: '32U PK 1111 2222',
                 classification: 'SECRET',
-            },
+                description: 'For detail view verification'
+            }
         });
+        expect(createRes.ok()).toBeTruthy();
+        const target = await createRes.json();
 
-        // Accept success or permission/validation errors
-        expect([200, 201, 400, 403, 404, 500]).toContain(response.status());
-    });
+        // 1. Navigate to Detail Page
+        await page.goto(`/mshnctrl/targeting/${target.id}`);
 
-    test('should reject invalid target creation', async ({ authenticatedRequest: request }) => {
-        const response = await request.post(`${API_BASE_URL}/api/targeting/targets`, {
-            data: {
-                name: '',
-                target_type: 'INVALID',
-                priority: 'INVALID',
-            },
-        });
+        // 2. Verify Header Info
+        await expect(page.getByRole('heading', { name: targetName })).toBeVisible();
+        await expect(page.getByText('32.0000, 11.0000').or(page.getByText('32U PK 1111 2222')).or(page.getByText('Unknown Location'))).toBeVisible();
 
-        // Should reject with 400 or other error
-        expect([400, 403, 404, 422, 500]).toContain(response.status());
-    });
+        // 3. Verify Tabs
+        await expect(page.getByRole('button', { name: 'Overview', exact: true })).toBeVisible();
+        await expect(page.getByRole('button', { name: 'System Analysis' })).toBeVisible();
+        await expect(page.getByRole('button', { name: 'Pattern of Life' })).toBeVisible();
+        await expect(page.getByRole('button', { name: 'Weaponeering' })).toBeVisible();
 
-    test('should get target by ID or 404', async ({ authenticatedRequest: request }) => {
-        const response = await request.get(`${API_BASE_URL}/api/targeting/targets/test-target-id`);
-
-        expect([200, 403, 404, 500]).toContain(response.status());
-
-        if (response.ok()) {
-            const target = await response.json();
-            expect(target).toHaveProperty('id');
-        }
-    });
-
-    test('should return 404 for non-existent target', async ({ authenticatedRequest: request }) => {
-        const response = await request.get(`${API_BASE_URL}/api/targeting/targets/nonexistent-id-${Date.now()}`);
-
-        expect([404, 403, 500]).toContain(response.status());
-    });
-
-    test('should get target timeline or error', async ({ authenticatedRequest: request }) => {
-        const response = await request.get(`${API_BASE_URL}/api/targeting/targets/test-target-id/timeline`);
-
-        expect([200, 403, 404, 500]).toContain(response.status());
-
-        if (response.ok()) {
-            const timeline = await response.json();
-            expect(timeline).toBeTruthy();
+        // 4. Verify Workflow Actions
+        // Should show "Advance to Validated" if status is Nominated (default)
+        const advanceBtn = page.getByRole('button', { name: 'Advance to Validated' });
+        if (await advanceBtn.isVisible()) {
+            // Optional: Test the transition
+            await advanceBtn.click();
+            await expect(page.getByText('Validated').first()).toBeVisible();
         }
     });
 });

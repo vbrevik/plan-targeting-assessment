@@ -68,7 +68,7 @@ test.describe('IM Dashboard Extended View', () => {
             });
         });
 
-        await page.goto('/smartops/information-management');
+        await page.goto('/mshnctrl/information-management');
 
         // Check Headers
         await expect(page.getByText('Information Management (IM)')).toBeVisible();
@@ -94,13 +94,18 @@ test.describe('IM Dashboard Extended View', () => {
                 json: {
                     id: 'im-user-limited',
                     username: 'guest_analyst',
-                    roles: [{ role_name: 'Analyst' }],
-                    permissions: ['cop.view', 'im.dashboard.view'] // Missing rfis, battle_rhythm, ontology
+                    roles: [{ role_name: 'Analyst' }], // Helper generates 'analyst' ID
+                    permissions: ['cop.view', 'im.dashboard.view']
                 }
             });
         });
 
-        await page.goto('/smartops/information-management');
+        // FORCE demo-role to match authenticated role to prevent fallback to Commander
+        await page.addInitScript(() => {
+            localStorage.setItem('demo-role', 'analyst');
+        });
+
+        await page.goto('/mshnctrl/information-management');
 
         // Check Headers
         await expect(page.getByText('Information Management (IM)')).toBeVisible();

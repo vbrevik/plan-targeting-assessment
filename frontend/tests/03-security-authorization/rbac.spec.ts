@@ -72,7 +72,7 @@ test.describe('Security & Authorization - Role-Based Access Control', () => {
     });
 
     // Navigate to target nomination page
-    await page.goto('/smartops/target-nomination');
+    await page.goto('/mshnctrl/targeting/nominate');
     await page.waitForLoadState('networkidle');
 
     // Verify create target button is disabled or hidden
@@ -105,7 +105,7 @@ test.describe('Security & Authorization - Role-Based Access Control', () => {
     });
 
     // Verify target created
-    await page.goto(`/smartops/target/${targetId}`);
+    await page.goto(`/mshnctrl/targeting/${targetId}`);
     await expect(page.locator(`[data-testid="target-name"]`)).toHaveText('TARGET-CREATED-001');
   });
 
@@ -121,14 +121,14 @@ test.describe('Security & Authorization - Role-Based Access Control', () => {
     });
 
     // Navigate to JTB sessions page
-    await page.goto('/smartops/jtb-session');
+    await page.goto('/mshnctrl/targeting/jtb');
     await page.waitForLoadState('networkidle');
 
     // Verify create session button is disabled
     await expect(page.locator('[data-testid="create-jtb-session"]')).toBeHidden();
 
     // Try to access create session directly (should be blocked)
-    await page.goto('/smartops/jtb/create-session');
+    await page.goto('/mshnctrl/targeting/jtb?action=create');
 
     // Verify access denied
     // await expect(page.locator('[data-testid="permission-denied-message"]')).toBeVisible();
@@ -154,7 +154,7 @@ test.describe('Security & Authorization - Role-Based Access Control', () => {
     });
 
     // Verify session created
-    await page.goto(`/smartops/jtb-session/${sessionId}`);
+    await page.goto(`/mshnctrl/targeting/jtb/${sessionId}`);
     await expect(page.locator('[data-testid="jtb-session-view"]')).toBeVisible();
   });
 
@@ -181,7 +181,7 @@ test.describe('Security & Authorization - Role-Based Access Control', () => {
       await expect(page.locator('[data-testid="approve-target-button"]')).toBeHidden();
 
       // Verify cannot access approval workflow
-      await page.goto(`/smartops/jtb/approve/${targetId}`);
+      await page.goto(`/mshnctrl/targeting/jtb/approve/${targetId}`);
       // await expect(page.locator('[data-testid="permission-denied-message"]')).toBeVisible();
     }
   });
@@ -204,6 +204,7 @@ test.describe('Security & Authorization - Role-Based Access Control', () => {
 
       // Create JTB session
       const sessionId = await JTBHelper.createJTBSession(page);
+      if (!sessionId) throw new Error('Failed to create JTB session');
       await JTBHelper.addTargetToSession(page, sessionId, targetId);
 
       // Approve target successfully
@@ -226,14 +227,14 @@ test.describe('Security & Authorization - Role-Based Access Control', () => {
     });
 
     // Try to access admin pages directly via URL
-    await page.goto('/smartops/admin/users');
+    await page.goto('/admin/users');
 
     // Verify access denied
     // await expect(page.locator('[data-testid="permission-denied-message"]')).toBeVisible();
     // await expect(page.locator('[data-testid="permission-denied-message"]')).toContainText('unauthorized access');
 
     // Try to access audit log
-    await page.goto('/smartops/audit-log');
+    await page.goto('/logs');
     // await expect(page.locator('[data-testid="permission-denied-message"]')).toBeVisible();
 
     // Verify no admin actions can be performed
@@ -303,7 +304,7 @@ test.describe('Security & Authorization - Role-Based Access Control', () => {
     // Force reload via localStorage update if needed, but goto should suffice if it triggers a re-fetch of user
     // However, we rely on the route override.
 
-    await page.goto('/smartops/audit-log');
+    await page.goto('/logs');
 
     // Mock audit log for this test step:
     await page.route('**/api/audit/logs*', async route => {

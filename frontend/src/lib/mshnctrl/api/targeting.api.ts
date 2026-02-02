@@ -5,6 +5,14 @@
 import { api } from '@/lib/api';
 import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import type { TargetEntity } from '@/lib/mshnctrl/types';
+import type {
+    JtbSession,
+    JtbTarget,
+    CreateJtbSessionRequest,
+    AddTargetToSessionRequest,
+    RecordJtbDecisionRequest,
+    DtlEntry
+} from './targeting';
 
 // ============================================================================
 // CORE ONTOLOGY & TYPES
@@ -215,6 +223,61 @@ export const targetingApi = {
                 if (!mockTarget) throw new Error('Target not found in mock');
                 return mockTarget as TargetEntity;
             });
+    },
+
+    async createTarget(data: Partial<TargetEntity>): Promise<TargetEntity> {
+        return api.post<TargetEntity>('/targeting/targets', data);
+    },
+
+    async updateTarget(id: string, data: Partial<TargetEntity>): Promise<TargetEntity> {
+        return api.patch<TargetEntity>(`/targeting/targets/${id}`, data);
+    },
+
+    async getTargetTimeline(id: string): Promise<any[]> {
+        return api.get<any[]>(`/targeting/targets/${id}/timeline`).catch(() => []);
+    },
+
+    // JTB (Joint Targeting Board)
+    async getJtbSessions(params?: { status?: string; limit?: number }): Promise<JtbSession[]> {
+        const query: Record<string, string> = {};
+        if (params?.status) query.status = params.status;
+        if (params?.limit) query.limit = params.limit.toString();
+        return api.get<JtbSession[]>('/targeting/jtb/sessions', query);
+    },
+
+    async getJtbSession(id: string): Promise<JtbSession> {
+        return api.get<JtbSession>(`/targeting/jtb/sessions/${id}`);
+    },
+
+    async createJtbSession(data: CreateJtbSessionRequest): Promise<JtbSession> {
+        return api.post<JtbSession>('/targeting/jtb/sessions', data);
+    },
+
+    async getSessionTargets(sessionId: string): Promise<JtbTarget[]> {
+        return api.get<JtbTarget[]>(`/targeting/jtb/sessions/${sessionId}/targets`);
+    },
+
+    async addTargetToSession(sessionId: string, data: AddTargetToSessionRequest): Promise<void> {
+        return api.post(`/targeting/jtb/sessions/${sessionId}/targets`, data);
+    },
+
+    async recordJtbDecision(sessionId: string, targetId: string, data: RecordJtbDecisionRequest): Promise<void> {
+        return api.put(`/targeting/jtb/sessions/${sessionId}/targets/${targetId}/decision`, data);
+    },
+
+    // DTL (Dynamic Target List)
+    async getDtlEntries(params?: { limit?: number }): Promise<DtlEntry[]> {
+        const queryParams: Record<string, string> = {};
+        if (params?.limit) queryParams.limit = params.limit.toString();
+        return api.get<DtlEntry[]>('/targeting/dtl', queryParams);
+    },
+
+    async getActiveTsts(): Promise<DtlEntry[]> {
+        return api.get<DtlEntry[]>('/targeting/dtl/tst');
+    },
+
+    async updateDtlPriority(id: string, priorityScore: number, feasibilityScore: number): Promise<void> {
+        return api.put(`/targeting/dtl/${id}`, { priority_score: priorityScore, feasibility_score: feasibilityScore });
     },
 
     // Intelligence & ISR

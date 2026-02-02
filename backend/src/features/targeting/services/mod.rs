@@ -10,6 +10,8 @@ pub use realtime::RealtimeService;
 
 pub mod jtb_service;
 pub mod dtl_service;
+pub mod bda_service;
+pub mod roe_service;
 
 // ============================================================================
 // F3EAD STAGE TRANSITIONS

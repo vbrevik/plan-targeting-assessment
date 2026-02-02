@@ -19,21 +19,34 @@ export async function loginUser(request: APIRequestContext, identifier = 'im@tes
     const body = await response.json();
     const token = body.access_token;
 
-    // CSRF Handling
-    let csrfToken = '';
-    const cookies = response.headers()['set-cookie'];
-    if (cookies) {
-        const cookieArray = Array.isArray(cookies) ? cookies : [cookies];
-        for (const cookie of cookieArray) {
-            const match = cookie.match(/csrf_token=([^;,\s]+)/);
-            if (match) {
-                csrfToken = match[1];
-                break;
+    // Capture cookies to transfer to browser context
+    const cookies: { name: string, value: string, domain: string, path: string }[] = [];
+    const setCookieHeader = response.headers()['set-cookie'];
+
+    if (setCookieHeader) {
+        const rawCookies = Array.isArray(setCookieHeader) ? setCookieHeader : setCookieHeader.split('\n');
+        rawCookies.forEach(raw => {
+            const parts = raw.split(';');
+            const [name, value] = parts[0].split('=');
+            if (name && value) {
+                cookies.push({
+                    name: name.trim(),
+                    value: value.trim(),
+                    domain: 'localhost',
+                    path: '/'
+                });
             }
-        }
+        });
     }
 
-    return { token, csrfToken };
+    // CSRF Handling
+    let csrfToken = '';
+    const csrfCookie = cookies.find(c => c.name === 'csrf_token');
+    if (csrfCookie) {
+        csrfToken = csrfCookie.value;
+    }
+
+    return { token, csrfToken, cookies };
 }
 
 async function useAuthContext(playwright: any, auth: any, use: any) {
@@ -53,6 +66,11 @@ async function useAuthContext(playwright: any, auth: any, use: any) {
 }
 
 async function useAuthPage(page: Page, auth: any, use: any, role: string) {
+    // CRITICAL: Set cookies in the browser context so fetch/XHR requests are authenticated
+    if (auth.cookies && auth.cookies.length > 0) {
+        await page.context().addCookies(auth.cookies);
+    }
+
     await page.addInitScript((data: { token: string, role: string }) => {
         window.localStorage.setItem('auth_token', data.token);
         window.localStorage.setItem('user_role', data.role);
@@ -85,3 +103,17 @@ export const targetingUserTest = base.extend<AuthFixtures>({
         await useAuthPage(page, auth, use, 'Targeting Officer');
     }
 });
+
+export const superAdminTest = base.extend<AuthFixtures>({
+    authenticatedRequest: async ({ playwright }, use) => {
+        const loginContext = await playwright.request.newContext({ baseURL: 'http://localhost:3000' });
+        const auth = await loginUser(loginContext, 'vidar@brevik.net', 'Password123!');
+        await loginContext.dispose();
+        await useAuthContext(playwright, auth, use);
+    },
+    authenticatedPage: async ({ page, request }, use) => {
+        const auth = await loginUser(request, 'vidar@brevik.net', 'Password123!');
+        await useAuthPage(page, auth, use, 'superadmin');
+    }
+});
+

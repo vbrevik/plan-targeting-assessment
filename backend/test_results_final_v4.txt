@@ -1,0 +1,991 @@
+warning: unused imports: `AssignRoleInput`, `CreateResourceInput`, and `UserRole`
+ --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-abac/src/service.rs:2:37
+  |
+2 | use super::models::{Resource, Role, UserRole, Permission, UserRoleAssignment, AssignRoleInput, CreateResourceInput};
+  |                                     ^^^^^^^^                                  ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `core-abac` (lib) generated 1 warning (run `cargo fix --lib -p core-abac` to apply 1 suggestion)
+warning: unused import: `uuid::Uuid`
+ --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-ontology/src/models.rs:4:5
+  |
+4 | use uuid::Uuid;
+  |     ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `delete` and `patch`
+ --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-ontology/src/routes.rs:5:26
+  |
+5 |     routing::{get, post, patch, delete},
+  |                          ^^^^^  ^^^^^^
+
+warning: `core-ontology` (lib) generated 2 warnings (run `cargo fix --lib -p core-ontology` to apply 2 suggestions)
+warning: unused import: `thiserror::Error`
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/service.rs:19:5
+   |
+19 | use thiserror::Error;
+   |     ^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `axum::response::IntoResponse`
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/service.rs:20:5
+   |
+20 | use axum::response::IntoResponse;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `axum::http::StatusCode`
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/service.rs:21:5
+   |
+21 | use axum::http::StatusCode;
+   |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `tokio_stream::StreamExt`
+ --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-auth/src/handlers/notification.rs:4:5
+  |
+4 | use tokio_stream::StreamExt as _;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `core-auth` (lib) generated 4 warnings (run `cargo fix --lib -p core-auth` to apply 3 suggestions)
+warning: unused import: `uuid::Uuid`
+ --> /Users/vidarbrevik/projects/plan-target-assessment/modules/admn-ctrl/crates/admn-rate-limit/src/service.rs:6:5
+  |
+6 | use uuid::Uuid;
+  |     ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/admn-ctrl/crates/admn-rate-limit/src/middleware.rs:19:5
+   |
+19 |     mut request: Request,
+   |     ----^^^^^^^
+   |     |
+   |     help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `admn-rate-limit` (lib) generated 2 warnings (run `cargo fix --lib -p admn-rate-limit` to apply 2 suggestions)
+warning: unused import: `uuid::Uuid`
+ --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-rate-limit/src/service.rs:6:5
+  |
+6 | use uuid::Uuid;
+  |     ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+  --> /Users/vidarbrevik/projects/plan-target-assessment/modules/bcknd-ctrl/crates/core-rate-limit/src/middleware.rs:19:5
+   |
+19 |     mut request: Request,
+   |     ----^^^^^^^
+   |     |
+   |     help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `core-rate-limit` (lib) generated 2 warnings (run `cargo fix --lib -p core-rate-limit` to apply 2 suggestions)
+warning: unused import: `std::sync::Arc`
+ --> src/features/targeting/handlers/targets.rs:7:5
+  |
+7 | use std::sync::Arc;
+  |     ^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `core_ontology::OntologyService`
+  --> src/features/targeting/handlers/targets.rs:11:5
+   |
+11 | use core_ontology::OntologyService;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `serde::Deserialize`
+ --> src/features/targeting/handlers/jtb.rs:6:5
+  |
+6 | use serde::Deserialize;
+  |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `Pool` and `Sqlite`
+ --> src/features/targeting/handlers/jtb.rs:8:12
+  |
+8 | use sqlx::{Pool, Sqlite};
+  |            ^^^^  ^^^^^^
+
+warning: unused imports: `Pool` and `Sqlite`
+ --> src/features/targeting/handlers/dtl.rs:8:12
+  |
+8 | use sqlx::{Pool, Sqlite};
+  |            ^^^^  ^^^^^^
+
+warning: unused imports: `Pool` and `Sqlite`
+ --> src/features/targeting/handlers/isr.rs:7:12
+  |
+7 | use sqlx::{Pool, Sqlite};
+  |            ^^^^  ^^^^^^
+
+warning: unused imports: `Pool` and `Sqlite`
+ --> src/features/targeting/handlers/intelligence.rs:7:12
+  |
+7 | use sqlx::{Pool, Sqlite};
+  |            ^^^^  ^^^^^^
+
+warning: unused imports: `Pool` and `Sqlite`
+ --> src/features/targeting/handlers/assets.rs:7:12
+  |
+7 | use sqlx::{Pool, Sqlite, Row}; // Added Row import
+  |            ^^^^  ^^^^^^
+
+warning: unused imports: `Pool` and `Sqlite`
+ --> src/features/targeting/handlers/risk.rs:7:12
+  |
+7 | use sqlx::{Pool, Sqlite};
+  |            ^^^^  ^^^^^^
+
+warning: unused imports: `Pool` and `Sqlite`
+ --> src/features/targeting/handlers/analysis.rs:7:12
+  |
+7 | use sqlx::{Pool, Sqlite};
+  |            ^^^^  ^^^^^^
+
+warning: unused imports: `Pool` and `Sqlite`
+ --> src/features/targeting/handlers/collaboration.rs:7:12
+  |
+7 | use sqlx::{Pool, Sqlite};
+  |            ^^^^  ^^^^^^
+
+warning: unused imports: `Pool` and `Sqlite`
+  --> src/features/targeting/handlers/action_required.rs:11:12
+   |
+11 | use sqlx::{Pool, Sqlite, Row};
+   |            ^^^^  ^^^^^^
+
+warning: unused imports: `Pool` and `Sqlite`
+  --> src/features/targeting/handlers/historical.rs:12:12
+   |
+12 | use sqlx::{Pool, Sqlite, Row};
+   |            ^^^^  ^^^^^^
+
+warning: unused import: `std::sync::Arc`
+  --> src/features/bda/handlers/reports.rs:11:5
+   |
+11 | use std::sync::Arc;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `DateTime`
+ --> src/features/roe/domain/routing.rs:5:14
+  |
+5 | use chrono::{DateTime, Utc};
+  |              ^^^^^^^^
+
+warning: unused import: `std::sync::Arc`
+ --> src/features/strategy/service.rs:1:5
+  |
+1 | use std::sync::Arc;
+  |     ^^^^^^^^^^^^^^
+
+warning: unused import: `std::env`
+ --> src/config/mod.rs:1:5
+  |
+1 | use std::env;
+  |     ^^^^^^^^
+
+warning: unused imports: `FromRequestParts`, `async_trait`, and `request::Parts`
+ --> src/middleware/abac.rs:2:5
+  |
+2 |     async_trait,
+  |     ^^^^^^^^^^^
+3 |     extract::{FromRequestParts, State},
+  |               ^^^^^^^^^^^^^^^^
+4 |     http::{request::Parts, StatusCode},
+  |            ^^^^^^^^^^^^^^
+
+warning: unused imports: `IntoResponse` and `body::Body`
+ --> src/middleware/classification.rs:2:5
+  |
+2 |     body::Body,
+  |     ^^^^^^^^^^
+...
+6 |     response::{IntoResponse, Response},
+  |                ^^^^^^^^^^^^
+
+warning: unused variable: `name`
+   --> src/features/targeting/handlers/targets.rs:163:17
+    |
+163 |     if let Some(name) = &req.name {
+    |                 ^^^^ help: if this is intentional, prefix it with an underscore: `_name`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+  --> src/middleware/auth.rs:68:5
+   |
+68 |     mut req: axum::extract::Request,
+   |     ----^^^
+   |     |
+   |     help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: use of deprecated associated function `chrono::DateTime::<Tz>::from_utc`: Use TimeZone::from_utc_datetime() or DateTime::from_naive_utc_and_offset instead
+   --> src/features/targeting/services/mod.rs:143:44
+    |
+143 |             let created = DateTime::<Utc>::from_utc(naive_dt, Utc);
+    |                                            ^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: unused variable: `params`
+  --> src/features/targeting/handlers/targets.rs:17:27
+   |
+17 | fn query_params_to_filter(params: &TargetQueryParams) -> EntityFilter {
+   |                           ^^^^^^ help: if this is intentional, prefix it with an underscore: `_params`
+
+warning: function `query_params_to_filter` is never used
+  --> src/features/targeting/handlers/targets.rs:17:4
+   |
+17 | fn query_params_to_filter(params: &TargetQueryParams) -> EntityFilter {
+   |    ^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `template-repo-backend` (lib) generated 24 warnings (run `cargo fix --lib -p template-repo-backend` to apply 20 suggestions)
+warning: unused import: `routes::dashboard_routes`
+ --> src/features/dashboard/mod.rs:3:9
+  |
+3 | pub use routes::dashboard_routes;
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `common::*`
+ --> src/features/targeting/handlers/mod.rs:5:9
+  |
+5 | pub use common::*;
+  |         ^^^^^^^^^
+
+warning: unused import: `std::sync::Arc`
+ --> src/features/targeting/handlers/targets.rs:7:5
+  |
+7 | use std::sync::Arc;
+  |     ^^^^^^^^^^^^^^
+
+warning: unused import: `realtime::RealtimeService`
+ --> src/features/targeting/services/mod.rs:7:9
+  |
+7 | pub use realtime::RealtimeService;
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `domain::*`
+  --> src/features/targeting/mod.rs:11:9
+   |
+11 | pub use domain::*;
+   |         ^^^^^^^^^
+
+warning: unused imports: `auto_determine_roe_on_decision_creation`, `create_decision_info`, and `preview_roe_status`
+  --> src/features/roe/services/mod.rs:11:5
+   |
+11 |     auto_determine_roe_on_decision_creation,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+12 |     create_decision_info,
+   |     ^^^^^^^^^^^^^^^^^^^^
+13 |     preview_roe_status,
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ROEBlockingResult`
+  --> src/features/roe/services/mod.rs:15:55
+   |
+15 | pub use roe_blocking_check::{ROEBlockingCheckService, ROEBlockingResult};
+   |                                                       ^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CreateROERequestRequest`, `DecisionROEStatusResponse`, `ROERequestStatus`, `ROERequest`, `ROEStatus`, `UpdateDecisionROEStatusRequest`, and `UpdateROERequestStatusRequest`
+  --> src/features/roe/mod.rs:12:5
+   |
+12 |     ROEStatus,
+   |     ^^^^^^^^^
+13 |     ROERequestStatus,
+   |     ^^^^^^^^^^^^^^^^
+14 |     ROERequest,
+   |     ^^^^^^^^^^
+15 |     CreateROERequestRequest,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+16 |     UpdateROERequestStatusRequest,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+17 |     UpdateDecisionROEStatusRequest,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+18 |     DecisionROEStatusResponse,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `repositories::ROERepository`
+  --> src/features/roe/mod.rs:21:9
+   |
+21 | pub use repositories::ROERepository;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `DecisionInfo` and `ROEDeterminationService`
+  --> src/features/roe/mod.rs:23:20
+   |
+23 | pub use services::{ROEDeterminationService, DecisionInfo};
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: function `send_password_change_email` is never used
+ --> src/utils/email.rs:6:8
+  |
+6 | pub fn send_password_change_email(to: &str) -> Result<(), Box<dyn std::error::Error>> {
+  |        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `Entity` is never constructed
+  --> src/features/operations/domain/mod.rs:33:12
+   |
+33 | pub struct Entity {
+   |            ^^^^^^
+
+warning: method `get_campaign_by_id` is never used
+  --> src/features/operations/repositories/mod.rs:45:18
+   |
+ 9 | impl MshnCtrlRepository {
+   | ----------------------- method in this implementation
+...
+45 |     pub async fn get_campaign_by_id(&self, id: &str) -> Result<Option<Campaign>, sqlx::Error> {
+   |                  ^^^^^^^^^^^^^^^^^^
+
+warning: struct `BdaAssessment` is never constructed
+   --> src/features/targeting/domain/mod.rs:121:12
+    |
+121 | pub struct BdaAssessment {
+    |            ^^^^^^^^^^^^^
+
+warning: struct `CreateBdaRequest` is never constructed
+   --> src/features/targeting/domain/mod.rs:131:12
+    |
+131 | pub struct CreateBdaRequest {
+    |            ^^^^^^^^^^^^^^^^
+
+warning: fields `status`, `priority`, and `offset` are never read
+ --> src/features/targeting/handlers/common.rs:5:9
+  |
+4 | pub struct TargetQueryParams {
+  |            ----------------- fields in this struct
+5 |     pub status: Option<String>,
+  |         ^^^^^^
+6 |     pub priority: Option<String>,
+  |         ^^^^^^^^
+7 |     pub limit: Option<i64>,
+8 |     pub offset: Option<i64>,
+  |         ^^^^^^
+  |
+  = note: `TargetQueryParams` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: function `query_params_to_filter` is never used
+  --> src/features/targeting/handlers/targets.rs:17:4
+   |
+17 | fn query_params_to_filter(params: &TargetQueryParams) -> EntityFilter {
+   |    ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: field `desired_effects` is never read
+   --> src/features/targeting/handlers/assets.rs:110:9
+    |
+108 | pub struct MunitionsPairingRequest {
+    |            ----------------------- field in this struct
+109 |     pub target_id: String,
+110 |     pub desired_effects: Vec<String>,
+    |         ^^^^^^^^^^^^^^^
+    |
+    = note: `MunitionsPairingRequest` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: associated functions `create`, `list_all`, `update`, and `update_f3ead_stage` are never used
+   --> src/features/targeting/repositories/mod.rs:13:18
+    |
+ 12 | impl TargetRepository {
+    | --------------------- associated functions in this implementation
+ 13 |     pub async fn create(
+    |                  ^^^^^^
+...
+ 41 |     pub async fn list_all(
+    |                  ^^^^^^^^
+...
+107 |     pub async fn update(pool: &Pool<Sqlite>, id: &str, name: Option<&str>, priority: Option<&str>, target_status: Option<&str>) -> Result...
+    |                  ^^^^^^
+...
+134 |     pub async fn update_f3ead_stage(pool: &Pool<Sqlite>, id: &str, stage: &str) -> Result<(), SqlxError> {
+    |                  ^^^^^^^^^^^^^^^^^^
+
+warning: associated function `get_pattern_of_life` is never used
+   --> src/features/targeting/repositories/mod.rs:425:18
+    |
+372 | impl IntelRepository {
+    | -------------------- associated function in this implementation
+...
+425 |     pub async fn get_pattern_of_life(pool: &Pool<Sqlite>) -> Result<Vec<IntelligenceReport>, SqlxError> {
+    |                  ^^^^^^^^^^^^^^^^^^^
+
+warning: struct `BdaRepository` is never constructed
+   --> src/features/targeting/repositories/mod.rs:802:12
+    |
+802 | pub struct BdaRepository;
+    |            ^^^^^^^^^^^^^
+
+warning: associated function `get_by_id` is never used
+   --> src/features/targeting/repositories/mod.rs:805:18
+    |
+804 | impl BdaRepository {
+    | ------------------ associated function in this implementation
+805 |     pub async fn get_by_id(pool: &Pool<Sqlite>, id: &str) -> Result<Option<BdaAssessment>, SqlxError> {
+    |                  ^^^^^^^^^
+
+warning: field `realtime_svc` is never read
+  --> src/features/targeting/router.rs:24:9
+   |
+21 | pub struct TargetingState {
+   |            -------------- field in this struct
+...
+24 |     pub realtime_svc: Arc<RealtimeService>,
+   |         ^^^^^^^^^^^^
+   |
+   = note: `TargetingState` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+
+warning: associated functions `calculate_priority_score` and `calculate_feasibility_score` are never used
+   --> src/features/targeting/services/mod.rs:101:12
+    |
+ 91 | impl DtlScoring {
+    | --------------- associated functions in this implementation
+...
+101 |     pub fn calculate_priority_score(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+...
+129 |     pub fn calculate_feasibility_score(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: struct `TstEnforcement` is never constructed
+   --> src/features/targeting/services/mod.rs:164:12
+    |
+164 | pub struct TstEnforcement;
+    |            ^^^^^^^^^^^^^^
+
+warning: associated functions `is_deadline_approaching`, `is_deadline_passed`, `minutes_remaining`, and `get_tst_priority` are never used
+   --> src/features/targeting/services/mod.rs:168:12
+    |
+166 | impl TstEnforcement {
+    | ------------------- associated functions in this implementation
+167 |     /// Check if TST deadline is approaching (within threshold minutes)
+168 |     pub fn is_deadline_approaching(deadline: &str, threshold_minutes: i32) -> bool {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^
+...
+182 |     pub fn is_deadline_passed(deadline: &str) -> bool {
+    |            ^^^^^^^^^^^^^^^^^^
+...
+195 |     pub fn minutes_remaining(deadline: &str) -> Option<i32> {
+    |            ^^^^^^^^^^^^^^^^^
+...
+209 |     pub fn get_tst_priority(minutes_remaining: i32) -> &'static str {
+    |            ^^^^^^^^^^^^^^^^
+
+warning: multiple methods are never used
+   --> src/features/targeting/services/realtime.rs:32:12
+    |
+ 22 | impl RealtimeService {
+    | -------------------- methods in this implementation
+...
+ 32 |     pub fn broadcast(&self, update: TargetingUpdate) -> Result<(), broadcast::error::SendError<TargetingUpdate>> {
+    |            ^^^^^^^^^
+...
+ 37 |     pub fn broadcast_target_status_changed(&self, target_id: &str, old_status: &str, new_status: &str) {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 51 |     pub fn broadcast_bda_created(&self, bda_id: &str, target_id: &str) {
+    |            ^^^^^^^^^^^^^^^^^^^^^
+...
+ 64 |     pub fn broadcast_decision_gate_changed(&self, gate_id: &str, status: &str) {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 77 |     pub fn broadcast_jtb_session_updated(&self, session_id: &str, action: &str) {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 90 |     pub fn broadcast_tst_alert(&self, target_id: &str, urgency: &str) {
+    |            ^^^^^^^^^^^^^^^^^^^
+...
+103 |     pub fn broadcast_new_target_nominated(&self, target_id: &str, name: &str) {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: field `pool` is never read
+  --> src/features/bda/router.rs:18:9
+   |
+17 | pub struct BdaState {
+   |            -------- field in this struct
+18 |     pub pool: Pool<Sqlite>,
+   |         ^^^^
+   |
+   = note: `BdaState` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+
+warning: field `approved_by` is never read
+   --> src/features/roe/domain/roe.rs:135:9
+    |
+133 | pub struct UpdateROERequestStatusRequest {
+    |            ----------------------------- field in this struct
+134 |     pub status: String,
+135 |     pub approved_by: Option<String>,
+    |         ^^^^^^^^^^^
+    |
+    = note: `UpdateROERequestStatusRequest` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: associated items `new`, `approve`, `reject`, and `withdraw` are never used
+   --> src/features/roe/domain/roe.rs:186:12
+    |
+184 | impl ROERequest {
+    | --------------- associated items in this implementation
+185 |     /// Create a new ROE request
+186 |     pub fn new(
+    |            ^^^
+...
+214 |     pub fn approve(
+    |            ^^^^^^^
+...
+231 |     pub fn reject(&mut self, approved_by: String, rejection_reason: String) {
+    |            ^^^^^^
+...
+240 |     pub fn withdraw(&mut self) {
+    |            ^^^^^^^^
+
+warning: field `id` is never read
+  --> src/features/roe/services/roe_determination.rs:10:9
+   |
+ 9 | pub struct DecisionInfo {
+   |            ------------ field in this struct
+10 |     pub id: String,
+   |         ^^
+   |
+   = note: `DecisionInfo` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: function `auto_determine_roe_on_decision_creation` is never used
+  --> src/features/roe/services/decision_integration.rs:14:14
+   |
+14 | pub async fn auto_determine_roe_on_decision_creation(
+   |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `create_decision_info` is never used
+  --> src/features/roe/services/decision_integration.rs:24:8
+   |
+24 | pub fn create_decision_info(
+   |        ^^^^^^^^^^^^^^^^^^^^
+
+warning: function `preview_roe_status` is never used
+  --> src/features/roe/services/decision_integration.rs:40:8
+   |
+40 | pub fn preview_roe_status(decision: &DecisionInfo) -> (ROEStatus, Option<String>) {
+   |        ^^^^^^^^^^^^^^^^^^
+
+warning: associated functions `can_route_to_meeting` and `get_routing_block_reason` are never used
+   --> src/features/roe/services/roe_blocking_check.rs:151:12
+    |
+ 70 | impl ROEBlockingCheckService {
+    | ---------------------------- associated functions in this implementation
+...
+151 |     pub fn can_route_to_meeting(roe_status: Option<&str>) -> bool {
+    |            ^^^^^^^^^^^^^^^^^^^^
+...
+157 |     pub fn get_routing_block_reason(roe_status: Option<&str>) -> Option<String> {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: struct `IntelQuery` is never constructed
+  --> src/features/intelligence/handlers/mod.rs:16:12
+   |
+16 | pub struct IntelQuery {
+   |            ^^^^^^^^^^
+
+warning: struct `RequirePermission` is never constructed
+  --> src/middleware/abac.rs:20:12
+   |
+20 | pub struct RequirePermission {
+   |            ^^^^^^^^^^^^^^^^^
+
+warning: function `set_csrf_cookie` is never used
+  --> src/middleware/csrf.rs:16:8
+   |
+16 | pub fn set_csrf_cookie(cookies: &Cookies) {
+   |        ^^^^^^^^^^^^^^^
+
+warning: enum `ClassificationLevel` is never used
+  --> src/middleware/classification.rs:13:10
+   |
+13 | pub enum ClassificationLevel {
+   |          ^^^^^^^^^^^^^^^^^^^
+
+warning: associated function `from_string` is never used
+  --> src/middleware/classification.rs:22:12
+   |
+21 | impl ClassificationLevel {
+   | ------------------------ associated function in this implementation
+22 |     pub fn from_string(s: &str) -> Self {
+   |            ^^^^^^^^^^^
+
+warning: struct `UserClearance` is never constructed
+  --> src/middleware/classification.rs:36:12
+   |
+36 | pub struct UserClearance {
+   |            ^^^^^^^^^^^^^
+
+warning: methods `has_clearance` and `has_compartment` are never used
+  --> src/middleware/classification.rs:45:12
+   |
+43 | impl UserClearance {
+   | ------------------ methods in this implementation
+44 |     /// Check if user has sufficient clearance for required level
+45 |     pub fn has_clearance(&self, required_level: &ClassificationLevel) -> bool {
+   |            ^^^^^^^^^^^^^
+...
+53 |     pub fn has_compartment(&self, compartment: &str) -> bool {
+   |            ^^^^^^^^^^^^^^^
+
+warning: function `get_user_clearance` is never used
+  --> src/middleware/classification.rs:59:14
+   |
+59 | pub async fn get_user_clearance(
+   |              ^^^^^^^^^^^^^^^^^^
+
+warning: function `log_classified_access` is never used
+   --> src/middleware/classification.rs:105:14
+    |
+105 | pub async fn log_classified_access(
+    |              ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `classification_middleware` is never used
+   --> src/middleware/classification.rs:148:14
+    |
+148 | pub async fn classification_middleware(
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `check_clearance_for_data` is never used
+   --> src/middleware/classification.rs:194:8
+    |
+194 | pub fn check_clearance_for_data(
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `template-repo-backend` (bin "template-repo-backend") generated 68 warnings (22 duplicates) (run `cargo fix --bin "template-repo-backend"` to apply 10 suggestions)
+warning: unused import: `super::*`
+ --> src/features/targeting/handlers/tests.rs:6:9
+  |
+6 |     use super::*;
+  |         ^^^^^^^^
+
+warning: unused import: `core_common_types::UserRoleClaim`
+ --> src/features/targeting/handlers/tests.rs:8:9
+  |
+8 |     use core_common_types::UserRoleClaim;
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `axum::extract::Extension`
+ --> src/features/targeting/handlers/tests.rs:9:9
+  |
+9 |     use axum::extract::Extension;
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `sqlx::SqlitePool`
+  --> src/features/targeting/handlers/tests.rs:10:9
+   |
+10 |     use sqlx::SqlitePool;
+   |         ^^^^^^^^^^^^^^^^
+
+warning: unused imports: `Query` and `State`
+  --> src/features/targeting/handlers/tests_historical.rs:11:25
+   |
+11 |     use axum::extract::{State, Query};
+   |                         ^^^^^  ^^^^^
+
+warning: fields `compartments` and `caveats` are never read
+  --> src/middleware/classification.rs:39:9
+   |
+36 | pub struct UserClearance {
+   |            ------------- fields in this struct
+...
+39 |     pub compartments: Vec<String>,
+   |         ^^^^^^^^^^^^
+40 |     pub caveats: Vec<String>,
+   |         ^^^^^^^
+   |
+   = note: `UserClearance` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: method `has_compartment` is never used
+  --> src/middleware/classification.rs:53:12
+   |
+43 | impl UserClearance {
+   | ------------------ method in this implementation
+...
+53 |     pub fn has_compartment(&self, compartment: &str) -> bool {
+   |            ^^^^^^^^^^^^^^^
+
+   Compiling template-repo-backend v0.1.1 (/Users/vidarbrevik/projects/plan-target-assessment/backend)
+warning: `template-repo-backend` (lib test) generated 29 warnings (24 duplicates) (run `cargo fix --lib -p template-repo-backend --tests` to apply 5 suggestions)
+warning: `template-repo-backend` (bin "template-repo-backend" test) generated 69 warnings (67 duplicates)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.85s
+     Running unittests src/lib.rs (target/debug/deps/template_repo_backend-499e4214669dc0a2)
+
+running 62 tests
+test features::roe::domain::roe::tests::test_roe_request_status_display ... ok
+test features::roe::domain::roe::tests::test_roe_request_approve_without_optional_fields ... ok
+test features::roe::domain::roe::tests::test_roe_request_new ... ok
+test features::roe::domain::roe::tests::test_roe_request_status_try_from_invalid ... ok
+test features::roe::domain::roe::tests::test_roe_request_status_transitions ... ok
+test features::roe::domain::roe::tests::test_roe_request_status_try_from_valid ... ok
+test features::roe::domain::roe::tests::test_roe_status_can_proceed ... ok
+test features::roe::domain::roe::tests::test_roe_status_display ... ok
+test features::roe::domain::roe::tests::test_roe_status_is_blocked ... ok
+test features::roe::domain::roe::tests::test_roe_status_is_pending ... ok
+test features::roe::domain::roe::tests::test_roe_status_try_from_invalid ... ok
+test features::roe::domain::roe::tests::test_roe_status_try_from_valid ... ok
+test features::roe::domain::routing::tests::test_routing_plan_can_proceed ... ok
+test features::roe::domain::routing::tests::test_routing_plan_can_proceed_minimal ... ok
+test features::roe::domain::routing::tests::test_routing_plan_roe_blocked ... ok
+test features::roe::domain::routing::tests::test_routing_plan_roe_pending ... ok
+test features::roe::services::decision_routing::tests::test_calculate_hours_to_deadline ... ok
+test features::roe::services::decision_routing::tests::test_calculate_hours_to_deadline_invalid ... ok
+test features::roe::services::decision_routing::tests::test_calculate_hours_to_deadline_past ... ok
+test features::roe::services::decision_routing::tests::test_get_next_brief_time ... ok
+test features::roe::services::decision_routing::tests::test_get_next_cab_time ... ok
+test features::roe::services::decision_routing::tests::test_get_next_drb_time ... ok
+test features::roe::services::decision_routing::tests::test_routing_plan_creation ... ok
+test features::roe::services::roe_blocking_check::tests::test_blocked_requires_roe_release ... ok
+test features::roe::services::roe_blocking_check::tests::test_blocked_roe_rejected ... ok
+test features::roe::services::roe_blocking_check::tests::test_blocking_result_blocked ... ok
+test features::roe::services::roe_blocking_check::tests::test_blocking_result_can_proceed ... ok
+test features::roe::services::roe_blocking_check::tests::test_blocking_result_pending ... ok
+test features::roe::services::roe_blocking_check::tests::test_can_proceed_roe_approved ... ok
+test features::roe::services::roe_blocking_check::tests::test_can_proceed_within_approved_roe ... ok
+test features::roe::services::roe_blocking_check::tests::test_can_route_to_meeting ... ok
+test features::roe::services::roe_blocking_check::tests::test_empty_roe_status ... ok
+test features::roe::services::roe_blocking_check::tests::test_get_routing_block_reason ... ok
+test features::roe::services::roe_blocking_check::tests::test_invalid_roe_status_handling ... ok
+test features::roe::services::roe_blocking_check::tests::test_no_roe_status_assumes_can_proceed ... ok
+test features::roe::services::roe_blocking_check::tests::test_pending_roe_approval ... ok
+test features::roe::services::roe_determination::tests::test_cross_border_requires_roe ... ok
+test features::roe::services::roe_determination::tests::test_dual_use_infrastructure_requires_roe ... ok
+test features::roe::services::roe_determination::tests::test_restricted_weapons_requires_roe ... ok
+test features::roe::services::roe_determination::tests::test_standard_maneuver_within_roe ... ok
+test features::roe::services::roe_determination::tests::test_strike_near_civilians_requires_roe ... ok
+test features::roe::services::roe_determination::tests::test_strike_without_restrictions_within_roe ... ok
+test features::targeting::handlers::tests::tests::test_create_annotation_extracts_user_id ... ok
+test features::targeting::handlers::tests::tests::test_create_decision_extracts_user_id ... ok
+test features::targeting::handlers::tests::tests::test_create_intel_report_extracts_user_id ... ok
+test features::targeting::handlers::tests::tests::test_create_jtb_session_extracts_user_id ... ok
+test features::targeting::handlers::tests::tests::test_create_risk_assessment_extracts_user_id ... ok
+test features::targeting::handlers::tests::tests::test_generate_handover_extracts_user_id ... ok
+test features::targeting::handlers::tests::tests::test_update_mission_intent_extracts_user_id ... ok
+test middleware::classification::tests::test_classification_hierarchy ... ok
+test middleware::classification::tests::test_user_clearance_check ... ok
+test middleware::classification::tests::test_inactive_clearance ... ok
+test features::targeting::handlers::tests_realtime::tests::test_realtime_service_multiple_subscribers ... ok
+test features::targeting::handlers::tests_realtime::tests::test_realtime_service_helper_methods ... ok
+test features::targeting::handlers::tests_realtime::tests::test_realtime_service_broadcast ... ok
+test features::targeting::handlers::tests_historical::tests::test_historical_bda_query ... ok
+test features::targeting::handlers::tests_historical::tests::test_historical_f3ead_query ... ok
+test features::targeting::handlers::tests_historical::tests::test_historical_status_query ... ok
+test features::roe::domain::roe::tests::test_roe_request_approve ... ok
+test features::roe::domain::roe::tests::test_roe_request_reject ... ok
+test features::roe::domain::roe::tests::test_roe_request_withdraw ... ok
+test features::roe::domain::routing::tests::test_routing_plan_routed_at_timestamp ... ok
+
+test result: ok. 62 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests scripts/clean_im_roles.rs (target/debug/deps/clean_im_roles-eee069a0ca6709ba)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests scripts/create_test_user.rs (target/debug/deps/create_test_user-dfbc3b5446fdef9a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests scripts/reset_im_password.rs (target/debug/deps/reset_im_password-b60cbc50ea0825bc)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests scripts/reset_user_password.rs (target/debug/deps/reset_user_password-330c6ad7174dd2d2)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests scripts/setup_assistant_im.rs (target/debug/deps/setup_assistant_im-d93d1a0e68343276)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests scripts/setup_verification_users.rs (target/debug/deps/setup_verification_users-9a0395ba71ea1330)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/template_repo_backend-442ad2fdb6e29c5d)
+
+running 62 tests
+test features::roe::domain::roe::tests::test_roe_request_approve_without_optional_fields ... ok
+test features::roe::domain::roe::tests::test_roe_request_new ... ok
+test features::roe::domain::roe::tests::test_roe_request_status_display ... ok
+test features::roe::domain::roe::tests::test_roe_request_status_try_from_invalid ... ok
+test features::roe::domain::roe::tests::test_roe_request_status_try_from_valid ... ok
+test features::roe::domain::roe::tests::test_roe_request_status_transitions ... ok
+test features::roe::domain::roe::tests::test_roe_status_can_proceed ... ok
+test features::roe::domain::roe::tests::test_roe_status_display ... ok
+test features::roe::domain::roe::tests::test_roe_status_is_blocked ... ok
+test features::roe::domain::roe::tests::test_roe_status_is_pending ... ok
+test features::roe::domain::roe::tests::test_roe_status_try_from_invalid ... ok
+test features::roe::domain::roe::tests::test_roe_status_try_from_valid ... ok
+test features::roe::domain::routing::tests::test_routing_plan_can_proceed ... ok
+test features::roe::domain::routing::tests::test_routing_plan_can_proceed_minimal ... ok
+test features::roe::domain::routing::tests::test_routing_plan_roe_blocked ... ok
+test features::roe::domain::routing::tests::test_routing_plan_roe_pending ... ok
+test features::roe::services::decision_routing::tests::test_calculate_hours_to_deadline_invalid ... ok
+test features::roe::services::decision_routing::tests::test_calculate_hours_to_deadline ... ok
+test features::roe::services::decision_routing::tests::test_calculate_hours_to_deadline_past ... ok
+test features::roe::services::decision_routing::tests::test_get_next_brief_time ... ok
+test features::roe::services::decision_routing::tests::test_get_next_cab_time ... ok
+test features::roe::services::decision_routing::tests::test_get_next_drb_time ... ok
+test features::roe::services::decision_routing::tests::test_routing_plan_creation ... ok
+test features::roe::services::roe_blocking_check::tests::test_blocked_requires_roe_release ... ok
+test features::roe::services::roe_blocking_check::tests::test_blocked_roe_rejected ... ok
+test features::roe::services::roe_blocking_check::tests::test_blocking_result_blocked ... ok
+test features::roe::services::roe_blocking_check::tests::test_blocking_result_can_proceed ... ok
+test features::roe::services::roe_blocking_check::tests::test_blocking_result_pending ... ok
+test features::roe::services::roe_blocking_check::tests::test_can_proceed_roe_approved ... ok
+test features::roe::services::roe_blocking_check::tests::test_can_proceed_within_approved_roe ... ok
+test features::roe::services::roe_blocking_check::tests::test_can_route_to_meeting ... ok
+test features::roe::services::roe_blocking_check::tests::test_empty_roe_status ... ok
+test features::roe::services::roe_blocking_check::tests::test_get_routing_block_reason ... ok
+test features::roe::services::roe_blocking_check::tests::test_invalid_roe_status_handling ... ok
+test features::roe::services::roe_blocking_check::tests::test_no_roe_status_assumes_can_proceed ... ok
+test features::roe::services::roe_blocking_check::tests::test_pending_roe_approval ... ok
+test features::roe::services::roe_determination::tests::test_cross_border_requires_roe ... ok
+test features::roe::services::roe_determination::tests::test_dual_use_infrastructure_requires_roe ... ok
+test features::roe::services::roe_determination::tests::test_restricted_weapons_requires_roe ... ok
+test features::roe::services::roe_determination::tests::test_standard_maneuver_within_roe ... ok
+test features::roe::services::roe_determination::tests::test_strike_near_civilians_requires_roe ... ok
+test features::roe::services::roe_determination::tests::test_strike_without_restrictions_within_roe ... ok
+test features::targeting::handlers::tests::tests::test_create_annotation_extracts_user_id ... ok
+test features::targeting::handlers::tests::tests::test_create_decision_extracts_user_id ... ok
+test features::targeting::handlers::tests::tests::test_create_intel_report_extracts_user_id ... ok
+test features::targeting::handlers::tests::tests::test_create_jtb_session_extracts_user_id ... ok
+test features::targeting::handlers::tests::tests::test_create_risk_assessment_extracts_user_id ... ok
+test features::targeting::handlers::tests::tests::test_generate_handover_extracts_user_id ... ok
+test features::targeting::handlers::tests::tests::test_update_mission_intent_extracts_user_id ... ok
+test middleware::classification::tests::test_classification_hierarchy ... ok
+test middleware::classification::tests::test_inactive_clearance ... ok
+test features::targeting::handlers::tests_realtime::tests::test_realtime_service_broadcast ... ok
+test features::targeting::handlers::tests_realtime::tests::test_realtime_service_multiple_subscribers ... ok
+test features::targeting::handlers::tests_realtime::tests::test_realtime_service_helper_methods ... ok
+test middleware::classification::tests::test_user_clearance_check ... ok
+test features::targeting::handlers::tests_historical::tests::test_historical_bda_query ... ok
+test features::targeting::handlers::tests_historical::tests::test_historical_f3ead_query ... ok
+test features::targeting::handlers::tests_historical::tests::test_historical_status_query ... ok
+test features::roe::domain::routing::tests::test_routing_plan_routed_at_timestamp ... ok
+test features::roe::domain::roe::tests::test_roe_request_approve ... ok
+test features::roe::domain::roe::tests::test_roe_request_withdraw ... ok
+test features::roe::domain::roe::tests::test_roe_request_reject ... ok
+
+test result: ok. 62 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/roe_api_tests.rs (target/debug/deps/roe_api_tests-cad484589b3d75a0)
+
+running 12 tests
+test test_decision_routing_can_proceed ... ok
+test test_get_decision_roe_status ... ok
+test test_roe_blocking_check ... ok
+test test_auto_determine_roe_status ... ok
+test test_decision_routing_with_roe_blocking ... ok
+test test_update_decision_roe_status ... ok
+test test_create_roe_request ... ok
+test test_get_roe_request_by_decision ... ok
+test test_update_roe_request_status_approve ... ok
+test test_update_roe_request_status_reject ... ok
+test test_complete_roe_workflow ... ok
+test test_list_roe_requests_by_status ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/targeting_handlers_test.rs (target/debug/deps/targeting_handlers_test-ab5c3bf1cf831faa)
+
+running 3 tests
+test test_dtl_scoring_calculation ... ok
+test test_f3ead_transition_validation ... ok
+test test_tst_enforcement ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/targeting_repositories_test.rs (target/debug/deps/targeting_repositories_test-f1d64fafc8998174)
+
+running 12 tests
+test test_target_repository_crud ... ok
+test test_target_repository_filtering ... ok
+test test_dtl_repository_crud ... ok
+test test_strike_platform_repository_crud ... ok
+test test_repository_transaction_commit ... ok
+test test_dtl_repository_ordering ... ok
+test test_target_repository_pagination ... ok
+test test_assumption_challenge_repository_filtering ... ok
+test test_repository_transaction_rollback ... ok
+test test_target_repository_summary ... ok
+test test_annotation_repository_crud ... ok
+test test_isr_repository_crud ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.32s
+
+     Running tests/targeting_services_test.rs (target/debug/deps/targeting_services_test-3b4a1d3f0f622c46)
+
+running 13 tests
+test test_dtl_scoring_combined_score ... ok
+test test_dtl_scoring_feasibility_score ... ok
+test test_dtl_scoring_priority_score ... ok
+test test_f3ead_stage_can_transition_to ... ok
+test test_f3ead_stage_from_str ... ok
+test test_f3ead_stage_next ... ok
+test test_dtl_scoring_aging_hours ... ok
+test test_tst_enforcement_deadline_approaching ... ok
+test test_tst_enforcement_deadline_passed ... ok
+test test_tst_enforcement_minutes_remaining ... ok
+test test_tst_enforcement_priority ... ok
+test test_validate_f3ead_transition_invalid ... ok
+test test_validate_f3ead_transition_valid ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/targeting_target_crud_test.rs (target/debug/deps/targeting_target_crud_test-ba20e1bc3e2815f8)
+
+running 8 tests
+test test_target_repository_update_nonexistent ... ok
+test test_target_repository_create ... ok
+test test_target_repository_update_all_fields ... ok
+test test_target_repository_create_without_description ... ok
+test test_target_repository_create_different_types ... ok
+test test_target_repository_create_different_priorities ... ok
+test test_target_repository_update ... ok
+test test_target_status_workflow ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/targeting_target_handlers_test.rs (target/debug/deps/targeting_target_handlers_test-d63300507a15dc82)
+
+running 6 tests
+test test_create_target_handler_validation_logic ... ok
+test test_get_target_handler_not_found_logic ... ok
+test test_update_target_handler_not_found_logic ... ok
+test test_get_target_handler_logic ... ok
+test test_update_target_handler_logic ... ok
+test test_create_target_handler_logic ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests template_repo_backend
+
+running 1 test
+test src/middleware/abac.rs - middleware::abac::RequirePermission (line 14) ... ignored
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

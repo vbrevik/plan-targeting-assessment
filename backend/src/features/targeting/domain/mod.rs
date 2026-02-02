@@ -120,30 +120,21 @@ pub struct CreateDtlEntryRequest {
 // BDA (Use existing bda_reports table)
 // ============================================================================
 
-#[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
-#[serde(rename_all = "camelCase")]
-pub struct BdaAssessment {
-    pub id: String,
-    pub target_id: String,
-    pub physical_damage: String,
-    pub functional_damage: String,
-    pub recommendation: String,
-    pub confidence: f64,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct CreateBdaRequest {
-    pub target_id: String,
-    pub physical_damage: String,
-    pub functional_damage: String,
-    pub recommendation: String,
-    pub confidence: f64,
-}
+// Legacy BDA structs removed in favor of domain/bda.rs
 
 // ============================================================================
-// ISR PLATFORMS
+// BDA (Use existing bda_reports table)
 // ============================================================================
+
+pub mod bda;
+pub mod roe;
+pub use bda::*;
+
+// The existing BDA types in this file (lines 120-143) should be removed 
+// or replaced by the imported module types.
+// For now, I will comment them out to avoid conflicts if I can't delete easily,
+// but actually I should probably just replace the whole block or add the mod near top.
+// Let's add the mod at the top of the file instead for safety.
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Clone)]
 #[serde(rename_all = "camelCase")]

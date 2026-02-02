@@ -18,6 +18,7 @@ import type {
     ProductReport,
     RequestForInformation,
     WeatherReport,
+    StrikeAnalysis,
     WeatherImpact,
     BattleRhythmEvent,
     GovernanceSession,
@@ -248,6 +249,20 @@ export const MshnCtrlService = {
                 submittedAt: new Date().toISOString()
             });
             resolve();
+        }, LATENCY));
+    },
+
+    getStrikeAnalysis: async (targetId: string): Promise<StrikeAnalysis | undefined> => {
+        return new Promise(resolve => setTimeout(() => {
+            resolve({
+                targetId,
+                selectionScore: 88,
+                tacticalGain: 92,
+                strategicGain: 78,
+                economicImpact: -15,
+                legalCompliance: 'Clear',
+                reasoning: 'Primary C2 node neutralization enables immediate sector dominance.'
+            });
         }, LATENCY));
     },
 
