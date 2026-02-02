@@ -370,7 +370,7 @@ export function IntelligenceIntegrationPanel() {
                 </div>
                 <div className="text-xs text-slate-300">
                   <span className="font-bold">Assumption Challenge:</span> Intel assumes C2 node is stationary.
-                  Red team identifies pattern suggesting mobile backup node exists.
+                  <div className="mt-1"><span className="font-bold text-red-400/80">Adversary COA:</span> Red team identifies pattern suggesting mobile backup node exists.</div>
                 </div>
                 <div className="mt-2 text-xs">
                   <span className="text-slate-500">Impact:</span>

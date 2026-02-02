@@ -129,12 +129,12 @@ test.describe('NATO COPD Targeting Cell Dashboard', () => {
 
   test('should display BDA assessments with effectiveness percentages', async ({ authenticatedPage: page }) => {
     // Navigate to BDA Workbench
-    await page.goto('/mshnctrl/bda-workbench');
+    await page.goto('/mshnctrl/bda');
 
     await expect(page.getByText(/BDA Workbench/i)).toBeVisible();
 
     // BDA status badges may not be visible if no BDA data, checking for headers
-    await expect(page.getByRole('button', { name: /Start New BDA/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /New Assessment/i })).toBeVisible();
   });
 
   test('should switch to Engagement Mode', async ({ authenticatedPage: page }) => {
@@ -187,7 +187,7 @@ test.describe('NATO COPD Targeting Cell Dashboard', () => {
 
   test('should display Red Team perspectives', async ({ authenticatedPage: page }) => {
     // Navigate to Intelligence Dashboard where Red Team/Devil's Advocate lives
-    await page.goto('/mshnctrl/targeting/intelligence');
+    await page.goto('/mshnctrl/targeting/analysis');
 
     await expect(page.getByText(/Red Team/i)).toBeVisible();
     await expect(page.getByText('Adversary COA')).toBeVisible();
@@ -195,8 +195,8 @@ test.describe('NATO COPD Targeting Cell Dashboard', () => {
 
   test('should display BDA reports with images', async ({ authenticatedPage: page }) => {
     // Navigate to BDA Workbench if not already there
-    if (!page.url().includes('bda-workbench')) {
-      await page.goto('/mshnctrl/bda-workbench');
+    if (!page.url().includes('bda')) {
+      await page.goto('/mshnctrl/bda');
     }
     await expect(page.getByText(/Attached Imagery/i)).toBeVisible();
     await expect(page.getByText('Adversary COA')).toBeVisible();

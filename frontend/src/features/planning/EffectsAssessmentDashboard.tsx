@@ -7,6 +7,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { Target, CheckCircle2, AlertCircle, RefreshCw, Users, Building2 } from 'lucide-react';
 import { SecurityBadge } from '@/components/SecurityBadge';
 import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
+import { BdaApi } from '@/lib/mshnctrl/api/bda';
 
 interface BDAAssessment {
   strikeId: string;
@@ -37,42 +38,42 @@ export function EffectsAssessmentDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [assessments, reattacks] = await Promise.all([
-          targetingApi.getBdaAssessments().catch(() => []),
-          targetingApi.getReattackRecommendations().catch(() => []),
+        const [assessments, stats] = await Promise.all([
+          BdaApi.getQueue().catch(() => []),
+          BdaApi.getStatistics().catch(() => null),
         ]);
 
         // Transform to component format - fetch target names
         const transformed: BDAAssessment[] = await Promise.all(
           assessments.map(async (bda) => {
             try {
-              const target = await targetingApi.getTarget(bda.target_id);
+              const target = await targetingApi.getTarget(bda.properties.target_id);
               return {
                 strikeId: `STR-${bda.id}`,
-                targetId: bda.target_id,
+                targetId: bda.properties.target_id,
                 targetName: target.name,
                 strikeTime: new Date().toISOString(),
                 assessmentTime: new Date().toISOString(),
-                bdaStatus: bda.physical_damage === 'Destroyed' ? 'DESTROYED' : bda.physical_damage === 'Severe' ? 'DAMAGED' : 'INTACT',
-                effectivenessPercentage: Math.round(bda.confidence * 100),
+                bdaStatus: bda.properties.physical_damage === 'D' ? 'DESTROYED' : bda.properties.physical_damage === 'SVD' ? 'DAMAGED' : 'INTACT',
+                effectivenessPercentage: Math.round((bda.confidence || 0) * 100),
                 desiredEffects: [],
                 achievedEffects: [],
                 collateralDamage: { estimated: { civilians: 0, infrastructure: 'None' }, actual: { civilians: 0, infrastructure: 'None' } },
-                reAttackRecommended: bda.recommendation === 'Re-strike' || reattacks.some(r => r.target_id === bda.target_id),
+                reAttackRecommended: bda.properties.recommendation === 're_attack' || (stats?.by_recommendation.re_attack || 0) > 0,
               };
             } catch {
               return {
                 strikeId: `STR-${bda.id}`,
-                targetId: bda.target_id,
-                targetName: `Target ${bda.target_id.substring(0, 8)}`,
+                targetId: bda.properties.target_id,
+                targetName: `Target ${bda.properties.target_id.substring(0, 8)}`,
                 strikeTime: new Date().toISOString(),
                 assessmentTime: new Date().toISOString(),
-                bdaStatus: bda.physical_damage === 'Destroyed' ? 'DESTROYED' : bda.physical_damage === 'Severe' ? 'DAMAGED' : 'INTACT',
-                effectivenessPercentage: Math.round(bda.confidence * 100),
+                bdaStatus: bda.properties.physical_damage === 'D' ? 'DESTROYED' : bda.properties.physical_damage === 'SVD' ? 'DAMAGED' : 'INTACT',
+                effectivenessPercentage: Math.round((bda.confidence || 0) * 100),
                 desiredEffects: [],
                 achievedEffects: [],
                 collateralDamage: { estimated: { civilians: 0, infrastructure: 'None' }, actual: { civilians: 0, infrastructure: 'None' } },
-                reAttackRecommended: bda.recommendation === 'Re-strike',
+                reAttackRecommended: bda.properties.recommendation === 're_attack',
               };
             }
           })
@@ -169,6 +170,17 @@ export function EffectsAssessmentDashboard() {
         <div className="p-3 bg-red-950/30 border border-red-800 rounded-lg">
           <div className="text-xs text-slate-500 uppercase mb-1">Re-Attack Req</div>
           <div className="text-2xl font-black text-red-400">1</div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="p-3 bg-slate-800/30 border border-slate-700 rounded-lg">
+          <div className="text-[10px] text-slate-500 uppercase mb-1">Second Order Effects</div>
+          <div className="text-sm font-bold text-slate-300">Collateral infrastructure disruption confirmed</div>
+        </div>
+        <div className="p-3 bg-slate-800/30 border border-slate-700 rounded-lg">
+          <div className="text-[10px] text-slate-500 uppercase mb-1">Third Order Effects</div>
+          <div className="text-sm font-bold text-slate-300">Economic impact analysis pending</div>
         </div>
       </div>
 

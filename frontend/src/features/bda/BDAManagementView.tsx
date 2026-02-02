@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { BdaApi, type BdaReport, type BdaStatistics } from '@/lib/mshnctrl/api/bda';
+import { BdaApi, type BdaStatistics } from '@/lib/mshnctrl/api/bda';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
+import { type BdaReportEntity } from '@/lib/mshnctrl/types';
 import { cn } from '@/lib/utils';
 import {
     Camera,
@@ -20,7 +21,7 @@ import { BDAIntelligencePanel } from './BDAIntelligencePanel';
 
 export function BDAManagementView() {
     useOperationalContext();
-    const [bdaReports, setBdaReports] = useState<BdaReport[]>([]);
+    const [bdaReports, setBdaReports] = useState<BdaReportEntity[]>([]);
     const [statistics, setStatistics] = useState<BdaStatistics | null>(null);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState<'All' | 'Assess' | 'Re-strike'>('All');
@@ -49,10 +50,10 @@ export function BDAManagementView() {
 
 
     // Filter reports based on status
-    const filteredReports = bdaReports.filter((r: BdaReport) => {
+    const filteredReports = bdaReports.filter((r: BdaReportEntity) => {
         if (filter === 'All') return true;
-        if (filter === 'Assess') return r.status === 'draft' || r.status === 'submitted';
-        if (filter === 'Re-strike') return r.recommendation === 're_attack' || r.recommendation === 're_weaponeer';
+        if (filter === 'Assess') return r.status === 'draft' || r.status === 'submitted' || r.properties.bda_status === 'draft' || r.properties.bda_status === 'submitted';
+        if (filter === 'Re-strike') return r.properties.recommendation === 're_attack' || r.properties.recommendation === 're_weaponeer';
         return true;
     });
 
@@ -80,15 +81,15 @@ export function BDAManagementView() {
                     </Card>
                     <Card className="bg-slate-900/20 border-slate-800 p-4">
                         <span className="text-[10px] font-bold text-amber-500 uppercase block mb-1">Draft</span>
-                        <span className="text-2xl font-black text-amber-500">{statistics?.by_status.draft || bdaReports.filter(r => r.status === 'draft').length}</span>
+                        <span className="text-2xl font-black text-amber-500">{statistics?.by_status.draft || bdaReports.filter(r => r.status === 'draft' || r.properties.bda_status === 'draft').length}</span>
                     </Card>
                     <Card className="bg-slate-900/20 border-slate-800 p-4">
                         <span className="text-[10px] font-bold text-blue-400 uppercase block mb-1">Under Assessment</span>
-                        <span className="text-2xl font-black text-blue-400">{statistics?.by_status.submitted || bdaReports.filter(r => r.status === 'submitted' || r.status === 'reviewed').length}</span>
+                        <span className="text-2xl font-black text-blue-400">{statistics?.by_status.submitted || bdaReports.filter(r => r.status === 'submitted' || r.properties.bda_status === 'submitted' || r.status === 'reviewed' || r.properties.bda_status === 'reviewed').length}</span>
                     </Card>
                     <Card className="bg-slate-900/20 border-slate-800 p-4">
                         <span className="text-[10px] font-bold text-red-500 uppercase block mb-1">Re-strike Pending</span>
-                        <span className="text-2xl font-black text-red-500">{statistics?.by_recommendation.re_attack || bdaReports.filter(r => r.recommendation === 're_attack' || r.recommendation === 're_weaponeer').length}</span>
+                        <span className="text-2xl font-black text-red-500">{statistics?.by_recommendation.re_attack || bdaReports.filter(r => r.properties.recommendation === 're_attack' || r.properties.recommendation === 're_weaponeer').length}</span>
                     </Card>
                 </div>
             </div>
@@ -137,11 +138,12 @@ export function BDAManagementView() {
                 {/* Main Queue Column */}
                 <div className="flex-1 p-6 space-y-4 overflow-y-auto">
                     {filteredReports.length > 0 ? (
-                        filteredReports.map((report: BdaReport) => {
+                        filteredReports.map((report: BdaReportEntity) => {
                             // Map backend status to display status
-                            const displayStatus = report.status === 'draft' ? 'Draft' :
-                                report.status === 'submitted' || report.status === 'reviewed' ? 'Assess' :
-                                    report.recommendation === 're_attack' || report.recommendation === 're_weaponeer' ? 'Re-strike' :
+                            const status = report.status || report.properties.bda_status;
+                            const displayStatus = status === 'draft' ? 'Draft' :
+                                status === 'submitted' || status === 'reviewed' ? 'Assess' :
+                                    report.properties.recommendation === 're_attack' || report.properties.recommendation === 're_weaponeer' ? 'Re-strike' :
                                         'Approved';
 
                             // Map physical damage codes to display names
@@ -157,21 +159,24 @@ export function BDAManagementView() {
                                 <Card
                                     key={report.id}
                                     className="bg-slate-900/40 border-slate-800 hover:border-slate-700 transition-colors group cursor-pointer"
-                                    onClick={() => navigate({ to: `/mshnctrl/bda/${report.id}` })}
+                                    onClick={() => navigate({ to: `/ mshnctrl / bda / ${report.id} ` })}
                                 >
                                     <CardContent className="p-4 flex gap-6 items-center">
-                                        <div className="w-12 h-12 bg-slate-800 rounded flex items-center justify-center border border-slate-700 relative overflow-hidden shrink-0">
-                                            <Camera size={20} className="text-slate-500" />
-                                            <div className="absolute inset-0 bg-blue-500/10" />
+                                        <div className="flex flex-col items-center gap-1 shrink-0">
+                                            <div className="w-12 h-12 bg-slate-800 rounded flex items-center justify-center border border-slate-700 relative overflow-hidden">
+                                                <Camera size={20} className="text-slate-500" />
+                                                <div className="absolute inset-0 bg-blue-500/10" />
+                                            </div>
+                                            <span className="text-[7px] font-black text-slate-600 uppercase">Attached Imagery</span>
                                         </div>
 
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-3 mb-1">
                                                 <span className="text-[10px] font-mono font-black text-red-500 bg-red-500/5 px-1.5 py-0.5 rounded border border-red-500/10">
-                                                    {report.target_id.substring(0, 8)}
+                                                    {report.properties.target_id.substring(0, 8)}
                                                 </span>
                                                 <h3 className="text-sm font-black text-white uppercase tracking-tight truncate">
-                                                    Target {report.target_id.substring(0, 8)}
+                                                    Target {report.properties.target_id.substring(0, 8)}
                                                 </h3>
                                                 <Badge className={cn(
                                                     "text-[8px] uppercase font-black py-0",
@@ -183,11 +188,11 @@ export function BDAManagementView() {
                                                 </Badge>
                                             </div>
                                             <div className="flex items-center gap-4 text-[10px] text-slate-500 font-bold uppercase truncate">
-                                                <span>{report.assessment_type}</span>
+                                                <span>{report.properties.assessment_type}</span>
                                                 <span className="h-3 w-px bg-slate-800" />
                                                 <span className="flex items-center gap-1">
                                                     <Clock size={10} />
-                                                    {new Date(report.assessment_date).toLocaleString()}
+                                                    {new Date(report.properties.assessment_date).toLocaleString()}
                                                 </span>
                                             </div>
                                         </div>
@@ -195,10 +200,10 @@ export function BDAManagementView() {
                                         <div className="flex flex-col items-end gap-2 shrink-0">
                                             <div className="text-right">
                                                 <div className="text-[10px] font-black text-slate-300 uppercase">
-                                                    {physicalDamageNames[report.physical_damage] || report.physical_damage}
+                                                    {physicalDamageNames[report.properties.physical_damage] || report.properties.physical_damage}
                                                 </div>
                                                 <div className="text-[9px] font-bold text-slate-500">
-                                                    CONF: {(report.confidence_level * 100).toFixed(0)}%
+                                                    CONF: {((report.confidence || report.properties.confidence_level || 0) * 100).toFixed(0)}%
                                                 </div>
                                             </div>
                                             <ChevronRight size={16} className="text-slate-700 group-hover:text-blue-500 transition-colors" />
@@ -218,7 +223,7 @@ export function BDAManagementView() {
 
                 {/* Sidebars Column */}
                 <div className="w-80 border-l border-slate-800 p-4 space-y-6 overflow-y-auto bg-slate-950/30 shrink-0">
-                    <BDAIntelligencePanel targetId={filteredReports[0]?.target_id} />
+                    <BDAIntelligencePanel targetId={filteredReports[0]?.properties.target_id} />
                     <BDAWeaponPerformance />
                 </div>
             </div>

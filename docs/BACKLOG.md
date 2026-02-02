@@ -28,9 +28,9 @@
     *   [ ] **Story**: As a Developer, I want a "Feedback Event" service to route notifications between modules. `backend` `api`
 
 *   **Feature: C2 Workflow Backbone**
-    *   [ ] **Story**: As a Staff Officer, I want to save Plans/orders (CONOPS/FRAGOs) to a real database so they persist between sessions. `backend` `db`
-    *   [ ] **Story**: As a Commander, I want valid state transitions (Draft -> Review -> Approved) enforced by the backend. `backend` `workflow`
-    *   [ ] **Story**: As a J5, I want to persist Strategic Guidance and Intent in a structured store. `backend` `db`
+    *   [x] **Story**: As a Staff Officer, I want to save Plans/orders (CONOPS/FRAGOs) to a real database so they persist between sessions. `backend` `db`
+    *   [x] **Story**: As a Commander, I want valid state transitions (Draft -> Review -> Approved) enforced by the backend. `backend` `workflow`
+    *   [x] **Story**: As a J5, I want to persist Strategic Guidance and Intent in a structured store. `backend` `db`
 
 *   **Feature: System Digital Twin**
     *   [x] **Story**: As a PO, I want to visualize the project progress within the Digital Twin module itself. `frontend` `digital-twin`
@@ -72,7 +72,7 @@
 
 ### Interactive Gaps
 - [ ] **Strategic Direction**: 'Propose New Alignment' and 'Manual Sync Override' buttons are visual-only. Need explicit `onClick` handlers or "Future Feature" tooltips.
-- [ ] **Targeting Management**: 'Nominate Target' button is non-functional.
+- [x] **Targeting Management**: 'Nominate Target' button is now functional and integrated with backend APIs.
 - [ ] **Digital Twin**: System modules (Network/Dev/Assets) scale on hover but have no click interaction. Should open a detail view or modal.
 
 ### Codebase Clean-up
