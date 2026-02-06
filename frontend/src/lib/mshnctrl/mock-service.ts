@@ -30,12 +30,22 @@ import type {
     PoliticalStatement,
     NaturalDisaster,
     DisinformationEvent,
-    FakeMedia
+    FakeMedia,
+    AssessmentReport,
+    Brief,
+    SupplyStatus,
+    VehicleAsset,
+    RadioNetwork,
+    ComsecKey,
+    UUID
 } from './types';
 import { store, LATENCY } from './services/store';
 
 // Mock service layer
 import { OperationsApi } from './api/operations';
+import { AssessmentService } from './services/assessment.service';
+import { IntelligenceService } from './services/intelligence.service';
+import { WorkflowService } from './services/workflow.service';
 
 // ...
 
@@ -557,5 +567,48 @@ export const MshnCtrlService = {
             if (!operationId) resolve(all);
             else resolve(all.filter(i => i.affectedOperationIds.includes(operationId)));
         }, LATENCY));
+    },
+
+    // --- Delegated methods from sub-services ---
+
+    getAssessments: async (campaignId: UUID): Promise<AssessmentReport[]> => {
+        return AssessmentService.getAssessments(campaignId);
+    },
+
+    createRFI: async (rfi: Omit<RequestForInformation, 'id' | 'createdAt' | 'responses'>): Promise<RequestForInformation> => {
+        return IntelligenceService.createRFI(rfi);
+    },
+
+    getSupplyStatuses: async (): Promise<SupplyStatus[]> => {
+        return new Promise(resolve => setTimeout(() => {
+            resolve((store as any).supplyStatuses || []);
+        }, LATENCY));
+    },
+
+    getVehicleAssets: async (): Promise<VehicleAsset[]> => {
+        return new Promise(resolve => setTimeout(() => {
+            resolve((store as any).vehicleAssets || []);
+        }, LATENCY));
+    },
+
+    getBriefs: async (): Promise<Brief[]> => {
+        return WorkflowService.getBriefs();
+    },
+
+    getRadioNetworks: async (): Promise<RadioNetwork[]> => {
+        return new Promise(resolve => setTimeout(() => {
+            resolve((store as any).radioNetworks || []);
+        }, LATENCY));
+    },
+
+    getComsecKeys: async (): Promise<ComsecKey[]> => {
+        return new Promise(resolve => setTimeout(() => {
+            resolve((store as any).comsecKeys || []);
+        }, LATENCY));
+    },
+
+    cycleComsecKey: async (networkId: string): Promise<void> => {
+        console.log(`[Mock] Cycling COMSEC key for network ${networkId}`);
+        return new Promise(resolve => setTimeout(resolve, LATENCY));
     }
 };

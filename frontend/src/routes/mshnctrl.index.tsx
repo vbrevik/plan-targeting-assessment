@@ -9,7 +9,7 @@ export const Route = createFileRoute('/mshnctrl/')({
 });
 
 function MshnCtrlDashboardRouter() {
-    const { user } = useAuth();
+    const { user: _user } = useAuth();
     const { currentRole } = useRoleContext();
     const navigate = useNavigate();
 

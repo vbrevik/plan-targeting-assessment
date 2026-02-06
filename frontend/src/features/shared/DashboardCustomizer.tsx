@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { Settings, Eye, EyeOff, ChevronUp, ChevronDown, RotateCcw, X } from 'lucide-react';
-import { useDashboardLayout, type DashboardWidget } from '@/features/layout/hooks/useDashboardLayout';
+import { useDashboardLayout } from '@/features/layout/hooks/useDashboardLayout';
 import { cn } from '@/lib/utils';
 
 interface DashboardCustomizerProps {
@@ -14,11 +14,11 @@ interface DashboardCustomizerProps {
 export function DashboardCustomizer({ isOpen, onClose }: DashboardCustomizerProps) {
   const {
     layout,
-    isLoaded,
+    isLoaded: _isLoaded,
     setWidgetVisible,
     moveWidget,
     resetLayout,
-    getVisibleWidgets,
+    getVisibleWidgets: _getVisibleWidgets,
   } = useDashboardLayout();
 
   const [isResetting, setIsResetting] = useState(false);

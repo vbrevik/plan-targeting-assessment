@@ -5,9 +5,7 @@ import { cn } from '@/lib/utils';
 import {
     Radio,
     Lock,
-    Unlock,
     RefreshCw,
-    Wifi,
     Signal,
     Mic,
     Headphones,
@@ -19,7 +17,7 @@ import { Button } from '@/components/ui/button';
 export function CNRManagement() {
     const [networks, setNetworks] = useState<RadioNetwork[]>([]);
     const [keys, setKeys] = useState<ComsecKey[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [_loading, setLoading] = useState(true);
     const [rollovers, setRollovers] = useState<Record<string, boolean>>({});
 
     const loadData = async () => {

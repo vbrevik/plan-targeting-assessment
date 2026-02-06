@@ -56,7 +56,6 @@ export function DecisionGraph({ sessionId, onClose }: DecisionGraphProps) {
                 let yAssumption = 50;
 
                 // Map for quick lookup
-                const decisionMap = new Map<string, Entity>(decisions.map((d: Entity) => [d.id, d]));
                 const assumptionMap = new Map<string, Entity>(assumptions.map((a: Entity) => [a.id, a]));
                 const agendaMap = new Map<string, Entity>(agendaPoints.map((a: Entity) => [a.id, a]));
 

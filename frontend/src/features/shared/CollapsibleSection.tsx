@@ -25,6 +25,8 @@ export function CollapsibleSection({
   onToggle,
 }: CollapsibleSectionProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const sectionId = title.toLowerCase().replace(/\s+/g, '-');
+  const headerId = `collapsible-header-${sectionId}`;
 
   const handleToggle = () => {
     const newExpanded = !isExpanded;

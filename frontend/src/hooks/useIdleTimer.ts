@@ -27,9 +27,9 @@ export function useIdleTimer({
     const [showWarning, setShowWarning] = useState(false)
     const [timeUntilLogout, setTimeUntilLogout] = useState(0)
 
-    const warningTimerRef = useRef<NodeJS.Timeout | null>(null)
-    const logoutTimerRef = useRef<NodeJS.Timeout | null>(null)
-    const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null)
+    const warningTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+    const logoutTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+    const countdownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
     const lastActivityRef = useRef(Date.now())
 
     const clearTimers = useCallback(() => {
@@ -108,7 +108,7 @@ export function useIdleTimer({
         const events = ['mousedown', 'keydown', 'scroll', 'touchstart', 'mousemove']
 
         // Throttle activity tracking to avoid too many resets
-        let throttleTimeout: NodeJS.Timeout | null = null
+        let throttleTimeout: ReturnType<typeof setTimeout> | null = null
         const handleActivity = () => {
             if (throttleTimeout) return
 

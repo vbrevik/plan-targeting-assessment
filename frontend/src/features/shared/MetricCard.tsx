@@ -28,6 +28,7 @@ export const MetricCard = memo(function MetricCard({
   href,
   alert = false,
 }: MetricCardProps) {
+  const navigate = useNavigate();
   const colorClasses = {
     blue: 'text-blue-400 bg-blue-950/50 border-blue-900',
     amber: 'text-amber-400 bg-amber-950/50 border-amber-900',

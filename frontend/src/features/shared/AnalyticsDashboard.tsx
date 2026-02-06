@@ -9,19 +9,23 @@ import { AssessmentDistribution } from '@/features/shared/charts/AssessmentDistr
 import { EffectivenessTrends } from '@/features/shared/charts/EffectivenessTrends';
 import { HistoricalView } from '../bda/HistoricalView';
 import { ExportButton } from '../shared/ExportButton';
+import { MetricCard } from '../shared/MetricCard';
+import { MetricCardSkeleton } from '../shared/LoadingSkeleton';
 import { BdaApi } from '@/lib/mshnctrl/api/bda';
 import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 import { useCachedQuery } from '@/lib/mshnctrl/hooks/useCachedQuery';
 
 export function AnalyticsDashboard() {
+  const [viewMode, setViewMode] = useState<'current' | 'historical'>('current');
+
   // Main Analytics Data
-  const { data: metrics, isLoading } = useCachedQuery({
-    queryKey: ['analytics-main'],
+  const { data: metrics, isLoading: metricsLoading } = useCachedQuery({
+    queryKey: 'analytics-main',
     queryFn: async () => {
-      const [targets, decisions, bdaReports] = await Promise.all([
+      const [targets, decisions, _bdaReports] = await Promise.all([
         targetingApi.getTargets({ limit: 1000 }).catch(() => []),
         targetingApi.listDecisions().catch(() => []),
-        BdaApi.getReports().catch(() => []),
+        BdaApi.getQueue().catch(() => []),
       ]);
 
       // Calculate BDA metrics
@@ -34,7 +38,7 @@ export function AnalyticsDashboard() {
         avgProcessingTime,
         strikeSuccessRate,
         bdaCompletionTime,
-        targetsProcessed: targetsArray.length,
+        targetsProcessed: (targets as any[]).length,
         decisionsMade: (decisions as any[]).length,
         avgDecisionTime: 2, // Placeholder
       };

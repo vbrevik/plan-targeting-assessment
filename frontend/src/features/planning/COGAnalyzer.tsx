@@ -6,12 +6,8 @@ import {
     Zap,
     ChevronDown,
     ChevronRight,
-    Search,
-    ArrowRight,
-    AlertCircle,
     Crosshair,
     Network,
-    Plus,
     Shield,
     ShieldCheck,
     Lock

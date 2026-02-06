@@ -6,7 +6,6 @@ import {
     Activity,
     ChevronDown,
     ChevronUp,
-    ChevronRight,
     Info,
     AlertOctagon,
     Lightbulb
@@ -19,7 +18,7 @@ interface DecisionImpactMonitorProps {
     onViewDimension: (dimension: string) => void;
 }
 
-export function DecisionImpactMonitorComponent({ impactMonitors, onViewDimension }: DecisionImpactMonitorProps) {
+export function DecisionImpactMonitorComponent({ impactMonitors, onViewDimension: _onViewDimension }: DecisionImpactMonitorProps) {
     const [expandedDimension, setExpandedDimension] = useState<string | null>(null);
 
     const getTrendIcon = (trend: string) => {

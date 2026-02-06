@@ -507,11 +507,19 @@ function AssumptionCard({ assumption, onEdit, onDelete, critical }: AssumptionCa
 interface AssumptionModalProps {
     assumption?: Assumption;
     onClose: () => void;
-    onSave: (data: CreateAssumptionRequest | UpdateAssumptionRequest) => void;
+    onSave: (data: any) => void;
 }
 
 function AssumptionModal({ assumption, onClose, onSave }: AssumptionModalProps) {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<{
+        title: string;
+        description: string;
+        category: string;
+        status: string;
+        risk_level: string;
+        confidence_score: number;
+        impact_notes: string;
+    }>({
         title: assumption?.title || '',
         description: assumption?.description || '',
         category: assumption?.category || 'Enemy',

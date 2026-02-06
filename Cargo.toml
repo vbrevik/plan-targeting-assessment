@@ -1,0 +1,107 @@
+[workspace]
+resolver = "2"
+
+members = [
+    "backend",
+    "modules/bcknd-ctrl/crates/core-common-types",
+    "modules/bcknd-ctrl/crates/core-ontology",
+    "modules/bcknd-ctrl/crates/core-auth",
+    "modules/bcknd-ctrl/crates/core-users",
+    "modules/bcknd-ctrl/crates/core-abac",
+    "modules/bcknd-ctrl/crates/core-system",
+    "modules/bcknd-ctrl/crates/core-discovery",
+    "modules/bcknd-ctrl/crates/core-rate-limit",
+    "modules/trgtn-ctrl/crates/targeting",
+    "modules/trgtn-ctrl/crates/bda",
+    "modules/c2-ctrl/crates/meetings",
+    "modules/trgtn-ctrl/crates/roe",
+    "modules/strtgy-ctrl/crates/strategy",
+    "modules/plnng-ctrl/crates/assumptions",
+    "modules/c2-ctrl/crates/c2-server",
+    "modules/admn-ctrl/crates/admn-server",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Vidar Brevik <vidar@brevik.net>"]
+
+[workspace.dependencies]
+# Web Framework & Async
+axum = { version = "0.7", features = ["macros", "multipart"] }
+tokio = { version = "1.0", features = ["full"] }
+tower = { version = "0.4", features = ["util", "timeout", "limit", "filter"] }
+tower-http = { version = "0.5", features = ["cors", "trace", "fs"] }
+tower-cookies = "0.10"
+hyper = "1.0"
+hyper-util = "0.1"
+http-body-util = "0.1"
+futures = "0.3"
+tokio-stream = { version = "0.1", features = ["sync"] }
+async-trait = "0.1"
+async-channel = "2.2"
+async-stream = "0.3"
+
+# Serialization & Data
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+bincode = "1.3"
+csv = "1.3"
+base64 = "0.21"
+hex = "0.4"
+mime_guess = "2.0"
+
+# Database & Observability
+sqlx = { version = "0.8", features = ["runtime-tokio-native-tls", "sqlite", "chrono", "uuid"] }
+rusqlite = "0.31"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+log = "0.4"
+env_logger = "0.11"
+
+# Utilities & Common Types
+uuid = { version = "1.0", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+thiserror = "1.0"
+anyhow = "1.0"
+rand = "0.8"
+regex = "1.10"
+lazy_static = "1.4"
+strum = { version = "0.26", features = ["derive"] }
+strum_macros = "0.26"
+validator = { version = "0.16", features = ["derive"] }
+dashmap = "5.5"
+indexmap = { version = "2.1", features = ["serde"] }
+itertools = "0.12"
+maplit = "1.0"
+indoc = "2.0"
+glob = "0.3"
+walkdir = "2.4"
+notify = "6.1"
+tempfile = "3.8"
+dirs = "5.0"
+parking_lot = "0.12"
+
+# Security & Crypto
+jsonwebtoken = "9.2"
+bcrypt = "0.15"
+phf = { version = "0.11", features = ["macros"] }
+md-5 = "0.10"
+argon2 = "0.5"
+rsa = "0.9"
+pem = "3.0"
+config = "0.13"
+
+# CLI & Testing
+clap = { version = "4.4", features = ["derive"] }
+mockall = "0.12"
+fake = { version = "2.9", features = ["derive", "chrono", "uuid"] }
+reqwest = { version = "0.11", default-features = false, features = ["json", "rustls-tls"] }
+governor = "0.6"
+tower_governor = "0.4"
+sysinfo = "0.30"
+printpdf = "0.7"
+handlebars = "5.1"
+kamadak-exif = "0.5"
+image = "0.24"

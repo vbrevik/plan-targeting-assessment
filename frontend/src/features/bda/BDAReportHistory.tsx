@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BdaApi, type BdaReportHistory, type ReportHistoryResponse } from '@/lib/mshnctrl/api/bda';
-import { Clock, User, GitBranch, Eye, FileDiff } from 'lucide-react';
+import { Clock, User, GitBranch, Eye } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 
@@ -108,7 +108,7 @@ export const BDAReportHistory: React.FC<BDAReportHistoryProps> = ({
             </CardHeader>
             <CardContent className="p-0">
                 <div className="divide-y divide-slate-800/50">
-                    {history.history.map((entry, index) => {
+                    {history.history.map((entry, _index) => {
                         const isSelected = selectedVersion === entry.version_number;
                         const isLatest = entry.version_number === history.latest_version;
                         
@@ -138,13 +138,13 @@ export const BDAReportHistory: React.FC<BDAReportHistoryProps> = ({
                                             )}
                                             <Badge className={cn(
                                                 "text-[7px] uppercase font-black py-0.5 px-1.5",
-                                                getChangeTypeColor(entry.change_type)
+                                                getChangeTypeColor(entry.change_type || '')
                                             )}>
                                                 {entry.change_type}
                                             </Badge>
                                             <Badge className={cn(
                                                 "text-[7px] uppercase font-black py-0.5 px-1.5",
-                                                getStatusColor(entry.status)
+                                                getStatusColor(entry.status || '')
                                             )}>
                                                 {entry.status}
                                             </Badge>

@@ -26,8 +26,8 @@ export function ProposalDetail({ proposalId }: ProposalDetailProps) {
 
     const handleAction = async (newState: WorkflowState) => {
         if (!proposal) return;
-        const updated = await MshnCtrlService.updateProposalStatus(proposal.id, newState);
-        setProposal(updated);
+        await MshnCtrlService.updateProposalStatus(proposal.id, newState);
+        setProposal({ ...proposal, status: newState });
     };
 
     if (loading) return <div>Loading Proposal...</div>;

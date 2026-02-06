@@ -6,7 +6,6 @@ import {
     Users,
     Activity,
     Heart,
-    Zap,
     Moon,
     Mic,
     Brain,

@@ -108,7 +108,7 @@ export const BDAReportForm: React.FC<BDAReportFormProps> = ({
             };
 
             const report = await BdaApi.createReport(request);
-            onSuccess?.(report);
+            onSuccess?.(report as any);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to create BDA report');
         } finally {

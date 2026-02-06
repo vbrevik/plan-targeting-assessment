@@ -2,7 +2,7 @@
 // Allows selecting date ranges for historical data views
 
 import { useState } from 'react';
-import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth, startOfYear, endOfYear } from 'date-fns';
 import { cn } from '@/lib/utils';
 
@@ -99,9 +99,9 @@ export function DateRangePicker({
   presets = ['today', 'last7days', 'last30days', 'thisMonth', 'lastMonth', 'custom'],
   className = '',
 }: DateRangePickerProps) {
-  const [showPresets, setShowPresets] = useState(false);
+  const [_showPresets, setShowPresets] = useState(false);
   const [showFromPicker, setShowFromPicker] = useState(false);
-  const [showToPicker, setShowToPicker] = useState(false);
+  const [_showToPicker, setShowToPicker] = useState(false);
 
   const handlePresetSelect = (preset: DateRangePreset) => {
     if (preset === 'custom') {

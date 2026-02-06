@@ -2,7 +2,7 @@
 // Manages saved filter presets in localStorage
 
 import { useState, useEffect } from 'react';
-import type { FilterState } from '../components/shared/FilterPanel';
+import type { FilterState } from '../FilterPanel';
 
 interface FilterPreset {
   name: string;

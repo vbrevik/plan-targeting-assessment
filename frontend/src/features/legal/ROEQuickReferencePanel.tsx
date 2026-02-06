@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Shield, ExternalLink, AlertCircle } from 'lucide-react';
 import { SecurityBadge, type ClassificationLevel, type Caveat } from '@/components/SecurityBadge';
 import { Link } from '@tanstack/react-router';

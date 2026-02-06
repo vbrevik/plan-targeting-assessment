@@ -164,6 +164,180 @@ export interface BdaImagery {
 }
 
 // ============================================================================
+// COMPONENT ASSESSMENTS
+// ============================================================================
+
+export interface BdaComponentAssessment {
+  id: string;
+  bda_report_id: string;
+  component_name: string;
+  component_type?: string;
+  physical_damage?: PhysicalDamage;
+  functional_damage?: FunctionalDamage;
+  damage_percentage?: number;
+  criticality?: 'critical' | 'important' | 'supporting';
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+  component_location?: string;
+  physical_damage_percentage?: number;
+  component_criticality?: string;
+  replacement_required?: boolean;
+  damage_description?: string;
+  estimated_repair_time_hours?: number;
+  repair_cost_estimate_usd?: number;
+  replacement_availability_days?: number;
+  confidence_level?: number;
+  pre_strike_function?: string;
+  post_strike_function?: string;
+}
+
+// ============================================================================
+// DISTRIBUTION
+// ============================================================================
+
+export interface BdaDistributionList {
+  id: string;
+  name: string;
+  description?: string;
+  recipients: string[];
+  classification_level: string;
+  created_at: string;
+}
+
+export interface BdaReportDistribution {
+  id: string;
+  bda_report_id: string;
+  distribution_list_id: string;
+  distributed_at: string;
+  distributed_by: string;
+  delivery_method: string;
+  status: 'pending' | 'delivered' | 'failed';
+  recipient_name?: string;
+  recipient_email?: string;
+  delivery_status?: string;
+  report_format?: string;
+  sent_at?: string;
+  delivered_at?: string;
+  delivery_attempts?: number;
+  last_error?: string;
+  delivery_confirmation_received?: boolean;
+}
+
+export interface BdaDistributionSummary {
+  total_distributions: number;
+  by_status: Record<string, number>;
+  last_distributed_at?: string;
+  delivered_count?: number;
+  sent_count?: number;
+  pending_count?: number;
+  failed_count?: number;
+}
+
+// ============================================================================
+// SENSOR TYPES
+// ============================================================================
+
+export type SensorType = 'EO' | 'IR' | 'SAR' | 'MTI' | 'LIDAR' | 'MULTI';
+
+// ============================================================================
+// PEER REVIEW
+// ============================================================================
+
+export interface BdaPeerReview {
+  id: string;
+  bda_report_id: string;
+  reviewer_id: string;
+  reviewer_name?: string;
+  status: 'pending' | 'approved' | 'rejected' | 'revision_requested';
+  comments?: string;
+  reviewed_at?: string;
+  created_at: string;
+  reviewer_role?: string;
+  review_status?: string;
+  priority?: string;
+  due_date?: string;
+  overall_quality?: number;
+  recommendation?: string;
+  time_spent_minutes?: number;
+  review_comments?: string[];
+  strengths?: string[];
+  weaknesses?: string[];
+  required_changes?: string[];
+  clarification_questions?: string[];
+  imagery_reviewed?: boolean;
+  damage_categories_correct?: boolean;
+  functional_assessment_complete?: boolean;
+  component_assessments_reviewed?: boolean;
+  collateral_damage_assessed?: boolean;
+  weaponeering_validated?: boolean;
+  recommendations_justified?: boolean;
+  classification_appropriate?: boolean;
+}
+
+export interface BdaReviewSummary {
+  total_reviews: number;
+  approved: number;
+  rejected: number;
+  pending: number;
+  consensus: 'approved' | 'rejected' | 'pending' | 'mixed';
+  completed_reviews?: number;
+}
+
+// ============================================================================
+// REPORT GENERATION
+// ============================================================================
+
+export interface GenerateReportRequest {
+  bda_report_id: string;
+  template_type: string;
+  format: 'pdf' | 'html' | 'json' | 'kml';
+  include_imagery?: boolean;
+  include_components?: boolean;
+  include_peer_reviews?: boolean;
+  include_history?: boolean;
+  classification?: string;
+}
+
+export interface BdaReportTemplate {
+  id: string;
+  name: string;
+  type: string;
+  description?: string;
+  format: string;
+}
+
+export interface ReportGenerationResponse {
+  report_id: string;
+  format: string;
+  url?: string;
+  generated_at: string;
+}
+
+// ============================================================================
+// REPORT HISTORY
+// ============================================================================
+
+export interface BdaReportHistory {
+  version_number: number;
+  changed_by: string;
+  changed_at: string;
+  change_summary?: string;
+  report_data_json: string;
+  id?: string;
+  change_type?: string;
+  status?: string;
+  change_description?: string;
+}
+
+export interface ReportHistoryResponse {
+  report_id: string;
+  history: BdaReportHistory[];
+  total?: number;
+  latest_version?: number;
+}
+
+// ============================================================================
 // API SERVICE
 // ============================================================================
 
@@ -182,9 +356,13 @@ export const BdaApi = {
     return api.get<BdaStatistics>('/bda/statistics');
   },
 
-  getReports: async (params?: { target_id?: string }): Promise<BdaReportEntity[]> => {
-    if (!params?.target_id) throw new Error("target_id is required to fetch BDA reports");
-    return api.get<BdaReportEntity[]>(`/bda/${params.target_id}`);
+  getReports: async (params?: { target_id?: string; limit?: number }): Promise<BdaReportEntity[]> => {
+    if (params?.target_id) {
+      return api.get<BdaReportEntity[]>(`/bda/${params.target_id}`);
+    }
+    const queryParams: Record<string, string> = {};
+    if (params?.limit) queryParams.limit = params.limit.toString();
+    return api.get<BdaReportEntity[]>('/bda/reports', queryParams);
   },
 
   getReport: async (id: string): Promise<BdaReportEntity> => {
@@ -266,6 +444,49 @@ export const BdaApi = {
 
   getReviewSummary: async (reportId: string): Promise<any> => {
     return api.get(`/bda/reports/${reportId}/reviews/summary`);
+  },
+
+  // Component Assessments
+  deleteComponentAssessment: async (id: string): Promise<void> => {
+    return api.delete(`/bda/components/${id}`);
+  },
+
+  // Distribution
+  getDistributionLists: async (): Promise<BdaDistributionList[]> => {
+    return api.get<BdaDistributionList[]>('/bda/distribution-lists');
+  },
+
+  getReportDistributions: async (reportId: string): Promise<BdaReportDistribution[]> => {
+    return api.get<BdaReportDistribution[]>(`/bda/reports/${reportId}/distributions`);
+  },
+
+  getReportDistributionSummary: async (reportId: string): Promise<BdaDistributionSummary> => {
+    return api.get<BdaDistributionSummary>(`/bda/reports/${reportId}/distributions/summary`);
+  },
+
+  distributeReport: async (reportId: string, params: {
+    distribution_list_ids: string[];
+    report_format: string;
+    report_template_type: string;
+    classification_level: string;
+    delivery_method: string;
+  }): Promise<void> => {
+    return api.post(`/bda/reports/${reportId}/distribute`, params);
+  },
+
+  // Imagery updates
+  updateImagery: async (id: string, data: Partial<BdaImagery>): Promise<BdaImagery> => {
+    return api.put<BdaImagery>(`/bda/imagery/${id}`, data);
+  },
+
+  // Report Templates
+  getReportTemplates: async (): Promise<BdaReportTemplate[]> => {
+    return api.get<BdaReportTemplate[]>('/bda/report-templates');
+  },
+
+  // Report Version
+  getReportVersion: async (reportId: string, versionNumber: number): Promise<BdaReportHistory> => {
+    return api.get<BdaReportHistory>(`/bda/reports/${reportId}/history/${versionNumber}`);
   },
 
   // Generation

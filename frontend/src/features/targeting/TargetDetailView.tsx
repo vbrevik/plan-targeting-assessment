@@ -40,17 +40,17 @@ interface TargetDetailViewProps {
 }
 
 export function TargetDetailView({ targetId: propTargetId, isEmbedded, onClose }: TargetDetailViewProps) {
-    const routeParams = useParams({ from: '/mshnctrl/targeting/$targetId', strict: false });
+    const routeParams = useParams({ from: '/mshnctrl/targeting/$targetId' as any, strict: false });
     const targetId = propTargetId || routeParams.targetId;
     const navigate = useNavigate();
     const [target, setTarget] = useState<ApiTarget | null>(null);
-    const [timeline, setTimeline] = useState<any[]>([]);
+    const [_timeline, setTimeline] = useState<any[]>([]);
     const [roes, setRoes] = useState<ROE[]>([]);
     const [analysis, setAnalysis] = useState<StrikeAnalysis | null>(null);
     const [targetSystem, setTargetSystem] = useState<TargetSystem | null>(null);
     const [activityLogs, setActivityLogs] = useState<ActivityLog[]>([]);
     const [weapons, setWeapons] = useState<WeaponSystem[]>([]);
-    const [bdaReports, setBdaReports] = useState<BDAReport[]>([]);
+    const [_bdaReports, setBdaReports] = useState<BDAReport[]>([]);
     const [collectionRequests, setCollectionRequests] = useState<CollectionRequest[]>([]);
     const [loading, setLoading] = useState(true);
     const [strikeModalOpen, setStrikeModalOpen] = useState(false);
@@ -76,14 +76,14 @@ export function TargetDetailView({ targetId: propTargetId, isEmbedded, onClose }
             const a: any = null;
 
             if (apiTarget) {
-                setTarget(apiTarget);
+                setTarget(apiTarget as any);
                 // Map API target to component Target type for compatibility
                 const props = apiTarget.properties || {};
                 const mappedTarget: Target = {
                     id: apiTarget.id,
                     name: apiTarget.name,
                     description: apiTarget.description,
-                    domain: (props.domain as Domain) || 'LAND',
+                    domain: (props.domain as string) || 'LAND',
                     type: 'Target',
                     target_type: props.functional_type || 'Unknown',
                     targetId: apiTarget.id,

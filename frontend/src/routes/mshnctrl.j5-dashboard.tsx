@@ -5,7 +5,6 @@ import {
     Map,
     Shield,
     AlertTriangle,
-    TrendingUp,
     Calendar,
     Activity,
     Zap,

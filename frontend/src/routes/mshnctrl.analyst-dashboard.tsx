@@ -1,13 +1,13 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useRoleContext } from '@/lib/mshnctrl/hooks/useRoleContext';
-import { Clipboard, CheckCircle2, Clock, FileText, Target, Users, Globe, Activity, Lock, Eye } from 'lucide-react';
+import { Clipboard, CheckCircle2, FileText, Target, Users, Globe, Activity, Lock, Eye } from 'lucide-react';
 
 export const Route = createFileRoute('/mshnctrl/analyst-dashboard')({
     component: AnalystDashboard,
 });
 
 function AnalystDashboard() {
-    const { currentRole } = useRoleContext();
+    const { currentRole: _currentRole } = useRoleContext();
     
     return (
         <div className="h-full overflow-y-auto bg-slate-950">
@@ -94,7 +94,7 @@ function AnalystDashboard() {
     );
 }
 
-function MetricCard({ icon: Icon, label, value, change, changeType, color }: any) {
+function MetricCard({ icon: Icon, label, value, change, changeType: _changeType, color }: any) {
     const colorClasses: any = {
         blue: 'text-blue-400 bg-blue-950/50 border-blue-900',
         green: 'text-green-400 bg-green-950/50 border-green-900',

@@ -7,9 +7,35 @@ import { useNavigate } from '@tanstack/react-router';
 import { Target, Users, Gauge, AlertTriangle, CheckCircle2, Crosshair, Activity, History } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SecurityBadge } from '@/components/SecurityBadge';
-import { targetingApi, type MissionIntent, type TargetingGuidance, type DecisionAuthority, type OperationalTempo } from '@/lib/mshnctrl/api/targeting.api';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 
-// Local components use types from targetingApi
+// Local display types (extend API types with fallback/display-specific fields)
+interface MissionIntent {
+  phase: string;
+  priorityEffects: string[];
+  endstate: string;
+  endstateMetrics: Array<{ name: string; current: number; target: number; status: string }>;
+}
+
+interface TargetingGuidance {
+  roeLevel: string;
+  collateralThreshold: string;
+  approvedTargetSets: string[];
+  restrictions: string[];
+}
+
+interface DecisionAuthority {
+  level: string;
+  authority: string;
+  canApprove: string[];
+  mustEscalate: string[];
+}
+
+interface OperationalTempo {
+  currentPhase: string;
+  hoursIntoPhase: number;
+  criticalDecisionPoints: Array<{ name: string; time: string; status: string }>;
+}
 
 interface MissionCommandProps {
   isEmbedded?: boolean;
@@ -28,16 +54,16 @@ export function MissionCommandOverview({ isEmbedded = false }: MissionCommandPro
       try {
         setLoading(true);
         const [intent, guidance, authority, tempo] = await Promise.all([
-          targetingApi.getMissionIntent().catch(() => null),
-          targetingApi.getTargetingGuidance().catch(() => null),
-          targetingApi.getAuthorityMatrix().catch(() => null),
-          targetingApi.getOperationalTempo().catch(() => null),
+          targetingApi.getMissionIntent().catch(() => null) as Promise<any>,
+          targetingApi.getTargetingGuidance().catch(() => null) as Promise<any>,
+          targetingApi.getAuthorityMatrix().catch(() => null) as Promise<any>,
+          targetingApi.getOperationalTempo().catch(() => null) as Promise<any>,
         ]);
 
-        if (intent) setCommanderIntent(intent);
-        if (guidance) setTargetingGuidance(guidance);
-        if (authority) setDecisionAuthority(authority);
-        if (tempo) setOperationalTempo(tempo);
+        if (intent) setCommanderIntent(intent as MissionIntent);
+        if (guidance) setTargetingGuidance(guidance as TargetingGuidance);
+        if (authority) setDecisionAuthority(authority as DecisionAuthority);
+        if (tempo) setOperationalTempo(tempo as OperationalTempo);
       } catch (err) {
         console.error('Failed to fetch mission command data:', err);
       } finally {

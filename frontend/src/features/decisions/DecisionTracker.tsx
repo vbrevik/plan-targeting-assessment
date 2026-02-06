@@ -3,13 +3,9 @@ import {
     Clock,
     CheckCircle2,
     AlertTriangle,
-    TrendingUp,
-    TrendingDown,
     Loader2,
     ChevronRight,
-    FileText,
     XCircle,
-    Target
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { DecisionTracking } from '@/lib/mshnctrl/types';
@@ -20,7 +16,7 @@ interface DecisionTrackerProps {
 }
 
 export function DecisionTracker({ trackedDecisions, onViewDetails }: DecisionTrackerProps) {
-    const [expanded, setExpanded] = useState(true);
+    const [_expanded, _setExpanded] = useState(true);
 
     const statusConfig = {
         unfolding: {

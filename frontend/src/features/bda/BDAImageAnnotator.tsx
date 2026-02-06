@@ -17,7 +17,6 @@ import {
     Move
 } from 'lucide-react';
 import { BdaApi, type BdaImagery } from '@/lib/mshnctrl/api/bda';
-import { cn } from '@/lib/utils';
 
 export type AnnotationType = 'rectangle' | 'circle' | 'line' | 'text';
 export type AnnotationTool = AnnotationType | 'select' | 'pan';

@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BdaApi, type BdaReportHistory, type ReportHistoryResponse } from '@/lib/mshnctrl/api/bda';
-import { GitCompare, ArrowLeft, ArrowRight, X, Eye, FileDiff } from 'lucide-react';
+import { GitCompare, ArrowRight, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 

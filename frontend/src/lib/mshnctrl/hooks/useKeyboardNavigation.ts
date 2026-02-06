@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 
+// useNavigate is used by useGlobalShortcuts below
+
 interface UseKeyboardNavigationOptions<T> {
     items: T[];
     getItemId: (item: T) => string;
@@ -31,7 +33,6 @@ export function useKeyboardNavigation<T>({
     enabled = true,
 }: UseKeyboardNavigationOptions<T>) {
     const [selectedIndex, setSelectedIndex] = useState<number>(-1);
-    const navigate = useNavigate();
 
     const selectedItem = selectedIndex >= 0 && selectedIndex < items.length
         ? items[selectedIndex]

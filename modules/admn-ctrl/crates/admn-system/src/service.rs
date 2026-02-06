@@ -36,13 +36,8 @@ impl SystemService {
             
             loop {
                 sys.refresh_all();
-                disks.refresh(true);
-                networks.refresh(true);
-                // Actually Disks::refresh_list() updates the list of disks. 
-                // Disks::refresh() isn't a method on list?
-                // Let's assume refreshing the list is enough to get usage? 
-                // Usually we refresh specific disks.
-                // But new_with_refreshed_list implies it gets everything.
+                disks.refresh_list();
+                networks.refresh_list();
                 
                 // Host info
                 let hostname = System::host_name().unwrap_or_else(|| "unknown".to_string());

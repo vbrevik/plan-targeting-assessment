@@ -58,8 +58,8 @@ export function MenuBuilder() {
         try {
             const withRels = await OntologyService.getEntity(item.id);
             const actionIds = withRels.outgoing_relationships
-                .filter(r => r.relation_type === 'performs_action')
-                .map(r => r.target_id);
+                ?.filter(r => r.relation_type === 'performs_action')
+                .map(r => r.target_id) ?? [];
             setAssociatedActions(actionIds);
 
             // For each action, find its datasets
@@ -67,8 +67,8 @@ export function MenuBuilder() {
             for (const actionId of actionIds) {
                 const actionWithRels = await OntologyService.getEntity(actionId);
                 datasetMap[actionId] = actionWithRels.outgoing_relationships
-                    .filter(r => r.relation_type === 'operates_on')
-                    .map(r => r.target_id);
+                    ?.filter(r => r.relation_type === 'operates_on')
+                    .map(r => r.target_id) ?? [];
             }
             setAssociatedDatasets(datasetMap);
         } catch (error) {
@@ -118,19 +118,6 @@ export function MenuBuilder() {
             loadData();
         } catch (error) {
             toast({ title: 'Error', description: 'Failed to delete menu item', variant: 'destructive' });
-        }
-    };
-
-    const handleAssignToRole = async (itemId: string, roleId: string) => {
-        try {
-            await OntologyService.createRelationship({
-                source_id: itemId,
-                target_id: roleId,
-                relation_type: 'assigned_to'
-            });
-            toast({ title: 'Assigned', description: `Linked to ${roleId}` });
-        } catch (error) {
-            toast({ title: 'Error', description: 'Failed to assign role', variant: 'destructive' });
         }
     };
 

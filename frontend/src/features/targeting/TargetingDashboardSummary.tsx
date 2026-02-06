@@ -1,7 +1,6 @@
 // Targeting Dashboard Summary Component
 // Phase 1: Dashboard-first architecture - Summary view with progressive disclosure
 
-import { useState, useEffect } from 'react';
 import {
   Target,
   Clock,
@@ -20,9 +19,9 @@ import {
 } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 import { MetricCard } from '../shared/MetricCard';
+import { MetricCardSkeleton } from '../shared/LoadingSkeleton';
 import { CollapsibleSection } from '../shared/CollapsibleSection';
 import { RecentlyViewed } from '../shared/RecentlyViewed';
-import { BdaApi } from '@/lib/mshnctrl/api/bda';
 import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 import { useCachedQuery } from '@/lib/mshnctrl/hooks/useCachedQuery';
 
@@ -30,19 +29,23 @@ export function TargetingDashboardSummary() {
   const navigate = useNavigate();
 
   const { data: dashboardData, isLoading } = useCachedQuery({
-    queryKey: ['targeting-summary-data'],
+    queryKey: 'targeting-summary-data',
     queryFn: async () => {
       const [
         targets,
-        summary,
-        highPriorityTargets,
-        bdaReports,
+        dtlEntries,
+        tsts,
+        intent,
+        isrPlatforms,
+        strikePlatforms,
         decisions
       ] = await Promise.all([
         targetingApi.getTargets({ limit: 100 }).catch(() => []),
-        targetingApi.getSummary().catch(() => ({ total_targets: 0, active_targets: 0, pending_nominations: 0, approved_targets: 0 })),
-        targetingApi.getHighRiskTargets().catch(() => []),
-        BdaApi.getReports({ limit: 20 }).catch(() => []),
+        targetingApi.getDtlEntries({ limit: 100 }).catch(() => []),
+        targetingApi.getActiveTsts().catch(() => []),
+        targetingApi.getMissionIntent().catch(() => null),
+        targetingApi.listIsrPlatforms().catch(() => []),
+        targetingApi.getStrikePlatforms().catch(() => []),
         targetingApi.listDecisions().catch(() => []),
       ]);
 
@@ -57,7 +60,7 @@ export function TargetingDashboardSummary() {
       };
 
       (targets as any[]).forEach((target: any) => {
-        const stage = (target.f3ead_stage || 'FIND').toUpperCase();
+        const stage = ((target.properties?.kill_chain_phase || target.f3ead_stage) || 'FIND').toUpperCase();
         if (f3eadCounts.hasOwnProperty(stage)) {
           f3eadCounts[stage as keyof typeof f3eadCounts]++;
         } else {
@@ -67,17 +70,17 @@ export function TargetingDashboardSummary() {
 
       // Get top priority targets from DTL
       const topPriorityTargets = await Promise.all(
-        dtlEntries
-          .sort((a, b) => (b.combined_score || 0) - (a.combined_score || 0))
+        (dtlEntries as any[])
+          .sort((a: any, b: any) => (b.combined_score || 0) - (a.combined_score || 0))
           .slice(0, 5)
-          .map(async (entry) => {
+          .map(async (entry: any) => {
             try {
               const target = await targetingApi.getTarget(entry.target_id);
               return {
                 id: entry.target_id,
                 name: target.name,
-                priority: target.priority,
-                status: target.target_status,
+                priority: target.properties?.priority || 'MEDIUM',
+                status: target.properties?.target_status || 'NOMINATED',
               };
             } catch {
               return {
@@ -91,7 +94,7 @@ export function TargetingDashboardSummary() {
       );
 
       // Count TST alerts (critical only - < 60 minutes)
-      const criticalTsts = tsts.filter((tst: any) => {
+      const criticalTsts = (tsts as any[]).filter((tst: any) => {
         if (!tst.is_tst || !tst.tst_deadline) return false;
         const deadline = new Date(tst.tst_deadline);
         const now = new Date();
@@ -100,27 +103,30 @@ export function TargetingDashboardSummary() {
       });
 
       // Count pending approvals (targets in DTL with pending status)
-      const pendingApprovals = dtlEntries.filter(
+      const pendingApprovals = (dtlEntries as any[]).filter(
         (entry: any) => entry.approval_level && entry.approval_level > 0
       ).length;
 
       return {
-        activeTargets: summary?.active_targets || targets.length,
+        activeTargets: (targets as any[]).length,
         pendingApprovals,
         tstAlerts: criticalTsts.length,
         f3eadCounts,
         topPriorityTargets,
-        missionPhase: intent?.phase || 'Unknown',
+        missionPhase: intent?.commander_intent || 'Unknown',
         isrPlatformsActive: (isrPlatforms as any[]).filter((p: any) => p.status === 'ACTIVE').length,
         strikePlatformsReady: (strikePlatforms as any[]).filter((p: any) => p.platform_status === 'READY').length,
-        highRiskTargets: highRiskTargets.length,
-        recentBdaCount: bdaAssessments.length,
+        highRiskTargets: 0,
+        recentBdaCount: 0,
         pendingDecisions: (decisions as any[]).filter((d: any) => !d.decision || d.decision === 'PENDING').length,
       };
     },
   });
 
-  if (loading) {
+  // Alias dashboardData as metrics for use in the template
+  const metrics = dashboardData;
+
+  if (isLoading) {
     return (
       <div className="space-y-6">
         <div className="grid grid-cols-3 gap-4">
@@ -136,14 +142,10 @@ export function TargetingDashboardSummary() {
     return <div className="text-slate-400 text-sm">Failed to load dashboard metrics</div>;
   }
 
-  const totalF3ead = Object.values(metrics.f3eadCounts).reduce((a, b) => a + b, 0);
+  const totalF3ead = Object.values(metrics.f3eadCounts).reduce((a: number, b: number) => a + b, 0);
 
-  // Get visible widgets from layout
-  const visibleWidgets = layoutLoaded ? getVisibleWidgets() : null;
-  const showWidget = (widgetId: string) => {
-    if (!layoutLoaded) return true; // Show all by default if layout not loaded
-    return visibleWidgets?.some((w) => w.id === widgetId && w.visible) ?? true;
-  };
+  // Show all widgets by default (no layout preferences system wired)
+  const showWidget = (_widgetId: string) => true;
 
   return (
     <div className="space-y-6">
@@ -294,9 +296,8 @@ export function TargetingDashboardSummary() {
       {showWidget('mission-context') && (
         <CollapsibleSection
           title="Mission Context"
-          defaultExpanded={isLoaded ? !preferences.collapsedSections.missionContext : false}
+          defaultExpanded={false}
           icon={<Shield className="w-4 h-4" />}
-          onToggle={(expanded) => setCollapsedSection('missionContext', !expanded)}
         >
           <div className="space-y-3">
             <div>
@@ -317,9 +318,8 @@ export function TargetingDashboardSummary() {
       {showWidget('quick-access') && (
         <CollapsibleSection
           title="Quick Access"
-          defaultExpanded={isLoaded ? !preferences.collapsedSections.quickAccess : false}
+          defaultExpanded={false}
           icon={<Zap className="w-4 h-4" />}
-          onToggle={(expanded) => setCollapsedSection('quickAccess', !expanded)}
         >
           <div className="grid grid-cols-4 gap-4">
             <button

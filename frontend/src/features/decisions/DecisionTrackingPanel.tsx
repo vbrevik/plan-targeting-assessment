@@ -4,10 +4,8 @@ import {
     XCircle,
     AlertTriangle,
     Loader2,
-    TrendingUp,
     Target,
     Clock,
-    FileCheck,
     AlertOctagon,
     Lightbulb,
     BarChart3

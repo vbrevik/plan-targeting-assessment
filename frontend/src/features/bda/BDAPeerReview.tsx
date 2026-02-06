@@ -4,9 +4,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { BdaApi, type BdaPeerReview, type BdaReviewSummary } from '@/lib/mshnctrl/api/bda';
-import { CheckCircle2, XCircle, Clock, AlertTriangle, User, Calendar, CheckSquare } from 'lucide-react';
+import { CheckCircle2, XCircle, User, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface BDAPeerReviewProps {
@@ -16,7 +15,7 @@ interface BDAPeerReviewProps {
 
 export const BDAPeerReview: React.FC<BDAPeerReviewProps> = ({ 
     reportId,
-    readOnly = false 
+    readOnly: _readOnly = false
 }) => {
     const [reviews, setReviews] = useState<BdaPeerReview[]>([]);
     const [summary, setSummary] = useState<BdaReviewSummary | null>(null);
@@ -162,13 +161,13 @@ export const BDAPeerReview: React.FC<BDAPeerReviewProps> = ({
                                                 )}
                                                 <Badge className={cn(
                                                     "text-[7px] uppercase font-black py-0.5 px-1.5",
-                                                    getStatusColor(review.review_status)
+                                                    getStatusColor(review.review_status || '')
                                                 )}>
-                                                    {review.review_status.replace('_', ' ')}
+                                                    {(review.review_status || '').replace('_', ' ')}
                                                 </Badge>
                                                 <Badge className={cn(
                                                     "text-[7px] uppercase font-black py-0.5 px-1.5",
-                                                    getPriorityColor(review.priority)
+                                                    getPriorityColor(review.priority || '')
                                                 )}>
                                                     {review.priority}
                                                 </Badge>
@@ -185,15 +184,15 @@ export const BDAPeerReview: React.FC<BDAPeerReviewProps> = ({
                                                 <div className="flex items-center gap-2 flex-wrap mt-2">
                                                     <Badge className={cn(
                                                         "text-[7px] uppercase font-black py-0.5 px-1.5",
-                                                        getQualityColor(review.overall_quality)
+                                                        getQualityColor(String(review.overall_quality ?? ''))
                                                     )}>
-                                                        Quality: {review.overall_quality.replace('_', ' ')}
+                                                        Quality: {String(review.overall_quality ?? '').replace('_', ' ')}
                                                     </Badge>
                                                     <Badge className={cn(
                                                         "text-[7px] uppercase font-black py-0.5 px-1.5",
-                                                        getRecommendationColor(review.recommendation)
+                                                        getRecommendationColor(review.recommendation || '')
                                                     )}>
-                                                        {review.recommendation.replace('_', ' ')}
+                                                        {(review.recommendation || '').replace('_', ' ')}
                                                     </Badge>
                                                     {review.time_spent_minutes && (
                                                         <span className="text-[9px] text-slate-500">

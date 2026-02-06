@@ -7,6 +7,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { Shield, Users, Building, Scale, AlertTriangle, TrendingUp } from 'lucide-react';
 import { SecurityBadge } from '@/components/SecurityBadge';
 import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
+import { TargetingApi } from '@/lib/mshnctrl/api/targeting';
 
 interface RiskAssessment {
   targetId: string;
@@ -35,10 +36,10 @@ export function RiskConstraintsMonitor() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const risks = await targetingApi.getHighRiskTargets();
+        const risks = await TargetingApi.getHighRiskTargets();
         // Transform to component format - fetch target names
         const transformed: RiskAssessment[] = await Promise.all(
-          risks.map(async (r) => {
+          risks.map(async (r: any) => {
             try {
               const target = await targetingApi.getTarget(r.target_id);
 

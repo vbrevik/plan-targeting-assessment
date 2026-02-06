@@ -25,6 +25,8 @@ export interface Entity {
     confidence?: number;
     created_at: string;
     updated_at: string;
+    outgoing_relationships?: EntityRelationship[];
+    incoming_relationships?: EntityRelationship[];
 }
 
 export interface EntityRelationship {

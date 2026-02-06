@@ -50,7 +50,7 @@ export function CollaborativeWorkspace() {
   const navigate = useNavigate();
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [decisions, setDecisions] = useState<DecisionLogEntry[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [_loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {

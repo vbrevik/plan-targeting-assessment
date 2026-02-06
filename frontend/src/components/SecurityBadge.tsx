@@ -16,13 +16,15 @@ export type ClassificationLevel =
  * Handling Caveats
  * Special handling instructions for classified information
  */
-export type Caveat = 
+export type Caveat =
   | 'NOFORN'           // No Foreign Nationals
   | 'REL_TO'           // Releasable To (requires releasability list)
   | 'ORCON'            // Originator Controlled
   | 'PROPIN'           // Caution - Proprietary Information Involved
   | 'FISA'             // Foreign Intelligence Surveillance Act
-  | 'SPECIAL_ACCESS';  // Special Access Required
+  | 'SI'               // Special Intelligence
+  | 'SPECIAL_ACCESS'   // Special Access Required
+  | (string & {});     // Allow additional caveats from backend
 
 export interface SecurityBadgeProps {
   /** Classification level */
@@ -273,7 +275,7 @@ export function ClassifiedPanel({
  * @param requiredLevel - The classification level required
  * @returns boolean - Whether user has sufficient clearance
  */
-export function useHasClearance(requiredLevel: ClassificationLevel): boolean {
+export function useHasClearance(_requiredLevel: ClassificationLevel): boolean {
   // TODO: Implement actual user clearance check from auth context
   // For now, return true for development
   

@@ -255,7 +255,7 @@ class MockDataStore {
     units: Unit[] = [
         {
             id: 'u-shq',
-            type: 'Unit',
+            type: 'UNIT',
             affiliation: 'Blue', // Mapped from side
             name: 'National HQ',
             designator: 'NHQ',
@@ -271,7 +271,7 @@ class MockDataStore {
         },
         {
             id: 'u-blue-hq',
-            type: 'Unit',
+            type: 'UNIT',
             affiliation: 'Blue',
             name: 'Joint Force Command',
             designator: 'JFC-NORTH',
@@ -288,7 +288,7 @@ class MockDataStore {
         },
         {
             id: 'u-blue-1bde',
-            type: 'Unit',
+            type: 'UNIT',
             affiliation: 'Blue',
             name: '1st Mechanized Brigade',
             designator: '1 MECH BDE',
@@ -305,7 +305,7 @@ class MockDataStore {
         },
         {
             id: 'u-blue-1bn',
-            type: 'Unit',
+            type: 'UNIT',
             affiliation: 'Blue',
             name: '1st Battalion',
             designator: '1 BN',
@@ -324,7 +324,7 @@ class MockDataStore {
         },
         {
             id: 'u-red-hq',
-            type: 'Unit',
+            type: 'UNIT',
             affiliation: 'Red',
             name: 'Redland High Command',
             designator: 'RED-HQ',
@@ -342,7 +342,7 @@ class MockDataStore {
         },
         {
             id: 'u-red-7th',
-            type: 'Unit',
+            type: 'UNIT',
             affiliation: 'Red',
             name: '7th Motorized Rifles',
             designator: '7 MOT RIF',
@@ -425,8 +425,8 @@ class MockDataStore {
             status: 'Active',
             createdAt: new Date().toISOString(),
             conditions: [
-                { subjectType: 'Unit', property: 'affiliation', operator: 'equals', value: 'Red' },
-                { subjectType: 'Unit', property: 'location', operator: 'inRegion', value: 'Sector Alpha' }
+                { subjectType: 'UNIT', property: 'affiliation', operator: 'equals', value: 'Red' },
+                { subjectType: 'UNIT', property: 'location', operator: 'inRegion', value: 'Sector Alpha' }
             ]
         },
         {
@@ -437,7 +437,7 @@ class MockDataStore {
             status: 'Active',
             createdAt: new Date().toISOString(),
             conditions: [
-                { subjectType: 'Target', subjectId: 'T-1001', property: 'status', operator: 'equals', value: 'Active' }
+                { subjectType: 'TARGET', subjectId: 'T-1001', property: 'status', operator: 'equals', value: 'Active' }
             ]
         },
         {
@@ -617,6 +617,7 @@ class MockDataStore {
         id: 'guidance-001',
         title: 'Operation Northern Shield - SAC Intent',
         source: 'SACEUR',
+        lastUpdated: new Date().toISOString(),
         intent: 'Maintain territorial integrity and deter further escalation through multi-domain presence and rapid response capabilities.',
         objectives: [
             {
@@ -647,7 +648,7 @@ class MockDataStore {
     targets: Target[] = [
         {
             id: 't-001',
-            type: 'Target',
+            type: 'TARGET',
             affiliation: 'Red',
             designator: 'T-1001',
             targetId: 'T-1001',
@@ -671,7 +672,7 @@ class MockDataStore {
         },
         {
             id: 't-002',
-            type: 'Target',
+            type: 'TARGET',
             affiliation: 'Red',
             designator: 'T-1002',
             targetId: 'T-1002',
@@ -1217,7 +1218,8 @@ class MockDataStore {
             speaker: 'President Varga',
             role: 'Head of State',
             sentiment: 'Hostile',
-            requiresAction: true
+            requiresAction: true,
+            content: 'Any further incursions across the border will be met with the full force of our armed services.'
         }
     ];
 
@@ -1285,7 +1287,7 @@ class MockDataStore {
         // AIR (RAP)
         {
             id: 'track-air-1',
-            type: 'Track',
+            type: 'TRACK',
             name: 'PUMA 01',
             callsign: 'PUMA 01',
             domain: 'Air',
@@ -1299,7 +1301,7 @@ class MockDataStore {
         },
         {
             id: 'track-air-2',
-            type: 'Track',
+            type: 'TRACK',
             name: 'GHOST 99',
             callsign: 'GHOST 99',
             domain: 'Air',
@@ -1314,7 +1316,7 @@ class MockDataStore {
         // MARITIME (RSP)
         {
             id: 'track-mar-1',
-            type: 'Track',
+            type: 'TRACK',
             name: 'SEA KING',
             callsign: 'SEA KING',
             domain: 'Maritime',
@@ -1328,7 +1330,7 @@ class MockDataStore {
         },
         {
             id: 'track-mar-2',
-            type: 'Track',
+            type: 'TRACK',
             name: 'VOLGA',
             callsign: 'VOLGA',
             domain: 'Maritime',
@@ -1343,7 +1345,7 @@ class MockDataStore {
         // GROUND (RGP)
         {
             id: 'track-grd-1',
-            type: 'Track',
+            type: 'TRACK',
             name: 'IRONHORSE',
             callsign: 'IRONHORSE',
             domain: 'Ground',

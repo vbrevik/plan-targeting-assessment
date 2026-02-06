@@ -1,7 +1,7 @@
 // Update Notification Component
 // Shows real-time update badges and notifications
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Bell, X, Check, AlertCircle, Target, FileText, CheckCircle2, Users } from 'lucide-react';
 import { useRealtimeUpdates, type UpdateType } from '@/features/shared/hooks/useRealtimeUpdates';
 import { cn } from '@/lib/utils';

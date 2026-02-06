@@ -11,7 +11,6 @@ import {
     Target,
     Shield,
     Calendar,
-    TrendingUp,
     Crosshair,
     Send,
     Lock,

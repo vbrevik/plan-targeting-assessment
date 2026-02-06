@@ -2,7 +2,7 @@
 // Provides global search functionality for targeting dashboard
 
 import { useState, useEffect, useRef } from 'react';
-import { Search, X, Clock, Target, Brain, Zap, BarChart3, AlertTriangle, Users, Shield, History } from 'lucide-react';
+import { Search, Target, Brain, Zap, BarChart3, AlertTriangle, Users, Shield, History } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';
 import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
@@ -54,7 +54,7 @@ export function QuickSearch() {
         });
 
         // Combine backend results with page navigation
-        const backendResults: SearchResult[] = searchResponse.results.map((result) => {
+        const backendResults: SearchResult[] = searchResponse.results.map((result: any) => {
           // Map result type to icon and path
           let icon: React.ReactNode;
           let path: string;
@@ -301,7 +301,7 @@ export function QuickSearch() {
               <div className="p-4">
                 <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 px-2">Recent & Suggested</div>
                 <div className="space-y-1">
-                  {searchableItems.slice(0, 4).map((item, i) => (
+                  {searchableItems.slice(0, 4).map((item, _i) => (
                     <button
                       key={item.id}
                       onClick={() => handleSelect(item)}

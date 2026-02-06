@@ -46,7 +46,7 @@ export const BDADisplay: React.FC<BDADisplayProps> = ({ targetId, onStatusChange
                     // Get imagery for the latest report if available
                     Promise.resolve([]) // Will be loaded when we have a report
                 ]);
-                setReports(reportsData);
+                setReports(reportsData as any);
 
                 // Load imagery for the latest report
                 if (reportsData.length > 0) {
@@ -66,8 +66,8 @@ export const BDADisplay: React.FC<BDADisplayProps> = ({ targetId, onStatusChange
     useEffect(() => {
         if (reports.length > 0) {
             const latest = reports[0];
-            setEvalPhysical(latest.physical_damage);
-            setEvalFunctional(latest.functional_damage);
+            setEvalPhysical((latest as any).physical_damage);
+            setEvalFunctional((latest as any).functional_damage);
         }
     }, [reports]);
 
@@ -139,15 +139,15 @@ export const BDADisplay: React.FC<BDADisplayProps> = ({ targetId, onStatusChange
         try {
             // Update the report with new assessment
             await BdaApi.updateReport(latestReport.id, {
-                physical_damage: evalPhysical as any,
-                functional_damage: evalFunctional as any,
-                recommendation: recommendation as any,
-            });
+                physical_damage: evalPhysical,
+                functional_damage: evalFunctional,
+                recommendation: recommendation,
+            } as any);
             setIsAssessing(false);
             onStatusChange?.();
             // Reload data
             const updated = await BdaApi.getReports({ target_id: targetId });
-            setReports(updated);
+            setReports(updated as any);
         } catch (error) {
             console.error('Failed to update assessment:', error);
         } finally {

@@ -6,7 +6,6 @@ use tower_http::cors::{CorsLayer, Any};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use sqlx::sqlite::SqlitePoolOptions;
 mod utils;
-mod features;
 mod config;
 mod middleware;
 
@@ -121,11 +120,11 @@ async fn main() {
     let abac_service = core_abac::AbacService::new(pool.clone());
     let user_service = core_users::UserService::new(pool.clone());
     let ontology_service = Arc::new(core_ontology::OntologyService::new(pool.clone()));
-    let auth_service = core_auth::AuthService::new(pool.clone(), config.clone(), abac_service.clone(), user_service.clone(), (*ontology_service).clone());
+    let auth_service = core_auth::AuthService::new(pool.clone(), config.clone(), user_service.clone(), (*ontology_service).clone(), abac_service.clone());
     let system_service = core_system::SystemService::new();
     let discovery_service = core_discovery::DiscoveryService::new();
     let rate_limit_service = Arc::new(core_rate_limit::RateLimitService::new(pool.clone(), false));
-    let strategy_service = crate::features::strategy::service::StrategyService::new();
+    let strategy_service = strategy::service::StrategyService::new();
 
     // Create router and attach state
     // API router contains feature routes and an API-scoped health check
@@ -152,11 +151,6 @@ async fn main() {
                         .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
                 )
         )
-        .merge(
-            crate::features::dashboard::routes::dashboard_routes()
-                .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
-                .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
-        )
         .nest("/users", 
             core_users::users_routes()
                 .with_state(user_service)
@@ -176,30 +170,30 @@ async fn main() {
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/operations",
-            crate::features::operations::router(pool.clone())
+            meetings::meeting_routes(pool.clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/assumptions",
-            crate::features::assumptions::router::router(pool.clone())
+            assumptions::router::router(pool.clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/targeting",
             {
-                let realtime_service = std::sync::Arc::new(crate::features::targeting::services::realtime::RealtimeService::new());
-                crate::features::targeting::create_router(pool.clone(), realtime_service, ontology_service.clone())
+                let realtime_service = std::sync::Arc::new(targeting::services::realtime::RealtimeService::new());
+                targeting::create_router(pool.clone(), realtime_service, ontology_service.clone())
                     .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                     .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
             }
         )
         .nest("/bda",
-            crate::features::bda::router(pool.clone(), ontology_service.clone())
+            bda::router(pool.clone(), ontology_service.clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
         .nest("/roe",
-            crate::features::roe::router(pool.clone())
+            roe::router(pool.clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
@@ -208,16 +202,8 @@ async fn main() {
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         )
-        .nest("/navigation",
-            crate::features::navigation::navigation_router::<AuthService>((*ontology_service).clone(), abac_service)
-                .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
-                .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
-        ).nest("/intelligence",
-            crate::features::intelligence::router(pool.clone())
-                .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
-                .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
-        ).nest("/strategy",
-            crate::features::strategy::routes::strategy_routes()
+        .nest("/strategy",
+            strategy::routes::strategy_routes()
                 .with_state(strategy_service)
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))

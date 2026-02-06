@@ -225,16 +225,16 @@ export function RecognisedPicture() {
                                     <div className="space-y-4 font-mono text-xs">
                                         <div className="flex justify-between border-b border-slate-800/50 pb-2">
                                             <span className="text-slate-600">LATITUDE:</span>
-                                            <span className="text-white">{selectedTrack.position.lat.toFixed(4)}°N</span>
+                                            <span className="text-white">{selectedTrack.position?.lat.toFixed(4)}°N</span>
                                         </div>
                                         <div className="flex justify-between border-b border-slate-800/50 pb-2">
                                             <span className="text-slate-600">LONGITUDE:</span>
-                                            <span className="text-white">{selectedTrack.position.lng.toFixed(4)}°E</span>
+                                            <span className="text-white">{selectedTrack.position?.lng.toFixed(4)}°E</span>
                                         </div>
-                                        {selectedTrack.position.alt && (
+                                        {selectedTrack.position?.alt && (
                                             <div className="flex justify-between border-b border-slate-800/50 pb-2">
                                                 <span className="text-slate-600">ALTITUDE:</span>
-                                                <span className="text-white">{selectedTrack.position.alt.toLocaleString()} FT</span>
+                                                <span className="text-white">{selectedTrack.position?.alt.toLocaleString()} FT</span>
                                             </div>
                                         )}
                                     </div>

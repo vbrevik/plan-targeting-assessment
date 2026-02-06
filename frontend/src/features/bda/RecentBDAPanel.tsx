@@ -1,5 +1,4 @@
-import React from 'react';
-import { Activity, TrendingUp, Target, Lightbulb } from 'lucide-react';
+import { Activity, TrendingUp, Lightbulb } from 'lucide-react';
 import { SecurityBadge, type ClassificationLevel } from '@/components/SecurityBadge';
 import { Link } from '@tanstack/react-router';
 

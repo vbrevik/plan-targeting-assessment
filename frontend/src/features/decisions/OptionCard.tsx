@@ -36,7 +36,7 @@ export function OptionCard({
     showCascades,
     optionNumber
 }: OptionCardProps) {
-    const [expanded, setExpanded] = useState(false);
+    const [_expanded, _setExpanded] = useState(false);
     const { option, immediateConsequences, secondaryConsequences, tradeOffAnalysis, overallScore } = analyzedOption;
 
     const positiveImmediate = immediateConsequences.filter(c => c.type === 'positive');

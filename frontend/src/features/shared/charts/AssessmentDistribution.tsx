@@ -66,7 +66,7 @@ export function AssessmentDistribution({
             cx="50%"
             cy="50%"
             labelLine={false}
-            label={({ name, percentage }) => `${name}: ${percentage}%`}
+            label={({ name, percentage }: any) => `${name}: ${percentage}%`}
             outerRadius={100}
             fill="#8884d8"
             dataKey="value"
@@ -86,7 +86,7 @@ export function AssessmentDistribution({
               color: '#f1f5f9',
             }}
             labelStyle={{ color: '#cbd5e1' }}
-            formatter={(value: number) => [`${value} assessments`, 'Count']}
+            formatter={((value: number) => [`${value} assessments`, 'Count']) as any}
           />
           <Legend
             wrapperStyle={{ color: '#cbd5e1', fontSize: '12px' }}

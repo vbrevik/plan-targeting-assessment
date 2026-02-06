@@ -26,9 +26,9 @@ export function HistoricalView({ className }: HistoricalViewProps) {
   });
 
   const { data: historicalData, isLoading } = useCachedQuery({
-    queryKey: ['historical-data', dateRange.from?.toISOString(), dateRange.to?.toISOString()],
+    queryKey: 'historical-data',
     queryFn: async () => {
-      const [targets, bdaReports] = await Promise.all([
+      const [targets, _bdaReports] = await Promise.all([
         targetingApi.getTargets({ limit: 1000 }).catch(() => []),
         BdaApi.getReports().catch(() => []),
       ]);

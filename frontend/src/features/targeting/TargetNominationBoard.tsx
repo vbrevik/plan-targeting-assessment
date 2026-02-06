@@ -2,21 +2,18 @@
 // F3EAD cycle visualization, Dynamic Target List, TST countdown
 
 import { useState, useEffect } from 'react';
-import { 
-  Search, 
-  Crosshair, 
-  Target, 
-  Zap, 
-  TrendingUp, 
-  Clock, 
-  AlertCircle,
+import {
+  Search,
+  Crosshair,
+  Target,
+  TrendingUp,
+  Clock,
   ChevronRight,
   Flame,
   Activity
 } from 'lucide-react';
 import { SecurityBadge } from '@/components/SecurityBadge';
-import { targetingApi, type DtlEntry } from '@/lib/mshnctrl/api/targeting.api';
-import { LoadingSkeleton, ListItemSkeleton } from '../shared/LoadingSkeleton';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 
 interface F3EADStage {
   name: string;
@@ -93,7 +90,7 @@ export function TargetNominationBoard({ filters }: TargetNominationBoardProps = 
                 feasibilityScore: entry.feasibility_score,
                 combinedScore: entry.combined_score || (entry.priority_score + entry.feasibility_score) / 2,
                 agingHours: entry.aging_hours,
-                status: target.target_status,
+                status: (target.target_status ?? 'NOMINATED'),
                 classification: 'SECRET', // Classification not in Target model, default to SECRET
               };
             } catch {

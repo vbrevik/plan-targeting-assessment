@@ -4,7 +4,7 @@ import { BdaApi, type BdaReport, type BdaImagery } from '@/lib/mshnctrl/api/bda'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Camera, CheckCircle2, X, AlertTriangle, ShieldAlert, Activity } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, ShieldAlert } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { BDAImageAnnotator } from '@/features/bda/BDAImageAnnotator';
 import { BDAImageComparisonViewer } from '@/features/bda/BDAImageComparisonViewer';
@@ -33,7 +33,7 @@ function BDADetailPage() {
                     BdaApi.getReport(reportId),
                     BdaApi.getReportImagery(reportId)
                 ]);
-                setReport(r);
+                setReport(r as unknown as BdaReport);
                 setImagery(img);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Failed to load BDA report');
@@ -110,7 +110,6 @@ function BDADetailPage() {
                         preStrikeImagery={preStrikeImagery[0]}
                         postStrikeImagery={postStrikeImagery[0]}
                         syncZoom={true}
-                        syncPan={true}
                     />
 
                     {/* Image Annotator for Post-Strike Imagery */}
@@ -323,7 +322,7 @@ function BDADetailPage() {
                                     const comments = prompt('Rejection comments:');
                                     if (comments) {
                                         try {
-                                            await BdaApi.rejectReport(report.id, comments);
+                                            await BdaApi.rejectReport(report.id);
                                             window.location.reload();
                                         } catch (err) {
                                             console.error('Failed to reject report:', err);

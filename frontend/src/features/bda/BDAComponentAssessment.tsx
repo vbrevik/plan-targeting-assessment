@@ -21,7 +21,7 @@ export const BDAComponentAssessment: React.FC<BDAComponentAssessmentProps> = ({
     const [components, setComponents] = useState<BdaComponentAssessment[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [isAdding, setIsAdding] = useState(false);
+    const [_isAdding, setIsAdding] = useState(false);
 
     useEffect(() => {
         loadComponents();
@@ -152,13 +152,13 @@ export const BDAComponentAssessment: React.FC<BDAComponentAssessmentProps> = ({
                                             )}
                                             <Badge className={cn(
                                                 "text-[7px] uppercase font-black py-0.5 px-1.5",
-                                                getDamageColor(component.physical_damage)
+                                                getDamageColor(component.physical_damage || '' as any)
                                             )}>
                                                 {component.physical_damage}
                                                 {component.physical_damage_percentage && ` (${component.physical_damage_percentage}%)`}
                                             </Badge>
                                             <div className="flex items-center gap-1">
-                                                {getFunctionalStatusIcon(component.functional_damage)}
+                                                {getFunctionalStatusIcon(component.functional_damage || '' as any)}
                                                 <span className="text-[9px] text-slate-400">
                                                     {component.functional_damage}
                                                 </span>

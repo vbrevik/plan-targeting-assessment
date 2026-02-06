@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BdaApi, type BdaDistributionList, type BdaReportDistribution, type BdaDistributionSummary } from '@/lib/mshnctrl/api/bda';
-import { Send, Users, CheckCircle2, Clock, XCircle, Plus, Trash2 } from 'lucide-react';
+import { Send, Users, CheckCircle2, Clock, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface BDADistributionManagerProps {
@@ -194,13 +194,13 @@ export const BDADistributionManager: React.FC<BDADistributionManagerProps> = ({
                                             )}
                                             <Badge className={cn(
                                                 "text-[7px] uppercase font-black py-0.5 px-1.5 flex items-center gap-1",
-                                                getStatusColor(dist.delivery_status)
+                                                getStatusColor(dist.delivery_status || '')
                                             )}>
-                                                {getStatusIcon(dist.delivery_status)}
+                                                {getStatusIcon(dist.delivery_status || '')}
                                                 {dist.delivery_status}
                                             </Badge>
                                             <Badge className="text-[7px] uppercase font-black py-0.5 px-1.5 bg-slate-800">
-                                                {dist.report_format.toUpperCase()}
+                                                {(dist.report_format || '').toUpperCase()}
                                             </Badge>
                                         </div>
                                         
@@ -225,7 +225,7 @@ export const BDADistributionManager: React.FC<BDADistributionManagerProps> = ({
                                                     </span>
                                                 </div>
                                             )}
-                                            {dist.delivery_attempts > 0 && (
+                                            {(dist.delivery_attempts || 0) > 0 && (
                                                 <div>
                                                     <span className="block text-slate-600 mb-0.5">Attempts</span>
                                                     <span className="text-slate-400">{dist.delivery_attempts}</span>

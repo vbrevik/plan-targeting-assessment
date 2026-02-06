@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import { TacticalMap } from '../operations/TacticalMap';
 import { NetworkGraph } from '../shared/NetworkGraph';
-import { LOOTimeline } from '../LOOTimeline';
+import { LOOTimeline } from '../planning/LOOTimeline';
 import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import { useToast } from '@/components/ui/use-toast';
 import { useOperationalContext, getPhaseColor } from '@/lib/mshnctrl/hooks/useOperationalContext';

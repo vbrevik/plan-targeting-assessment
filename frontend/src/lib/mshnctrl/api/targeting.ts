@@ -62,6 +62,7 @@ export interface OperationalTempo {
 export interface DtlEntry {
   id: string;
   target_id: string;
+  target_name?: string;
   priority_score: number;
   feasibility_score: number;
   combined_score: number;

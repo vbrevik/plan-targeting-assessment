@@ -1,9 +1,6 @@
-import type { 
-    DecisionTracking, 
+import type {
+    DecisionTracking,
     DecisionImpactMonitor,
-    ConsequenceOutcome,
-    DecisionContribution,
-    CascadeImpact 
 } from '../types';
 
 // Mock tracked decisions

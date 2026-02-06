@@ -1,4 +1,4 @@
-import { AlertOctagon, AlertTriangle, Shield, FileWarning } from 'lucide-react';
+import { AlertOctagon, AlertTriangle, FileWarning } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { RiskFactor } from '@/lib/mshnctrl/types';
 

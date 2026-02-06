@@ -1,4 +1,4 @@
-import { Gavel, AlertTriangle, Clock, ChevronRight, Shield, ShieldAlert } from 'lucide-react';
+import { Gavel, AlertTriangle, ChevronRight, Shield, ShieldAlert } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Decision, ROEStatus } from '@/lib/mshnctrl/types';
 
@@ -45,7 +45,7 @@ function getROEStatusInfo(roeStatus: ROEStatus) {
             iconColor: 'text-red-400'
         }
     };
-    return statusMap[roeStatus];
+    return statusMap[roeStatus as keyof typeof statusMap];
 }
 
 export function DecisionCard({ decision, onExpand }: DecisionCardProps) {

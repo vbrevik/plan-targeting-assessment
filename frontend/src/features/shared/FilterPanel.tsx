@@ -1,8 +1,8 @@
 // Filter Panel Component
 // Provides multi-criteria filtering for detail pages
 
-import { useState, useEffect } from 'react';
-import { Filter, X, Save, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
+import { Filter, Save, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface FilterOption {

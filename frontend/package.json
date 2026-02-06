@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc",
+    "build": "vite build && tsc -p tsconfig.build.json",
     "teardown": "node ./scripts/teardown.js",
     "test:e2e": "playwright test",
     "preview": "vite preview",

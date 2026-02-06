@@ -28,7 +28,7 @@ const mapBackendToFrontend = (backend: BackendTarget): FrontendTarget => {
         id: backend.id,
         name: backend.name,
         description: backend.description,
-        type: 'Target',
+        type: 'TARGET',
         affiliation: 'Red', // Defaulting as usually targets are hostile
         status: 'Active', // OperationalStatus
         location: { lat, lng },

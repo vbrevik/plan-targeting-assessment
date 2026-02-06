@@ -159,7 +159,7 @@ export function DigitalTwinView() {
                                         else if (mod.id === 'digital_twin') toast({ title: 'Digital Twin', description: 'You are already viewing the Digital Twin simulation.' });
                                         else if (mod.id === 'mdo') navigate({ to: '/mshnctrl/mdo' });
                                         else if (mod.id === 'fusion') navigate({ to: '/mshnctrl/rxp' }); // Intel Fusion -> RXP
-                                        else if (mod.id === 'dashboard') navigate({ to: '/mshnctrl/dashboard' });
+                                        else if (mod.id === 'dashboard') navigate({ to: '/mshnctrl/im-dashboard' });
                                         else {
                                             // Fallback for others
                                             toast({

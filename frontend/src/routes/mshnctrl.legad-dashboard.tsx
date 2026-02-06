@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { Scale, Shield, FileText, AlertTriangle, CheckCircle2, Clock, Zap, Target } from 'lucide-react';
+import { Scale, Shield, FileText, AlertTriangle, CheckCircle2, Target } from 'lucide-react';
 
 export const Route = createFileRoute('/mshnctrl/legad-dashboard')({
     component: LEGADDashboard,
@@ -61,7 +61,7 @@ function LEGADDashboard() {
     );
 }
 
-function MetricCard({ icon: Icon, label, value, change, changeType, color }: any) {
+function MetricCard({ icon: Icon, label, value, change, changeType: _changeType, color }: any) {
     const colorClasses: any = {
         amber: 'text-amber-400 bg-amber-950/50 border-amber-900',
         blue: 'text-blue-400 bg-blue-950/50 border-blue-900',

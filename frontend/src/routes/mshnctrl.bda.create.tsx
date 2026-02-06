@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, useSearch } from '@tanstack/react-router';
 import { BDAReportForm } from '@/features/bda/BDAReportForm';
-import { BdaApi, type BdaReport } from '@/lib/mshnctrl/api/bda';
+import { type BdaReport } from '@/lib/mshnctrl/api/bda';
 
 export const Route = createFileRoute('/mshnctrl/bda/create')({
     component: BDACreatePage

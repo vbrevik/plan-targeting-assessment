@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
-import { NaturalDisaster } from '@/lib/mshnctrl/types';
+import type { NaturalDisaster } from '@/lib/mshnctrl/types';
 import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
-import { AlertTriangle, MapPin, Activity, Package } from 'lucide-react';
+import { MapPin, Activity, Package } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';

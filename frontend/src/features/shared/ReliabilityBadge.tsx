@@ -1,4 +1,3 @@
-import React from 'react';
 import { cn } from '@/lib/utils';
 
 export type ReliabilityCode = 'A' | 'B' | 'C' | 'D' | 'E' | 'F';

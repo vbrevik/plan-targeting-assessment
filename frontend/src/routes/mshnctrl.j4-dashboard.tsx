@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { Package, Truck, Factory, AlertTriangle, TrendingUp, Activity, Zap, Network, CheckCircle2, Clock } from 'lucide-react';
+import { Package, Truck, Factory, AlertTriangle, Network } from 'lucide-react';
 
 export const Route = createFileRoute('/mshnctrl/j4-dashboard')({
     component: J4Dashboard,
@@ -61,7 +61,7 @@ function J4Dashboard() {
     );
 }
 
-function MetricCard({ icon: Icon, label, value, change, changeType, color }: any) {
+function MetricCard({ icon: Icon, label, value, change, changeType: _changeType, color }: any) {
     const colorClasses: any = {
         amber: 'text-amber-400 bg-amber-950/50 border-amber-900',
         red: 'text-red-400 bg-red-950/50 border-red-900',

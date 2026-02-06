@@ -14,6 +14,9 @@ import type {
     DtlEntry
 } from './targeting';
 
+// Re-export types used by consuming components
+export type { DtlEntry } from './targeting';
+
 // ============================================================================
 // CORE ONTOLOGY & TYPES
 // ============================================================================
@@ -99,6 +102,15 @@ export interface Target {
     };
 
     classification?: string;
+
+    // Expanded targeting properties (used in detail views)
+    collateral_estimate?: any;
+    pattern_of_life?: any[];
+    time_window?: any;
+    legal_status?: any;
+    weather_constraints?: any;
+    location?: any;
+    affiliation?: string;
 }
 
 export interface StrikePlatform {
@@ -134,30 +146,56 @@ export interface BDAAssessment {
 }
 
 export interface MissionIntent {
-    id: string;
-    commander_intent: string;
-    end_state: string;
-    center_of_gravity: string;
-    lines_of_effort: string[];
+    id?: string;
+    commander_intent?: string;
+    end_state?: string;
+    center_of_gravity?: string;
+    lines_of_effort?: string[];
+    // Properties used by MissionCommandOverview fallback/display
+    phase?: string;
+    priorityEffects?: string[];
+    endstate?: string;
+    endstateMetrics?: Array<{
+        name: string;
+        current: number;
+        target: number;
+        status: 'on-track' | 'at-risk' | 'off-track';
+    }>;
 }
 
 export interface TargetingGuidance {
-    id: string;
-    priorities: string[];
-    restrictions: string[];
-    focus_areas: string[];
+    id?: string;
+    priorities?: string[];
+    restrictions?: string[];
+    focus_areas?: string[];
+    // Properties used by MissionCommandOverview fallback/display
+    roeLevel?: string;
+    collateralThreshold?: string;
+    approvedTargetSets?: string[];
 }
 
 export interface DecisionAuthority {
     level: string;
-    role: string;
-    authorities: string[];
+    role?: string;
+    authorities?: string[];
+    // Properties used by MissionCommandOverview fallback/display
+    authority?: string;
+    canApprove?: string[];
+    mustEscalate?: string[];
 }
 
 export interface OperationalTempo {
-    current_phase: string;
-    tempo: 'HIGH' | 'MEDIUM' | 'LOW';
-    next_decision_point: string;
+    current_phase?: string;
+    tempo?: 'HIGH' | 'MEDIUM' | 'LOW';
+    next_decision_point?: string;
+    // Properties used by MissionCommandOverview fallback/display
+    currentPhase?: string;
+    hoursIntoPhase?: number;
+    criticalDecisionPoints?: Array<{
+        name: string;
+        time: string;
+        status: 'upcoming' | 'current' | 'passed';
+    }>;
 }
 
 
@@ -336,6 +374,16 @@ export const targetingApi = {
 
     async getBiasAlerts(): Promise<any[]> {
         return api.get<any[]>('/targeting/analysis/bias-alerts');
+    },
+
+    // Summary
+    async getSummary(): Promise<{ total_targets: number; active_targets: number; pending_nominations: number; approved_targets: number }> {
+        return api.get('/targeting/summary');
+    },
+
+    // High Risk Targets
+    async getHighRiskTargets(): Promise<any[]> {
+        return api.get<any[]>('/targeting/risk/high');
     },
 
     // Ontology (Data-Driven Schema)

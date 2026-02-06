@@ -26,6 +26,13 @@ export interface OntologyEntity<TType extends string = string> {
     confidence?: number;
     created_at: string;
     updated_at: string;
+    // Flattened properties that may be returned at top-level by the backend
+    target_status?: string;
+    priority?: string;
+    target_type?: string;
+    location?: GeoPoint | string;
+    affiliation?: string;
+    coordinates?: string;
 }
 
 /**
@@ -1155,8 +1162,8 @@ export interface Track extends BaseEntity {
     type: 'TRACK';
     callsign: string; // Maps to BaseEntity.name usually, but can keep specific alias
     domain: TrackDomain;
-    // side Maps to Affiliation
-    // position Maps to Location
+    side?: string; // Alias for affiliation - e.g., 'Blue', 'Red', 'Grey'
+    position?: GeoPoint; // Alias for location - lat/lng/alt coordinates
     vector: {
         speed: number; // Knots or km/h
         heading: number; // Degrees 0-359
@@ -1182,6 +1189,7 @@ export interface StrategicGuidance {
     recommendedRoeIds?: UUID[];
     operationId?: string;
     campaignId?: string;
+    politicalImplications?: string[];
 }
 
 export interface PMESIIData {

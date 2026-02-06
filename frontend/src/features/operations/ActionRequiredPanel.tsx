@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AlertTriangle, Clock, CheckCircle2, Target, FileEdit, Send, Eye } from 'lucide-react';
+import { AlertTriangle, Clock, CheckCircle2, FileEdit, Send, Eye } from 'lucide-react';
 import { SecurityBadge, type ClassificationLevel, type Caveat } from '@/components/SecurityBadge';
 import { Link } from '@tanstack/react-router';
 import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';

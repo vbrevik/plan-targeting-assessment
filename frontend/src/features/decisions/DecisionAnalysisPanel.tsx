@@ -2,8 +2,6 @@ import { useState } from 'react';
 import {
     X,
     AlertTriangle,
-    TrendingUp,
-    TrendingDown,
     Clock,
     Users,
     FileText,
@@ -12,7 +10,6 @@ import {
     MessageCircle,
     ChevronDown,
     ChevronUp,
-    Shield,
     ShieldAlert,
     ShieldCheck,
     Target,
@@ -81,14 +78,14 @@ function getROEStatusDisplay(roeStatus: ROEStatus) {
             severity: 'critical'
         }
     };
-    return statusMap[roeStatus];
+    return statusMap[roeStatus as keyof typeof statusMap];
 }
 
 export function DecisionAnalysisPanel({
     decision,
     analysis,
     onClose,
-    onSelectOption
+    onSelectOption: _onSelectOption
 }: DecisionAnalysisPanelProps) {
     const [showCascades, setShowCascades] = useState(false);
     const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);

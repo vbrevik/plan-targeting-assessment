@@ -12,7 +12,6 @@ import {
     ArrowRight,
     Eye,
     CheckCircle2,
-    XCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';

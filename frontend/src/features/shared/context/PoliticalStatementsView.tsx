@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 export function PoliticalStatementsView() {
     const { context } = useOperationalContext();
     const [statements, setStatements] = useState<PoliticalStatement[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [_loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {

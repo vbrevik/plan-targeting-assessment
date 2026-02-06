@@ -46,7 +46,7 @@ export function F3EADHorizontalFunnel({
                 <span className="text-[10px] font-mono text-slate-400">TOTAL: {total}</span>
             </div>
             <div className="flex items-stretch gap-1 h-12">
-                {stages.map((stage, index) => {
+                {stages.map((stage, _index) => {
                     const count = (counts as any)[stage.code] || 0;
                     const percentage = total > 0 ? (count / total) * 100 : 0;
                     const isActive = selectedStage === stage.code;
