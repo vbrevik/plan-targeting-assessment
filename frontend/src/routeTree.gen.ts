@@ -8,8 +8,6 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as RegisterRouteImport } from './routes/register'
@@ -27,54 +25,34 @@ import { Route as StatsUsersRouteImport } from './routes/stats/users'
 import { Route as StatsSystemRouteImport } from './routes/stats/system'
 import { Route as StatsSessionsRouteImport } from './routes/stats/sessions'
 import { Route as MshnctrlWeatherRouteImport } from './routes/mshnctrl.weather'
-import { Route as MshnctrlUncertaintyRouteImport } from './routes/mshnctrl.uncertainty'
 import { Route as MshnctrlTriageRouteImport } from './routes/mshnctrl.triage'
 import { Route as MshnctrlTorManagerRouteImport } from './routes/mshnctrl.tor-manager'
 import { Route as MshnctrlTargetingCellDashboardRouteImport } from './routes/mshnctrl.targeting-cell-dashboard'
-import { Route as MshnctrlSupplyChainRouteImport } from './routes/mshnctrl.supply-chain'
 import { Route as MshnctrlStrikeOptimizerRouteImport } from './routes/mshnctrl.strike-optimizer'
 import { Route as MshnctrlStrategicDirectionRouteImport } from './routes/mshnctrl.strategic-direction'
-import { Route as MshnctrlStaffRouteImport } from './routes/mshnctrl.staff'
-import { Route as MshnctrlSocialDomainRouteImport } from './routes/mshnctrl.social-domain'
 import { Route as MshnctrlSecurityRouteImport } from './routes/mshnctrl.security'
-import { Route as MshnctrlScenariosRouteImport } from './routes/mshnctrl.scenarios'
-import { Route as MshnctrlRxpRouteImport } from './routes/mshnctrl.rxp'
 import { Route as MshnctrlRoeRouteImport } from './routes/mshnctrl.roe'
 import { Route as MshnctrlRfisRouteImport } from './routes/mshnctrl.rfis'
-import { Route as MshnctrlProductsRouteImport } from './routes/mshnctrl.products'
-import { Route as MshnctrlPersonnelRouteImport } from './routes/mshnctrl.personnel'
 import { Route as MshnctrlOrbatRouteImport } from './routes/mshnctrl.orbat'
 import { Route as MshnctrlOntologyRouteImport } from './routes/mshnctrl.ontology'
 import { Route as MshnctrlMenuBuilderRouteImport } from './routes/mshnctrl.menu-builder'
-import { Route as MshnctrlMdoRouteImport } from './routes/mshnctrl.mdo'
-import { Route as MshnctrlLogisticsRouteImport } from './routes/mshnctrl.logistics'
 import { Route as MshnctrlLegadDashboardRouteImport } from './routes/mshnctrl.legad-dashboard'
-import { Route as MshnctrlJ5DashboardRouteImport } from './routes/mshnctrl.j5-dashboard'
-import { Route as MshnctrlJ4DashboardRouteImport } from './routes/mshnctrl.j4-dashboard'
 import { Route as MshnctrlJ3DashboardRouteImport } from './routes/mshnctrl.j3-dashboard'
 import { Route as MshnctrlJ2DashboardRouteImport } from './routes/mshnctrl.j2-dashboard'
-import { Route as MshnctrlInfrastructureRouteImport } from './routes/mshnctrl.infrastructure'
 import { Route as MshnctrlInformationManagementRouteImport } from './routes/mshnctrl.information-management'
 import { Route as MshnctrlImDashboardRouteImport } from './routes/mshnctrl/im-dashboard'
-import { Route as MshnctrlGapAnalysisRouteImport } from './routes/mshnctrl.gap-analysis'
 import { Route as MshnctrlFeedbackRouteImport } from './routes/mshnctrl.feedback'
 import { Route as MshnctrlExternalContextRouteImport } from './routes/mshnctrl.external-context'
 import { Route as MshnctrlDigitalTwinRouteImport } from './routes/mshnctrl.digital-twin'
 import { Route as MshnctrlDecisionBoardRouteImport } from './routes/mshnctrl.decision-board'
 import { Route as MshnctrlCopSummaryRouteImport } from './routes/mshnctrl.cop-summary'
-import { Route as MshnctrlConopsRouteImport } from './routes/mshnctrl.conops'
-import { Route as MshnctrlCogRouteImport } from './routes/mshnctrl.cog'
-import { Route as MshnctrlCoaWargamerRouteImport } from './routes/mshnctrl.coa-wargamer'
 import { Route as MshnctrlCnrRouteImport } from './routes/mshnctrl.cnr'
 import { Route as MshnctrlCdeRouteImport } from './routes/mshnctrl.cde'
-import { Route as MshnctrlCcirRouteImport } from './routes/mshnctrl.ccir'
-import { Route as MshnctrlCampaignRouteImport } from './routes/mshnctrl.campaign'
 import { Route as MshnctrlBriefingRouteImport } from './routes/mshnctrl.briefing'
 import { Route as MshnctrlBrainstormingRouteImport } from './routes/mshnctrl.brainstorming'
 import { Route as MshnctrlBdaRouteImport } from './routes/mshnctrl.bda'
 import { Route as MshnctrlBattleRhythmRouteImport } from './routes/mshnctrl.battle-rhythm'
 import { Route as MshnctrlAssumptionsRouteImport } from './routes/mshnctrl.assumptions'
-import { Route as MshnctrlAssessmentRouteImport } from './routes/mshnctrl.assessment'
 import { Route as MshnctrlAnalystDashboardRouteImport } from './routes/mshnctrl.analyst-dashboard'
 import { Route as MshnctrlAdvisoryRouteImport } from './routes/mshnctrl.advisory'
 import { Route as MshnctrlA2adRouteImport } from './routes/mshnctrl.a2ad'
@@ -84,7 +62,6 @@ import { Route as AdminNewRouteImport } from './routes/admin/new'
 import { Route as AdminDiscoveryRouteImport } from './routes/admin/discovery'
 import { Route as AdminAbacRouteImport } from './routes/admin/abac'
 import { Route as MshnctrlTargetingIndexRouteImport } from './routes/mshnctrl.targeting.index'
-import { Route as MshnctrlProposalsIndexRouteImport } from './routes/mshnctrl.proposals.index'
 import { Route as AdminDiscoveryIndexRouteImport } from './routes/admin/discovery/index'
 import { Route as MshnctrlTargetingTargetsRouteImport } from './routes/mshnctrl.targeting.targets'
 import { Route as MshnctrlTargetingRiskRouteImport } from './routes/mshnctrl.targeting.risk'
@@ -100,14 +77,11 @@ import { Route as MshnctrlTargetingAssetsRouteImport } from './routes/mshnctrl.t
 import { Route as MshnctrlTargetingAnalyticsRouteImport } from './routes/mshnctrl.targeting.analytics'
 import { Route as MshnctrlTargetingAnalysisRouteImport } from './routes/mshnctrl.targeting.analysis'
 import { Route as MshnctrlTargetingTargetIdRouteImport } from './routes/mshnctrl.targeting.$targetId'
-import { Route as MshnctrlProposalsProposalIdRouteImport } from './routes/mshnctrl.proposals.$proposalId'
 import { Route as MshnctrlConductSessionIdRouteImport } from './routes/mshnctrl.conduct.$sessionId'
 import { Route as MshnctrlBdaCreateRouteImport } from './routes/mshnctrl.bda.create'
 import { Route as MshnctrlBdaReportIdRouteImport } from './routes/mshnctrl.bda.$reportId'
 import { Route as AdminDiscoveryServiceIdRouteImport } from './routes/admin/discovery/$serviceId'
 import { Route as MshnctrlTargetingJtbSessionIdRouteImport } from './routes/mshnctrl.targeting.jtb.$sessionId'
-
-const MshnctrlOplanLazyRouteImport = createFileRoute('/mshnctrl/oplan')()
 
 const ReportsRoute = ReportsRouteImport.update({
   id: '/reports',
@@ -169,13 +143,6 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
-const MshnctrlOplanLazyRoute = MshnctrlOplanLazyRouteImport.update({
-  id: '/oplan',
-  path: '/oplan',
-  getParentRoute: () => MshnctrlRoute,
-} as any).lazy(() =>
-  import('./routes/mshnctrl.oplan.lazy').then((d) => d.Route),
-)
 const StatsUsersRoute = StatsUsersRouteImport.update({
   id: '/stats/users',
   path: '/stats/users',
@@ -196,11 +163,6 @@ const MshnctrlWeatherRoute = MshnctrlWeatherRouteImport.update({
   path: '/weather',
   getParentRoute: () => MshnctrlRoute,
 } as any)
-const MshnctrlUncertaintyRoute = MshnctrlUncertaintyRouteImport.update({
-  id: '/uncertainty',
-  path: '/uncertainty',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
 const MshnctrlTriageRoute = MshnctrlTriageRouteImport.update({
   id: '/triage',
   path: '/triage',
@@ -219,11 +181,6 @@ const MshnctrlTargetingCellDashboardRoute =
     path: '/targeting-cell-dashboard',
     getParentRoute: () => MshnctrlRoute,
   } as any)
-const MshnctrlSupplyChainRoute = MshnctrlSupplyChainRouteImport.update({
-  id: '/supply-chain',
-  path: '/supply-chain',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
 const MshnctrlStrikeOptimizerRoute = MshnctrlStrikeOptimizerRouteImport.update({
   id: '/strike-optimizer',
   path: '/strike-optimizer',
@@ -235,29 +192,9 @@ const MshnctrlStrategicDirectionRoute =
     path: '/strategic-direction',
     getParentRoute: () => MshnctrlRoute,
   } as any)
-const MshnctrlStaffRoute = MshnctrlStaffRouteImport.update({
-  id: '/staff',
-  path: '/staff',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlSocialDomainRoute = MshnctrlSocialDomainRouteImport.update({
-  id: '/social-domain',
-  path: '/social-domain',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
 const MshnctrlSecurityRoute = MshnctrlSecurityRouteImport.update({
   id: '/security',
   path: '/security',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlScenariosRoute = MshnctrlScenariosRouteImport.update({
-  id: '/scenarios',
-  path: '/scenarios',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlRxpRoute = MshnctrlRxpRouteImport.update({
-  id: '/rxp',
-  path: '/rxp',
   getParentRoute: () => MshnctrlRoute,
 } as any)
 const MshnctrlRoeRoute = MshnctrlRoeRouteImport.update({
@@ -268,16 +205,6 @@ const MshnctrlRoeRoute = MshnctrlRoeRouteImport.update({
 const MshnctrlRfisRoute = MshnctrlRfisRouteImport.update({
   id: '/rfis',
   path: '/rfis',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlProductsRoute = MshnctrlProductsRouteImport.update({
-  id: '/products',
-  path: '/products',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlPersonnelRoute = MshnctrlPersonnelRouteImport.update({
-  id: '/personnel',
-  path: '/personnel',
   getParentRoute: () => MshnctrlRoute,
 } as any)
 const MshnctrlOrbatRoute = MshnctrlOrbatRouteImport.update({
@@ -295,29 +222,9 @@ const MshnctrlMenuBuilderRoute = MshnctrlMenuBuilderRouteImport.update({
   path: '/menu-builder',
   getParentRoute: () => MshnctrlRoute,
 } as any)
-const MshnctrlMdoRoute = MshnctrlMdoRouteImport.update({
-  id: '/mdo',
-  path: '/mdo',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlLogisticsRoute = MshnctrlLogisticsRouteImport.update({
-  id: '/logistics',
-  path: '/logistics',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
 const MshnctrlLegadDashboardRoute = MshnctrlLegadDashboardRouteImport.update({
   id: '/legad-dashboard',
   path: '/legad-dashboard',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlJ5DashboardRoute = MshnctrlJ5DashboardRouteImport.update({
-  id: '/j5-dashboard',
-  path: '/j5-dashboard',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlJ4DashboardRoute = MshnctrlJ4DashboardRouteImport.update({
-  id: '/j4-dashboard',
-  path: '/j4-dashboard',
   getParentRoute: () => MshnctrlRoute,
 } as any)
 const MshnctrlJ3DashboardRoute = MshnctrlJ3DashboardRouteImport.update({
@@ -328,11 +235,6 @@ const MshnctrlJ3DashboardRoute = MshnctrlJ3DashboardRouteImport.update({
 const MshnctrlJ2DashboardRoute = MshnctrlJ2DashboardRouteImport.update({
   id: '/j2-dashboard',
   path: '/j2-dashboard',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlInfrastructureRoute = MshnctrlInfrastructureRouteImport.update({
-  id: '/infrastructure',
-  path: '/infrastructure',
   getParentRoute: () => MshnctrlRoute,
 } as any)
 const MshnctrlInformationManagementRoute =
@@ -346,13 +248,6 @@ const MshnctrlImDashboardRoute = MshnctrlImDashboardRouteImport.update({
   path: '/im-dashboard',
   getParentRoute: () => MshnctrlRoute,
 } as any)
-const MshnctrlGapAnalysisRoute = MshnctrlGapAnalysisRouteImport.update({
-  id: '/gap-analysis',
-  path: '/gap-analysis',
-  getParentRoute: () => MshnctrlRoute,
-} as any).lazy(() =>
-  import('./routes/mshnctrl.gap-analysis.lazy').then((d) => d.Route),
-)
 const MshnctrlFeedbackRoute = MshnctrlFeedbackRouteImport.update({
   id: '/feedback',
   path: '/feedback',
@@ -367,9 +262,7 @@ const MshnctrlDigitalTwinRoute = MshnctrlDigitalTwinRouteImport.update({
   id: '/digital-twin',
   path: '/digital-twin',
   getParentRoute: () => MshnctrlRoute,
-} as any).lazy(() =>
-  import('./routes/mshnctrl.digital-twin.lazy').then((d) => d.Route),
-)
+} as any)
 const MshnctrlDecisionBoardRoute = MshnctrlDecisionBoardRouteImport.update({
   id: '/decision-board',
   path: '/decision-board',
@@ -380,21 +273,6 @@ const MshnctrlCopSummaryRoute = MshnctrlCopSummaryRouteImport.update({
   path: '/cop-summary',
   getParentRoute: () => MshnctrlRoute,
 } as any)
-const MshnctrlConopsRoute = MshnctrlConopsRouteImport.update({
-  id: '/conops',
-  path: '/conops',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlCogRoute = MshnctrlCogRouteImport.update({
-  id: '/cog',
-  path: '/cog',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlCoaWargamerRoute = MshnctrlCoaWargamerRouteImport.update({
-  id: '/coa-wargamer',
-  path: '/coa-wargamer',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
 const MshnctrlCnrRoute = MshnctrlCnrRouteImport.update({
   id: '/cnr',
   path: '/cnr',
@@ -403,16 +281,6 @@ const MshnctrlCnrRoute = MshnctrlCnrRouteImport.update({
 const MshnctrlCdeRoute = MshnctrlCdeRouteImport.update({
   id: '/cde',
   path: '/cde',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlCcirRoute = MshnctrlCcirRouteImport.update({
-  id: '/ccir',
-  path: '/ccir',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlCampaignRoute = MshnctrlCampaignRouteImport.update({
-  id: '/campaign',
-  path: '/campaign',
   getParentRoute: () => MshnctrlRoute,
 } as any)
 const MshnctrlBriefingRoute = MshnctrlBriefingRouteImport.update({
@@ -440,11 +308,6 @@ const MshnctrlBattleRhythmRoute = MshnctrlBattleRhythmRouteImport.update({
 const MshnctrlAssumptionsRoute = MshnctrlAssumptionsRouteImport.update({
   id: '/assumptions',
   path: '/assumptions',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlAssessmentRoute = MshnctrlAssessmentRouteImport.update({
-  id: '/assessment',
-  path: '/assessment',
   getParentRoute: () => MshnctrlRoute,
 } as any)
 const MshnctrlAnalystDashboardRoute =
@@ -493,11 +356,6 @@ const AdminAbacRoute = AdminAbacRouteImport.update({
 const MshnctrlTargetingIndexRoute = MshnctrlTargetingIndexRouteImport.update({
   id: '/targeting/',
   path: '/targeting/',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlProposalsIndexRoute = MshnctrlProposalsIndexRouteImport.update({
-  id: '/proposals/',
-  path: '/proposals/',
   getParentRoute: () => MshnctrlRoute,
 } as any)
 const AdminDiscoveryIndexRoute = AdminDiscoveryIndexRouteImport.update({
@@ -585,12 +443,6 @@ const MshnctrlTargetingTargetIdRoute =
     path: '/targeting/$targetId',
     getParentRoute: () => MshnctrlRoute,
   } as any)
-const MshnctrlProposalsProposalIdRoute =
-  MshnctrlProposalsProposalIdRouteImport.update({
-    id: '/proposals/$proposalId',
-    path: '/proposals/$proposalId',
-    getParentRoute: () => MshnctrlRoute,
-  } as any)
 const MshnctrlConductSessionIdRoute =
   MshnctrlConductSessionIdRouteImport.update({
     id: '/conduct/$sessionId',
@@ -640,66 +492,44 @@ export interface FileRoutesByFullPath {
   '/mshnctrl/a2ad': typeof MshnctrlA2adRoute
   '/mshnctrl/advisory': typeof MshnctrlAdvisoryRoute
   '/mshnctrl/analyst-dashboard': typeof MshnctrlAnalystDashboardRoute
-  '/mshnctrl/assessment': typeof MshnctrlAssessmentRoute
   '/mshnctrl/assumptions': typeof MshnctrlAssumptionsRoute
   '/mshnctrl/battle-rhythm': typeof MshnctrlBattleRhythmRoute
   '/mshnctrl/bda': typeof MshnctrlBdaRouteWithChildren
   '/mshnctrl/brainstorming': typeof MshnctrlBrainstormingRoute
   '/mshnctrl/briefing': typeof MshnctrlBriefingRoute
-  '/mshnctrl/campaign': typeof MshnctrlCampaignRoute
-  '/mshnctrl/ccir': typeof MshnctrlCcirRoute
   '/mshnctrl/cde': typeof MshnctrlCdeRoute
   '/mshnctrl/cnr': typeof MshnctrlCnrRoute
-  '/mshnctrl/coa-wargamer': typeof MshnctrlCoaWargamerRoute
-  '/mshnctrl/cog': typeof MshnctrlCogRoute
-  '/mshnctrl/conops': typeof MshnctrlConopsRoute
   '/mshnctrl/cop-summary': typeof MshnctrlCopSummaryRoute
   '/mshnctrl/decision-board': typeof MshnctrlDecisionBoardRoute
   '/mshnctrl/digital-twin': typeof MshnctrlDigitalTwinRoute
   '/mshnctrl/external-context': typeof MshnctrlExternalContextRoute
   '/mshnctrl/feedback': typeof MshnctrlFeedbackRoute
-  '/mshnctrl/gap-analysis': typeof MshnctrlGapAnalysisRoute
   '/mshnctrl/im-dashboard': typeof MshnctrlImDashboardRoute
   '/mshnctrl/information-management': typeof MshnctrlInformationManagementRoute
-  '/mshnctrl/infrastructure': typeof MshnctrlInfrastructureRoute
   '/mshnctrl/j2-dashboard': typeof MshnctrlJ2DashboardRoute
   '/mshnctrl/j3-dashboard': typeof MshnctrlJ3DashboardRoute
-  '/mshnctrl/j4-dashboard': typeof MshnctrlJ4DashboardRoute
-  '/mshnctrl/j5-dashboard': typeof MshnctrlJ5DashboardRoute
   '/mshnctrl/legad-dashboard': typeof MshnctrlLegadDashboardRoute
-  '/mshnctrl/logistics': typeof MshnctrlLogisticsRoute
-  '/mshnctrl/mdo': typeof MshnctrlMdoRoute
   '/mshnctrl/menu-builder': typeof MshnctrlMenuBuilderRoute
   '/mshnctrl/ontology': typeof MshnctrlOntologyRoute
   '/mshnctrl/orbat': typeof MshnctrlOrbatRoute
-  '/mshnctrl/personnel': typeof MshnctrlPersonnelRoute
-  '/mshnctrl/products': typeof MshnctrlProductsRoute
   '/mshnctrl/rfis': typeof MshnctrlRfisRoute
   '/mshnctrl/roe': typeof MshnctrlRoeRoute
-  '/mshnctrl/rxp': typeof MshnctrlRxpRoute
-  '/mshnctrl/scenarios': typeof MshnctrlScenariosRoute
   '/mshnctrl/security': typeof MshnctrlSecurityRoute
-  '/mshnctrl/social-domain': typeof MshnctrlSocialDomainRoute
-  '/mshnctrl/staff': typeof MshnctrlStaffRoute
   '/mshnctrl/strategic-direction': typeof MshnctrlStrategicDirectionRoute
   '/mshnctrl/strike-optimizer': typeof MshnctrlStrikeOptimizerRoute
-  '/mshnctrl/supply-chain': typeof MshnctrlSupplyChainRoute
   '/mshnctrl/targeting-cell-dashboard': typeof MshnctrlTargetingCellDashboardRoute
   '/mshnctrl/tor-manager': typeof MshnctrlTorManagerRoute
   '/mshnctrl/triage': typeof MshnctrlTriageRoute
-  '/mshnctrl/uncertainty': typeof MshnctrlUncertaintyRoute
   '/mshnctrl/weather': typeof MshnctrlWeatherRoute
   '/stats/sessions': typeof StatsSessionsRoute
   '/stats/system': typeof StatsSystemRoute
   '/stats/users': typeof StatsUsersRoute
-  '/mshnctrl/oplan': typeof MshnctrlOplanLazyRoute
   '/admin/': typeof AdminIndexRoute
   '/mshnctrl/': typeof MshnctrlIndexRoute
   '/admin/discovery/$serviceId': typeof AdminDiscoveryServiceIdRoute
   '/mshnctrl/bda/$reportId': typeof MshnctrlBdaReportIdRoute
   '/mshnctrl/bda/create': typeof MshnctrlBdaCreateRoute
   '/mshnctrl/conduct/$sessionId': typeof MshnctrlConductSessionIdRoute
-  '/mshnctrl/proposals/$proposalId': typeof MshnctrlProposalsProposalIdRoute
   '/mshnctrl/targeting/$targetId': typeof MshnctrlTargetingTargetIdRoute
   '/mshnctrl/targeting/analysis': typeof MshnctrlTargetingAnalysisRoute
   '/mshnctrl/targeting/analytics': typeof MshnctrlTargetingAnalyticsRoute
@@ -715,7 +545,6 @@ export interface FileRoutesByFullPath {
   '/mshnctrl/targeting/risk': typeof MshnctrlTargetingRiskRoute
   '/mshnctrl/targeting/targets': typeof MshnctrlTargetingTargetsRoute
   '/admin/discovery/': typeof AdminDiscoveryIndexRoute
-  '/mshnctrl/proposals': typeof MshnctrlProposalsIndexRoute
   '/mshnctrl/targeting': typeof MshnctrlTargetingIndexRoute
   '/mshnctrl/targeting/jtb/$sessionId': typeof MshnctrlTargetingJtbSessionIdRoute
 }
@@ -735,66 +564,44 @@ export interface FileRoutesByTo {
   '/mshnctrl/a2ad': typeof MshnctrlA2adRoute
   '/mshnctrl/advisory': typeof MshnctrlAdvisoryRoute
   '/mshnctrl/analyst-dashboard': typeof MshnctrlAnalystDashboardRoute
-  '/mshnctrl/assessment': typeof MshnctrlAssessmentRoute
   '/mshnctrl/assumptions': typeof MshnctrlAssumptionsRoute
   '/mshnctrl/battle-rhythm': typeof MshnctrlBattleRhythmRoute
   '/mshnctrl/bda': typeof MshnctrlBdaRouteWithChildren
   '/mshnctrl/brainstorming': typeof MshnctrlBrainstormingRoute
   '/mshnctrl/briefing': typeof MshnctrlBriefingRoute
-  '/mshnctrl/campaign': typeof MshnctrlCampaignRoute
-  '/mshnctrl/ccir': typeof MshnctrlCcirRoute
   '/mshnctrl/cde': typeof MshnctrlCdeRoute
   '/mshnctrl/cnr': typeof MshnctrlCnrRoute
-  '/mshnctrl/coa-wargamer': typeof MshnctrlCoaWargamerRoute
-  '/mshnctrl/cog': typeof MshnctrlCogRoute
-  '/mshnctrl/conops': typeof MshnctrlConopsRoute
   '/mshnctrl/cop-summary': typeof MshnctrlCopSummaryRoute
   '/mshnctrl/decision-board': typeof MshnctrlDecisionBoardRoute
   '/mshnctrl/digital-twin': typeof MshnctrlDigitalTwinRoute
   '/mshnctrl/external-context': typeof MshnctrlExternalContextRoute
   '/mshnctrl/feedback': typeof MshnctrlFeedbackRoute
-  '/mshnctrl/gap-analysis': typeof MshnctrlGapAnalysisRoute
   '/mshnctrl/im-dashboard': typeof MshnctrlImDashboardRoute
   '/mshnctrl/information-management': typeof MshnctrlInformationManagementRoute
-  '/mshnctrl/infrastructure': typeof MshnctrlInfrastructureRoute
   '/mshnctrl/j2-dashboard': typeof MshnctrlJ2DashboardRoute
   '/mshnctrl/j3-dashboard': typeof MshnctrlJ3DashboardRoute
-  '/mshnctrl/j4-dashboard': typeof MshnctrlJ4DashboardRoute
-  '/mshnctrl/j5-dashboard': typeof MshnctrlJ5DashboardRoute
   '/mshnctrl/legad-dashboard': typeof MshnctrlLegadDashboardRoute
-  '/mshnctrl/logistics': typeof MshnctrlLogisticsRoute
-  '/mshnctrl/mdo': typeof MshnctrlMdoRoute
   '/mshnctrl/menu-builder': typeof MshnctrlMenuBuilderRoute
   '/mshnctrl/ontology': typeof MshnctrlOntologyRoute
   '/mshnctrl/orbat': typeof MshnctrlOrbatRoute
-  '/mshnctrl/personnel': typeof MshnctrlPersonnelRoute
-  '/mshnctrl/products': typeof MshnctrlProductsRoute
   '/mshnctrl/rfis': typeof MshnctrlRfisRoute
   '/mshnctrl/roe': typeof MshnctrlRoeRoute
-  '/mshnctrl/rxp': typeof MshnctrlRxpRoute
-  '/mshnctrl/scenarios': typeof MshnctrlScenariosRoute
   '/mshnctrl/security': typeof MshnctrlSecurityRoute
-  '/mshnctrl/social-domain': typeof MshnctrlSocialDomainRoute
-  '/mshnctrl/staff': typeof MshnctrlStaffRoute
   '/mshnctrl/strategic-direction': typeof MshnctrlStrategicDirectionRoute
   '/mshnctrl/strike-optimizer': typeof MshnctrlStrikeOptimizerRoute
-  '/mshnctrl/supply-chain': typeof MshnctrlSupplyChainRoute
   '/mshnctrl/targeting-cell-dashboard': typeof MshnctrlTargetingCellDashboardRoute
   '/mshnctrl/tor-manager': typeof MshnctrlTorManagerRoute
   '/mshnctrl/triage': typeof MshnctrlTriageRoute
-  '/mshnctrl/uncertainty': typeof MshnctrlUncertaintyRoute
   '/mshnctrl/weather': typeof MshnctrlWeatherRoute
   '/stats/sessions': typeof StatsSessionsRoute
   '/stats/system': typeof StatsSystemRoute
   '/stats/users': typeof StatsUsersRoute
-  '/mshnctrl/oplan': typeof MshnctrlOplanLazyRoute
   '/admin': typeof AdminIndexRoute
   '/mshnctrl': typeof MshnctrlIndexRoute
   '/admin/discovery/$serviceId': typeof AdminDiscoveryServiceIdRoute
   '/mshnctrl/bda/$reportId': typeof MshnctrlBdaReportIdRoute
   '/mshnctrl/bda/create': typeof MshnctrlBdaCreateRoute
   '/mshnctrl/conduct/$sessionId': typeof MshnctrlConductSessionIdRoute
-  '/mshnctrl/proposals/$proposalId': typeof MshnctrlProposalsProposalIdRoute
   '/mshnctrl/targeting/$targetId': typeof MshnctrlTargetingTargetIdRoute
   '/mshnctrl/targeting/analysis': typeof MshnctrlTargetingAnalysisRoute
   '/mshnctrl/targeting/analytics': typeof MshnctrlTargetingAnalyticsRoute
@@ -810,7 +617,6 @@ export interface FileRoutesByTo {
   '/mshnctrl/targeting/risk': typeof MshnctrlTargetingRiskRoute
   '/mshnctrl/targeting/targets': typeof MshnctrlTargetingTargetsRoute
   '/admin/discovery': typeof AdminDiscoveryIndexRoute
-  '/mshnctrl/proposals': typeof MshnctrlProposalsIndexRoute
   '/mshnctrl/targeting': typeof MshnctrlTargetingIndexRoute
   '/mshnctrl/targeting/jtb/$sessionId': typeof MshnctrlTargetingJtbSessionIdRoute
 }
@@ -834,66 +640,44 @@ export interface FileRoutesById {
   '/mshnctrl/a2ad': typeof MshnctrlA2adRoute
   '/mshnctrl/advisory': typeof MshnctrlAdvisoryRoute
   '/mshnctrl/analyst-dashboard': typeof MshnctrlAnalystDashboardRoute
-  '/mshnctrl/assessment': typeof MshnctrlAssessmentRoute
   '/mshnctrl/assumptions': typeof MshnctrlAssumptionsRoute
   '/mshnctrl/battle-rhythm': typeof MshnctrlBattleRhythmRoute
   '/mshnctrl/bda': typeof MshnctrlBdaRouteWithChildren
   '/mshnctrl/brainstorming': typeof MshnctrlBrainstormingRoute
   '/mshnctrl/briefing': typeof MshnctrlBriefingRoute
-  '/mshnctrl/campaign': typeof MshnctrlCampaignRoute
-  '/mshnctrl/ccir': typeof MshnctrlCcirRoute
   '/mshnctrl/cde': typeof MshnctrlCdeRoute
   '/mshnctrl/cnr': typeof MshnctrlCnrRoute
-  '/mshnctrl/coa-wargamer': typeof MshnctrlCoaWargamerRoute
-  '/mshnctrl/cog': typeof MshnctrlCogRoute
-  '/mshnctrl/conops': typeof MshnctrlConopsRoute
   '/mshnctrl/cop-summary': typeof MshnctrlCopSummaryRoute
   '/mshnctrl/decision-board': typeof MshnctrlDecisionBoardRoute
   '/mshnctrl/digital-twin': typeof MshnctrlDigitalTwinRoute
   '/mshnctrl/external-context': typeof MshnctrlExternalContextRoute
   '/mshnctrl/feedback': typeof MshnctrlFeedbackRoute
-  '/mshnctrl/gap-analysis': typeof MshnctrlGapAnalysisRoute
   '/mshnctrl/im-dashboard': typeof MshnctrlImDashboardRoute
   '/mshnctrl/information-management': typeof MshnctrlInformationManagementRoute
-  '/mshnctrl/infrastructure': typeof MshnctrlInfrastructureRoute
   '/mshnctrl/j2-dashboard': typeof MshnctrlJ2DashboardRoute
   '/mshnctrl/j3-dashboard': typeof MshnctrlJ3DashboardRoute
-  '/mshnctrl/j4-dashboard': typeof MshnctrlJ4DashboardRoute
-  '/mshnctrl/j5-dashboard': typeof MshnctrlJ5DashboardRoute
   '/mshnctrl/legad-dashboard': typeof MshnctrlLegadDashboardRoute
-  '/mshnctrl/logistics': typeof MshnctrlLogisticsRoute
-  '/mshnctrl/mdo': typeof MshnctrlMdoRoute
   '/mshnctrl/menu-builder': typeof MshnctrlMenuBuilderRoute
   '/mshnctrl/ontology': typeof MshnctrlOntologyRoute
   '/mshnctrl/orbat': typeof MshnctrlOrbatRoute
-  '/mshnctrl/personnel': typeof MshnctrlPersonnelRoute
-  '/mshnctrl/products': typeof MshnctrlProductsRoute
   '/mshnctrl/rfis': typeof MshnctrlRfisRoute
   '/mshnctrl/roe': typeof MshnctrlRoeRoute
-  '/mshnctrl/rxp': typeof MshnctrlRxpRoute
-  '/mshnctrl/scenarios': typeof MshnctrlScenariosRoute
   '/mshnctrl/security': typeof MshnctrlSecurityRoute
-  '/mshnctrl/social-domain': typeof MshnctrlSocialDomainRoute
-  '/mshnctrl/staff': typeof MshnctrlStaffRoute
   '/mshnctrl/strategic-direction': typeof MshnctrlStrategicDirectionRoute
   '/mshnctrl/strike-optimizer': typeof MshnctrlStrikeOptimizerRoute
-  '/mshnctrl/supply-chain': typeof MshnctrlSupplyChainRoute
   '/mshnctrl/targeting-cell-dashboard': typeof MshnctrlTargetingCellDashboardRoute
   '/mshnctrl/tor-manager': typeof MshnctrlTorManagerRoute
   '/mshnctrl/triage': typeof MshnctrlTriageRoute
-  '/mshnctrl/uncertainty': typeof MshnctrlUncertaintyRoute
   '/mshnctrl/weather': typeof MshnctrlWeatherRoute
   '/stats/sessions': typeof StatsSessionsRoute
   '/stats/system': typeof StatsSystemRoute
   '/stats/users': typeof StatsUsersRoute
-  '/mshnctrl/oplan': typeof MshnctrlOplanLazyRoute
   '/admin/': typeof AdminIndexRoute
   '/mshnctrl/': typeof MshnctrlIndexRoute
   '/admin/discovery/$serviceId': typeof AdminDiscoveryServiceIdRoute
   '/mshnctrl/bda/$reportId': typeof MshnctrlBdaReportIdRoute
   '/mshnctrl/bda/create': typeof MshnctrlBdaCreateRoute
   '/mshnctrl/conduct/$sessionId': typeof MshnctrlConductSessionIdRoute
-  '/mshnctrl/proposals/$proposalId': typeof MshnctrlProposalsProposalIdRoute
   '/mshnctrl/targeting/$targetId': typeof MshnctrlTargetingTargetIdRoute
   '/mshnctrl/targeting/analysis': typeof MshnctrlTargetingAnalysisRoute
   '/mshnctrl/targeting/analytics': typeof MshnctrlTargetingAnalyticsRoute
@@ -909,7 +693,6 @@ export interface FileRoutesById {
   '/mshnctrl/targeting/risk': typeof MshnctrlTargetingRiskRoute
   '/mshnctrl/targeting/targets': typeof MshnctrlTargetingTargetsRoute
   '/admin/discovery/': typeof AdminDiscoveryIndexRoute
-  '/mshnctrl/proposals/': typeof MshnctrlProposalsIndexRoute
   '/mshnctrl/targeting/': typeof MshnctrlTargetingIndexRoute
   '/mshnctrl/targeting/jtb/$sessionId': typeof MshnctrlTargetingJtbSessionIdRoute
 }
@@ -934,66 +717,44 @@ export interface FileRouteTypes {
     | '/mshnctrl/a2ad'
     | '/mshnctrl/advisory'
     | '/mshnctrl/analyst-dashboard'
-    | '/mshnctrl/assessment'
     | '/mshnctrl/assumptions'
     | '/mshnctrl/battle-rhythm'
     | '/mshnctrl/bda'
     | '/mshnctrl/brainstorming'
     | '/mshnctrl/briefing'
-    | '/mshnctrl/campaign'
-    | '/mshnctrl/ccir'
     | '/mshnctrl/cde'
     | '/mshnctrl/cnr'
-    | '/mshnctrl/coa-wargamer'
-    | '/mshnctrl/cog'
-    | '/mshnctrl/conops'
     | '/mshnctrl/cop-summary'
     | '/mshnctrl/decision-board'
     | '/mshnctrl/digital-twin'
     | '/mshnctrl/external-context'
     | '/mshnctrl/feedback'
-    | '/mshnctrl/gap-analysis'
     | '/mshnctrl/im-dashboard'
     | '/mshnctrl/information-management'
-    | '/mshnctrl/infrastructure'
     | '/mshnctrl/j2-dashboard'
     | '/mshnctrl/j3-dashboard'
-    | '/mshnctrl/j4-dashboard'
-    | '/mshnctrl/j5-dashboard'
     | '/mshnctrl/legad-dashboard'
-    | '/mshnctrl/logistics'
-    | '/mshnctrl/mdo'
     | '/mshnctrl/menu-builder'
     | '/mshnctrl/ontology'
     | '/mshnctrl/orbat'
-    | '/mshnctrl/personnel'
-    | '/mshnctrl/products'
     | '/mshnctrl/rfis'
     | '/mshnctrl/roe'
-    | '/mshnctrl/rxp'
-    | '/mshnctrl/scenarios'
     | '/mshnctrl/security'
-    | '/mshnctrl/social-domain'
-    | '/mshnctrl/staff'
     | '/mshnctrl/strategic-direction'
     | '/mshnctrl/strike-optimizer'
-    | '/mshnctrl/supply-chain'
     | '/mshnctrl/targeting-cell-dashboard'
     | '/mshnctrl/tor-manager'
     | '/mshnctrl/triage'
-    | '/mshnctrl/uncertainty'
     | '/mshnctrl/weather'
     | '/stats/sessions'
     | '/stats/system'
     | '/stats/users'
-    | '/mshnctrl/oplan'
     | '/admin/'
     | '/mshnctrl/'
     | '/admin/discovery/$serviceId'
     | '/mshnctrl/bda/$reportId'
     | '/mshnctrl/bda/create'
     | '/mshnctrl/conduct/$sessionId'
-    | '/mshnctrl/proposals/$proposalId'
     | '/mshnctrl/targeting/$targetId'
     | '/mshnctrl/targeting/analysis'
     | '/mshnctrl/targeting/analytics'
@@ -1009,7 +770,6 @@ export interface FileRouteTypes {
     | '/mshnctrl/targeting/risk'
     | '/mshnctrl/targeting/targets'
     | '/admin/discovery/'
-    | '/mshnctrl/proposals'
     | '/mshnctrl/targeting'
     | '/mshnctrl/targeting/jtb/$sessionId'
   fileRoutesByTo: FileRoutesByTo
@@ -1029,66 +789,44 @@ export interface FileRouteTypes {
     | '/mshnctrl/a2ad'
     | '/mshnctrl/advisory'
     | '/mshnctrl/analyst-dashboard'
-    | '/mshnctrl/assessment'
     | '/mshnctrl/assumptions'
     | '/mshnctrl/battle-rhythm'
     | '/mshnctrl/bda'
     | '/mshnctrl/brainstorming'
     | '/mshnctrl/briefing'
-    | '/mshnctrl/campaign'
-    | '/mshnctrl/ccir'
     | '/mshnctrl/cde'
     | '/mshnctrl/cnr'
-    | '/mshnctrl/coa-wargamer'
-    | '/mshnctrl/cog'
-    | '/mshnctrl/conops'
     | '/mshnctrl/cop-summary'
     | '/mshnctrl/decision-board'
     | '/mshnctrl/digital-twin'
     | '/mshnctrl/external-context'
     | '/mshnctrl/feedback'
-    | '/mshnctrl/gap-analysis'
     | '/mshnctrl/im-dashboard'
     | '/mshnctrl/information-management'
-    | '/mshnctrl/infrastructure'
     | '/mshnctrl/j2-dashboard'
     | '/mshnctrl/j3-dashboard'
-    | '/mshnctrl/j4-dashboard'
-    | '/mshnctrl/j5-dashboard'
     | '/mshnctrl/legad-dashboard'
-    | '/mshnctrl/logistics'
-    | '/mshnctrl/mdo'
     | '/mshnctrl/menu-builder'
     | '/mshnctrl/ontology'
     | '/mshnctrl/orbat'
-    | '/mshnctrl/personnel'
-    | '/mshnctrl/products'
     | '/mshnctrl/rfis'
     | '/mshnctrl/roe'
-    | '/mshnctrl/rxp'
-    | '/mshnctrl/scenarios'
     | '/mshnctrl/security'
-    | '/mshnctrl/social-domain'
-    | '/mshnctrl/staff'
     | '/mshnctrl/strategic-direction'
     | '/mshnctrl/strike-optimizer'
-    | '/mshnctrl/supply-chain'
     | '/mshnctrl/targeting-cell-dashboard'
     | '/mshnctrl/tor-manager'
     | '/mshnctrl/triage'
-    | '/mshnctrl/uncertainty'
     | '/mshnctrl/weather'
     | '/stats/sessions'
     | '/stats/system'
     | '/stats/users'
-    | '/mshnctrl/oplan'
     | '/admin'
     | '/mshnctrl'
     | '/admin/discovery/$serviceId'
     | '/mshnctrl/bda/$reportId'
     | '/mshnctrl/bda/create'
     | '/mshnctrl/conduct/$sessionId'
-    | '/mshnctrl/proposals/$proposalId'
     | '/mshnctrl/targeting/$targetId'
     | '/mshnctrl/targeting/analysis'
     | '/mshnctrl/targeting/analytics'
@@ -1104,7 +842,6 @@ export interface FileRouteTypes {
     | '/mshnctrl/targeting/risk'
     | '/mshnctrl/targeting/targets'
     | '/admin/discovery'
-    | '/mshnctrl/proposals'
     | '/mshnctrl/targeting'
     | '/mshnctrl/targeting/jtb/$sessionId'
   id:
@@ -1127,66 +864,44 @@ export interface FileRouteTypes {
     | '/mshnctrl/a2ad'
     | '/mshnctrl/advisory'
     | '/mshnctrl/analyst-dashboard'
-    | '/mshnctrl/assessment'
     | '/mshnctrl/assumptions'
     | '/mshnctrl/battle-rhythm'
     | '/mshnctrl/bda'
     | '/mshnctrl/brainstorming'
     | '/mshnctrl/briefing'
-    | '/mshnctrl/campaign'
-    | '/mshnctrl/ccir'
     | '/mshnctrl/cde'
     | '/mshnctrl/cnr'
-    | '/mshnctrl/coa-wargamer'
-    | '/mshnctrl/cog'
-    | '/mshnctrl/conops'
     | '/mshnctrl/cop-summary'
     | '/mshnctrl/decision-board'
     | '/mshnctrl/digital-twin'
     | '/mshnctrl/external-context'
     | '/mshnctrl/feedback'
-    | '/mshnctrl/gap-analysis'
     | '/mshnctrl/im-dashboard'
     | '/mshnctrl/information-management'
-    | '/mshnctrl/infrastructure'
     | '/mshnctrl/j2-dashboard'
     | '/mshnctrl/j3-dashboard'
-    | '/mshnctrl/j4-dashboard'
-    | '/mshnctrl/j5-dashboard'
     | '/mshnctrl/legad-dashboard'
-    | '/mshnctrl/logistics'
-    | '/mshnctrl/mdo'
     | '/mshnctrl/menu-builder'
     | '/mshnctrl/ontology'
     | '/mshnctrl/orbat'
-    | '/mshnctrl/personnel'
-    | '/mshnctrl/products'
     | '/mshnctrl/rfis'
     | '/mshnctrl/roe'
-    | '/mshnctrl/rxp'
-    | '/mshnctrl/scenarios'
     | '/mshnctrl/security'
-    | '/mshnctrl/social-domain'
-    | '/mshnctrl/staff'
     | '/mshnctrl/strategic-direction'
     | '/mshnctrl/strike-optimizer'
-    | '/mshnctrl/supply-chain'
     | '/mshnctrl/targeting-cell-dashboard'
     | '/mshnctrl/tor-manager'
     | '/mshnctrl/triage'
-    | '/mshnctrl/uncertainty'
     | '/mshnctrl/weather'
     | '/stats/sessions'
     | '/stats/system'
     | '/stats/users'
-    | '/mshnctrl/oplan'
     | '/admin/'
     | '/mshnctrl/'
     | '/admin/discovery/$serviceId'
     | '/mshnctrl/bda/$reportId'
     | '/mshnctrl/bda/create'
     | '/mshnctrl/conduct/$sessionId'
-    | '/mshnctrl/proposals/$proposalId'
     | '/mshnctrl/targeting/$targetId'
     | '/mshnctrl/targeting/analysis'
     | '/mshnctrl/targeting/analytics'
@@ -1202,7 +917,6 @@ export interface FileRouteTypes {
     | '/mshnctrl/targeting/risk'
     | '/mshnctrl/targeting/targets'
     | '/admin/discovery/'
-    | '/mshnctrl/proposals/'
     | '/mshnctrl/targeting/'
     | '/mshnctrl/targeting/jtb/$sessionId'
   fileRoutesById: FileRoutesById
@@ -1309,13 +1023,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/mshnctrl/oplan': {
-      id: '/mshnctrl/oplan'
-      path: '/oplan'
-      fullPath: '/mshnctrl/oplan'
-      preLoaderRoute: typeof MshnctrlOplanLazyRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
     '/stats/users': {
       id: '/stats/users'
       path: '/stats/users'
@@ -1344,13 +1051,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MshnctrlWeatherRouteImport
       parentRoute: typeof MshnctrlRoute
     }
-    '/mshnctrl/uncertainty': {
-      id: '/mshnctrl/uncertainty'
-      path: '/uncertainty'
-      fullPath: '/mshnctrl/uncertainty'
-      preLoaderRoute: typeof MshnctrlUncertaintyRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
     '/mshnctrl/triage': {
       id: '/mshnctrl/triage'
       path: '/triage'
@@ -1372,13 +1072,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MshnctrlTargetingCellDashboardRouteImport
       parentRoute: typeof MshnctrlRoute
     }
-    '/mshnctrl/supply-chain': {
-      id: '/mshnctrl/supply-chain'
-      path: '/supply-chain'
-      fullPath: '/mshnctrl/supply-chain'
-      preLoaderRoute: typeof MshnctrlSupplyChainRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
     '/mshnctrl/strike-optimizer': {
       id: '/mshnctrl/strike-optimizer'
       path: '/strike-optimizer'
@@ -1393,39 +1086,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MshnctrlStrategicDirectionRouteImport
       parentRoute: typeof MshnctrlRoute
     }
-    '/mshnctrl/staff': {
-      id: '/mshnctrl/staff'
-      path: '/staff'
-      fullPath: '/mshnctrl/staff'
-      preLoaderRoute: typeof MshnctrlStaffRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/social-domain': {
-      id: '/mshnctrl/social-domain'
-      path: '/social-domain'
-      fullPath: '/mshnctrl/social-domain'
-      preLoaderRoute: typeof MshnctrlSocialDomainRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
     '/mshnctrl/security': {
       id: '/mshnctrl/security'
       path: '/security'
       fullPath: '/mshnctrl/security'
       preLoaderRoute: typeof MshnctrlSecurityRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/scenarios': {
-      id: '/mshnctrl/scenarios'
-      path: '/scenarios'
-      fullPath: '/mshnctrl/scenarios'
-      preLoaderRoute: typeof MshnctrlScenariosRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/rxp': {
-      id: '/mshnctrl/rxp'
-      path: '/rxp'
-      fullPath: '/mshnctrl/rxp'
-      preLoaderRoute: typeof MshnctrlRxpRouteImport
       parentRoute: typeof MshnctrlRoute
     }
     '/mshnctrl/roe': {
@@ -1440,20 +1105,6 @@ declare module '@tanstack/react-router' {
       path: '/rfis'
       fullPath: '/mshnctrl/rfis'
       preLoaderRoute: typeof MshnctrlRfisRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/products': {
-      id: '/mshnctrl/products'
-      path: '/products'
-      fullPath: '/mshnctrl/products'
-      preLoaderRoute: typeof MshnctrlProductsRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/personnel': {
-      id: '/mshnctrl/personnel'
-      path: '/personnel'
-      fullPath: '/mshnctrl/personnel'
-      preLoaderRoute: typeof MshnctrlPersonnelRouteImport
       parentRoute: typeof MshnctrlRoute
     }
     '/mshnctrl/orbat': {
@@ -1477,39 +1128,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MshnctrlMenuBuilderRouteImport
       parentRoute: typeof MshnctrlRoute
     }
-    '/mshnctrl/mdo': {
-      id: '/mshnctrl/mdo'
-      path: '/mdo'
-      fullPath: '/mshnctrl/mdo'
-      preLoaderRoute: typeof MshnctrlMdoRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/logistics': {
-      id: '/mshnctrl/logistics'
-      path: '/logistics'
-      fullPath: '/mshnctrl/logistics'
-      preLoaderRoute: typeof MshnctrlLogisticsRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
     '/mshnctrl/legad-dashboard': {
       id: '/mshnctrl/legad-dashboard'
       path: '/legad-dashboard'
       fullPath: '/mshnctrl/legad-dashboard'
       preLoaderRoute: typeof MshnctrlLegadDashboardRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/j5-dashboard': {
-      id: '/mshnctrl/j5-dashboard'
-      path: '/j5-dashboard'
-      fullPath: '/mshnctrl/j5-dashboard'
-      preLoaderRoute: typeof MshnctrlJ5DashboardRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/j4-dashboard': {
-      id: '/mshnctrl/j4-dashboard'
-      path: '/j4-dashboard'
-      fullPath: '/mshnctrl/j4-dashboard'
-      preLoaderRoute: typeof MshnctrlJ4DashboardRouteImport
       parentRoute: typeof MshnctrlRoute
     }
     '/mshnctrl/j3-dashboard': {
@@ -1526,13 +1149,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MshnctrlJ2DashboardRouteImport
       parentRoute: typeof MshnctrlRoute
     }
-    '/mshnctrl/infrastructure': {
-      id: '/mshnctrl/infrastructure'
-      path: '/infrastructure'
-      fullPath: '/mshnctrl/infrastructure'
-      preLoaderRoute: typeof MshnctrlInfrastructureRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
     '/mshnctrl/information-management': {
       id: '/mshnctrl/information-management'
       path: '/information-management'
@@ -1545,13 +1161,6 @@ declare module '@tanstack/react-router' {
       path: '/im-dashboard'
       fullPath: '/mshnctrl/im-dashboard'
       preLoaderRoute: typeof MshnctrlImDashboardRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/gap-analysis': {
-      id: '/mshnctrl/gap-analysis'
-      path: '/gap-analysis'
-      fullPath: '/mshnctrl/gap-analysis'
-      preLoaderRoute: typeof MshnctrlGapAnalysisRouteImport
       parentRoute: typeof MshnctrlRoute
     }
     '/mshnctrl/feedback': {
@@ -1589,27 +1198,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MshnctrlCopSummaryRouteImport
       parentRoute: typeof MshnctrlRoute
     }
-    '/mshnctrl/conops': {
-      id: '/mshnctrl/conops'
-      path: '/conops'
-      fullPath: '/mshnctrl/conops'
-      preLoaderRoute: typeof MshnctrlConopsRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/cog': {
-      id: '/mshnctrl/cog'
-      path: '/cog'
-      fullPath: '/mshnctrl/cog'
-      preLoaderRoute: typeof MshnctrlCogRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/coa-wargamer': {
-      id: '/mshnctrl/coa-wargamer'
-      path: '/coa-wargamer'
-      fullPath: '/mshnctrl/coa-wargamer'
-      preLoaderRoute: typeof MshnctrlCoaWargamerRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
     '/mshnctrl/cnr': {
       id: '/mshnctrl/cnr'
       path: '/cnr'
@@ -1622,20 +1210,6 @@ declare module '@tanstack/react-router' {
       path: '/cde'
       fullPath: '/mshnctrl/cde'
       preLoaderRoute: typeof MshnctrlCdeRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/ccir': {
-      id: '/mshnctrl/ccir'
-      path: '/ccir'
-      fullPath: '/mshnctrl/ccir'
-      preLoaderRoute: typeof MshnctrlCcirRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/campaign': {
-      id: '/mshnctrl/campaign'
-      path: '/campaign'
-      fullPath: '/mshnctrl/campaign'
-      preLoaderRoute: typeof MshnctrlCampaignRouteImport
       parentRoute: typeof MshnctrlRoute
     }
     '/mshnctrl/briefing': {
@@ -1671,13 +1245,6 @@ declare module '@tanstack/react-router' {
       path: '/assumptions'
       fullPath: '/mshnctrl/assumptions'
       preLoaderRoute: typeof MshnctrlAssumptionsRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/assessment': {
-      id: '/mshnctrl/assessment'
-      path: '/assessment'
-      fullPath: '/mshnctrl/assessment'
-      preLoaderRoute: typeof MshnctrlAssessmentRouteImport
       parentRoute: typeof MshnctrlRoute
     }
     '/mshnctrl/analyst-dashboard': {
@@ -1741,13 +1308,6 @@ declare module '@tanstack/react-router' {
       path: '/targeting'
       fullPath: '/mshnctrl/targeting'
       preLoaderRoute: typeof MshnctrlTargetingIndexRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/proposals/': {
-      id: '/mshnctrl/proposals/'
-      path: '/proposals'
-      fullPath: '/mshnctrl/proposals'
-      preLoaderRoute: typeof MshnctrlProposalsIndexRouteImport
       parentRoute: typeof MshnctrlRoute
     }
     '/admin/discovery/': {
@@ -1855,13 +1415,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MshnctrlTargetingTargetIdRouteImport
       parentRoute: typeof MshnctrlRoute
     }
-    '/mshnctrl/proposals/$proposalId': {
-      id: '/mshnctrl/proposals/$proposalId'
-      path: '/proposals/$proposalId'
-      fullPath: '/mshnctrl/proposals/$proposalId'
-      preLoaderRoute: typeof MshnctrlProposalsProposalIdRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
     '/mshnctrl/conduct/$sessionId': {
       id: '/mshnctrl/conduct/$sessionId'
       path: '/conduct/$sessionId'
@@ -1963,59 +1516,37 @@ interface MshnctrlRouteChildren {
   MshnctrlA2adRoute: typeof MshnctrlA2adRoute
   MshnctrlAdvisoryRoute: typeof MshnctrlAdvisoryRoute
   MshnctrlAnalystDashboardRoute: typeof MshnctrlAnalystDashboardRoute
-  MshnctrlAssessmentRoute: typeof MshnctrlAssessmentRoute
   MshnctrlAssumptionsRoute: typeof MshnctrlAssumptionsRoute
   MshnctrlBattleRhythmRoute: typeof MshnctrlBattleRhythmRoute
   MshnctrlBdaRoute: typeof MshnctrlBdaRouteWithChildren
   MshnctrlBrainstormingRoute: typeof MshnctrlBrainstormingRoute
   MshnctrlBriefingRoute: typeof MshnctrlBriefingRoute
-  MshnctrlCampaignRoute: typeof MshnctrlCampaignRoute
-  MshnctrlCcirRoute: typeof MshnctrlCcirRoute
   MshnctrlCdeRoute: typeof MshnctrlCdeRoute
   MshnctrlCnrRoute: typeof MshnctrlCnrRoute
-  MshnctrlCoaWargamerRoute: typeof MshnctrlCoaWargamerRoute
-  MshnctrlCogRoute: typeof MshnctrlCogRoute
-  MshnctrlConopsRoute: typeof MshnctrlConopsRoute
   MshnctrlCopSummaryRoute: typeof MshnctrlCopSummaryRoute
   MshnctrlDecisionBoardRoute: typeof MshnctrlDecisionBoardRoute
   MshnctrlDigitalTwinRoute: typeof MshnctrlDigitalTwinRoute
   MshnctrlExternalContextRoute: typeof MshnctrlExternalContextRoute
   MshnctrlFeedbackRoute: typeof MshnctrlFeedbackRoute
-  MshnctrlGapAnalysisRoute: typeof MshnctrlGapAnalysisRoute
   MshnctrlImDashboardRoute: typeof MshnctrlImDashboardRoute
   MshnctrlInformationManagementRoute: typeof MshnctrlInformationManagementRoute
-  MshnctrlInfrastructureRoute: typeof MshnctrlInfrastructureRoute
   MshnctrlJ2DashboardRoute: typeof MshnctrlJ2DashboardRoute
   MshnctrlJ3DashboardRoute: typeof MshnctrlJ3DashboardRoute
-  MshnctrlJ4DashboardRoute: typeof MshnctrlJ4DashboardRoute
-  MshnctrlJ5DashboardRoute: typeof MshnctrlJ5DashboardRoute
   MshnctrlLegadDashboardRoute: typeof MshnctrlLegadDashboardRoute
-  MshnctrlLogisticsRoute: typeof MshnctrlLogisticsRoute
-  MshnctrlMdoRoute: typeof MshnctrlMdoRoute
   MshnctrlMenuBuilderRoute: typeof MshnctrlMenuBuilderRoute
   MshnctrlOntologyRoute: typeof MshnctrlOntologyRoute
   MshnctrlOrbatRoute: typeof MshnctrlOrbatRoute
-  MshnctrlPersonnelRoute: typeof MshnctrlPersonnelRoute
-  MshnctrlProductsRoute: typeof MshnctrlProductsRoute
   MshnctrlRfisRoute: typeof MshnctrlRfisRoute
   MshnctrlRoeRoute: typeof MshnctrlRoeRoute
-  MshnctrlRxpRoute: typeof MshnctrlRxpRoute
-  MshnctrlScenariosRoute: typeof MshnctrlScenariosRoute
   MshnctrlSecurityRoute: typeof MshnctrlSecurityRoute
-  MshnctrlSocialDomainRoute: typeof MshnctrlSocialDomainRoute
-  MshnctrlStaffRoute: typeof MshnctrlStaffRoute
   MshnctrlStrategicDirectionRoute: typeof MshnctrlStrategicDirectionRoute
   MshnctrlStrikeOptimizerRoute: typeof MshnctrlStrikeOptimizerRoute
-  MshnctrlSupplyChainRoute: typeof MshnctrlSupplyChainRoute
   MshnctrlTargetingCellDashboardRoute: typeof MshnctrlTargetingCellDashboardRoute
   MshnctrlTorManagerRoute: typeof MshnctrlTorManagerRoute
   MshnctrlTriageRoute: typeof MshnctrlTriageRoute
-  MshnctrlUncertaintyRoute: typeof MshnctrlUncertaintyRoute
   MshnctrlWeatherRoute: typeof MshnctrlWeatherRoute
-  MshnctrlOplanLazyRoute: typeof MshnctrlOplanLazyRoute
   MshnctrlIndexRoute: typeof MshnctrlIndexRoute
   MshnctrlConductSessionIdRoute: typeof MshnctrlConductSessionIdRoute
-  MshnctrlProposalsProposalIdRoute: typeof MshnctrlProposalsProposalIdRoute
   MshnctrlTargetingTargetIdRoute: typeof MshnctrlTargetingTargetIdRoute
   MshnctrlTargetingAnalysisRoute: typeof MshnctrlTargetingAnalysisRoute
   MshnctrlTargetingAnalyticsRoute: typeof MshnctrlTargetingAnalyticsRoute
@@ -2030,7 +1561,6 @@ interface MshnctrlRouteChildren {
   MshnctrlTargetingNominateRoute: typeof MshnctrlTargetingNominateRoute
   MshnctrlTargetingRiskRoute: typeof MshnctrlTargetingRiskRoute
   MshnctrlTargetingTargetsRoute: typeof MshnctrlTargetingTargetsRoute
-  MshnctrlProposalsIndexRoute: typeof MshnctrlProposalsIndexRoute
   MshnctrlTargetingIndexRoute: typeof MshnctrlTargetingIndexRoute
 }
 
@@ -2038,59 +1568,37 @@ const MshnctrlRouteChildren: MshnctrlRouteChildren = {
   MshnctrlA2adRoute: MshnctrlA2adRoute,
   MshnctrlAdvisoryRoute: MshnctrlAdvisoryRoute,
   MshnctrlAnalystDashboardRoute: MshnctrlAnalystDashboardRoute,
-  MshnctrlAssessmentRoute: MshnctrlAssessmentRoute,
   MshnctrlAssumptionsRoute: MshnctrlAssumptionsRoute,
   MshnctrlBattleRhythmRoute: MshnctrlBattleRhythmRoute,
   MshnctrlBdaRoute: MshnctrlBdaRouteWithChildren,
   MshnctrlBrainstormingRoute: MshnctrlBrainstormingRoute,
   MshnctrlBriefingRoute: MshnctrlBriefingRoute,
-  MshnctrlCampaignRoute: MshnctrlCampaignRoute,
-  MshnctrlCcirRoute: MshnctrlCcirRoute,
   MshnctrlCdeRoute: MshnctrlCdeRoute,
   MshnctrlCnrRoute: MshnctrlCnrRoute,
-  MshnctrlCoaWargamerRoute: MshnctrlCoaWargamerRoute,
-  MshnctrlCogRoute: MshnctrlCogRoute,
-  MshnctrlConopsRoute: MshnctrlConopsRoute,
   MshnctrlCopSummaryRoute: MshnctrlCopSummaryRoute,
   MshnctrlDecisionBoardRoute: MshnctrlDecisionBoardRoute,
   MshnctrlDigitalTwinRoute: MshnctrlDigitalTwinRoute,
   MshnctrlExternalContextRoute: MshnctrlExternalContextRoute,
   MshnctrlFeedbackRoute: MshnctrlFeedbackRoute,
-  MshnctrlGapAnalysisRoute: MshnctrlGapAnalysisRoute,
   MshnctrlImDashboardRoute: MshnctrlImDashboardRoute,
   MshnctrlInformationManagementRoute: MshnctrlInformationManagementRoute,
-  MshnctrlInfrastructureRoute: MshnctrlInfrastructureRoute,
   MshnctrlJ2DashboardRoute: MshnctrlJ2DashboardRoute,
   MshnctrlJ3DashboardRoute: MshnctrlJ3DashboardRoute,
-  MshnctrlJ4DashboardRoute: MshnctrlJ4DashboardRoute,
-  MshnctrlJ5DashboardRoute: MshnctrlJ5DashboardRoute,
   MshnctrlLegadDashboardRoute: MshnctrlLegadDashboardRoute,
-  MshnctrlLogisticsRoute: MshnctrlLogisticsRoute,
-  MshnctrlMdoRoute: MshnctrlMdoRoute,
   MshnctrlMenuBuilderRoute: MshnctrlMenuBuilderRoute,
   MshnctrlOntologyRoute: MshnctrlOntologyRoute,
   MshnctrlOrbatRoute: MshnctrlOrbatRoute,
-  MshnctrlPersonnelRoute: MshnctrlPersonnelRoute,
-  MshnctrlProductsRoute: MshnctrlProductsRoute,
   MshnctrlRfisRoute: MshnctrlRfisRoute,
   MshnctrlRoeRoute: MshnctrlRoeRoute,
-  MshnctrlRxpRoute: MshnctrlRxpRoute,
-  MshnctrlScenariosRoute: MshnctrlScenariosRoute,
   MshnctrlSecurityRoute: MshnctrlSecurityRoute,
-  MshnctrlSocialDomainRoute: MshnctrlSocialDomainRoute,
-  MshnctrlStaffRoute: MshnctrlStaffRoute,
   MshnctrlStrategicDirectionRoute: MshnctrlStrategicDirectionRoute,
   MshnctrlStrikeOptimizerRoute: MshnctrlStrikeOptimizerRoute,
-  MshnctrlSupplyChainRoute: MshnctrlSupplyChainRoute,
   MshnctrlTargetingCellDashboardRoute: MshnctrlTargetingCellDashboardRoute,
   MshnctrlTorManagerRoute: MshnctrlTorManagerRoute,
   MshnctrlTriageRoute: MshnctrlTriageRoute,
-  MshnctrlUncertaintyRoute: MshnctrlUncertaintyRoute,
   MshnctrlWeatherRoute: MshnctrlWeatherRoute,
-  MshnctrlOplanLazyRoute: MshnctrlOplanLazyRoute,
   MshnctrlIndexRoute: MshnctrlIndexRoute,
   MshnctrlConductSessionIdRoute: MshnctrlConductSessionIdRoute,
-  MshnctrlProposalsProposalIdRoute: MshnctrlProposalsProposalIdRoute,
   MshnctrlTargetingTargetIdRoute: MshnctrlTargetingTargetIdRoute,
   MshnctrlTargetingAnalysisRoute: MshnctrlTargetingAnalysisRoute,
   MshnctrlTargetingAnalyticsRoute: MshnctrlTargetingAnalyticsRoute,
@@ -2105,7 +1613,6 @@ const MshnctrlRouteChildren: MshnctrlRouteChildren = {
   MshnctrlTargetingNominateRoute: MshnctrlTargetingNominateRoute,
   MshnctrlTargetingRiskRoute: MshnctrlTargetingRiskRoute,
   MshnctrlTargetingTargetsRoute: MshnctrlTargetingTargetsRoute,
-  MshnctrlProposalsIndexRoute: MshnctrlProposalsIndexRoute,
   MshnctrlTargetingIndexRoute: MshnctrlTargetingIndexRoute,
 }
 
