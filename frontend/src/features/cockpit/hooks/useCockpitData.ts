@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
-import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+// Context events (Political, Disasters, Disinfo) have no backend - stubbed
+// TODO: Implement backend or remove these features
 import { DecisionService } from '@/lib/mshnctrl/services/decision.service';
 import { DecisionTrackingService } from '@/lib/mshnctrl/services/decision-tracking.service';
 import type {
@@ -46,13 +47,21 @@ export function useCockpitData() {
     }, []);
 
     useEffect(() => {
-        MshnCtrlService.getDashboardStats(context.operationId || undefined).then((res: any) => setStats(res));
+        // TODO: Implement backend for dashboard stats and external factors
+        setStats({
+            activeOrders: 0,
+            pendingProposals: 0,
+            activeScenario: 'No active scenario',
+            readiness: 0,
+            loos: [],
+            decisiveConditions: []
+        });
 
         Promise.all([
-            MshnCtrlService.getPoliticalStatements(context.operationId || undefined),
-            MshnCtrlService.getNaturalDisasters(context.operationId || undefined),
-            MshnCtrlService.getDisinformationEvents(context.operationId || undefined),
-            MshnCtrlService.getFakeMedia(context.operationId || undefined),
+            Promise.resolve([]), // political statements - no backend
+            Promise.resolve([]), // disasters - no backend
+            Promise.resolve([]), // disinfo - no backend
+            Promise.resolve([]), // fake media - no backend
             DecisionService.getPendingDecisions(),
             DecisionTrackingService.getTrackedDecisions(),
             DecisionTrackingService.getImpactMonitors()

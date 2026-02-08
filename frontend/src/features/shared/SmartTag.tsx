@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
+// Note: COGs, Political Statements, Disasters have no backend - omitted from suggestions
 import { cn } from '@/lib/utils';
 import {
     Shield,
@@ -36,25 +37,13 @@ export function SmartTag({ type, id, label }: SmartTagProps) {
                 let entity = null;
                 const typeLower = type.toLowerCase();
 
-                if (typeLower === 'unit') {
-                    const units = await MshnCtrlService.getUnits();
-                    entity = units.find(u => u.id === id || u.designator === id);
-                } else if (typeLower === 'target') {
-                    const targets = await MshnCtrlService.getTargets();
-                    entity = targets.find(t => t.id === id || t.designator === id);
-                } else if (typeLower === 'cog') {
-                    const cogs = await MshnCtrlService.getCOGs();
-                    entity = cogs.find(c => c.id === id);
-                } else if (typeLower === 'political') {
-                    const pols = await MshnCtrlService.getPoliticalStatements();
-                    entity = pols.find(p => p.id === id);
-                } else if (typeLower === 'disaster') {
-                    const disasters = await MshnCtrlService.getNaturalDisasters();
-                    entity = disasters.find(d => d.id === id);
-                } else if (typeLower === 'info' || typeLower === 'disinfo') {
-                    const events = await MshnCtrlService.getDisinformationEvents();
-                    entity = events.find(e => e.id === id);
+                // Only target type has backend support
+                if (typeLower === 'target') {
+                    const targets = await targetingApi.getTargets();
+                    entity = targets.find((t: any) => t.id === id || t.designator === id);
                 }
+                // TODO: Other types (unit, cog, political, disaster, disinfo) need backend support
+                // For now, these SmartTags will show as not found
                 setData(entity);
             } catch (error) {
                 console.error('Error fetching SmartTag data:', error);

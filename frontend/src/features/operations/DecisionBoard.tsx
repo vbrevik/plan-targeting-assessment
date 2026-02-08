@@ -12,7 +12,7 @@ import {
     ChevronRight,
     ShieldCheck
 } from 'lucide-react';
-import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import { decisionsApi } from '@/lib/mshnctrl/api/decisions.api';
 import { cn } from '@/lib/utils';
 import type { DecisionBoard } from '@/lib/mshnctrl/types';
 
@@ -23,8 +23,9 @@ export function DecisionBoardView() {
 
     useEffect(() => {
         async function loadData() {
-            const data = await MshnCtrlService.getDecisionBoards() as DecisionBoard[];
-            setBoards(data);
+            const result = await decisionsApi.getPendingDecisions();
+            const data = result.decisions as any[] || [];
+            setBoards(data as DecisionBoard[]);
             if (data.length > 0) {
                 setSelectedBoard(data[0]);
             }

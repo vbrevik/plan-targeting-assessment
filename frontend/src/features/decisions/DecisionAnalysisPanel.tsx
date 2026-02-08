@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     X,
     AlertTriangle,
@@ -20,7 +20,7 @@ import type { Decision, DecisionAnalysis, ROEStatus } from '@/lib/mshnctrl/types
 import { OptionCard } from './OptionCard';
 import { RiskFactorsSection } from './RiskFactorsSection';
 import { DecisionSupport } from './DecisionSupport';
-import { AssumptionService } from '@/lib/mshnctrl/services/AssumptionService';
+import { assumptionsApi, type Assumption } from '@/lib/assumptions';
 import { AlertCircle } from 'lucide-react';
 
 interface DecisionAnalysisPanelProps {
@@ -89,6 +89,11 @@ export function DecisionAnalysisPanel({
 }: DecisionAnalysisPanelProps) {
     const [showCascades, setShowCascades] = useState(false);
     const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
+    const [assumptions, setAssumptions] = useState<Assumption[]>([]);
+
+    useEffect(() => {
+        assumptionsApi.getAll().then(setAssumptions).catch(() => setAssumptions([]));
+    }, []);
 
     const handleExportPDF = () => {
         console.log('Exporting decision analysis as PDF...');
@@ -302,16 +307,25 @@ export function DecisionAnalysisPanel({
                                 className="bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-amber-500 w-full max-w-md"
                                 onChange={(e) => {
                                     if (e.target.value) {
-                                        // In a real app, this would call the API to link
                                         console.log(`Linking assumption ${e.target.value} to decision ${decision.id}`);
-                                        AssumptionService.linkDecision(e.target.value, decision.id);
+                                        assumptionsApi.getById(e.target.value).then(current => {
+                                            const deps = Array.isArray(current.dependencies) ? current.dependencies : [];
+                                            if (!deps.includes(decision.id)) {
+                                                assumptionsApi.update(e.target.value, {
+                                                    dependencies: [...deps, decision.id],
+                                                });
+                                            }
+                                        }).catch(err => console.error('Failed to link assumption:', err));
                                     }
                                 }}
                                 defaultValue=""
                             >
                                 <option value="" disabled>Select an assumption to link...</option>
-                                <option value="asm-001">Air Superiority maintained in Sector 4 (VALID)</option>
-                                <option value="asm-002">MSR Alpha remains passable (CHALLENGED)</option>
+                                {assumptions.map(a => (
+                                    <option key={a.id} value={a.id}>
+                                        {a.title} ({a.status})
+                                    </option>
+                                ))}
                             </select>
                             <span className="text-xs text-slate-500">
                                 Linking an assumption ensures this decision is flagged if the assumption changes status.

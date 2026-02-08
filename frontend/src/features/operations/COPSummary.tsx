@@ -14,7 +14,8 @@ import {
     Clock,
     Crosshair
 } from 'lucide-react';
-import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+// Digital Twin features (RecognisedPicture, COGs) have no backend - stubbed for now
+// TODO: Either implement backend or remove these features
 import type { Track, CenterOfGravity } from '@/lib/mshnctrl/types';
 import { useOperationalContext } from '@/lib/mshnctrl/hooks/useOperationalContext';
 
@@ -27,11 +28,13 @@ export function COPSummary() {
 
     useEffect(() => {
         async function loadData() {
+            // TODO: Implement backend for Recognised Picture and COG tracking
+            // For now, using empty arrays until backend is available
             const [air, sea, land, blueCogs] = await Promise.all([
-                MshnCtrlService.getRecognisedPicture('Air'),
-                MshnCtrlService.getRecognisedPicture('Maritime'),
-                MshnCtrlService.getRecognisedPicture('Ground'),
-                MshnCtrlService.getCOGs('Blue')
+                Promise.resolve([]),
+                Promise.resolve([]),
+                Promise.resolve([]),
+                Promise.resolve([])
             ]);
             setTracks([...air, ...sea, ...land].filter(filterByContext));
             setCogs(blueCogs.filter(filterByContext));

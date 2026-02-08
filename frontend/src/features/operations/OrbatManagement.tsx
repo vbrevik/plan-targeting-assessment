@@ -13,7 +13,8 @@ import {
     Activity,
     ShieldAlert
 } from 'lucide-react';
-import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+// ORBAT Management has no backend - stubbed for now
+// TODO: Implement backend or use ontology entities for units
 import { cn } from '@/lib/utils';
 import type { Unit } from '@/lib/mshnctrl/types';
 
@@ -55,7 +56,8 @@ export function OrbatManagement() {
 
     useEffect(() => {
         async function loadData() {
-            const data = await MshnCtrlService.getOrbat() as Unit[];
+            // TODO: Implement backend for ORBAT
+            const data = await Promise.resolve([]) as Unit[];
             setUnits(data);
             setLoading(false);
         }

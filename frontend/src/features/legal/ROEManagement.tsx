@@ -12,7 +12,7 @@ import {
     History,
     TrendingUp
 } from 'lucide-react';
-import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import { roeApi } from '@/lib/mshnctrl/api/roe.api';
 import { cn } from '@/lib/utils';
 import type { ROE } from '@/lib/mshnctrl/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -57,7 +57,7 @@ export function ROEManagement() {
             try {
                 // Fetch real ROE data and extend it
                 const [rData] = await Promise.all([
-                    MshnCtrlService.getROEs()
+                    roeApi.getRules()
                 ]);
 
                 // Enhance data with mock fields for UI demo

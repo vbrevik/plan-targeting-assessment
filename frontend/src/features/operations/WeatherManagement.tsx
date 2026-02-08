@@ -11,7 +11,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
-import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+// Weather Management has no backend - stubbed for now
+// TODO: Integrate with external weather API or implement backend
 
 export function WeatherManagement() {
     const [report, setReport] = useState<any>(null);
@@ -21,9 +22,10 @@ export function WeatherManagement() {
     useEffect(() => {
         async function load() {
             setLoading(true);
+            // TODO: Implement backend for Weather
             const [r, i] = await Promise.all([
-                MshnCtrlService.getWeatherReport(),
-                MshnCtrlService.getWeatherImpacts()
+                Promise.resolve(null),
+                Promise.resolve([])
             ]);
             setReport(r);
             setImpacts(i);

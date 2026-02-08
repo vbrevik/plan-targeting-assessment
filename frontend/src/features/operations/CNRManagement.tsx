@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+// CNR Management features (Radio Networks, COMSEC) have no backend - stubbed for now
+// TODO: Either implement backend or remove these features
 import type { RadioNetwork, ComsecKey } from '@/lib/mshnctrl/types';
 import { cn } from '@/lib/utils';
 import {
@@ -22,9 +23,10 @@ export function CNRManagement() {
 
     const loadData = async () => {
         setLoading(true);
+        // TODO: Implement backend for CNR Management
         const [n, k] = await Promise.all([
-            MshnCtrlService.getRadioNetworks(),
-            MshnCtrlService.getComsecKeys()
+            Promise.resolve([]),
+            Promise.resolve([])
         ]);
         setNetworks(n);
         setKeys(k);
@@ -37,7 +39,8 @@ export function CNRManagement() {
 
     const handleRollover = async (netId: string) => {
         setRollovers({ ...rollovers, [netId]: true });
-        await MshnCtrlService.cycleComsecKey(netId);
+        // TODO: Implement backend endpoint for COMSEC key cycling
+        // await api.post(`/operations/cnr/networks/${netId}/cycle-key`);
         await loadData(); // Refresh after cycle
         setRollovers({ ...rollovers, [netId]: false });
     };

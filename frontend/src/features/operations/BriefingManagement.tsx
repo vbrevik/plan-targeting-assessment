@@ -16,7 +16,8 @@ import {
     Check
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+// Briefing Management has no backend - stubbed for now
+// TODO: Implement backend for briefing workflow
 import { cn } from '@/lib/utils';
 import type { Brief } from '@/lib/mshnctrl/types';
 
@@ -54,7 +55,8 @@ export function BriefingManagement() {
 
     useEffect(() => {
         async function loadData() {
-            const data = await MshnCtrlService.getBriefs() as Brief[];
+            // TODO: Implement backend for Briefings
+            const data = await Promise.resolve([]) as Brief[];
             setBriefs(data);
             if (data.length > 0) {
                 setSelectedBrief(data[0]);

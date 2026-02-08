@@ -46,7 +46,53 @@ export interface CreateIntelFeedRequest {
 // API SERVICE
 // ============================================================================
 
-export const IntelligenceApi = {
+export const intelligenceApi = {
+    // ============================================================================
+    // RFI (Request for Information) - Uses Ontology API
+    // ============================================================================
+
+    /**
+     * Get all RFIs (uses ontology entities)
+     */
+    getRFIs: async (): Promise<any[]> => {
+        return api.get('/ontology/entities?type=RFI');
+    },
+
+    /**
+     * Get a single RFI by ID
+     */
+    getRFI: async (id: string): Promise<any> => {
+        return api.get(`/ontology/entities/${id}`);
+    },
+
+    /**
+     * Create a new RFI (as ontology entity)
+     */
+    createRFI: async (data: any): Promise<any> => {
+        return api.post('/ontology/entities', {
+            ...data,
+            type: 'RFI',
+        });
+    },
+
+    /**
+     * Update an RFI
+     */
+    updateRFI: async (id: string, data: any): Promise<any> => {
+        return api.put(`/ontology/entities/${id}`, data);
+    },
+
+    /**
+     * Delete an RFI
+     */
+    deleteRFI: async (id: string): Promise<void> => {
+        return api.delete(`/ontology/entities/${id}`);
+    },
+
+    // ============================================================================
+    // Intel Feeds
+    // ============================================================================
+
     /**
      * Create a new intelligence feed entry
      */
@@ -89,3 +135,6 @@ export const IntelligenceApi = {
         return api.delete(`/intelligence/${id}`);
     },
 };
+
+// Backward compatibility export
+export const IntelligenceApi = intelligenceApi;

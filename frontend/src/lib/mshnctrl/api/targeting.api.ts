@@ -3,7 +3,6 @@
 // Expanded for NATO Multi-Domain Operations (MDO) & Cyber Focus
 
 import { api } from '@/lib/api';
-import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
 import type { TargetEntity } from '@/lib/mshnctrl/types';
 import type {
     JtbSession,
@@ -254,13 +253,7 @@ export const targetingApi = {
     },
 
     async getTarget(id: string): Promise<TargetEntity> {
-        return api.get<TargetEntity>(`/targeting/targets/${id}`)
-            .catch(async () => {
-                console.warn(`[targetingApi] Failed to fetch target ${id} from API, falling back to mock.`);
-                const mockTarget = await MshnCtrlService.getTarget(id);
-                if (!mockTarget) throw new Error('Target not found in mock');
-                return mockTarget as TargetEntity;
-            });
+        return api.get<TargetEntity>(`/targeting/targets/${id}`);
     },
 
     async createTarget(data: Partial<TargetEntity>): Promise<TargetEntity> {

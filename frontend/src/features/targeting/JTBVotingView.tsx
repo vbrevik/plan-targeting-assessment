@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 import type { Target } from '@/lib/mshnctrl/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -23,9 +23,9 @@ export function JTBVotingView() {
     const [loading, setLoading] = useState(true);
 
     const loadData = async () => {
-        const targets = await MshnCtrlService.getTargets();
+        const targets = await targetingApi.getTargets();
         // Filter for "Nominated" targets
-        setNominatedTargets(targets.filter(t => t.targetStatus === 'Nominated'));
+        setNominatedTargets(targets.filter((t: any) => t.targetStatus === 'Nominated' || t.target_status === 'Nominated'));
         setLoading(false);
     };
 

@@ -11,7 +11,7 @@ import {
     ChevronRight,
     Gavel
 } from 'lucide-react';
-import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 import { cn } from '@/lib/utils';
 import type { StrikeAnalysis, Target as TargetType } from '@/lib/mshnctrl/types';
 
@@ -23,7 +23,7 @@ export function StrikeOptimizer() {
 
     useEffect(() => {
         async function loadTargets() {
-            const data = await MshnCtrlService.getTargets();
+            const data = await targetingApi.getTargets();
             setTargets(data);
             if (data.length > 0) {
                 setSelectedTargetId(data[0].id);
@@ -36,7 +36,11 @@ export function StrikeOptimizer() {
     useEffect(() => {
         if (selectedTargetId) {
             async function loadAnalysis() {
-                const data = await MshnCtrlService.getStrikeAnalysis(selectedTargetId as string);
+                // Strike analysis is provided via risk assessment endpoint
+                // For now, use mock data structure until backend provides strike-specific analysis
+                const data = await targetingApi.getHighRiskTargets().then(targets =>
+                    targets.find((t: any) => t.id === selectedTargetId)
+                ).catch(() => null);
                 setAnalysis(data || null);
             }
             loadAnalysis();

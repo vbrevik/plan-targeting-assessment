@@ -9,7 +9,8 @@ import {
 import { TacticalMap } from '../operations/TacticalMap';
 import { NetworkGraph } from '../shared/NetworkGraph';
 import { LOOTimeline } from '../planning/LOOTimeline';
-import { MshnCtrlService } from '@/lib/mshnctrl/mock-service';
+// Context events (Political, Disasters, Disinfo) have no backend - stubbed
+// TODO: Implement backend or remove these features
 import { useToast } from '@/components/ui/use-toast';
 import { useOperationalContext, getPhaseColor } from '@/lib/mshnctrl/hooks/useOperationalContext';
 import type {
@@ -39,18 +40,17 @@ export function MshnCtrlDashboard() {
     }>({ political: [], disasters: [], disinfo: [], media: [] });
 
     useEffect(() => {
-        // Fetch scoped stats
-        MshnCtrlService.getDashboardStats(context.operationId || undefined).then((res: any) => setStats(res));
-
-        // Fetch external factors
-        Promise.all([
-            MshnCtrlService.getPoliticalStatements(context.operationId || undefined),
-            MshnCtrlService.getNaturalDisasters(context.operationId || undefined),
-            MshnCtrlService.getDisinformationEvents(context.operationId || undefined),
-            MshnCtrlService.getFakeMedia(context.operationId || undefined)
-        ]).then(([political, disasters, disinfo, media]) => {
-            setExternalFactors({ political, disasters, disinfo, media });
+        // TODO: Implement backend for dashboard stats and external factors
+        // Stubbed for now with empty data
+        setStats({
+            activeOrders: 0,
+            pendingProposals: 0,
+            activeScenario: 'No active scenario',
+            readiness: 0,
+            loos: [],
+            decisiveConditions: []
         });
+        setExternalFactors({ political: [], disasters: [], disinfo: [], media: [] });
     }, [context.operationId]);
 
     if (!stats) return <div className="h-screen flex items-center justify-center bg-slate-950 text-white font-mono uppercase tracking-[0.2em] animate-pulse">Initializing Command Core...</div>;

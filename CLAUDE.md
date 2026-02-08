@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 🚀 Quick Start Commands
+## Quick Start Commands
 
 ### Build & Run
 
@@ -48,196 +48,252 @@ npm run test        # Run vitest unit tests
 ./test_integration.sh  # Test API endpoints with authentication
 ```
 
-## 🏛️ Architecture Overview
+## Architecture Overview
 
-### Backend Architecture
+### Modular Cargo Workspace
 
-**Tech Stack:** Rust, Axum, SQLx (SQLite), JWT Authentication
+The project uses a **Cargo workspace** with 6 module groups containing 18 crates. The `backend/` binary imports from independent crates in `modules/`.
 
-**Feature-Based Modular Structure:**
+**Tech Stack:** Rust, Axum 0.7, SQLx 0.8 (SQLite), JWT/RSA Authentication
+
 ```
-backend/src/features/
-├── auth/              # Authentication & Authorization
-├── targeting/         # NATO COPD Targeting Cell
-├── bda/               # Battle Damage Assessment
-├── operations/        # Operations Management
-├── ontology/          # Information Management Ontology
-├── abac/              # Attribute-Based Access Control
-├── discovery/         # API Discovery
-├── navigation/        # Dynamic Navigation
-└── strategy/          # Strategic Planning
+plan-target-assessment/              # Root Cargo workspace
+├── backend/                         # Main server binary
+│   ├── src/
+│   │   ├── main.rs                  # Entry point, router setup
+│   │   ├── config/                  # Configuration module
+│   │   ├── middleware/              # Auth, CSRF, ABAC middleware
+│   │   └── utils/                   # JWT key generation & rotation
+│   ├── migrations/                  # 42 SQLite migration files
+│   ├── data/app.db                  # SQLite database
+│   ├── keys/                        # JWT RSA keys (auto-generated)
+│   └── config/default.toml          # Default configuration
+│
+└── modules/
+    ├── bcknd-ctrl/crates/           # Core framework
+    │   ├── core-auth                # JWT auth, sessions, refresh tokens
+    │   ├── core-users               # User CRUD, roles
+    │   ├── core-abac                # Attribute-based access control
+    │   ├── core-ontology            # Entity/relationship graph model
+    │   ├── core-system              # System operations
+    │   ├── core-discovery           # API discovery
+    │   ├── core-rate-limit          # Rate limiting (Tower Governor)
+    │   ├── core-common-types        # Shared type definitions
+    │   └── core-server              # HTTP server utilities
+    ├── trgtn-ctrl/crates/           # Targeting domain
+    │   ├── targeting                # Target management, JTB, DTL, realtime
+    │   ├── bda                      # Battle Damage Assessment
+    │   ├── roe                      # Rules of Engagement
+    │   └── targeting-server         # Server integration
+    ├── c2-ctrl/crates/              # Command & Control
+    │   ├── meetings                 # Meeting scheduling
+    │   ├── decisions                # Decision tracking
+    │   └── c2-server                # C2 server integration
+    ├── strtgy-ctrl/crates/          # Strategy
+    │   ├── strategy                 # Strategic planning & intent
+    │   └── strategy-server          # Server integration
+    ├── plnng-ctrl/crates/           # Planning
+    │   ├── assumptions              # Assumption management
+    │   └── planning-server          # Server integration
+    └── admn-ctrl/crates/            # Administration
+        ├── admn-server              # Admin API server
+        ├── admn-users               # User administration
+        ├── admn-abac                # Admin ABAC
+        ├── admn-system              # System admin
+        └── admn-rate-limit          # Admin rate limits
 ```
 
 **Key Components:**
-- **Axum Router**: Feature-nested routing with middleware (auth, CSRF, ABAC)
-- **SQLx Database**: SQLite with connection pooling
-- **JWT Authentication**: RSA-based token system with key rotation
-- **Middleware Stack**: Auth → CSRF → ABAC → Feature Routes
+- **Axum Router**: Feature-nested routing with middleware layers (auth, CSRF, ABAC)
+- **SQLx Database**: SQLite with connection pooling, 42 migration files
+- **JWT Authentication**: RSA-based token system with 90-day key rotation
+- **Middleware Stack**: CookieManager → CORS → Auth → CSRF → Feature Routes
 
 ### Frontend Architecture
 
-**Tech Stack:** React 19, TypeScript, Vite, TanStack Router, Tailwind CSS
+**Tech Stack:** React 19, TypeScript 5.7, Vite 7, TanStack Router, Tailwind CSS 4
 
 **Feature-Based Component Structure:**
 ```
-frontend/src/features/
-├── targeting/         # NATO COPD Targeting Cell UI
-├── bda/               # Battle Damage Assessment UI
-├── intelligence/      # Intelligence Management
-├── operations/        # Operations Dashboard
-├── planning/          # Campaign Planning
-├── admin/             # Administration Panels
-├── shared/            # Shared Components & Services
-└── auth/              # Authentication Components
+frontend/src/
+├── features/              # 20 feature modules
+│   ├── targeting/         # NATO COPD Targeting Cell UI
+│   ├── bda/               # Battle Damage Assessment UI
+│   ├── intelligence/      # Intelligence Management (RFI, TOR)
+│   ├── operations/        # Operations Dashboard
+│   ├── planning/          # Campaign Planning
+│   ├── decisions/         # Decision Tracking
+│   ├── admin/             # Administration Panels
+│   ├── shared/            # Shared Components & Services
+│   ├── auth/              # Authentication Components
+│   ├── layout/            # Layout Components (sidebar, nav)
+│   ├── cockpit/           # Operational Cockpit
+│   ├── dashboard/         # IM Dashboard
+│   ├── roe/               # ROE Management
+│   ├── legal/             # Legal/Compliance
+│   ├── logistics/         # Supply Chain (mock)
+│   └── ...                # Additional modules
+├── components/            # UI primitives (Radix-based)
+├── lib/
+│   └── mshnctrl/
+│       ├── types.ts       # Comprehensive ontology-first type system
+│       ├── api/           # API clients (bda, targeting, roe)
+│       ├── services/      # Business logic services
+│       └── hooks/         # Custom React hooks
+├── routes/                # TanStack Router file-based routes
+└── styles/                # CSS & Tailwind config
 ```
 
 **Key Components:**
-- **TanStack Router**: File-based routing system
-- **React Hooks**: Custom hooks for data fetching and state management
-- **TypeScript Types**: Comprehensive type system in `/lib/smartops/types.ts`
-- **Mock Services**: Development mocks for API endpoints
+- **TanStack Router**: File-based routing under `/mshnctrl/*`
+- **Ontology-First Types**: `frontend/src/lib/mshnctrl/types.ts` matches backend entity model
+- **Vite Proxy**: `/api` requests proxied to backend on port 3000
+- **UI**: Radix primitives, Recharts, Framer Motion, Lucide icons
 
-## 🗺️ Navigation & Routing
+## Navigation & Routing
 
 ### Backend API Structure
 
 **Base URL:** `http://localhost:3000/api/`
 
-**Main API Groups:**
-- `/api/auth/*` - Authentication endpoints
-- `/api/targeting/*` - NATO COPD Targeting Cell APIs
-- `/api/bda/*` - Battle Damage Assessment APIs
-- `/api/operations/*` - Operations Management APIs
-- `/api/ontology/*` - Information Management APIs
-- `/api/navigation/*` - Dynamic Navigation APIs
-- `/api/strategy/*` - Strategic Planning APIs
+**API Routes (from main.rs):**
+
+| Route | Crate | Auth | Description |
+|-------|-------|------|-------------|
+| `/api/health` | built-in | No | Health check |
+| `/api/auth/*` | core-auth | Mixed | Login (public), logout/refresh (protected) |
+| `/api/users/*` | core-users | Yes | User management CRUD |
+| `/api/abac/*` | core-abac | Yes | Access control management |
+| `/api/ontology/*` | core-ontology | Yes | Entity/relationship graph |
+| `/api/system/*` | core-system | Yes | System operations |
+| `/api/discovery/*` | core-discovery | No | API discovery |
+| `/api/rate-limits/*` | core-rate-limit | Yes | Rate limit management |
+| `/api/targeting/*` | targeting | Yes | NATO COPD targeting cell |
+| `/api/bda/*` | bda | Yes | Battle damage assessment |
+| `/api/roe/*` | roe | Yes | Rules of engagement |
+| `/api/operations/*` | meetings | Yes | Operations & meetings |
+| `/api/assumptions/*` | assumptions | Yes | Assumption management |
+| `/api/strategy/*` | strategy | Yes | Strategic planning |
+| `/api/c2/*` | c2-server | Yes | Command & control |
+| `/api/admin/*` | admn-server | Yes | Administration |
 
 ### Frontend Route Structure
 
 **Base URL:** `http://localhost:5173/`
 
-**Main Route Groups:**
-- `/smartops/targeting/*` - Targeting Cell Dashboard
-- `/smartops/bda/*` - BDA Workbench
-- `/smartops/operations/*` - Operations Management
-- `/smartops/intelligence/*` - Intelligence Integration
-- `/smartops/planning/*` - Campaign Planning
+**Main Route Groups (TanStack Router, file-based):**
+- `/mshnctrl/` - Main dashboard
+- `/mshnctrl/targeting-cell-dashboard` - Targeting Cell Dashboard
+- `/mshnctrl/targeting/*` - Target management (JTB, DTL, nominations, effects)
+- `/mshnctrl/bda/*` - BDA Workbench (reports, create)
+- `/mshnctrl/information-management` - IM Dashboard
+- `/mshnctrl/rfis` - RFI Management
+- `/mshnctrl/roe` - Rules of Engagement
+- `/mshnctrl/decision-board` - Decision Board
+- `/mshnctrl/assumptions` - Assumptions Management
+- `/mshnctrl/strategic-direction` - Strategic Direction
+- `/mshnctrl/logistics` - Logistics (mock)
+- `/mshnctrl/j2-dashboard` through `/mshnctrl/j5-dashboard` - Staff dashboards
+- `/admin/*` - Administration panels
+- `/login` - Authentication
 
-## 🔧 Development Workflow
+## Development Workflow
 
-### Common Development Tasks
+### Adding a New Backend Feature (Crate)
 
-**1. Add New Backend Feature:**
 ```bash
-# Create new feature module
-mkdir -p backend/src/features/new_feature/{domain,handlers,repositories,services}
-# Add to main.rs router
-# Implement domain models, handlers, and routes
+# 1. Create new crate in the appropriate module
+cargo init modules/<module>-ctrl/crates/<feature-name> --lib
+
+# 2. Add to root Cargo.toml workspace members
+# 3. Add as dependency in backend/Cargo.toml
+# 4. Implement domain models, handlers, routes (expose via lib.rs)
+# 5. Wire into backend/src/main.rs router with middleware
 ```
 
-**2. Add New Frontend Component:**
+### Adding a New Frontend Feature
+
 ```bash
-# Create new component
+# 1. Create feature directory
 mkdir -p frontend/src/features/new_feature
-# Add component files (Component.tsx, hooks/, services/)
-# Add to route tree
+
+# 2. Add component files (Component.tsx, hooks/, services/)
+# 3. Create route file: frontend/src/routes/mshnctrl.new-feature.tsx
+# 4. Add API client in frontend/src/lib/mshnctrl/api/
 ```
 
-**3. Database Migrations:**
+### Database Migrations
+
 ```bash
-# Create new migration file in backend/migrations/
-# Run migrations automatically on backend startup
-# Or manually: sqlx migrate run
+# Create new migration file (timestamp-based naming)
+# Format: YYYYMMDDHHMMSS_description.sql
+touch backend/migrations/20260208120000_add_new_table.sql
+
+# Migrations run automatically on backend startup
+# Or manually: cd backend && sqlx migrate run
 ```
 
 ### Debugging Tips
 
-**Backend Debugging:**
+**Backend:**
 ```bash
-# Enable detailed logging
-RUST_LOG=debug cargo run
-
-# Check database
-sqlite3 backend/data/app.db
+RUST_LOG=debug cargo run             # Verbose logging
+sqlite3 backend/data/app.db          # Direct DB access
 ```
 
-**Frontend Debugging:**
+**Frontend:**
 ```bash
-# Enable React devtools
-npm run dev
-
-# Check network requests
-Open browser devtools → Network tab
+npm run dev                          # Dev server with HMR
+# Browser devtools → Network tab    # API request inspection
 ```
 
-## 📚 Key Files & Directories
+## Key Files & Directories
 
 ### Backend
-- `backend/src/main.rs` - Main application entry point
-- `backend/src/features/` - All feature modules
-- `backend/migrations/` - Database migration scripts
+- `backend/src/main.rs` - Entry point, config loading, router assembly
+- `backend/src/middleware/auth.rs` - JWT auth middleware
+- `backend/src/middleware/csrf.rs` - CSRF protection
+- `backend/src/utils/jwt_keys.rs` - JWT key generation
+- `backend/src/utils/key_rotation.rs` - Key rotation logic
+- `backend/src/config/` - Configuration (default.toml fallback)
+- `backend/migrations/` - 42 SQLite migration scripts
 - `backend/data/app.db` - SQLite database
-- `backend/config/` - Configuration files
+
+### Modules (Backend Crates)
+- `modules/bcknd-ctrl/crates/core-ontology/` - Central ontology model
+- `modules/bcknd-ctrl/crates/core-auth/` - Auth framework
+- `modules/trgtn-ctrl/crates/targeting/` - Targeting handlers
+- `modules/trgtn-ctrl/crates/bda/` - BDA handlers
+- `modules/trgtn-ctrl/crates/roe/` - ROE engine
 
 ### Frontend
-- `frontend/src/main.tsx` - Frontend entry point
-- `frontend/src/features/` - Feature components
-- `frontend/src/lib/` - Shared libraries and types
-- `frontend/src/routes/` - Route definitions
-- `frontend/public/` - Static assets
+- `frontend/src/main.tsx` - App bootstrap
+- `frontend/src/lib/mshnctrl/types.ts` - Comprehensive type system
+- `frontend/src/features/` - All feature UI modules
+- `frontend/src/routes/` - TanStack Router route files
+- `frontend/vite.config.ts` - Vite config (proxy, build splits)
 
 ### Documentation
-- `docs/` - Comprehensive project documentation
-- `docs/START_HERE_DECISION_SYSTEM.md` - Best starting point
-- `docs/BDA_*.md` - Battle Damage Assessment docs
-- `docs/scenarios/` - Use case scenarios
+- `docs/REALITY_CHECK.md` - Authoritative feature status
+- `docs/bda/BDA_MASTER_GUIDE.md` - BDA entry point
+- `docs/INDEX.md` - Master documentation index
+- `docs/scenarios/` - 9 military usage scenarios
 
-## 🎯 Feature-Specific Development
-
-### Targeting Cell (NATO COPD)
-
-**Backend:**
-- Module: `backend/src/features/targeting/`
-- Key files: `domain/mod.rs`, `handlers/*.rs`, `repositories/mod.rs`
-- API endpoints: `/api/targeting/*`
-
-**Frontend:**
-- Components: `frontend/src/features/targeting/`
-- Routes: `/smartops/targeting/*`
-- Types: `frontend/src/lib/smartops/types.ts`
-
-### Battle Damage Assessment (BDA)
-
-**Backend:**
-- Module: `backend/src/features/bda/`
-- Key files: `domain/bda_report.rs`, `repositories/bda_repository.rs`
-- API endpoints: `/api/bda/*`
-
-**Frontend:**
-- Components: `frontend/src/features/bda/`
-- Routes: `/smartops/bda/*`
-- Services: `frontend/src/lib/bda.ts`
-
-## 🔐 Authentication & Security
+## Authentication & Security
 
 ### JWT Authentication
-- Key generation: `backend/utils/jwt_keys.rs`
-- Key rotation: Every 90 days
-- Token storage: HTTP-only cookies
-- Middleware: `backend/src/middleware/auth.rs`
+- **Keys**: RSA, auto-generated in `backend/keys/`
+- **Rotation**: Every 90 days automatic
+- **Storage**: HTTP-only cookies
+- **Middleware**: `backend/src/middleware/auth.rs`
+- **Config**: `backend/config/default.toml` (jwt_expiry: 3600s, refresh: 86400s)
 
 ### Access Control
-- **ABAC**: Attribute-Based Access Control
-- **RBAC**: Role-Based Access Control
-- **CSRF**: Cross-Site Request Forgery protection
-- **Rate Limiting**: Tower Governor integration
+- **ABAC**: Attribute-Based Access Control (core-abac crate)
+- **CSRF**: Cross-Site Request Forgery protection middleware
+- **Rate Limiting**: Tower Governor integration (core-rate-limit crate)
 
-## 🧪 Testing Strategy
-
-### Test Types
-1. **Unit Tests**: Rust `cargo test`, JavaScript `vitest`
-2. **E2E Tests**: Playwright (`*.spec.ts` files)
-3. **Integration Tests**: `test_integration.sh`
+## Testing Strategy
 
 ### Running Tests
 ```bash
@@ -247,90 +303,71 @@ cd backend && cargo test
 # Frontend unit tests
 cd frontend && npm run test
 
-# E2E tests
+# E2E tests (requires running backend + frontend)
 cd frontend && npx playwright test
 
 # Specific E2E test
 cd frontend && npx playwright test tests/targeting-workbench-integration.spec.ts
 
-# Integration tests
+# Integration tests (API-level)
 ./test_integration.sh
 ```
 
 ### Test Data
-- Test users: Created via `backend/scripts/create_test_user.rs`
+- Test users: Created via migrations and seed scripts
 - Test credentials: `targeting_cell@test.mil` / `TargetingCell2026!`
 
-## 📦 Deployment
+## Deployment
 
 ### Docker Deployment
 ```bash
-# Build and start containers
-docker-compose up --build
-
-# Stop containers
-docker-compose down
-
-# View logs
-docker-compose logs -f
+docker-compose up --build    # Build and start
+docker-compose down          # Stop
+docker-compose logs -f       # View logs
 ```
 
 ### Environment Variables
 **Backend:**
-- `DATABASE_URL`: SQLite connection string
+- `DATABASE_URL`: SQLite connection string (default: `sqlite:data/app.db`)
 - `RUST_LOG`: Logging level (info, debug, trace)
-- `JWT_*`: JWT configuration (keys auto-generated)
+- `JWT_SECRET`, `JWT_EXPIRY`, `REFRESH_TOKEN_EXPIRY`: JWT config
 
 **Frontend:**
-- `VITE_API_URL`: Backend API base URL
+- `VITE_API_URL`: Backend API base URL (default: `http://localhost:3000`)
 
-## 🔄 CI/CD
+## CI/CD
 
 **Current Status:** CI is intentionally disabled (see `.github/workflows/ci-disabled.yml`)
 
-**Local Testing Only:** All testing must pass locally before considering features complete
+**Local Testing Only:** All testing must pass locally before considering features complete.
 
-## 📝 Code Style & Conventions
+## Code Style & Conventions
 
 ### Backend (Rust)
-- Feature-based architecture
-- Domain-driven design
+- Modular crate architecture in `modules/`
+- Domain-driven design within each crate
 - Error handling with `thiserror` and `anyhow`
 - Async/await with Tokio
+- Workspace-level dependency management
 
 ### Frontend (TypeScript)
 - Functional components with hooks
-- Explicit TypeScript types
-- TanStack Router for navigation
-- Tailwind CSS for styling
+- Ontology-first type system (matches backend entity model)
+- TanStack Router for file-based navigation
+- Tailwind CSS 4 for styling
+- Radix UI for accessible primitives
 
-### Documentation
-- Feature documentation in `docs/`
-- Code-level documentation with `///` comments
-- Migration to README when features stabilize
-
-## 🎓 Learning Resources
-
-### For New Developers
-1. **Backend**: Study `backend/src/features/assumptions/` as reference
-2. **Frontend**: Study `frontend/src/features/targeting/` components
-3. **Architecture**: Read `docs/DECISION_SYSTEM_ARCHITECTURE.md`
-
-### Key Documentation Files
-- `docs/START_HERE_DECISION_SYSTEM.md` - Best starting point
-- `docs/WEEK_1_IMPLEMENTATION_PLAN.md` - Implementation guide
-- `docs/BDA_WORKBENCH_IMPLEMENTATION_PLAN.md` - BDA implementation
-- `docs/ARCHITECTURE_COMPARISON.md` - Architecture evolution
-
-## ⚠️ Important Notes
+## Important Notes
 
 1. **CI Disabled**: All testing must be done locally
 2. **Feature Flags**: None - all features are always enabled
-3. **Database**: SQLite (file-based, no separate server needed)
-4. **Authentication**: JWT with auto-generated keys
+3. **Database**: SQLite file-based (`backend/data/app.db`), no separate server
+4. **Authentication**: JWT with auto-generated RSA keys
 5. **Ports**: Backend: 3000, Frontend: 5173
+6. **Frontend Proxy**: Vite proxies `/api` to backend automatically
+7. **Branch**: Current work is on `carve-out` branch (modular extraction)
 
-## 🚀 Quick Development Cycle
+## Quick Development Cycle
 
 ```bash
 # Terminal 1: Backend
@@ -344,6 +381,6 @@ cd frontend && npx playwright test --ui
 ```
 
 Then open:
-- Dashboard: `http://localhost:5173/smartops/`
-- API Docs: `http://localhost:3000/api/discovery`
-- Targeting: `http://localhost:5173/smartops/targeting-cell-dashboard`
+- Dashboard: `http://localhost:5173/mshnctrl/`
+- Targeting: `http://localhost:5173/mshnctrl/targeting-cell-dashboard`
+- Health: `http://localhost:3000/api/health`
