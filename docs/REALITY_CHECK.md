@@ -37,10 +37,13 @@ These have significant code but need integration testing:
 - ⚠️ F3EAD pipeline visualization (frontend-only)
 
 ### ROE Management
-- ✅ Frontend forms and displays complete
-- ✅ Backend module exists (14 files)
-- 🔴 Integration between frontend/backend incomplete
-- 🔴 E2E tests failing (see running terminals)
+- ✅ Frontend forms and displays complete (wired to real APIs)
+- ✅ Backend module fully implemented (14 files)
+- ✅ Auto-determination service (keyword-based ROE analysis)
+- ✅ ROE blocking check for meeting routing
+- ✅ Decision routing with ROE integration
+- ✅ 99 unit tests across 7 test modules (including LEGAD compliance edge cases)
+- ✅ Playwright integration tests verified and fixed (roe-api.spec.ts, roe-integration.spec.ts)
 
 ### Ontology/IM Dashboard
 - ✅ Entity CRUD working
@@ -62,12 +65,14 @@ These have frontend UI but no real backend:
 - All data is mock/static
 
 ### Planning Modules
+- ✅ J5 Plans Dashboard created (mock data, role-gated)
 - CONOPS builder: Mock data
 - COA wargamer: Mock data
 - Campaign planning: Mock data
 - Strategic direction: Mock data
 
 ### Logistics
+- ✅ J4 Logistics Dashboard created (mock data, role-gated)
 - Supply tracking: Mock data
 - Convoy management: Mock data
 - Equipment readiness: Mock data
@@ -127,11 +132,13 @@ These are documented but have no code:
 
 ## Recommended Next Steps
 
-1. **Complete BDA Phase 2** (Weaponeering) - You're close
-2. **Fix ROE integration** - Backend exists, needs wiring
+1. **Complete BDA Phase 2** (Weaponeering) - Close to done
+2. ~~Fix ROE integration~~ - ✅ Done (99 tests, integration tests fixed)
 3. **Stabilize Targeting** - Add E2E tests
 4. **Decide on Decision System** - Build it or remove docs
+5. **Feedback Loops** - Dashboard, Plan vs Actual, event service (Sprint 1 remaining)
+6. **Digital Twin indicators** - Mocked vs Integrated visual markers (Sprint 1 remaining)
 
 ---
 
-_This document reflects the actual state as of 2026-01-31_
+_This document reflects the actual state as of 2026-02-09_

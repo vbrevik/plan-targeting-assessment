@@ -29,32 +29,42 @@ export type {
 } from './targeting.api';
 
 // BDA (Battle Damage Assessment)
-export { bdaApi as BDAApi } from './bda';
+export { BdaApi as BDAApi } from './bda';
 export type {
-    BDAReport,
-    BDAPhase,
-    Component,
-    ImageAnnotation,
-    PeerReview,
+    BdaReport,
+    BdaStatus,
+    BdaPeerReview,
+    BdaImagery,
 } from './bda';
 
 // ROE (Rules of Engagement)
 export { roeApi as ROEApi } from './roe.api';
 export type {
-    ROERule,
     ROERequest,
-    ROERequestStatus,
+    DecisionROEStatus,
 } from './roe.api';
 
 // Operations & Meetings
 export { OperationsApi } from './operations';
-export { meetingsApi as MeetingsApi } from './meetings.api';
+export { MeetingsApi } from './meetings.api';
+export type {
+    MeetingMinutes,
+    ActionItem,
+    LessonLearned,
+} from './meetings.api';
 
 // Intelligence
 export { intelligenceApi as IntelligenceApi } from './intelligence';
 
 // Decisions
 export { decisionsApi as DecisionsApi } from './decisions.api';
+
+// Feedback
+export { feedbackApi as FeedbackApi } from './feedback.api';
+export type {
+    CreateFeedbackEventRequest,
+    UpdateFeedbackEventRequest,
+} from './feedback.api';
 
 /**
  * Usage Examples:

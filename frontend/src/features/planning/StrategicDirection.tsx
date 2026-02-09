@@ -11,7 +11,6 @@ import {
     History
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useNavigate } from '@tanstack/react-router';
 import { useToast } from '@/components/ui/use-toast';
 import { strategicApi } from '@/lib/strategy';
 import type { StrategicGuidance } from '@/lib/mshnctrl/types';
@@ -26,7 +25,6 @@ export function StrategicDirection() {
     const [roes, setRoes] = useState<ROE[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedObjectiveId, setSelectedObjectiveId] = useState<string | null>(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         async function loadGuidance() {
@@ -184,7 +182,13 @@ export function StrategicDirection() {
                                         <p className="text-xs text-slate-500 font-medium leading-relaxed mb-6">Currently active in MD Synchronization matrix. Achieving 84% effectiveness metrics.</p>
                                         <Button
                                             variant="ghost"
-                                            onClick={() => navigate({ to: '/mshnctrl/mdo' })}
+                                            onClick={() => {
+                                                // TODO: Create /mshnctrl/mdo route when MDO view is implemented
+                                                toast({
+                                                    title: 'MDO View',
+                                                    description: 'Multi-Domain Operations view coming soon.',
+                                                });
+                                            }}
                                             className="w-full justify-between border-t border-slate-800 pt-6 rounded-none text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white group"
                                         >
                                             View Operational Data <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />

@@ -65,7 +65,7 @@ where
 }
 
 pub async fn auth_middleware(
-    mut req: axum::extract::Request,
+    req: axum::extract::Request,
     next: axum::middleware::Next,
 ) -> Result<Response, AuthError> {
     let (mut parts, body) = req.into_parts();

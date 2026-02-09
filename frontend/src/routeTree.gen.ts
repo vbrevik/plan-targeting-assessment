@@ -37,12 +37,13 @@ import { Route as MshnctrlOrbatRouteImport } from './routes/mshnctrl.orbat'
 import { Route as MshnctrlOntologyRouteImport } from './routes/mshnctrl.ontology'
 import { Route as MshnctrlMenuBuilderRouteImport } from './routes/mshnctrl.menu-builder'
 import { Route as MshnctrlLegadDashboardRouteImport } from './routes/mshnctrl.legad-dashboard'
+import { Route as MshnctrlJ5DashboardRouteImport } from './routes/mshnctrl.j5-dashboard'
+import { Route as MshnctrlJ4DashboardRouteImport } from './routes/mshnctrl.j4-dashboard'
 import { Route as MshnctrlJ3DashboardRouteImport } from './routes/mshnctrl.j3-dashboard'
 import { Route as MshnctrlJ2DashboardRouteImport } from './routes/mshnctrl.j2-dashboard'
 import { Route as MshnctrlInformationManagementRouteImport } from './routes/mshnctrl.information-management'
 import { Route as MshnctrlImDashboardRouteImport } from './routes/mshnctrl/im-dashboard'
 import { Route as MshnctrlFeedbackRouteImport } from './routes/mshnctrl.feedback'
-import { Route as MshnctrlExternalContextRouteImport } from './routes/mshnctrl.external-context'
 import { Route as MshnctrlDigitalTwinRouteImport } from './routes/mshnctrl.digital-twin'
 import { Route as MshnctrlDecisionBoardRouteImport } from './routes/mshnctrl.decision-board'
 import { Route as MshnctrlCopSummaryRouteImport } from './routes/mshnctrl.cop-summary'
@@ -227,6 +228,16 @@ const MshnctrlLegadDashboardRoute = MshnctrlLegadDashboardRouteImport.update({
   path: '/legad-dashboard',
   getParentRoute: () => MshnctrlRoute,
 } as any)
+const MshnctrlJ5DashboardRoute = MshnctrlJ5DashboardRouteImport.update({
+  id: '/j5-dashboard',
+  path: '/j5-dashboard',
+  getParentRoute: () => MshnctrlRoute,
+} as any)
+const MshnctrlJ4DashboardRoute = MshnctrlJ4DashboardRouteImport.update({
+  id: '/j4-dashboard',
+  path: '/j4-dashboard',
+  getParentRoute: () => MshnctrlRoute,
+} as any)
 const MshnctrlJ3DashboardRoute = MshnctrlJ3DashboardRouteImport.update({
   id: '/j3-dashboard',
   path: '/j3-dashboard',
@@ -251,11 +262,6 @@ const MshnctrlImDashboardRoute = MshnctrlImDashboardRouteImport.update({
 const MshnctrlFeedbackRoute = MshnctrlFeedbackRouteImport.update({
   id: '/feedback',
   path: '/feedback',
-  getParentRoute: () => MshnctrlRoute,
-} as any)
-const MshnctrlExternalContextRoute = MshnctrlExternalContextRouteImport.update({
-  id: '/external-context',
-  path: '/external-context',
   getParentRoute: () => MshnctrlRoute,
 } as any)
 const MshnctrlDigitalTwinRoute = MshnctrlDigitalTwinRouteImport.update({
@@ -502,12 +508,13 @@ export interface FileRoutesByFullPath {
   '/mshnctrl/cop-summary': typeof MshnctrlCopSummaryRoute
   '/mshnctrl/decision-board': typeof MshnctrlDecisionBoardRoute
   '/mshnctrl/digital-twin': typeof MshnctrlDigitalTwinRoute
-  '/mshnctrl/external-context': typeof MshnctrlExternalContextRoute
   '/mshnctrl/feedback': typeof MshnctrlFeedbackRoute
   '/mshnctrl/im-dashboard': typeof MshnctrlImDashboardRoute
   '/mshnctrl/information-management': typeof MshnctrlInformationManagementRoute
   '/mshnctrl/j2-dashboard': typeof MshnctrlJ2DashboardRoute
   '/mshnctrl/j3-dashboard': typeof MshnctrlJ3DashboardRoute
+  '/mshnctrl/j4-dashboard': typeof MshnctrlJ4DashboardRoute
+  '/mshnctrl/j5-dashboard': typeof MshnctrlJ5DashboardRoute
   '/mshnctrl/legad-dashboard': typeof MshnctrlLegadDashboardRoute
   '/mshnctrl/menu-builder': typeof MshnctrlMenuBuilderRoute
   '/mshnctrl/ontology': typeof MshnctrlOntologyRoute
@@ -574,12 +581,13 @@ export interface FileRoutesByTo {
   '/mshnctrl/cop-summary': typeof MshnctrlCopSummaryRoute
   '/mshnctrl/decision-board': typeof MshnctrlDecisionBoardRoute
   '/mshnctrl/digital-twin': typeof MshnctrlDigitalTwinRoute
-  '/mshnctrl/external-context': typeof MshnctrlExternalContextRoute
   '/mshnctrl/feedback': typeof MshnctrlFeedbackRoute
   '/mshnctrl/im-dashboard': typeof MshnctrlImDashboardRoute
   '/mshnctrl/information-management': typeof MshnctrlInformationManagementRoute
   '/mshnctrl/j2-dashboard': typeof MshnctrlJ2DashboardRoute
   '/mshnctrl/j3-dashboard': typeof MshnctrlJ3DashboardRoute
+  '/mshnctrl/j4-dashboard': typeof MshnctrlJ4DashboardRoute
+  '/mshnctrl/j5-dashboard': typeof MshnctrlJ5DashboardRoute
   '/mshnctrl/legad-dashboard': typeof MshnctrlLegadDashboardRoute
   '/mshnctrl/menu-builder': typeof MshnctrlMenuBuilderRoute
   '/mshnctrl/ontology': typeof MshnctrlOntologyRoute
@@ -650,12 +658,13 @@ export interface FileRoutesById {
   '/mshnctrl/cop-summary': typeof MshnctrlCopSummaryRoute
   '/mshnctrl/decision-board': typeof MshnctrlDecisionBoardRoute
   '/mshnctrl/digital-twin': typeof MshnctrlDigitalTwinRoute
-  '/mshnctrl/external-context': typeof MshnctrlExternalContextRoute
   '/mshnctrl/feedback': typeof MshnctrlFeedbackRoute
   '/mshnctrl/im-dashboard': typeof MshnctrlImDashboardRoute
   '/mshnctrl/information-management': typeof MshnctrlInformationManagementRoute
   '/mshnctrl/j2-dashboard': typeof MshnctrlJ2DashboardRoute
   '/mshnctrl/j3-dashboard': typeof MshnctrlJ3DashboardRoute
+  '/mshnctrl/j4-dashboard': typeof MshnctrlJ4DashboardRoute
+  '/mshnctrl/j5-dashboard': typeof MshnctrlJ5DashboardRoute
   '/mshnctrl/legad-dashboard': typeof MshnctrlLegadDashboardRoute
   '/mshnctrl/menu-builder': typeof MshnctrlMenuBuilderRoute
   '/mshnctrl/ontology': typeof MshnctrlOntologyRoute
@@ -727,12 +736,13 @@ export interface FileRouteTypes {
     | '/mshnctrl/cop-summary'
     | '/mshnctrl/decision-board'
     | '/mshnctrl/digital-twin'
-    | '/mshnctrl/external-context'
     | '/mshnctrl/feedback'
     | '/mshnctrl/im-dashboard'
     | '/mshnctrl/information-management'
     | '/mshnctrl/j2-dashboard'
     | '/mshnctrl/j3-dashboard'
+    | '/mshnctrl/j4-dashboard'
+    | '/mshnctrl/j5-dashboard'
     | '/mshnctrl/legad-dashboard'
     | '/mshnctrl/menu-builder'
     | '/mshnctrl/ontology'
@@ -799,12 +809,13 @@ export interface FileRouteTypes {
     | '/mshnctrl/cop-summary'
     | '/mshnctrl/decision-board'
     | '/mshnctrl/digital-twin'
-    | '/mshnctrl/external-context'
     | '/mshnctrl/feedback'
     | '/mshnctrl/im-dashboard'
     | '/mshnctrl/information-management'
     | '/mshnctrl/j2-dashboard'
     | '/mshnctrl/j3-dashboard'
+    | '/mshnctrl/j4-dashboard'
+    | '/mshnctrl/j5-dashboard'
     | '/mshnctrl/legad-dashboard'
     | '/mshnctrl/menu-builder'
     | '/mshnctrl/ontology'
@@ -874,12 +885,13 @@ export interface FileRouteTypes {
     | '/mshnctrl/cop-summary'
     | '/mshnctrl/decision-board'
     | '/mshnctrl/digital-twin'
-    | '/mshnctrl/external-context'
     | '/mshnctrl/feedback'
     | '/mshnctrl/im-dashboard'
     | '/mshnctrl/information-management'
     | '/mshnctrl/j2-dashboard'
     | '/mshnctrl/j3-dashboard'
+    | '/mshnctrl/j4-dashboard'
+    | '/mshnctrl/j5-dashboard'
     | '/mshnctrl/legad-dashboard'
     | '/mshnctrl/menu-builder'
     | '/mshnctrl/ontology'
@@ -1135,6 +1147,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MshnctrlLegadDashboardRouteImport
       parentRoute: typeof MshnctrlRoute
     }
+    '/mshnctrl/j5-dashboard': {
+      id: '/mshnctrl/j5-dashboard'
+      path: '/j5-dashboard'
+      fullPath: '/mshnctrl/j5-dashboard'
+      preLoaderRoute: typeof MshnctrlJ5DashboardRouteImport
+      parentRoute: typeof MshnctrlRoute
+    }
+    '/mshnctrl/j4-dashboard': {
+      id: '/mshnctrl/j4-dashboard'
+      path: '/j4-dashboard'
+      fullPath: '/mshnctrl/j4-dashboard'
+      preLoaderRoute: typeof MshnctrlJ4DashboardRouteImport
+      parentRoute: typeof MshnctrlRoute
+    }
     '/mshnctrl/j3-dashboard': {
       id: '/mshnctrl/j3-dashboard'
       path: '/j3-dashboard'
@@ -1168,13 +1194,6 @@ declare module '@tanstack/react-router' {
       path: '/feedback'
       fullPath: '/mshnctrl/feedback'
       preLoaderRoute: typeof MshnctrlFeedbackRouteImport
-      parentRoute: typeof MshnctrlRoute
-    }
-    '/mshnctrl/external-context': {
-      id: '/mshnctrl/external-context'
-      path: '/external-context'
-      fullPath: '/mshnctrl/external-context'
-      preLoaderRoute: typeof MshnctrlExternalContextRouteImport
       parentRoute: typeof MshnctrlRoute
     }
     '/mshnctrl/digital-twin': {
@@ -1526,12 +1545,13 @@ interface MshnctrlRouteChildren {
   MshnctrlCopSummaryRoute: typeof MshnctrlCopSummaryRoute
   MshnctrlDecisionBoardRoute: typeof MshnctrlDecisionBoardRoute
   MshnctrlDigitalTwinRoute: typeof MshnctrlDigitalTwinRoute
-  MshnctrlExternalContextRoute: typeof MshnctrlExternalContextRoute
   MshnctrlFeedbackRoute: typeof MshnctrlFeedbackRoute
   MshnctrlImDashboardRoute: typeof MshnctrlImDashboardRoute
   MshnctrlInformationManagementRoute: typeof MshnctrlInformationManagementRoute
   MshnctrlJ2DashboardRoute: typeof MshnctrlJ2DashboardRoute
   MshnctrlJ3DashboardRoute: typeof MshnctrlJ3DashboardRoute
+  MshnctrlJ4DashboardRoute: typeof MshnctrlJ4DashboardRoute
+  MshnctrlJ5DashboardRoute: typeof MshnctrlJ5DashboardRoute
   MshnctrlLegadDashboardRoute: typeof MshnctrlLegadDashboardRoute
   MshnctrlMenuBuilderRoute: typeof MshnctrlMenuBuilderRoute
   MshnctrlOntologyRoute: typeof MshnctrlOntologyRoute
@@ -1578,12 +1598,13 @@ const MshnctrlRouteChildren: MshnctrlRouteChildren = {
   MshnctrlCopSummaryRoute: MshnctrlCopSummaryRoute,
   MshnctrlDecisionBoardRoute: MshnctrlDecisionBoardRoute,
   MshnctrlDigitalTwinRoute: MshnctrlDigitalTwinRoute,
-  MshnctrlExternalContextRoute: MshnctrlExternalContextRoute,
   MshnctrlFeedbackRoute: MshnctrlFeedbackRoute,
   MshnctrlImDashboardRoute: MshnctrlImDashboardRoute,
   MshnctrlInformationManagementRoute: MshnctrlInformationManagementRoute,
   MshnctrlJ2DashboardRoute: MshnctrlJ2DashboardRoute,
   MshnctrlJ3DashboardRoute: MshnctrlJ3DashboardRoute,
+  MshnctrlJ4DashboardRoute: MshnctrlJ4DashboardRoute,
+  MshnctrlJ5DashboardRoute: MshnctrlJ5DashboardRoute,
   MshnctrlLegadDashboardRoute: MshnctrlLegadDashboardRoute,
   MshnctrlMenuBuilderRoute: MshnctrlMenuBuilderRoute,
   MshnctrlOntologyRoute: MshnctrlOntologyRoute,

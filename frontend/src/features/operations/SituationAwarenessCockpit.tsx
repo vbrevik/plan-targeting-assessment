@@ -1,5 +1,4 @@
-import { Link } from '@tanstack/react-router';
-import { Calendar, Target, ChevronRight } from 'lucide-react';
+import { Calendar, Target } from 'lucide-react';
 import { TacticalMap } from '../operations/TacticalMap';
 import { LOOTimeline } from '@/features/planning/LOOTimeline';
 import { DecisionAnalysisPanel } from '../decisions/DecisionAnalysisPanel';
@@ -135,12 +134,9 @@ export function SituationAwarenessCockpit() {
                                 <Target size={16} className="text-blue-400" />
                                 <span className="text-xs font-black text-white uppercase tracking-widest">Campaign Lines of Operation</span>
                             </div>
-                            <Link
-                                to="/mshnctrl/campaign"
-                                className="text-[10px] font-black text-slate-500 hover:text-blue-400 transition-colors uppercase tracking-widest flex items-center gap-1"
-                            >
-                                View Full Campaign <ChevronRight size={12} />
-                            </Link>
+                            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                Campaign {/* TODO: Add campaign route */}
+                            </span>
                         </div>
                         <div className="flex-1 overflow-hidden">
                             <LOOTimeline loos={stats.loos} decisiveConditions={stats.decisiveConditions} />

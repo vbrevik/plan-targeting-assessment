@@ -23,9 +23,9 @@
 
 ### EPIC-1: Foundation & Feedback
 *   **Feature: Feedback Loops Interface**
-    *   [ ] **Story**: As a Planner, I want to see a "Feedback Dashboard" so I can track variances and lessons learned. `frontend` `dashboard`
-    *   [ ] **Story**: As a J5 Planner, I want to see "Plan vs. Actual" variance markers on the Digital Twin timeline. `frontend` `digital-twin`
-    *   [ ] **Story**: As a Developer, I want a "Feedback Event" service to route notifications between modules. `backend` `api`
+    *   [x] **Story**: As a Planner, I want to see a "Feedback Dashboard" so I can track variances and lessons learned. `frontend` `dashboard` ✅ (wired to ontology-backed API with mock fallback)
+    *   [x] **Story**: As a J5 Planner, I want to see "Plan vs. Actual" variance markers on the Digital Twin timeline. `frontend` `digital-twin` ✅ (Digital Twin variance layer wired to PEV feedback events)
+    *   [x] **Story**: As a Developer, I want a "Feedback Event" service to route notifications between modules. `backend` `api` ✅ (ontology-based FEEDBACK_EVENT entities)
 
 *   **Feature: C2 Workflow Backbone**
     *   [x] **Story**: As a Staff Officer, I want to save Plans/orders (CONOPS/FRAGOs) to a real database so they persist between sessions. `backend` `db`
@@ -34,15 +34,15 @@
 
 *   **Feature: System Digital Twin**
     *   [x] **Story**: As a PO, I want to visualize the project progress within the Digital Twin module itself. `frontend` `digital-twin`
-    *   [ ] **Story**: As a PO, I want visual indicators for "Mocked" vs "Integrated" modules in the System View. `frontend` `digital-twin`
+    *   [x] **Story**: As a PO, I want visual indicators for "Mocked" vs "Integrated" modules in the System View. `frontend` `digital-twin` ✅ (pulsing borders, legend, integration counter)
 
 *   **Feature: ROE Status & Compliance (Enhancements)**
     *   [x] **Story**: As a Commander, I want to see ROE status on every decision card so I know if authorization is needed. `frontend` `decisions` ✅
     *   [x] **Story**: As a Staff Officer, I want to create ROE requests via API so I can request authorization. `backend` `api` ✅
-    *   [ ] **Story**: As a System, I want to automatically determine if a decision requires ROE based on its characteristics. `backend` `roe` `enhancement`
-    *   [ ] **Story**: As a J3, I want decisions blocked from meeting routing if ROE is required but not approved. `backend` `routing` `enhancement`
-    *   [ ] **Story**: As a LEGAD, I want comprehensive unit tests for ROE logic to ensure legal compliance. `backend` `testing` `enhancement`
-    *   [ ] **Story**: As a Developer, I want integration tests for ROE workflow to verify end-to-end functionality. `backend` `frontend` `testing` `enhancement`
+    *   [x] **Story**: As a System, I want to automatically determine if a decision requires ROE based on its characteristics. `backend` `roe` `enhancement` ✅
+    *   [x] **Story**: As a J3, I want decisions blocked from meeting routing if ROE is required but not approved. `backend` `routing` `enhancement` ✅
+    *   [x] **Story**: As a LEGAD, I want comprehensive unit tests for ROE logic to ensure legal compliance. `backend` `testing` `enhancement` ✅ (99 unit tests passing)
+    *   [x] **Story**: As a Developer, I want integration tests for ROE workflow to verify end-to-end functionality. `backend` `frontend` `testing` `enhancement` ✅
 
 ---
 
@@ -74,6 +74,8 @@
 - [ ] **Strategic Direction**: 'Propose New Alignment' and 'Manual Sync Override' buttons are visual-only. Need explicit `onClick` handlers or "Future Feature" tooltips.
 - [x] **Targeting Management**: 'Nominate Target' button is now functional and integrated with backend APIs.
 - [ ] **Digital Twin**: System modules (Network/Dev/Assets) scale on hover but have no click interaction. Should open a detail view or modal.
+- [x] **Missing Role Dashboards**: J4 and J5 dashboards created with mock data. `frontend` `dashboards` `roles` ✅
+- [ ] **Missing NATO COPD Roles**: System has 9 roles but NATO COPD + modern warfare (cyber, drones, MDO) requires at least 14. Missing: POLAD, J6 Cyber, J9 CIMIC, UAS Coordinator, Fires/Effects Coordinator. See [full gap analysis](backlog/role-gap-analysis.md). `frontend` `backend` `roles` `architecture`
 
 ### Codebase Clean-up
 - [x] **Orphan Check**: `COGAnalyzer.tsx` and `UncertaintyManagement.tsx` verified as linked in Sidebar (Planning/Intel sections).
@@ -323,7 +325,7 @@ Aligns gaps with architecture layers.
 #### From Task Tracking
 - [ ] **Social Domain Dashboard**: PMESII-PT analysis view (Sprint 4).
 - [ ] **StratCom Sync**: Integration of Info Ops into MDO Matrix (Sprint 4).
-- [ ] **Meeting Minutes View**: Read-only view for concluded governance sessions (Sprint 1/Cleanup).
+- [x] **Meeting Minutes View**: Read-only view for concluded governance sessions (Sprint 1/Cleanup). ✅ (MeetingMinutesViewer component + ontology-backed backend)
 
 #### From Gap Analysis
 - [ ] **HFI Simulation Bridge**: API connector for VBS4/Synthetic envs (Sprint 4).

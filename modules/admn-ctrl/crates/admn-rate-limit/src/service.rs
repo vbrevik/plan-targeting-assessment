@@ -3,7 +3,6 @@ use std::collections::HashMap;
 use std::time::{SystemTime, UNIX_EPOCH};
 use tokio::sync::RwLock;
 use sqlx::SqlitePool;
-use uuid::Uuid;
 use crate::models::*;
 
 #[derive(Clone)]

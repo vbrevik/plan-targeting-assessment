@@ -1,9 +1,8 @@
 use axum::{
-    body::Body,
     extract::{Request, State},
     http::StatusCode,
     middleware::Next,
-    response::{IntoResponse, Response},
+    response::Response,
 };
 use sqlx::{SqlitePool, Row};
 use std::sync::Arc;

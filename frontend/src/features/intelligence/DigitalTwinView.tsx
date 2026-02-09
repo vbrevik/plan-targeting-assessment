@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
     Box,
     Layers,
@@ -17,12 +17,15 @@ import {
     CheckCircle,
     CircleSlash,
     FileText,
-    ArrowRight
+    ArrowRight,
+    Circle
 } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
 import { systemModules, type SystemModule } from '@/features/shared/services/systemGraph';
+import { feedbackApi } from '@/lib/mshnctrl/api/feedback.api';
+import type { FeedbackEvent } from '@/features/shared/types/feedback';
 
 export function DigitalTwinView() {
     const navigate = useNavigate();
@@ -40,6 +43,20 @@ export function DigitalTwinView() {
         audit: false,
         system: true
     });
+
+    // Fetch PEV feedback events for the variance layer
+    const [varianceEvents, setVarianceEvents] = useState<FeedbackEvent[]>([]);
+    useEffect(() => {
+        feedbackApi.getFeedbackEvents({ event_type: 'PEV' }).then(events => {
+            if (events.length > 0) setVarianceEvents(events);
+        });
+    }, []);
+
+    const integrationStats = useMemo(() => {
+        const integrated = systemModules.filter(m => m.status === 'Verified' || m.status === 'Connected').length;
+        const total = systemModules.length;
+        return { integrated, total, percent: Math.round((integrated / total) * 100) };
+    }, []);
 
     const toggleLayer = (layer: keyof typeof layers) => {
         setLayers(prev => {
@@ -143,76 +160,128 @@ export function DigitalTwinView() {
                         </div>
 
                         {/* System Architecture Visualization */}
-                        {layers.system && systemModules.map((mod: SystemModule) => (
-                            <div
-                                key={mod.id}
-                                className="absolute transition-all duration-1000"
-                                style={{
-                                    transform: `translate3d(${mod.coordinates.x * 5}px, ${mod.coordinates.y * 5}px, ${mod.coordinates.z}px) rotateX(-10deg)`
-                                }}
-                            >
-                                <div
-                                    onClick={() => {
-                                        // Specific Routing Logic
-                                        if (mod.id === 'targeting') navigate({ to: '/mshnctrl/targeting' });
-                                        else if (mod.id === 'proposals' || mod.name.includes('Workflow')) navigate({ to: '/mshnctrl/proposals' });
-                                        else if (mod.id === 'digital_twin') toast({ title: 'Digital Twin', description: 'You are already viewing the Digital Twin simulation.' });
-                                        else if (mod.id === 'mdo') navigate({ to: '/mshnctrl/mdo' });
-                                        else if (mod.id === 'fusion') navigate({ to: '/mshnctrl/rxp' }); // Intel Fusion -> RXP
-                                        else if (mod.id === 'dashboard') navigate({ to: '/mshnctrl/im-dashboard' });
-                                        else {
-                                            // Fallback for others
-                                            toast({
-                                                title: `Module: ${mod.name}`,
-                                                description: `${mod.description} (Status: ${mod.status})`,
-                                            });
-                                        }
-                                    }}
-                                    className={cn(
-                                        "p-3 backdrop-blur-md border rounded flex flex-col gap-1 shadow-[0_0_30px_rgba(0,0,0,0.5)] w-48 group hover:scale-110 transition-transform cursor-pointer",
-                                        mod.status === 'Verified' ? "bg-emerald-950/80 border-emerald-500/50" :
-                                            mod.status === 'Connected' ? "bg-blue-950/80 border-blue-500/50" :
-                                                mod.status === 'Mocked' ? "bg-amber-950/80 border-amber-500/50" :
-                                                    "bg-slate-900/80 border-slate-700 border-dashed"
-                                    )}
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <div className={cn(
-                                            "w-8 h-8 rounded flex items-center justify-center text-white",
-                                            mod.status === 'Verified' ? "bg-emerald-600" :
-                                                mod.status === 'Connected' ? "bg-blue-600" :
-                                                    mod.status === 'Mocked' ? "bg-amber-600" :
-                                                        "bg-slate-800"
-                                        )}>
-                                            {mod.status === 'Verified' ? <CheckCircle size={16} /> :
-                                                mod.status === 'Connected' ? <GitBranch size={16} /> :
-                                                    <Cpu size={16} />}
-                                        </div>
-                                        <div className="text-right">
-                                            <span className="text-[8px] font-black uppercase text-slate-400 block">Health</span>
-                                            <div className="h-1 w-12 bg-slate-800 rounded-full mt-1">
-                                                <div className={cn("h-full rounded-full", mod.health > 80 ? "bg-emerald-500" : "bg-red-500")} style={{ width: `${mod.health}%` }} />
-                                            </div>
+                        {layers.system && (
+                            <>
+                                {/* Integration Progress Badge */}
+                                <div className="absolute -top-4 left-0 z-30 flex items-center gap-3">
+                                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">System Architecture</span>
+                                    <div className="flex items-center gap-2 px-2.5 py-1 bg-slate-900/90 border border-slate-700 rounded-full">
+                                        <span className="text-[10px] font-black text-white">{integrationStats.integrated}/{integrationStats.total}</span>
+                                        <span className="text-[9px] font-bold text-slate-400 uppercase">Integrated</span>
+                                        <div className="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                            <div
+                                                className="h-full bg-emerald-500 rounded-full transition-all"
+                                                style={{ width: `${integrationStats.percent}%` }}
+                                            />
                                         </div>
                                     </div>
-                                    <div>
-                                        <span className="text-[10px] font-black text-white uppercase block truncate">{mod.name}</span>
-                                        <span className={cn(
-                                            "text-[8px] font-mono uppercase",
-                                            mod.status === 'Verified' ? "text-emerald-400" :
-                                                mod.status === 'Connected' ? "text-blue-400" :
-                                                    mod.status === 'Mocked' ? "text-amber-400" : "text-slate-500"
-                                        )}>
-                                            {mod.status} // Sprint {mod.sprint}
-                                        </span>
-                                    </div>
-
-                                    {/* Connectivity Lines (Visual Only) */}
-                                    <div className="absolute top-1/2 left-full w-12 h-px bg-slate-700 -z-10 opacity-30 origin-left rotate-12" />
-                                    <div className="absolute bottom-0 left-1/2 h-12 w-px bg-slate-700 -z-10 opacity-30 origin-top rotate-12" />
                                 </div>
-                            </div>
-                        ))}
+
+                                {/* Legend */}
+                                <div className="absolute -top-4 right-0 z-30 flex items-center gap-4 px-3 py-1.5 bg-slate-900/90 border border-slate-800 rounded-full">
+                                    <div className="flex items-center gap-1.5">
+                                        <Circle size={7} fill="#10b981" className="text-emerald-500" />
+                                        <span className="text-[8px] font-bold text-slate-400 uppercase">Verified</span>
+                                    </div>
+                                    <div className="flex items-center gap-1.5">
+                                        <Circle size={7} fill="#3b82f6" className="text-blue-500" />
+                                        <span className="text-[8px] font-bold text-slate-400 uppercase">Connected</span>
+                                    </div>
+                                    <div className="flex items-center gap-1.5">
+                                        <Circle size={7} className="text-amber-500 animate-pulse" strokeDasharray="2 2" />
+                                        <span className="text-[8px] font-bold text-slate-400 uppercase">Mocked</span>
+                                    </div>
+                                    <div className="flex items-center gap-1.5">
+                                        <Circle size={7} className="text-slate-600" strokeDasharray="3 3" />
+                                        <span className="text-[8px] font-bold text-slate-400 uppercase">Planned</span>
+                                    </div>
+                                </div>
+
+                                {/* Module Cards */}
+                                {systemModules.map((mod: SystemModule) => (
+                                    <div
+                                        key={mod.id}
+                                        className="absolute transition-all duration-1000"
+                                        style={{
+                                            transform: `translate3d(${mod.coordinates.x * 5}px, ${mod.coordinates.y * 5}px, ${mod.coordinates.z}px) rotateX(-10deg)`
+                                        }}
+                                    >
+                                        <div
+                                            onClick={() => {
+                                                // Specific Routing Logic
+                                                if (mod.id === 'targeting') navigate({ to: '/mshnctrl/targeting' });
+                                                else if (mod.id === 'decisions' || mod.name.includes('Workflow')) {
+                                                    toast({ title: 'Decisions', description: 'Decision workflow feature coming soon.' });
+                                                }
+                                                else if (mod.id === 'digital_twin') toast({ title: 'Digital Twin', description: 'You are already viewing the Digital Twin simulation.' });
+                                                else if (mod.id === 'logistics') {
+                                                    toast({ title: 'Logistics', description: 'Logistics module is mocked - no backend integration yet.' });
+                                                }
+                                                else if (mod.id === 'fusion') {
+                                                    toast({ title: 'Intel Fusion', description: 'RXP Intelligence Fusion feature coming soon.' });
+                                                }
+                                                else if (mod.id === 'dashboard') navigate({ to: '/mshnctrl/im-dashboard' });
+                                                else {
+                                                    // Fallback for others
+                                                    toast({
+                                                        title: `Module: ${mod.name}`,
+                                                        description: `${mod.description} (Status: ${mod.status})`,
+                                                    });
+                                                }
+                                            }}
+                                            className={cn(
+                                                "p-3 backdrop-blur-md rounded flex flex-col gap-1 shadow-[0_0_30px_rgba(0,0,0,0.5)] w-48 group hover:scale-110 transition-transform cursor-pointer",
+                                                mod.status === 'Verified'
+                                                    ? "bg-emerald-950/80 border-2 border-emerald-500/50"
+                                                    : mod.status === 'Connected'
+                                                        ? "bg-blue-950/80 border-2 border-blue-500/50"
+                                                        : mod.status === 'Mocked'
+                                                            ? "bg-amber-950/80 border-2 border-dashed border-amber-500/60 animate-[border-pulse_2s_ease-in-out_infinite]"
+                                                            : "bg-slate-900/80 border-2 border-dashed border-slate-700"
+                                            )}
+                                            style={mod.status === 'Mocked' ? {
+                                                animation: 'mock-pulse 2s ease-in-out infinite',
+                                            } : undefined}
+                                        >
+                                            <div className="flex items-center justify-between">
+                                                <div className={cn(
+                                                    "w-8 h-8 rounded flex items-center justify-center text-white",
+                                                    mod.status === 'Verified' ? "bg-emerald-600" :
+                                                        mod.status === 'Connected' ? "bg-blue-600" :
+                                                            mod.status === 'Mocked' ? "bg-amber-600" :
+                                                                "bg-slate-800"
+                                                )}>
+                                                    {mod.status === 'Verified' ? <CheckCircle size={16} /> :
+                                                        mod.status === 'Connected' ? <GitBranch size={16} /> :
+                                                            <Cpu size={16} />}
+                                                </div>
+                                                <div className="text-right">
+                                                    <span className="text-[8px] font-black uppercase text-slate-400 block">Health</span>
+                                                    <div className="h-1 w-12 bg-slate-800 rounded-full mt-1">
+                                                        <div className={cn("h-full rounded-full", mod.health > 80 ? "bg-emerald-500" : "bg-red-500")} style={{ width: `${mod.health}%` }} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <span className="text-[10px] font-black text-white uppercase block truncate">{mod.name}</span>
+                                                <span className={cn(
+                                                    "text-[8px] font-mono uppercase",
+                                                    mod.status === 'Verified' ? "text-emerald-400" :
+                                                        mod.status === 'Connected' ? "text-blue-400" :
+                                                            mod.status === 'Mocked' ? "text-amber-400" : "text-slate-500"
+                                                )}>
+                                                    {mod.status} // Sprint {mod.sprint}
+                                                </span>
+                                            </div>
+
+                                            {/* Connectivity Lines (Visual Only) */}
+                                            <div className="absolute top-1/2 left-full w-12 h-px bg-slate-700 -z-10 opacity-30 origin-left rotate-12" />
+                                            <div className="absolute bottom-0 left-1/2 h-12 w-px bg-slate-700 -z-10 opacity-30 origin-top rotate-12" />
+                                        </div>
+                                    </div>
+                                ))}
+                            </>
+                        )}
 
                         {/* Operational Layers (Assets, etc.) */}
                         {layers.assets && (
@@ -278,52 +347,85 @@ export function DigitalTwinView() {
 
                         {layers.variance && (
                             <>
-                                <div className="absolute top-1/2 left-1/3 z-10">
-                                    {/* Ghost Unit 1 (Plan) */}
-                                    <div className="absolute -top-16 -left-16 opacity-40">
-                                        <div className="w-12 h-12 rounded border-2 border-dashed border-white flex items-center justify-center">
-                                            <div className="w-8 h-8 bg-blue-500/20" />
+                                {varianceEvents.length > 0 ? (
+                                    /* Dynamic variance markers from PEV feedback events */
+                                    varianceEvents.slice(0, 4).map((evt, i) => {
+                                        const positions = [
+                                            { top: '50%', left: '33%' },
+                                            { bottom: '33%', right: '33%' },
+                                            { top: '33%', right: '25%' },
+                                            { bottom: '25%', left: '25%' },
+                                        ];
+                                        const isCritical = evt.severity === 'CRITICAL';
+                                        const borderColor = isCritical ? 'border-red-500' : evt.severity === 'WARNING' ? 'border-yellow-500' : 'border-blue-500';
+                                        const bgColor = isCritical ? 'bg-red-600' : evt.severity === 'WARNING' ? 'bg-yellow-600' : 'bg-blue-600';
+                                        const shadowColor = isCritical ? 'shadow-[0_0_15px_rgba(239,68,68,0.5)]' : evt.severity === 'WARNING' ? 'shadow-[0_0_15px_rgba(234,179,8,0.5)]' : 'shadow-[0_0_15px_rgba(59,130,246,0.5)]';
+                                        const entityName = evt.linkedEntities[0]?.name || evt.source;
+                                        return (
+                                            <div key={evt.id} className="absolute z-10" style={positions[i]}>
+                                                {/* Ghost (Plan) */}
+                                                <div className="absolute -top-16 -left-16 opacity-40">
+                                                    <div className={cn("w-12 h-12 rounded border-2 border-dashed flex items-center justify-center", borderColor)}>
+                                                        <div className={cn("w-8 h-8 opacity-20", bgColor)} />
+                                                    </div>
+                                                    <span className="text-[8px] font-black text-white uppercase mt-1 block w-24 text-center truncate">Plan: {entityName}</span>
+                                                </div>
+
+                                                {/* Connection Line */}
+                                                <div className={cn("absolute -top-8 -left-8 w-24 h-0.5 opacity-50 origin-top-left rotate-12", isCritical ? "bg-red-500" : "bg-yellow-500")} />
+                                                <div className={cn("absolute -top-12 -left-4 px-1 py-0.5 text-white text-[8px] font-black rounded truncate max-w-[100px]", bgColor)}>
+                                                    {evt.title.length > 16 ? evt.title.slice(0, 16) + '...' : evt.title}
+                                                </div>
+
+                                                {/* Actual Unit */}
+                                                <div className={cn("relative p-2 bg-slate-900 rounded", borderColor, shadowColor, "border")}>
+                                                    <div className={cn("w-8 h-8 rounded flex items-center justify-center text-white font-black text-[10px]", bgColor)}>
+                                                        {evt.source.slice(0, 5)}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })
+                                ) : (
+                                    /* Fallback: hardcoded variance markers */
+                                    <>
+                                        <div className="absolute top-1/2 left-1/3 z-10">
+                                            <div className="absolute -top-16 -left-16 opacity-40">
+                                                <div className="w-12 h-12 rounded border-2 border-dashed border-white flex items-center justify-center">
+                                                    <div className="w-8 h-8 bg-blue-500/20" />
+                                                </div>
+                                                <span className="text-[8px] font-black text-white uppercase mt-1 block w-24 text-center">Plan: PL Bronze</span>
+                                            </div>
+                                            <div className="absolute -top-8 -left-8 w-24 h-0.5 bg-red-500/50 origin-top-left rotate-12" />
+                                            <div className="absolute -top-12 -left-4 px-1 py-0.5 bg-red-500 text-white text-[8px] font-black rounded">
+                                                -12km DELAY
+                                            </div>
+                                            <div className="relative p-2 bg-slate-900 border border-blue-500 rounded shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                                                <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-black text-[10px]">
+                                                    1-7 AR
+                                                </div>
+                                            </div>
                                         </div>
-                                        <span className="text-[8px] font-black text-white uppercase mt-1 block w-24 text-center">Plan: PL Bronze</span>
-                                    </div>
 
-                                    {/* Connection Line 1 */}
-                                    <div className="absolute -top-8 -left-8 w-24 h-0.5 bg-red-500/50 origin-top-left rotate-12" />
-                                    <div className="absolute -top-12 -left-4 px-1 py-0.5 bg-red-500 text-white text-[8px] font-black rounded">
-                                        -12km DELAY
-                                    </div>
-
-                                    {/* Actual Unit 1 */}
-                                    <div className="relative p-2 bg-slate-900 border border-blue-500 rounded shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-                                        <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-black text-[10px]">
-                                            1-7 AR
+                                        <div className="absolute bottom-1/3 right-1/3 z-10">
+                                            <div className="absolute -bottom-12 -right-12 opacity-40">
+                                                <div className="w-10 h-10 rounded border-2 border-dashed border-yellow-500 flex items-center justify-center">
+                                                    <div className="w-6 h-6 bg-yellow-500/20" />
+                                                </div>
+                                                <span className="text-[8px] font-black text-yellow-500 uppercase mt-1 block w-24 text-center">Plan: CSS Alpha</span>
+                                            </div>
+                                            <div className="absolute -bottom-6 -right-6 w-20 h-0.5 bg-yellow-500/50 origin-bottom-right -rotate-12" />
+                                            <div className="absolute -bottom-10 -right-2 px-1 py-0.5 bg-yellow-600 text-white text-[8px] font-black rounded">
+                                                ROUTE DEV
+                                            </div>
+                                            <div className="relative p-2 bg-slate-900 border border-yellow-500 rounded shadow-[0_0_15px_rgba(234,179,8,0.5)]">
+                                                <div className="w-8 h-8 bg-yellow-600 rounded flex items-center justify-center text-white font-black text-[10px]">
+                                                    CSS-1
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-
-                                {/* Variance Example 2: Logistics Drift */}
-                                <div className="absolute bottom-1/3 right-1/3 z-10">
-                                    {/* Ghost Unit 2 (Plan) */}
-                                    <div className="absolute -bottom-12 -right-12 opacity-40">
-                                        <div className="w-10 h-10 rounded border-2 border-dashed border-yellow-500 flex items-center justify-center">
-                                            <div className="w-6 h-6 bg-yellow-500/20" />
-                                        </div>
-                                        <span className="text-[8px] font-black text-yellow-500 uppercase mt-1 block w-24 text-center">Plan: CSS Alpha</span>
-                                    </div>
-
-                                    {/* Connection Line 2 */}
-                                    <div className="absolute -bottom-6 -right-6 w-20 h-0.5 bg-yellow-500/50 origin-bottom-right -rotate-12" />
-                                    <div className="absolute -bottom-10 -right-2 px-1 py-0.5 bg-yellow-600 text-white text-[8px] font-black rounded">
-                                        ROUTE DEV
-                                    </div>
-
-                                    {/* Actual Unit 2 */}
-                                    <div className="relative p-2 bg-slate-900 border border-yellow-500 rounded shadow-[0_0_15px_rgba(234,179,8,0.5)]">
-                                        <div className="w-8 h-8 bg-yellow-600 rounded flex items-center justify-center text-white font-black text-[10px]">
-                                            CSS-1
-                                        </div>
-                                    </div>
-                                </div>
+                                    </>
+                                )}
                             </>
                         )}
 
@@ -436,6 +538,13 @@ export function DigitalTwinView() {
                 </div>
             </div>
 
+            {/* CSS keyframes for mocked module pulse animation */}
+            <style>{`
+                @keyframes mock-pulse {
+                    0%, 100% { border-color: rgba(245, 158, 11, 0.6); box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+                    50% { border-color: rgba(245, 158, 11, 0.2); box-shadow: 0 0 30px rgba(0,0,0,0.5), 0 0 8px rgba(245, 158, 11, 0.15); }
+                }
+            `}</style>
         </div>
     );
 }

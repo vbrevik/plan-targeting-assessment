@@ -13,10 +13,10 @@ import {
 } from 'lucide-react';
 import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
 import { cn } from '@/lib/utils';
-import type { StrikeAnalysis, Target as TargetType } from '@/lib/mshnctrl/types';
+import type { StrikeAnalysis, TargetEntity } from '@/lib/mshnctrl/types';
 
 export function StrikeOptimizer() {
-    const [targets, setTargets] = useState<TargetType[]>([]);
+    const [targets, setTargets] = useState<TargetEntity[]>([]);
     const [selectedTargetId, setSelectedTargetId] = useState<string | null>(null);
     const [analysis, setAnalysis] = useState<StrikeAnalysis | null>(null);
     const [loading, setLoading] = useState(true);
@@ -72,15 +72,15 @@ export function StrikeOptimizer() {
                             )}
                         >
                             <div className="flex justify-between items-center">
-                                <span className="text-[10px] font-black uppercase text-white tracking-tight">{t.designator}</span>
-                                <span className="text-[8px] font-bold text-slate-500 italic">{t.killChainPhase}</span>
+                                <span className="text-[10px] font-black uppercase text-white tracking-tight">{t.properties.designator}</span>
+                                <span className="text-[8px] font-bold text-slate-500 italic">{t.properties.kill_chain_phase}</span>
                             </div>
                             <span className="text-[11px] font-bold truncate">{t.name}</span>
                             <div className="flex gap-2 mt-1">
                                 <span className={cn(
                                     "text-[8px] px-1 py-0.5 rounded border border-slate-800 bg-slate-900 font-bold",
-                                    t.priority === 'High' ? "text-red-500" : "text-slate-400"
-                                )}>{t.priority}</span>
+                                    t.properties.priority === 'High' ? "text-red-500" : "text-slate-400"
+                                )}>{t.properties.priority}</span>
                             </div>
                         </button>
                     ))}
@@ -104,7 +104,7 @@ export function StrikeOptimizer() {
                                         <h2 className="text-2xl font-black text-white uppercase tracking-tight">Strike Reasoner Output</h2>
                                     </div>
                                     <p className="text-xs text-slate-400 max-w-2xl leading-relaxed font-bold">
-                                        Multi-objective optimization for Target {selectedTarget.designator}. Evaluation based on joint operational directives, RoE release, and long-term strategic gains.
+                                        Multi-objective optimization for Target {selectedTarget.properties.designator}. Evaluation based on joint operational directives, RoE release, and long-term strategic gains.
                                     </p>
                                 </div>
                                 <div className="flex flex-col items-end">

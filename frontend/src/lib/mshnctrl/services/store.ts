@@ -63,14 +63,14 @@ import {
     CommandLevel,
     InfrastructureType
 } from '../types';
-import { mockOPLANs } from './mock-oplan';
 
 export const LATENCY = 400; // ms
 
 // Mock Data Store
 class MockDataStore {
     // --- CIVIL DOMAIN MOCK DATA ---
-    oplans = mockOPLANs;
+    // TODO: OPLAN data moved to backend
+    oplans = [];
 
     civilAgencies: CivilAgency[] = [
         { id: 'ca-energy-nat', name: 'National Power Grid', type: 'Commercial', sector: 'Energy', jurisdiction: 'National', contactInfo: 'OPS-CENTER-1' },

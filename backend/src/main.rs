@@ -1,13 +1,13 @@
 use std::net::SocketAddr;
 use std::sync::Arc;
 use axum::{Router, routing::get};
-use core_auth::AuthService;
 use tower_http::cors::{CorsLayer, Any};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use sqlx::sqlite::SqlitePoolOptions;
 mod utils;
 mod config;
 mod middleware;
+mod feedback;
 
 #[tokio::main]
 async fn main() {
@@ -214,6 +214,11 @@ async fn main() {
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         ).nest("/admin",
             admn_server::admn_routes(pool.clone())
+                .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
+                .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
+        )
+        .nest("/feedback/events",
+            feedback::feedback_routes(ontology_service.clone())
                 .layer(axum::middleware::from_fn(middleware::auth::auth_middleware))
                 .layer(axum::middleware::from_fn(middleware::csrf::validate_csrf))
         );

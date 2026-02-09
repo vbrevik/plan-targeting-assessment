@@ -10,16 +10,19 @@ import {
     Users,
     Calendar,
     ChevronRight,
-    ShieldCheck
+    ShieldCheck,
+    ScrollText
 } from 'lucide-react';
 import { decisionsApi } from '@/lib/mshnctrl/api/decisions.api';
 import { cn } from '@/lib/utils';
 import type { DecisionBoard } from '@/lib/mshnctrl/types';
+import { MeetingMinutesViewer } from '@/features/decisions/MeetingMinutesViewer';
 
 export function DecisionBoardView() {
     const [boards, setBoards] = useState<DecisionBoard[]>([]);
     const [selectedBoard, setSelectedBoard] = useState<DecisionBoard | null>(null);
     const [loading, setLoading] = useState(true);
+    const [showMinutes, setShowMinutes] = useState(false);
 
     useEffect(() => {
         async function loadData() {
@@ -168,9 +171,33 @@ export function DecisionBoardView() {
                                         </div>
                                     )}
                                 </div>
+
+                                {/* View Minutes Toggle */}
+                                <button
+                                    onClick={() => setShowMinutes(!showMinutes)}
+                                    className={cn(
+                                        "w-full p-3 rounded-lg border text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2",
+                                        showMinutes
+                                            ? "bg-blue-600/10 border-blue-500/30 text-blue-400"
+                                            : "bg-slate-950 border-slate-800 text-slate-500 hover:text-slate-300 hover:border-slate-700"
+                                    )}
+                                >
+                                    <ScrollText size={12} />
+                                    {showMinutes ? 'Hide Minutes' : 'View Minutes'}
+                                </button>
                             </div>
 
                         </div>
+
+                        {/* Meeting Minutes Panel (full-width below grid) */}
+                        {showMinutes && selectedBoard && (
+                            <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                                <MeetingMinutesViewer
+                                    meetingId={selectedBoard.id}
+                                    meetingTitle={selectedBoard.title}
+                                />
+                            </div>
+                        )}
 
                         {/* Action Bar */}
                         <div className="pt-12 flex justify-between items-center text-[10px] font-mono text-slate-600">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { targetingApi } from '@/lib/mshnctrl/api/targeting.api';
-import type { Target } from '@/lib/mshnctrl/types';
+import type { TargetEntity } from '@/lib/mshnctrl/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -18,8 +18,8 @@ import {
 import { cn } from '@/lib/utils';
 
 export function JTBVotingView() {
-    const [nominatedTargets, setNominatedTargets] = useState<Target[]>([]);
-    const [selectedTarget, setSelectedTarget] = useState<Target | null>(null);
+    const [nominatedTargets, setNominatedTargets] = useState<TargetEntity[]>([]);
+    const [selectedTarget, setSelectedTarget] = useState<TargetEntity | null>(null);
     const [loading, setLoading] = useState(true);
 
     const loadData = async () => {
@@ -93,14 +93,14 @@ export function JTBVotingView() {
                                 )}
                             >
                                 <div className="flex items-start justify-between mb-1">
-                                    <span className="text-[10px] font-mono font-bold text-slate-500">{target.targetId}</span>
+                                    <span className="text-[10px] font-mono font-bold text-slate-500">{target.id}</span>
                                     <Badge className={cn(
                                         "text-[8px] uppercase font-black",
-                                        target.priority === 'High' ? "bg-red-500/20 text-red-500" : "bg-blue-500/20 text-blue-400"
-                                    )}>PRI-{target.priority[0]}</Badge>
+                                        target.properties.priority === 'High' ? "bg-red-500/20 text-red-500" : "bg-blue-500/20 text-blue-400"
+                                    )}>PRI-{target.properties.priority[0]}</Badge>
                                 </div>
                                 <h3 className="text-xs font-black text-slate-200 uppercase truncate">{target.name}</h3>
-                                <p className="text-[9px] text-slate-500 mt-1 uppercase truncate">{target.category}</p>
+                                <p className="text-[9px] text-slate-500 mt-1 uppercase truncate">{target.properties.category}</p>
 
                                 <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <ChevronRight size={16} className="text-blue-500" />
@@ -118,7 +118,7 @@ export function JTBVotingView() {
                                 <div>
                                     <div className="flex items-center gap-2 mb-2">
                                         <span className="text-[10px] font-mono font-black text-blue-500 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20 uppercase">
-                                            {selectedTarget.targetId}
+                                            {selectedTarget.id}
                                         </span>
                                         <span className="text-[10px] font-black text-slate-500 uppercase">Nominated for Engagement</span>
                                     </div>

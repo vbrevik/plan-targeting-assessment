@@ -36,17 +36,96 @@ export const systemModules: SystemModule[] = [
         coordinates: { x: 0, y: 10, z: 0 }
     },
 
-    // --- SPRINT 1: FOUNDATION & FEEDBACK (Active) ---
+    // --- CORE OPS (Connected to real backend) ---
     {
-        id: 'feedback',
-        name: 'Feedback Engine',
-        epic: 'Foundation',
-        status: 'Under Construction',
+        id: 'targeting',
+        name: 'Targeting',
+        epic: 'Core Ops',
+        status: 'Connected',
         sprint: 1,
-        health: 65,
-        description: 'Variance detection and lesson learning loops.',
-        owner: 'Platform Team',
+        health: 90,
+        description: 'Target folder management and validation.',
+        owner: 'Targeting Cell',
+        coordinates: { x: 30, y: 10, z: 20 }
+    },
+    {
+        id: 'bda',
+        name: 'BDA',
+        epic: 'Core Ops',
+        status: 'Connected',
+        sprint: 1,
+        health: 92,
+        description: 'Battle Damage Assessment phases and reporting.',
+        owner: 'Targeting Cell',
+        coordinates: { x: 30, y: 0, z: 10 }
+    },
+    {
+        id: 'roe',
+        name: 'ROE Engine',
+        epic: 'Core Ops',
+        status: 'Connected',
+        sprint: 1,
+        health: 95,
+        description: 'Rules of Engagement management and compliance.',
+        owner: 'LEGAD',
         coordinates: { x: 20, y: 0, z: 10 }
+    },
+    {
+        id: 'ontology',
+        name: 'Ontology / IM',
+        epic: 'Foundation',
+        status: 'Connected',
+        sprint: 0,
+        health: 94,
+        description: 'Entity and relationship graph model for information management.',
+        owner: 'Platform Team',
+        coordinates: { x: 10, y: 0, z: 0 }
+    },
+    {
+        id: 'strategy',
+        name: 'Strategy',
+        epic: 'Core Ops',
+        status: 'Connected',
+        sprint: 1,
+        health: 85,
+        description: 'Strategic planning and commander intent.',
+        owner: 'J5 Plans',
+        coordinates: { x: -10, y: 10, z: 5 }
+    },
+    {
+        id: 'assumptions',
+        name: 'Planning / Assumptions',
+        epic: 'Core Ops',
+        status: 'Connected',
+        sprint: 1,
+        health: 80,
+        description: 'Assumption management and campaign planning.',
+        owner: 'J5 Plans',
+        coordinates: { x: -10, y: 20, z: 5 }
+    },
+
+    // --- MOCKED (Frontend only, no backend) ---
+    {
+        id: 'decisions',
+        name: 'Decisions / C2',
+        epic: 'Core Ops',
+        status: 'Mocked',
+        sprint: 2,
+        health: 65,
+        description: 'Decision tracking and workflow engine.',
+        owner: 'J3 Ops',
+        coordinates: { x: -20, y: 20, z: 10 }
+    },
+    {
+        id: 'logistics',
+        name: 'Logistics',
+        epic: 'Core Ops',
+        status: 'Mocked',
+        sprint: 2,
+        health: 40,
+        description: 'Supply chain and logistics management.',
+        owner: 'J4 Log',
+        coordinates: { x: -20, y: 30, z: 15 }
     },
     {
         id: 'digital_twin',
@@ -59,43 +138,8 @@ export const systemModules: SystemModule[] = [
         owner: 'Sim Team',
         coordinates: { x: 10, y: 20, z: 5 }
     },
-    {
-        id: 'proposals',
-        name: 'Proposals / C2',
-        epic: 'Core Ops',
-        status: 'Mocked',
-        sprint: 1,
-        health: 85,
-        description: 'Workflow engine for plans and orders.',
-        owner: 'J5 Plans',
-        coordinates: { x: -10, y: 20, z: 5 }
-    },
 
-    // --- SPRINT 2: TRUSTED DATA ---
-    {
-        id: 'uncertainty',
-        name: 'Data Quality',
-        epic: 'Trusted Data',
-        status: 'Mocked',
-        sprint: 2,
-        health: 90,
-        description: 'Uncertainty quantification and assumptions registry.',
-        owner: 'J2 Intel',
-        coordinates: { x: 30, y: 30, z: 0 }
-    },
-    {
-        id: 'targeting',
-        name: 'Targeting',
-        epic: 'Core Ops',
-        status: 'Mocked',
-        sprint: 2,
-        health: 90,
-        description: 'Target folder management and validation.',
-        owner: 'Targeting Cell',
-        coordinates: { x: 30, y: 10, z: 20 }
-    },
-
-    // --- SPRINT 3: FUSION ---
+    // --- PLANNED ---
     {
         id: 'fusion',
         name: 'Data Fusion',
@@ -106,19 +150,6 @@ export const systemModules: SystemModule[] = [
         description: 'JDL Level 1-2 fusion and entity resolution.',
         owner: 'J2 Intel',
         coordinates: { x: 40, y: 40, z: 10 }
-    },
-
-    // --- SPRINT 4: ADVANCED ---
-    {
-        id: 'mdo',
-        name: 'MDO Sync',
-        epic: 'Advanced Ops',
-        status: 'Mocked',
-        sprint: 4,
-        health: 85,
-        description: 'Multi-domain synchronization matrix.',
-        owner: 'J3 Ops',
-        coordinates: { x: 50, y: 0, z: 30 }
     },
     {
         id: 'ai_copilot',

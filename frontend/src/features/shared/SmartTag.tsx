@@ -85,11 +85,13 @@ export function SmartTag({ type, id, label }: SmartTagProps) {
             navigate({ to: '/mshnctrl/orbat', search: { unitId: data.id } });
         } else if (typeLower === 'target' && data) {
             navigate({ to: '/mshnctrl/targeting', search: { targetId: data.id } });
-        } else if (typeLower === 'cog' && data) {
-            navigate({ to: '/mshnctrl/cog', search: { cogId: data.id } });
-        } else if (['political', 'disinfo', 'disaster', 'fakemedia'].includes(typeLower) && data) {
-            navigate({ to: '/mshnctrl/external-context' });
         }
+        // TODO: Add COG and external context routes when features are implemented
+        // } else if (typeLower === 'cog' && data) {
+        //     navigate({ to: '/mshnctrl/cog', search: { cogId: data.id } });
+        // } else if (['political', 'disinfo', 'disaster', 'fakemedia'].includes(typeLower) && data) {
+        //     navigate({ to: '/mshnctrl/external-context' });
+        // }
     };
 
     return (

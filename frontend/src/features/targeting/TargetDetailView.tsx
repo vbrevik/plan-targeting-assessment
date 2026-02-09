@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { targetingApi, type Target as ApiTarget } from '@/lib/mshnctrl/api/targeting.api';
-import { roeApi } from '@/lib/mshnctrl/api/roe.api';
 import type { Target, ROE, StrikeAnalysis, TargetSystem, ActivityLog, WeaponSystem, BDAReport, CollectionRequest } from '@/lib/mshnctrl/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -64,7 +63,8 @@ export function TargetDetailView({ targetId: propTargetId, isEmbedded, onClose }
             const [apiTarget, timelineData, r] = await Promise.all([
                 targetingApi.getTarget(targetId).catch(() => null),
                 targetingApi.getTargetTimeline(targetId).catch(() => []),
-                roeApi.getRules().catch(() => [])
+                // TODO: Implement ROE rules listing endpoint
+                Promise.resolve([])
             ]);
 
             // Stubs for missing service methods

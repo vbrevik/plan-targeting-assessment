@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
     Scale,
     ShieldCheck,
@@ -10,15 +10,16 @@ import {
     Filter,
     ShieldAlert,
     History,
-    TrendingUp
+    TrendingUp,
+    Loader2
 } from 'lucide-react';
-import { roeApi } from '@/lib/mshnctrl/api/roe.api';
 import { cn } from '@/lib/utils';
 import type { ROE } from '@/lib/mshnctrl/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { ROEApi, type ROERequest } from '@/lib/mshnctrl/api';
 
 // Extended Types for UI
 interface ExtendedROE extends ROE {
@@ -27,22 +28,12 @@ interface ExtendedROE extends ROE {
     effectiveDate: string;
 }
 
-interface ROERequest {
-    id: string;
-    roeCode: string;
-    requestType: 'Release' | 'Modification' | 'Cancellation';
-    justification: string;
-    status: 'Draft' | 'Submitted' | 'Endorsed' | 'Approved' | 'Rejected';
-    requestedBy: string;
-    timestamp: string;
-    priority: 'Routine' | 'Urgent' | 'Emergency';
-}
-
 export function ROEManagement() {
     const [roes, setStatusRoes] = useState<ExtendedROE[]>([]);
     const [advisories, setAdvisories] = useState<any[]>([]);
     const [requests, setRequests] = useState<ROERequest[]>([]);
     const [loading, setLoading] = useState(true);
+    const [actionLoading, setActionLoading] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState('authorized');
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -51,49 +42,27 @@ export function ROEManagement() {
         { id: 'ADV-02', severity: 'Caution', region: 'Sector South', text: 'Collateral damage threshold lowered to Level 3 for urban hubs.' },
     ];
 
+    const loadRequests = useCallback(async () => {
+        try {
+            const data = await ROEApi.listROERequests();
+            setRequests(data);
+        } catch (e) {
+            console.error("Failed to load ROE requests", e);
+            setRequests([]);
+        }
+    }, []);
+
     useEffect(() => {
         async function loadData() {
             setLoading(true);
             try {
-                // Fetch real ROE data and extend it
-                const [rData] = await Promise.all([
-                    roeApi.getRules()
-                ]);
+                // Load ROE requests from backend
+                await loadRequests();
 
-                // Enhance data with mock fields for UI demo
-                const enhancedRoes: ExtendedROE[] = rData.map(r => ({
-                    ...r,
-                    category: r.code.startsWith('1') ? 'Baseline' : r.code.startsWith('4') ? 'Mission-Specific' : 'Theater',
-                    series: r.code.substring(0, 1) + '00' as any,
-                    effectiveDate: new Date().toISOString()
-                }));
-
-                setStatusRoes(enhancedRoes);
+                // TODO: ROE rules catalog endpoint not yet implemented
+                // When available, replace with API call to load standing rules
+                setStatusRoes([]);
                 setAdvisories(fallbackAdvisories);
-
-                // Mock Requests
-                setRequests([
-                    {
-                        id: 'REQ-24-001',
-                        roeCode: '421',
-                        requestType: 'Release',
-                        justification: 'Required for dynamic targeting in Sector North regarding hostile UAS.',
-                        status: 'Submitted',
-                        requestedBy: 'J3 Current Ops',
-                        timestamp: new Date().toISOString(),
-                        priority: 'Urgent'
-                    },
-                    {
-                        id: 'REQ-24-002',
-                        roeCode: '112',
-                        requestType: 'Modification',
-                        justification: 'Align with new host nation agreement limitations.',
-                        status: 'Draft',
-                        requestedBy: 'LEGAD',
-                        timestamp: new Date().toISOString(),
-                        priority: 'Routine'
-                    }
-                ]);
             } catch (e) {
                 console.error("Failed to load ROE data", e);
             } finally {
@@ -101,12 +70,33 @@ export function ROEManagement() {
             }
         }
         loadData();
-    }, []);
+    }, [loadRequests]);
 
-    const handleApproveRequest = (id: string) => {
-        setRequests(prev => prev.map(r => r.id === id ? { ...r, status: 'Approved' } : r));
-        // Also enact the ROE status change in main list if applicable
-        // TODO: Implement actual backend call
+    const handleApproveRequest = async (id: string) => {
+        setActionLoading(id);
+        try {
+            await ROEApi.updateROERequestStatus(id, { status: 'approved' });
+            await loadRequests();
+        } catch (e) {
+            console.error("Failed to approve ROE request", e);
+        } finally {
+            setActionLoading(null);
+        }
+    };
+
+    const handleRejectRequest = async (id: string) => {
+        setActionLoading(id);
+        try {
+            await ROEApi.updateROERequestStatus(id, {
+                status: 'rejected',
+                rejection_reason: 'Rejected by reviewing authority',
+            });
+            await loadRequests();
+        } catch (e) {
+            console.error("Failed to reject ROE request", e);
+        } finally {
+            setActionLoading(null);
+        }
     };
 
     if (loading) return <div className="p-8 text-slate-500 animate-pulse font-mono text-[10px] uppercase">Retrieving Operational Law Database...</div>;
@@ -165,8 +155,8 @@ export function ROEManagement() {
                             </div>
                             <span className="text-[10px] font-black text-amber-500">PENDING</span>
                         </div>
-                        <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Submitted REQ</div>
-                        <div className="text-4xl font-black text-white">{requests.filter((r: ROERequest) => r.status === 'Submitted').length}</div>
+                        <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Pending REQ</div>
+                        <div className="text-4xl font-black text-white">{requests.filter((r: ROERequest) => r.status === 'pending').length}</div>
                     </div>
 
                     <div className="bg-slate-950 border-2 border-slate-900 rounded-3xl p-6 transition-all hover:border-blue-500/30">
@@ -210,9 +200,9 @@ export function ROEManagement() {
                             className="bg-transparent border-b-2 border-transparent data-[state=active]:border-amber-500 data-[state=active]:bg-transparent rounded-none px-0 py-2 text-xs font-bold uppercase text-slate-500 data-[state=active]:text-amber-400 transition-all"
                         >
                             Request Manager
-                            {requests.filter((r: ROERequest) => r.status === 'Submitted').length > 0 && (
+                            {requests.filter((r: ROERequest) => r.status === 'pending').length > 0 && (
                                 <span className="ml-2 bg-amber-500 text-slate-950 text-[9px] px-1 rounded-sm font-black">
-                                    {requests.filter((r: ROERequest) => r.status === 'Submitted').length}
+                                    {requests.filter((r: ROERequest) => r.status === 'pending').length}
                                 </span>
                             )}
                         </TabsTrigger>
@@ -281,44 +271,86 @@ export function ROEManagement() {
 
                     <TabsContent value="requests" className="p-6 m-0 animate-in fade-in slide-in-from-bottom-2 duration-300">
                         <div className="max-w-4xl mx-auto space-y-4">
+                            {requests.length === 0 && !loading && (
+                                <div className="text-center py-12 text-slate-500">
+                                    <ShieldCheck size={32} className="mx-auto mb-3 opacity-30" />
+                                    <p className="text-xs font-bold uppercase tracking-widest">No ROE requests found</p>
+                                    <p className="text-[10px] mt-1">Create a new request via the Decision Board or targeting workflow</p>
+                                </div>
+                            )}
                             {requests.map(req => (
                                 <div key={req.id} className="bg-slate-900 border border-slate-800 rounded-lg p-4 flex gap-4 hover:border-slate-700 transition-all">
                                     <div className={cn(
                                         "w-1 rounded-full shrink-0",
-                                        req.status === 'Approved' ? "bg-emerald-500" :
-                                            req.status === 'Submitted' ? "bg-amber-500" :
-                                                req.status === 'Draft' ? "bg-slate-500" : "bg-red-500"
+                                        req.status === 'approved' ? "bg-emerald-500" :
+                                            req.status === 'pending' ? "bg-amber-500" :
+                                                req.status === 'withdrawn' ? "bg-slate-500" : "bg-red-500"
                                     )} />
                                     <div className="flex-1">
                                         <div className="flex justify-between items-start mb-2">
                                             <div>
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-sm font-black text-white">{req.id}</span>
-                                                    <Badge variant="outline" className="text-[9px] uppercase border-slate-700 text-slate-400">ROE-{req.roeCode}</Badge>
-                                                    <Badge className={cn(
-                                                        "text-[9px] uppercase",
-                                                        req.priority === 'Urgent' ? "bg-red-500/20 text-red-500" : "bg-slate-800 text-slate-400"
-                                                    )}>{req.priority}</Badge>
+                                                    <span className="text-sm font-black text-white">{req.id.substring(0, 8).toUpperCase()}</span>
+                                                    {req.roe_reference && (
+                                                        <Badge variant="outline" className="text-[9px] uppercase border-slate-700 text-slate-400">{req.roe_reference}</Badge>
+                                                    )}
+                                                    {req.approval_authority && (
+                                                        <Badge className="text-[9px] uppercase bg-slate-800 text-slate-400">{req.approval_authority}</Badge>
+                                                    )}
                                                 </div>
-                                                <span className="text-[10px] text-slate-500 uppercase font-bold mt-1 block">Request Type: <span className="text-slate-300">{req.requestType}</span></span>
+                                                <span className="text-[10px] text-slate-500 uppercase font-bold mt-1 block">
+                                                    Decision: <span className="text-slate-300">{req.decision_id.substring(0, 8)}</span>
+                                                </span>
                                             </div>
                                             <Badge className={cn(
                                                 "uppercase text-[10px] font-black",
-                                                req.status === 'Approved' ? "bg-emerald-500/10 text-emerald-500" :
-                                                    req.status === 'Submitted' ? "bg-amber-500/10 text-amber-500" :
-                                                        "bg-slate-800 text-slate-400"
+                                                req.status === 'approved' ? "bg-emerald-500/10 text-emerald-500" :
+                                                    req.status === 'pending' ? "bg-amber-500/10 text-amber-500" :
+                                                        req.status === 'rejected' ? "bg-red-500/10 text-red-500" :
+                                                            "bg-slate-800 text-slate-400"
                                             )}>{req.status}</Badge>
                                         </div>
                                         <p className="text-xs text-slate-300 mb-3 bg-slate-950/50 p-2 rounded border border-slate-800/50 italic">
-                                            "{req.justification}"
+                                            "{req.request_justification}"
                                         </p>
+                                        {req.rejection_reason && (
+                                            <p className="text-xs text-red-400 mb-3 bg-red-950/20 p-2 rounded border border-red-900/30">
+                                                Rejection: {req.rejection_reason}
+                                            </p>
+                                        )}
+                                        {req.conditions && (
+                                            <p className="text-xs text-blue-400 mb-3 bg-blue-950/20 p-2 rounded border border-blue-900/30">
+                                                Conditions: {req.conditions}
+                                            </p>
+                                        )}
                                         <div className="flex justify-between items-center text-[10px] text-slate-500">
-                                            <span>Requested By: <span className="text-white font-bold">{req.requestedBy}</span> • {new Date(req.timestamp).toLocaleDateString()}</span>
-                                            {req.status === 'Submitted' && (
+                                            <span>Requested By: <span className="text-white font-bold">{req.requested_by}</span> • {new Date(req.requested_at).toLocaleDateString()}</span>
+                                            {req.status === 'pending' && (
                                                 <div className="flex gap-2">
-                                                    <Button size="sm" variant="outline" className="h-6 text-[10px] border-slate-700 hover:bg-slate-800 text-slate-400">Reject</Button>
-                                                    <Button size="sm" onClick={() => handleApproveRequest(req.id)} className="h-6 text-[10px] bg-emerald-600 hover:bg-emerald-500 text-white font-bold">Approve Release</Button>
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        disabled={actionLoading === req.id}
+                                                        onClick={() => handleRejectRequest(req.id)}
+                                                        className="h-6 text-[10px] border-slate-700 hover:bg-slate-800 text-slate-400"
+                                                    >
+                                                        Reject
+                                                    </Button>
+                                                    <Button
+                                                        size="sm"
+                                                        disabled={actionLoading === req.id}
+                                                        onClick={() => handleApproveRequest(req.id)}
+                                                        className="h-6 text-[10px] bg-emerald-600 hover:bg-emerald-500 text-white font-bold"
+                                                    >
+                                                        {actionLoading === req.id ? (
+                                                            <Loader2 size={12} className="animate-spin mr-1" />
+                                                        ) : null}
+                                                        Approve Release
+                                                    </Button>
                                                 </div>
+                                            )}
+                                            {req.status === 'approved' && req.approved_by && (
+                                                <span className="text-emerald-500">Approved by {req.approved_by} • {req.approved_at ? new Date(req.approved_at).toLocaleDateString() : ''}</span>
                                             )}
                                         </div>
                                     </div>

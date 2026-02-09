@@ -81,11 +81,11 @@ function App() {
     // J2 Intel
     if (hasPermission('j2.dashboard.view')) return <Navigate to="/mshnctrl/j2-dashboard" />
 
-    // J4 Logistics
-    if (hasPermission('j4.dashboard.view')) return <Navigate to="/mshnctrl/j4-dashboard" />
+    // J4 Logistics - TODO: Implement dashboard
+    // if (hasPermission('j4.dashboard.view')) return <Navigate to="/mshnctrl/j4-dashboard" />
 
-    // J5 Plans
-    if (hasPermission('j5.dashboard.view')) return <Navigate to="/mshnctrl/j5-dashboard" />
+    // J5 Plans - TODO: Implement dashboard
+    // if (hasPermission('j5.dashboard.view')) return <Navigate to="/mshnctrl/j5-dashboard" />
 
     // Targeting Cell
     if (hasPermission('targeting.dashboard.view')) return <Navigate to="/mshnctrl/targeting-cell-dashboard" />

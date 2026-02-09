@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Activity,
     AlertTriangle,
@@ -10,11 +10,15 @@ import {
     Search
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { mockFeedbackEvents } from '@/features/shared/services/feedbackService';
+import { feedbackApi } from '@/lib/mshnctrl/api/feedback.api';
 import { FEEDBACK_LABELS, FEEDBACK_COLORS, type FeedbackEvent, type FeedbackType } from '@/features/shared/types/feedback';
 
 export function FeedbackDashboard() {
-    const [events] = useState<FeedbackEvent[]>(mockFeedbackEvents);
+    const [events, setEvents] = useState<FeedbackEvent[]>([]);
+
+    useEffect(() => {
+        feedbackApi.getFeedbackEvents().then(setEvents);
+    }, []);
     const [filter, setFilter] = useState<'ALL' | 'OPEN' | 'RESOLVED'>('ALL');
     const [selectedType] = useState<FeedbackType | 'ALL'>('ALL');
     const [viewMode, setViewMode] = useState<'OVERVIEW' | 'VARIANCE'>('OVERVIEW');

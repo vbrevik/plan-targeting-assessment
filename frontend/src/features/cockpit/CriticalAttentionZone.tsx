@@ -42,9 +42,8 @@ export function CriticalAttentionZone({
 
             {/* Campaign Drift Alert */}
             {driftingObjectives.length > 0 && (
-                <Link
-                    to="/mshnctrl/campaign"
-                    className="group block p-4 rounded-lg border-2 transition-all cursor-pointer bg-amber-950/20 border-amber-500/40 hover:bg-amber-950/40 hover:border-amber-400"
+                <div
+                    className="block p-4 rounded-lg border-2 bg-amber-950/20 border-amber-500/40"
                 >
                     <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center gap-2">
@@ -55,16 +54,14 @@ export function CriticalAttentionZone({
                         </div>
                         <span className="text-[8px] font-bold text-slate-500 uppercase">This week</span>
                     </div>
-                    <h3 className="text-sm font-black text-white mb-1 leading-tight group-hover:text-blue-300 transition-colors">
+                    <h3 className="text-sm font-black text-white mb-1 leading-tight">
                         {driftingObjectives.length} Campaign Objective{driftingObjectives.length > 1 ? 's' : ''} at DRIFT
                     </h3>
                     <p className="text-[10px] text-slate-400 leading-relaxed">
                         {driftingObjectives.map((dc: any) => dc.name).join(', ')}
                     </p>
-                    <div className="flex items-center justify-end mt-2 text-[9px] text-slate-500 group-hover:text-blue-400 transition-colors font-black uppercase">
-                        View Campaign <ChevronRight size={12} className="ml-1" />
-                    </div>
-                </Link>
+                    {/* TODO: Add campaign route */}
+                </div>
             )}
 
             {/* Intel Insights Alert */}

@@ -8,14 +8,12 @@ import {
     Plus,
     Edit,
     Trash2,
-    ArrowRight,
     BarChart3,
     Link as LinkIcon,
     AlertCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { assumptionsApi, type Assumption, type CreateAssumptionRequest, type UpdateAssumptionRequest } from '@/lib/assumptions';
-import { Link } from '@tanstack/react-router';
 
 const CATEGORIES = ['Enemy', 'Friendly', 'Environmental', 'Political', 'Logistical', 'Intelligence', 'Temporal', 'Technical'];
 const STATUS_OPTIONS = ['Valid', 'Monitoring', 'Challenged', 'Broken'];
@@ -179,16 +177,12 @@ export function AssumptionManagement() {
                     {/* Related System */}
                     <div className="pt-6 border-t border-slate-800/50 space-y-4">
                         <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest block">Related System</span>
-                        <Link
-                            to="/mshnctrl/uncertainty"
-                            className="flex items-center justify-between p-3 bg-slate-900/40 border border-slate-800 rounded hover:border-blue-500/40 transition-all group"
-                        >
+                        <div className="flex items-center justify-between p-3 bg-slate-900/40 border border-slate-800 rounded">
                             <div className="flex items-center gap-2">
                                 <BarChart3 size={14} className="text-blue-500" />
-                                <span className="text-[10px] font-bold text-slate-300 uppercase">Uncertainty Analysis</span>
+                                <span className="text-[10px] font-bold text-slate-300 uppercase">Uncertainty Analysis {/* TODO: Implement route */}</span>
                             </div>
-                            <ArrowRight size={12} className="text-slate-600 group-hover:text-blue-500 transition-colors" />
-                        </Link>
+                        </div>
                     </div>
 
                     {/* System Health Indicator */}

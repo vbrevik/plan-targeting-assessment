@@ -59,6 +59,46 @@ export interface CreateMeetingRequest {
     meeting_type: string;
 }
 
+// Meeting Minutes types
+export interface ActionItem {
+    id: string;
+    minutes_id: string;
+    task: string;
+    assigned_to: string;
+    due_date?: string;
+    status: string; // 'OPEN' | 'COMPLETE'
+}
+
+export interface LessonLearned {
+    id: string;
+    minutes_id: string;
+    content: string;
+    category?: string;
+}
+
+export interface MeetingMinutes {
+    id: string;
+    meeting_id: string;
+    attendees: string[];
+    discussion_summary: string;
+    recorded_by: string;
+    recorded_at: string;
+    classification?: string;
+    created_at: string;
+    updated_at: string;
+    action_items: ActionItem[];
+    lessons_learned: LessonLearned[];
+}
+
+export interface RecordMinutesRequest {
+    attendees: string[];
+    discussion_summary: string;
+    recorded_by: string;
+    classification?: string;
+    action_items?: { task: string; assigned_to: string; due_date?: string }[];
+    lessons_learned?: { content: string; category?: string }[];
+}
+
 export const MeetingsApi = {
     /**
      * List all meetings
@@ -79,5 +119,30 @@ export const MeetingsApi = {
      */
     createMeeting: async (req: CreateMeetingRequest): Promise<Meeting> => {
         return api.post<Meeting>('/c2/meetings', req);
+    },
+
+    /**
+     * Get meeting minutes (returns null if none recorded)
+     */
+    getMinutes: async (meetingId: string): Promise<MeetingMinutes | null> => {
+        try {
+            return await api.get<MeetingMinutes>(`/operations/meetings/${meetingId}/minutes`);
+        } catch {
+            return null;
+        }
+    },
+
+    /**
+     * Record new minutes for a meeting
+     */
+    recordMinutes: async (meetingId: string, data: RecordMinutesRequest): Promise<MeetingMinutes> => {
+        return api.post<MeetingMinutes>(`/operations/meetings/${meetingId}/minutes`, data);
+    },
+
+    /**
+     * Update existing minutes
+     */
+    updateMinutes: async (meetingId: string, data: Partial<RecordMinutesRequest>): Promise<MeetingMinutes> => {
+        return api.patch<MeetingMinutes>(`/operations/meetings/${meetingId}/minutes`, data);
     }
 };

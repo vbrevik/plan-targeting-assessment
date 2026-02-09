@@ -16,7 +16,7 @@ const BYPASS_HEADER: &str = "x-test-bypass-token";
 pub async fn rate_limit_middleware(
     State(rate_limit_service): State<Arc<RateLimitService>>,
     headers: HeaderMap,
-    mut request: Request,
+    request: Request,
     next: Next,
 ) -> Response {
     // Check for bypass token in headers

@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link } from '@tanstack/react-router';
 import {
     AlertOctagon,
     MessageSquareWarning,
-    TrendingUp,
-    ArrowRight
+    TrendingUp
 } from 'lucide-react';
 import { TacticalMap } from '../operations/TacticalMap';
 import { NetworkGraph } from '../shared/NetworkGraph';
@@ -220,9 +218,9 @@ export function MshnCtrlDashboard() {
                     {/* 4. STRATEGIC TIMELINE (LOO / DCs) */}
                     <div className="h-[280px] border border-slate-800 rounded-lg overflow-hidden bg-slate-900/40 flex flex-col">
                         <div className="h-10 border-b border-slate-800 bg-slate-950 flex shadow-lg items-center px-4">
-                            <Link to="/mshnctrl/campaign" className="text-[11px] font-black text-slate-500 hover:text-blue-400 transition-colors uppercase tracking-widest flex items-center gap-2">
-                                Campaign LOOs <ArrowRight size={12} />
-                            </Link>
+                            <div className="text-[11px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                                Campaign LOOs {/* TODO: Add campaign route */}
+                            </div>
                         </div>
                         <div className="flex-1">
                             <LOOTimeline loos={stats.loos} decisiveConditions={stats.decisiveConditions} />

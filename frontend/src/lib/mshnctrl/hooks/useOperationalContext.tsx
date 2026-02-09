@@ -28,45 +28,19 @@ const STORAGE_KEY = 'mshnctrl_operational_context';
 export function OperationalContextProvider({ children }: { children: ReactNode }) {
     const [context, setContextState] = useState<OperationalContext>(DEFAULT_CONTEXT);
 
-    // Load from localStorage on mount, or fetch active campaign
+    // Load from localStorage on mount
     useEffect(() => {
-        const initialize = async () => {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored) {
-                try {
-                    const parsed = JSON.parse(stored);
-                    setContextState(parsed);
-                    return;
-                } catch {
-                    // Invalid stored data, fall through to fetch
-                }
-            }
-
-            // If no local state, try to get active campaign from backend
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
             try {
-                const { MshnCtrlService } = await import('@/lib/mshnctrl/mock-service');
-                const activeCampaign = await MshnCtrlService.getActiveCampaign();
-
-                if (activeCampaign) {
-                    const initialContext: OperationalContext = {
-                        level: 'Operational',
-                        campaignId: activeCampaign.id,
-                        operationId: null,
-                        oplanId: null,
-                        missionId: null,
-                        name: activeCampaign.name,
-                        phase: undefined
-                    };
-                    setContextState(initialContext);
-                    // Don't save to localStorage yet, only on user interaction or if you want it sticky immediately
-                    // localStorage.setItem(STORAGE_KEY, JSON.stringify(initialContext)); 
-                }
-            } catch (e) {
-                console.error("Failed to initialize context from backend", e);
+                const parsed = JSON.parse(stored);
+                setContextState(parsed);
+            } catch {
+                // Invalid stored data, use default
+                console.warn('Invalid stored operational context, using default');
             }
-        };
-
-        initialize();
+        }
+        // TODO: Implement campaign API to fetch active campaign if no localStorage
     }, []);
 
     // Persist to localStorage on change
